@@ -2,6 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  transpilePackages: [],
   images: {
     remotePatterns: [
       {
@@ -13,7 +14,6 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: true,
-    turbopack: false,
   },
 };
 
