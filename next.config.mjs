@@ -9,6 +9,12 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    legacyBrowsers: false, // 🚫 Stop supporting old browsers like IE11
+  },
+  compiler: {
+    removeConsole: true,
+  },
 };
 
 export default nextConfig;
