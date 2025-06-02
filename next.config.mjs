@@ -1,5 +1,8 @@
+
+const withTM = require('next-transpile-modules');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -9,12 +12,12 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    legacyBrowsers: false, // 🚫 Stop supporting old browsers like IE11
-  },
   compiler: {
     removeConsole: true,
   },
 };
 
-export default nextConfig;
+module.exports = withTM([
+  'swiper',
+  'swiper/react', // Important: Include this if you're using the React components
+])(nextConfig);

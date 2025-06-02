@@ -1,0 +1,9 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    // Your custom plugins, but be careful not to reintroduce polyfills
+    // that Next.js already handles for modern targets.
+    // For example, if you need class properties without full Stage 3:
+    // ["@babel/plugin-proposal-class-properties", { "loose": true }]
+  ]
+}
