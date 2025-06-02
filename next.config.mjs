@@ -1,5 +1,4 @@
 
-const withTM = require('next-transpile-modules');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -14,10 +13,8 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: true,
+    turbopack: false,
   },
 };
 
-module.exports = withTM([
-  'swiper',
-  'swiper/react', // Important: Include this if you're using the React components
-])(nextConfig);
+export default nextConfig;
