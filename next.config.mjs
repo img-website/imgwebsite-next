@@ -28,7 +28,7 @@ const nextConfig = {
     staticGenerationMaxConcurrency: 8,
     staticGenerationMinPagesPerWorker: 25,
     useCache: true,
-    webVitalsAttribution: ['CLS', 'LCP'],
+    webVitalsAttribution: ['CLS', 'LCP']
   },
   transpilePackages: ['swiper'],
 };
