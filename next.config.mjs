@@ -2,6 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 2678400, // 31 days
