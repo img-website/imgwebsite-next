@@ -22,7 +22,7 @@ const nextConfig = {
   },
   experimental: {
     cssChunking: true, // default
-    inlineCss: true,
+    // inlineCss: true,
     optimizePackageImports: ['swiper'],
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 8,
