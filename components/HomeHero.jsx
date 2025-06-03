@@ -1,6 +1,6 @@
 'use client';
 
-import { Swiper, SwiperSlide, Autoplay, Pagination, Navigation, Keyboard } from '@/components/CustomSwiper';
+import { Swiper, SwiperSlide, Pagination } from '@/components/CustomSwiper';
 import Image from 'next/image';
 import Svg from '@/components/svg';
 import { useState, useEffect } from 'react';
@@ -33,18 +33,11 @@ export default function HomeHero() {
             //     delay: 3000,
             //     disableOnInteraction: false,
             // }}
-            keyboard={{
-                enabled: true,
-            }}
             pagination={{
                 clickable: true,
                 el: '.swiper-pagination',
             }}
-            navigation={{
-                nextEl: '.next',
-                prevEl: '.prev',
-            }}
-            modules={[Autoplay, Pagination, Navigation, Keyboard]}
+            modules={[Pagination]}
             >
                 {!isMobile ? (
                     <Image 

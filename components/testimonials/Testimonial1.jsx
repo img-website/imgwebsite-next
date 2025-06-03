@@ -1,10 +1,7 @@
 'use client'
-
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Keyboard } from 'swiper/modules'
-import 'swiper/css'
 import Svg from "@/components/svg"
 import { useEffect } from 'react';
+import { Swiper, SwiperSlide } from '@/components/CustomSwiper';
 
 const Testimonial = () => {
   useEffect(() => {
@@ -135,12 +132,10 @@ const Testimonial = () => {
                   <div className="w-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs md:font-medium font-normal text-white text-balance relative z-10 text-center md:pb-12 pb-5">our patrons have some <span className="text-[#FF6B39]">pretty nice things</span> to say too!</div>
                   <div className="flex flex-wrap justify-center">
                       <Swiper className="xl:w-8/12 lg:w-10/12 flex flex-wrap gap-y-8 items-start -mx-4 swiper"
-                        modules={[Keyboard]}
                         slidesPerView={1}
                         spaceBetween={4}
                         speed={1000}
                         loop={true}
-                        keyboard={{ enabled: true }}
                         centeredSlides={true}
                         breakpoints={{
                           320: { slidesPerView: 2, spaceBetween: 4 },

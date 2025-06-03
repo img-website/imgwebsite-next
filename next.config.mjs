@@ -16,7 +16,7 @@ const nextConfig = {
     ],
   },
   compiler: {
-    removeConsole: true,
+    // removeConsole: true,
   },
 };
 

@@ -4,9 +4,7 @@
 import Image from "next/image"
 import Svg from "@/components/svg"
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
+import { Swiper, SwiperSlide, Autoplay } from '@/components/CustomSwiper';
 
 const Portfolio1= () => {
     return (

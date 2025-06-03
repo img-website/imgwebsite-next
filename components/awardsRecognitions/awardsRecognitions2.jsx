@@ -13,7 +13,7 @@ const AwardsRecognitions2 = () => {
           <div className="w-full relative z-10">
               <div className="mx-auto grid items-center max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none">
                   <div className="w-full">
-                      <Swiper className="swiper AwardsRecognitions"
+                      <Swiper className="swiper AwardsRecognitions *:!ease-linear *:!flex *:!items-stretch"
                         modules={[Autoplay]}
                         slidesPerView={2}
                         spaceBetween={10}
@@ -32,7 +32,6 @@ const AwardsRecognitions2 = () => {
                           1350: { slidesPerView: 4, spaceBetween: 30 },
                         }}
                       >
-                          <div className="swiper-wrapper !ease-linear flex !items-stretch">
                               <SwiperSlide className="swiper-slide rounded-2xl overflow-hidden !h-auto">
                                   <a href="https://appfirmsreview.com/mobile-app-development-companies-india/" target="_blank" className="flex flex-col items-center text-center h-full">
                                       <div className="flex flex-col items-center text-center py-4 w-full rounded-2xl bg-gray-600/10 p-2 ring-1 ring-gray-600/15 grow">
@@ -243,7 +242,6 @@ const AwardsRecognitions2 = () => {
                                       </div>
                                   </div>
                               </SwiperSlide>
-                          </div>
                       </Swiper>
                   </div>
               </div>
