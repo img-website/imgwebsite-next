@@ -51,7 +51,8 @@ export default function HomeHero() {
                         ) : (
                     <Image
                         loading="lazy"
-                        fill={true}sizes="(max-width: 768px) 100vw, 50vw"
+                        fill={true}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
                         alt="AI-Driven Digital Transformation Company"
                         className="my-auto w-full z-0 object-cover object-center pointer-events-none"
@@ -80,7 +81,7 @@ export default function HomeHero() {
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     placeholder="blur"
-                                    sizes="(max-width: 768px) 100vw, 797px"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     width="815" 
                                     height="579" 
                                     alt="AI-Driven Digital Transformation Company" 
@@ -92,7 +93,7 @@ export default function HomeHero() {
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     placeholder="blur"
-                                    sizes="(max-width: 768px) 100vw, 40vw"
+                                    sizes="(max-width: 768px) 100vw, 339px"
                                     width="339" 
                                     height="438" 
                                     alt="AI-Driven Digital Transformation Company" 
