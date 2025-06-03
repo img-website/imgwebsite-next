@@ -36,7 +36,7 @@ export default function HomeHero() {
                 priority={true}
                 quality={75}
                 fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="100vw"
                 src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
                 alt="AI-Driven Digital Transformation Company"
                 className="z-0 object-cover object-center pointer-events-none max-md:hidden"
@@ -44,8 +44,7 @@ export default function HomeHero() {
             <Image 
                 priority={true}
                 quality={75}
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                fill={true}sizes="(max-width: 768px) 100vw, 50vw"
                 src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
                 alt="AI-Driven Digital Transformation Company"
                 className="my-auto w-full z-0 object-cover object-center pointer-events-none md:hidden"
@@ -72,6 +71,8 @@ export default function HomeHero() {
                                 quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                 blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
+                                placeholder="blur"
+                                sizes="(max-width: 768px) 100vw, 50vw"
                                 width="815" 
                                 height="579" 
                                 alt="AI-Driven Digital Transformation Company" 
@@ -82,6 +83,8 @@ export default function HomeHero() {
                                 quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                 blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
+                                placeholder="blur"
+                                sizes="(max-width: 768px) 100vw, 50vw"
                                 width="339" 
                                 height="438" 
                                 alt="AI-Driven Digital Transformation Company" 
