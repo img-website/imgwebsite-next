@@ -13,7 +13,7 @@ export default function HomeHero() {
         <Swiper className="heroSection w-full swiper bg-white [&_.swiper-slide]:z-0 [&_.swiper-slide.swiper-slide-prev]:!z-10 [&_.swiper-slide.swiper-slide-next]:!z-10 [&_.swiper-slide.swiper-slide-active]:!z-20 [&_.swiper-wrapper]:max-md:!items-stretch"
             slidesPerView={1}
             spaceBetween={0}
-            loop={true}
+            // loop={true}
             speed={1000}
             // autoplay={{
             //     delay: 3000,
@@ -24,7 +24,7 @@ export default function HomeHero() {
             }}
             pagination={{
                 clickable: true,
-                el: '.swiper-pagination', // This still works if pagination div exists outside
+                el: '.swiper-pagination',
             }}
             navigation={{
                 nextEl: '.next',
@@ -34,7 +34,8 @@ export default function HomeHero() {
             >
             <Image 
                 loading="eager"
-                priority="high"
+                priority={true}
+                quality={75}
                 decoding="async"
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -44,7 +45,8 @@ export default function HomeHero() {
                 />
             <Image 
                 loading="eager"
-                priority="high"
+                priority={true}
+                quality={75}
                 decoding="async"
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -71,7 +73,8 @@ export default function HomeHero() {
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
                             <Image 
                                 loading="eager" 
-                                priority="high" 
+                                priority={true} 
+                                quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                 blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                 width="815" 
@@ -81,7 +84,8 @@ export default function HomeHero() {
                                 className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
                             <Image 
                                 loading="eager" 
-                                priority="high" 
+                                priority={true} 
+                                quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                 blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                 width="339" 
