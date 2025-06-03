@@ -33,10 +33,8 @@ export default function HomeHero() {
             modules={[Autoplay, Pagination, Navigation, Keyboard]}
             >
             <Image 
-                loading="eager"
                 priority={true}
                 quality={75}
-                decoding="async"
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
@@ -44,10 +42,8 @@ export default function HomeHero() {
                 className="z-0 object-cover object-center pointer-events-none max-md:hidden"
                 />
             <Image 
-                loading="eager"
                 priority={true}
                 quality={75}
-                decoding="async"
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
@@ -72,7 +68,6 @@ export default function HomeHero() {
                         </div>
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
                             <Image 
-                                loading="eager" 
                                 priority={true} 
                                 quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
@@ -83,7 +78,6 @@ export default function HomeHero() {
                                 title="AI-Driven Digital Transformation Company" 
                                 className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
                             <Image 
-                                loading="eager" 
                                 priority={true} 
                                 quality={75}
                                 src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
@@ -121,8 +115,8 @@ export default function HomeHero() {
                             <div className="grow lg:py-12 md:py-6 py-3 max-md:hidden"></div>
                         </div>
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
-                            <Image loading="eager" priority="high" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
-                            <Image loading="eager" priority="high" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496] md:hidden" />
+                            <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
+                            <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496] md:hidden" />
                             <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
                                 <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
                                     <span>Let's Build Your App</span>
