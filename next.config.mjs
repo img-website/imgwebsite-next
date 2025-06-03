@@ -2,7 +2,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 2678400, // 31 days
@@ -20,13 +19,11 @@ const nextConfig = {
     ],
   },
   experimental: {
-    cssChunking: true,
     optimizePackageImports: ['swiper'],
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 8,
     staticGenerationMinPagesPerWorker: 25,
-    useCache: true,
-    webVitalsAttribution: ['CLS', 'LCP']
+    useCache: true
   },
   transpilePackages: ['swiper'],
 };
