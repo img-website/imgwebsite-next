@@ -2,6 +2,7 @@
   "name": "imgwebsite",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -19,11 +20,13 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "source-map-explorer": "^2.5.3",
     "tailwindcss": "^4"
   },
   "browserslist": [
     "defaults and supports es6-module",
     "not dead",
-    "not ie 11"
+    "not IE 11",
+    "not op_mini all"
   ]
 }

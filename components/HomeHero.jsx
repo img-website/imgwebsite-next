@@ -42,7 +42,6 @@ export default function HomeHero() {
                 {!isMobile ? (
                     <Image 
                         priority={true}
-                        quality={75}
                         fill={true}
                         sizes="100vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
@@ -52,7 +51,6 @@ export default function HomeHero() {
                         ) : (
                     <Image 
                         priority={true}
-                        quality={75}
                         fill={true}sizes="(max-width: 768px) 100vw, 50vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
                         alt="AI-Driven Digital Transformation Company"
@@ -78,8 +76,7 @@ export default function HomeHero() {
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
                             {!isMobile ? (
                                 <Image 
-                                    priority={true} 
-                                    quality={75}
+                                    loading="lazy"
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     placeholder="blur"
@@ -91,8 +88,7 @@ export default function HomeHero() {
                                     className="absolute top-8 inset-x-0 bottom-0 size-full object-contain" />
                                     ) : (
                                 <Image 
-                                    priority={true} 
-                                    quality={75}
+                                    loading="lazy"
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     placeholder="blur"

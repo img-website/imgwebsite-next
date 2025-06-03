@@ -2,11 +2,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [],
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 2678400, // 31 days
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -15,14 +13,13 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'https://imgglobalinfotech-website.s3.ap-south-1.amazonaws.com',
+        hostname: 'imgglobalinfotech-website.s3.ap-south-1.amazonaws.com',
         pathname: '/**',
       },
     ],
   },
   experimental: {
-    cssChunking: true, // default
-    // inlineCss: true,
+    cssChunking: true,
     optimizePackageImports: ['swiper'],
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 8,
