@@ -1,10 +1,6 @@
 'use client';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation, Keyboard } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import { Swiper, SwiperSlide, Autoplay, Pagination, Navigation, Keyboard } from '@/components/CustomSwiper';
 import Image from 'next/image';
 import Svg from '@/components/svg';
 import { useState, useEffect } from 'react';
