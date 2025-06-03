@@ -4,6 +4,9 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [],
   images: {
+    formats: ['image/webp'],
+    minimumCacheTTL: 2678400, // 31 days
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',

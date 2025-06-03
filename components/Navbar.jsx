@@ -1,11 +1,36 @@
+'use client';
 
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Svg from '@/components/svg';
 const Navbar = () => {
+  useEffect(() => {
+    // Remove "group" class just once on mount
+    if (document.body?.classList?.contains('group')) {
+      document.body.classList.remove('group');
+    }
+
+    const handleScroll = () => {
+      const scroll = window.scrollY || document.documentElement.scrollTop;
+      if (scroll <= 80) {
+        document.body.classList.remove('group/ns');
+      } else {
+        document.body.classList.add('group/ns');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Only set up scroll — don't run it initially
+    // because original code does not trigger on load
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
     return (
       <>
-        <header className="absolute top-0 left-0 right-0 z-[1010] bg-white select-nonee group-[]/ns:fixed group-[]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]">
+        <header className="absolute top-0 left-0 right-0 z-[1010] bg-white select-nonee group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]">
           <nav className="!container flex items-center justify-between xl:py-4 lg:py-3 py-4" aria-label="Global">
             <div className="flex lg:hidden mr-2">
               <label htmlFor="sideToggle" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
@@ -20,7 +45,7 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="flex lg:flex-col lg:gap-x-8 xl:gap-y-7 gap-y-4 ml-auto mr-0 items-end">
-              <div className="hidden lg:flex gap-5 group-[]/ns:-mb-9 group-[]/ns:-z-10 group-[]/ns:opacity-0 relative duration-300">
+              <div className="hidden lg:flex gap-5 group-[body]/ns:-mb-9 group-[body]/ns:-z-10 group-[body]/ns:opacity-0 relative duration-300">
                   <Link href="mailto:info@imgglobalinfotech.com" target="_blank" className="flex items-center font-semibold xl:text-sm lg:text-xs text-sm xl:gap-2 lg:gap-1 gap-2 text-[#454444]">
                       <span>
                           <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/mail.webp" alt="Mail" title="Mail" className="xl:size-5 lg:size-4 size-5" width="20" height="20" />
