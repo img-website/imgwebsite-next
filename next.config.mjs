@@ -20,9 +20,17 @@ const nextConfig = {
       },
     ],
   },
-  compiler: {
-    // removeConsole: true,
+  experimental: {
+    cssChunking: true, // default
+    inlineCss: true,
+    optimizePackageImports: ['swiper'],
+    staticGenerationRetryCount: 1,
+    staticGenerationMaxConcurrency: 8,
+    staticGenerationMinPagesPerWorker: 25,
+    useCache: true,
+    webVitalsAttribution: ['CLS', 'LCP'],
   },
+  transpilePackages: ['swiper'],
 };
 
 export default nextConfig;
