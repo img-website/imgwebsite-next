@@ -18,14 +18,14 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    optimizePackageImports: ['swiper'],
-    staticGenerationRetryCount: 1,
-    staticGenerationMaxConcurrency: 8,
-    staticGenerationMinPagesPerWorker: 25,
-    useCache: true
-  },
-  transpilePackages: ['swiper'],
+  // experimental: {
+  //   optimizePackageImports: ['swiper'],
+  //   staticGenerationRetryCount: 1,
+  //   staticGenerationMaxConcurrency: 8,
+  //   staticGenerationMinPagesPerWorker: 25,
+  //   useCache: true
+  // },
+  // transpilePackages: ['swiper'],
 };
 
 export default nextConfig;
