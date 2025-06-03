@@ -58,7 +58,7 @@ export default function HomeHero() {
                         sizes="100vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
                         alt="AI-Driven Digital Transformation Company"
-                        className="z-0 object-cover object-center pointer-events-none max-md:hidden"
+                        className="z-0 object-cover object-center pointer-events-none"
                         />
                         ) : (
                     <Image 
@@ -67,7 +67,7 @@ export default function HomeHero() {
                         fill={true}sizes="(max-width: 768px) 100vw, 50vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
                         alt="AI-Driven Digital Transformation Company"
-                        className="my-auto w-full z-0 object-cover object-center pointer-events-none md:hidden"
+                        className="my-auto w-full z-0 object-cover object-center pointer-events-none"
                         />
                 )}
                 <SwiperSlide className="swiper-slide xl:pt-[116px] lg:pt-[90px] md:pt-[88px] pt-16 relative overflow-hidden md:min-h-dvh max-md:!h-auto !flex !flex-col max-md:pb-6 group/slide">
@@ -99,7 +99,7 @@ export default function HomeHero() {
                                     height="579" 
                                     alt="AI-Driven Digital Transformation Company" 
                                     title="AI-Driven Digital Transformation Company" 
-                                    className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
+                                    className="absolute top-8 inset-x-0 bottom-0 size-full object-contain" />
                                     ) : (
                                 <Image 
                                     priority={true} 
@@ -112,7 +112,7 @@ export default function HomeHero() {
                                     height="438" 
                                     alt="AI-Driven Digital Transformation Company" 
                                     title="AI-Driven Digital Transformation Company" 
-                                    className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496] md:hidden" />
+                                    className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496]" />
                             )}
                             <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
                                 <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
@@ -143,9 +143,9 @@ export default function HomeHero() {
                         </div>
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
                             {!isMobile ? (
-                                <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:hidden" />
+                                <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain" />
                                     ) : (
-                                <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496] md:hidden" />
+                                <Image loading='lazy' src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496]" />
                             )}
                             <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
                                 <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
