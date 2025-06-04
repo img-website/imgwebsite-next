@@ -1,6 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
+import TawkToWidget from "@/components/TawkToWidget";
+import GtagScript from "@/components/GtagScript";
 export default function RootLayout({ children }) {
   const LocalBusiness = {
       "@context": "https://schema.org",
@@ -77,6 +79,7 @@ export default function RootLayout({ children }) {
               "https://www.youtube.com/@imgglobalinfotech" 
           ]
   }
+  const isProd = process.env.NODE_ENV === 'production'
   return (
     <>
       <script
@@ -103,6 +106,12 @@ export default function RootLayout({ children }) {
         </main>
         <LeadPopup/>
         <Footer/>
+        {isProd && (
+          <>
+            <TawkToWidget />
+            <GtagScript />
+          </>
+        )}
     </>
   );
 }
