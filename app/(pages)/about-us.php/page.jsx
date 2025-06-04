@@ -10,7 +10,7 @@ export default function AboutUs() {
                   <span className="absolute inset-0 bg-cover bg-right opacity-80 rounded-b-2xl bg-gradient-to-r mix-blend-multiply shadow-indigo-950 from-indigo-950/80 via-indigo-900/80 to-indigo-800/90"></span>
                   
                   <Image className="size-full object-cover object-center absolute inset-0 -z-[1] rounded-b-2xl aspect-[1519/812]"
-                      
+                      priority="true"
                       width="1519"
                       height="812"
                       sizes="100vw"
