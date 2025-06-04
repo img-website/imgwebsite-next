@@ -8,13 +8,12 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://www.imgglobalinfotech.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
   title: {
     default: 'Mobile App Development & IT Consulting Services in USA | IMG Global Infotech',
     template: '%s',
   },
-  description:
-    'IMG Global Infotech is a top mobile app development company in USA, UK, UAE, and India, providing expert IT consulting services for startups to large enterprises.',
+  description: 'IMG Global Infotech is a top mobile app development company in USA, UK, UAE, and India, providing expert IT consulting services for startups to large enterprises.',
   keywords: [
     'Mobile App Development',
     'IT Consulting',
@@ -27,7 +26,7 @@ export const metadata = {
   ],
   authors: [
     { name: 'Mr. Mohit Mittal' },
-    { name: 'IMG Global Infotech', url: 'https://www.imgglobalinfotech.com' },
+    { name: 'IMG Global Infotech', url: process.env.NEXT_PUBLIC_BASE_URL },
   ],
   creator: 'IMG Global Infotech',
   publisher: 'IMG Global Infotech',
@@ -58,7 +57,7 @@ export const metadata = {
       'IMG Global Infotech | Mobile App Development & IT Consulting Agency in USA, UK, UAE & India',
     description:
       'IMG Global Infotech is the best IT consulting Company that provides the best IT consulting services to startups, mid-size, medium-size and large-size businesses.',
-    url: 'https://www.imgglobalinfotech.com/',
+    url: process.env.NEXT_PUBLIC_BASE_URL,
     siteName: 'IMG Global Infotech',
     locale: 'en_US',
     type: 'website',

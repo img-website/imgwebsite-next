@@ -1,19 +1,19 @@
 export default function sitemap() {
   return [
     {
-      url: 'https://www.imgglobalinfotech.com',
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 1,
     },
     {
-      url: 'https://www.imgglobalinfotech.com/about',
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://www.imgglobalinfotech.com/blog',
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.5,
