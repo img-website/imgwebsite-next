@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LeadPopup from "@/components/leadPopup";
 export default function RootLayout({ children }) {
   const LocalBusiness = {
       "@context": "https://schema.org",
@@ -100,6 +101,7 @@ export default function RootLayout({ children }) {
         <main>
         {children}
         </main>
+        <LeadPopup/>
         <Footer/>
     </>
   );

@@ -16,6 +16,11 @@ const nextConfig = {
         hostname: 'imgglobalinfotech-website.s3.ap-south-1.amazonaws.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
   // experimental: {
