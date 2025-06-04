@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
 import TawkToWidget from "@/components/TawkToWidget";
-import GtagScript from "@/components/GtagScript";
+import { GoogleAnalytics } from '@next/third-parties/google'
 export default function RootLayout({ children }) {
   const LocalBusiness = {
       "@context": "https://schema.org",
@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
         {isProd && (
           <>
             <TawkToWidget />
-            <GtagScript />
+            <GoogleAnalytics gaId="G-N2QQNVDS4P" />
           </>
         )}
     </>
