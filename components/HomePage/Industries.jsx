@@ -17,7 +17,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, (min-width: 1280px) 25vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/bankingAndFinance.webp"
                                   alt="Banking and Finance Icon"
                                   title="Banking and Finance Icon"
@@ -32,7 +32,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="447"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/fantasySports.webp"
                                   alt="Fantasy Sports Icon"
                                   title="Fantasy Sports Icon"
@@ -47,7 +47,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="220"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, (min-width: 1280px) 17vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/healthcare.webp"
                                   alt="Healthcare Icon"
                                   title="Healthcare Icon"
@@ -62,7 +62,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/edTechSolution.webp"
                                   alt="EdTech Solution Icon"
                                   title="EdTech Solution Icon"
@@ -79,7 +79,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/travelAndTourism.webp"
                                   alt="Travel and Tourism Icon"
                                   title="Travel and Tourism Icon"
@@ -96,7 +96,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="675"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 100vw, 50vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/mediaAndEntertainment.webp"
                                   alt="Media and Entertainment Icon"
                                   title="Media and Entertainment Icon"
@@ -111,7 +111,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/retailAndECommerceApp.webp"
                                   alt="Retail and eCommerce App Icon"
                                   title="Retail and eCommerce App Icon"
@@ -126,7 +126,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/logisticsServicesApp.webp"
                                   alt="Logistics Services App Icon"
                                   title="Logistics Services App Icon"
@@ -143,7 +143,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="220"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, (min-width: 1280px) 17vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/socialApp.webp"
                                   alt="Social App Icon"
                                   title="Social App Icon"
@@ -158,7 +158,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="447"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/realEstate.webp"
                                   alt="Real Estate Icon"
                                   title="Real Estate Icon"
@@ -173,7 +173,7 @@ const Industries = () => {
                                   className="size-full object-cover duration-1000 group-hover/ind:scale-150"
                                   width="333"
                                   height="222"
-                                  
+                                  sizes="(max-width: 768px) 50vw, 33vw"
                                   loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/eventManagement.webp"
                                   alt="Event management Icon"
                                   title="Event management Icon"

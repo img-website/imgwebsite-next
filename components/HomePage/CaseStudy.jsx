@@ -85,7 +85,7 @@ const CaseStudy = () => {
                                   </div>
                               </div>
                               <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#b47b00] to-[#FFAE00] p-6">
-                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyBlinkit.webp" alt="Blinkit" title="Blinkit" width="375" height="375" className="size-full object-contain object-center"/>
+                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyBlinkit.webp" alt="Blinkit" title="Blinkit" width="375" height="375" sizes="(max-width: 768px) 100vw, 33vw" className="size-full object-contain object-center"/>
                               </div>
                           </SwiperSlide>
                           <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
@@ -128,7 +128,7 @@ const CaseStudy = () => {
                                   </div>
                               </div>
                               <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FFC422] to-[#F07000] p-6">
-                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyAstro.webp" alt="Astrotalk" title="Astrotalk" width="375" height="375" className="size-full object-contain object-center"/>
+                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyAstro.webp" alt="Astrotalk" title="Astrotalk" width="375" height="375" sizes="(max-width: 768px) 100vw, 33vw" className="size-full object-contain object-center"/>
                               </div>
                           </SwiperSlide>
                           <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
@@ -171,7 +171,7 @@ const CaseStudy = () => {
                                   </div>
                               </div>
                               <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#4070FF] to-[#063CDE] p-6">
-                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyzillow.webp" alt="Zillow" title="Zillow" width="375" height="375" className="size-full object-contain object-center"/>
+                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyzillow.webp" alt="Zillow" title="Zillow" width="375" height="375" sizes="(max-width: 768px) 100vw, 33vw" className="size-full object-contain object-center"/>
                               </div>
                           </SwiperSlide>
                           <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
@@ -214,7 +214,7 @@ const CaseStudy = () => {
                                   </div>
                               </div>
                               <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#818181] to-[#040404] p-6">
-                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyUber.webp" alt="Uber" title="Uber" width="375" height="375" className="size-full object-contain object-center"/>
+                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyUber.webp" alt="Uber" title="Uber" width="375" height="375" sizes="(max-width: 768px) 100vw, 33vw" className="size-full object-contain object-center"/>
                               </div>
                           </SwiperSlide>
                           <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
@@ -257,7 +257,7 @@ const CaseStudy = () => {
                                   </div>
                               </div>
                               <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FD3A73] to-[#FF8258] p-6">
-                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyTinder.webp" alt="Tinder" title="Tinder" width="375" height="375" className="size-full object-contain object-center"/>
+                                  <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/caseStudyTinder.webp" alt="Tinder" title="Tinder" width="375" height="375" sizes="(max-width: 768px) 100vw, 33vw" className="size-full object-contain object-center"/>
                               </div>
                           </SwiperSlide>
                   </Swiper>

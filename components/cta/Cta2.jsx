@@ -21,7 +21,7 @@ const Cta2 = () => {
                             </div>
                         </div>
                         <div className="lg:w-6/12 md:w-1/2 max-md:-mx-4 rounded-3xl overflow-hidden flex md:flex-row flex-col items-center justify-center relative max-md:order-first before:max-md:hidden before:h-full before:w-0 before:shadow-[0px_0px_40px_60px_#13262d] before:z-20 after:md:h-full after:h-0 after:md:w-0 after:w-full after:shadow-[0px_0px_40px_60px_#13262d] after:z-20">
-                            <Image loading="lazy" width={683} height={415} src="https://d1y41eupgbwbb2.cloudfront.net/images/cta2Image.webp" alt="Let's turn your business idea into reality" title="Let's turn your business idea into reality" className="size-full object-cover object-center relative z-10"/>
+                            <Image loading="lazy" width={683} height={415} sizes="(max-width: 768px) 100vw, 50vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/cta2Image.webp" alt="Let's turn your business idea into reality" title="Let's turn your business idea into reality" className="size-full object-cover object-center relative z-10"/>
                         </div>
                     </div>
                 </div>

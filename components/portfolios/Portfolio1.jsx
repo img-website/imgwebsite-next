@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide, Autoplay } from '@/components/CustomSwiper';
 const Portfolio1= () => {
     return (
       <section className="portfolioSection w-full relative overflow-hidden bg-white">
-          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioBg.webp" alt="Portfolio Background" width="1340" height="523" className="absolute inset-0 pt-8 size-full z-0 pointer-events-none max-md:hidden"/>
+          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioBg.webp" alt="Portfolio Background" width="1340" height="523" sizes="100vw" className="absolute inset-0 pt-8 size-full z-0 pointer-events-none max-md:hidden"/>
           <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8 z-10 relative">
               <div className="flex flex-col w-full">
                   <div className="flex flex-wrap justify-between relative">
@@ -47,7 +47,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#EC6C6C]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFreshee.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFreshee.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
@@ -65,7 +65,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#E5CC76]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFebIndia.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFebIndia.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
@@ -83,7 +83,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#7AD7F4]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioEdoovi.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioEdoovi.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
@@ -101,7 +101,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#FAC216]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioTaximo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioTaximo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
@@ -119,7 +119,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#F76900]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFlexo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFlexo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
@@ -137,7 +137,7 @@ const Portfolio1= () => {
                                   <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                       <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
                                           <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.swiper-slide-active]/p:rotate-0 rotate-45 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#DA0C0C]" />
-                                          <Image loading="lazy" width={385} height={385} src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioPropira.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                          <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioPropira.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.swiper-slide-active]/p:scale-110 scale-0 group-[.swiper-slide-active]/p:opacity-100 opacity-0 duration-500"/>
                                       </div>
                                   </div>
                                   <div className="w-full md:hidden pt-8 text-center">
