@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 
 const AwardsRecognitions2 = () => {
     return (
-      <div className="relative isolate overflow-hidden select-nonee">
+      <div className="relative isolate overflow-hidden select-none">
           <div className="w-full relative z-10">
               <div className="mx-auto grid items-center max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none">
                   <div className="w-full">

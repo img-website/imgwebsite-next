@@ -57,7 +57,7 @@ export const metadata = {
 export default function AboutUs() {
   return (
     <>
-      <div className="flex w-full relative bg-slate-50 select-nonee lg:h-dvh min-h-[650px]">
+      <div className="flex w-full relative bg-slate-50 select-none lg:h-dvh min-h-[650px]">
           <div className="size-full relative !z-10">
               <div className="flex size-full items-center rounded-b-2xl relative overflow-hidden shadow-lg before:absolute before:inset-0 before:bg-cover before:bg-right before:rounded-b-2xl before:bg-gradient-to-r before:mix-blend-multiply shadow-indigo-950 before:from-indigo-950/30 before:via-indigo-900/30 before:to-indigo-800/20">
                   <span className="absolute inset-0 bg-cover bg-right opacity-80 rounded-b-2xl bg-gradient-to-r mix-blend-multiply shadow-indigo-950 from-indigo-950/80 via-indigo-900/80 to-indigo-800/90"></span>
@@ -99,7 +99,7 @@ export default function AboutUs() {
               </div>
           </div>
       </div>
-      <div className="relative bg-white py-6 md:py-8 lg:py-16 select-nonee">
+      <div className="relative bg-white py-6 md:py-8 lg:py-16 select-none">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full">
             
               <div className="mx-auto max-w-container gap-7 flex md:flex-row-reverse flex-col max-lg:gap-4 items-center">
@@ -214,7 +214,7 @@ export default function AboutUs() {
               </div>
           </div>
       </div>
-      <div className="relative bg-gray-100 py-6 md:py-8 lg:py-16 select-nonee">
+      <div className="relative bg-gray-100 py-6 md:py-8 lg:py-16 select-none">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full relative">
             
               <div className="mx-auto max-w-container gap-7 flex flex-col max-lg:gap-4 items-center">
@@ -283,7 +283,7 @@ export default function AboutUs() {
 
 
       </div>
-      <div className="relative bg-white py-6 md:py-8 lg:py-16 select-nonee">
+      <div className="relative bg-white py-6 md:py-8 lg:py-16 select-none">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full">
             
               <div className="mx-auto max-w-container gap-7 flex md:flex-row flex-col max-lg:gap-4 items-center">
@@ -335,7 +335,7 @@ export default function AboutUs() {
               </div>
           </div>
       </div>
-      <div className="relative bg-gray-900 py-6 md:py-8 lg:py-16 select-nonee">
+      <div className="relative bg-gray-900 py-6 md:py-8 lg:py-16 select-none">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full relative">
             
               <div className="mx-auto max-w-container gap-7 flex flex-col max-lg:gap-4 items-center">
