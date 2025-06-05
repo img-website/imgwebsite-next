@@ -1,7 +1,7 @@
 export default function Disclaimer() {
     return (
         <>
-            <div className="relative pt-16 md:pt-20 lg:pt-32 select-nonee">
+            <div className="relative pt-16 md:pt-20 lg:pt-32 select-none">
                 <div className="text-black/10">
                     <svg aria-hidden="true" className="absolute inset-0 h-full w-full">
                         <defs>

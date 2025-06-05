@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide, Autoplay } from '@/components/CustomSwiper';
 export default function Testimonials() {
     return (
         <>
-            <div className="flex w-full relative bg-slate-50 select-nonee lg:h-dvh">
+            <div className="flex w-full relative bg-slate-50 select-none lg:h-dvh">
                 <div className="size-full relative !z-10">
                     <div className="colorApply1 flex size-full items-center justify-center rounded-b-2xl relative overflow-hidden shadow-lg before:absolute before:inset-0 before:bg-cover before:bg-right before:rounded-b-2xl before:bg-gradient-to-r before:mix-blend-multiply shadow-sky-950 before:from-sky-950 before:via-sky-900 before:to-sky-800">
                         <span className="colorApply2 absolute inset-0 bg-cover bg-right opacity-50 rounded-b-2xl bg-gradient-to-r mix-blend-multiply shadow-sky-950 from-sky-950 via-sky-900 to-sky-800"></span>
@@ -40,7 +40,7 @@ export default function Testimonials() {
 
             <Testimonial/>
 
-            <div className="relative bg-gray-900 py-8 sm:py-16 select-nonee text-white">
+            <div className="relative bg-gray-900 py-8 sm:py-16 select-none text-white">
                 <div className="text-white/10">
                     <svg aria-hidden="true" className="absolute inset-0 h-full w-full">
                         <defs>
@@ -325,7 +325,7 @@ export default function Testimonials() {
                 </Swiper>
             </div>
 
-            <div className="relative bg-gray-50 py-6 md:py-8 lg:py-16 select-nonee">
+            <div className="relative bg-gray-50 py-6 md:py-8 lg:py-16 select-none">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full">
                     <ul className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-32 pt-16 gap-x-6">
                         <li className="relative group !h-auto">
@@ -513,7 +513,7 @@ export default function Testimonials() {
                         </svg>
                     </div>
                     <div className="mx-auto max-w-7xl px-6 lg:px-8 z-[1] relative">
-                        <div className="select-nonee relative">
+                        <div className="select-none relative">
                             <div className="flex w-full h-auto items-center flex-wrap">
                                 <div className="lg:w-[60%] lg:pe-10 pe-0 w-[100%] lg:order-1 order-2">
                                     <h2 className="

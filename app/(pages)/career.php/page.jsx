@@ -56,7 +56,7 @@ export const metadata = {
 export default function Career() {
     return (
         <>
-          <div className="flex w-full relative bg-slate-50 select-nonee lg:h-dvh">
+          <div className="flex w-full relative bg-slate-50 select-none lg:h-dvh">
               <div className="size-full relative !z-10">
                   <div className="colorApply1 flex size-full items-center justify-center rounded-b-2xl relative overflow-hidden shadow-lg before:absolute before:inset-0 before:bg-cover before:bg-right before:rounded-b-2xl before:bg-gradient-to-r before:mix-blend-multiply shadow-green-950 before:from-green-950 before:via-green-900 before:to-green-800">
                       <span className="colorApply2 absolute inset-0 bg-cover bg-right opacity-50 rounded-b-2xl bg-gradient-to-r mix-blend-multiply shadow-green-950 from-green-950 via-green-900 to-green-800"></span>
@@ -93,7 +93,7 @@ export default function Career() {
                   </div>
               </div>
           </div>
-          <div className="relative bg-gray-100 py-6 md:py-8 lg:py-16 select-nonee">
+          <div className="relative bg-gray-100 py-6 md:py-8 lg:py-16 select-none">
               <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full relative">
                 
                   <div className="mx-auto max-w-container gap-7 flex flex-col max-lg:gap-4 items-center">
@@ -241,7 +241,7 @@ export default function Career() {
               </div>
               <div className="mx-auto max-w-7xl px-6 lg:px-8 z-[1] relative">
 
-                  <div className="py-xl-5 py-lg-5 py-md-5 py-5 sm:w-3/4 w-full mx-auto select-nonee relative">
+                  <div className="py-xl-5 py-lg-5 py-md-5 py-5 sm:w-3/4 w-full mx-auto select-none relative">
                       <div className="flex w-full h-auto items-center flex-wrap">
                           <div className="lg:w-[60%] lg:pe-10 pe-0 w-[100%] lg:order-1 order-2">
                               <div className="">
@@ -488,7 +488,7 @@ export default function Career() {
                 
               </div>
           </div>
-          <div className="py-6 md:py-8 lg:py-16 select-nonee relative bg-gray-100 -z-[-1]">
+          <div className="py-6 md:py-8 lg:py-16 select-none relative bg-gray-100 -z-[-1]">
               <div className="mx-auto max-w-7xl px-6 lg:px-8 relative">
                   <div className="">
                       <h2 className="

@@ -5,7 +5,7 @@ import Copyright from "@/components/Copyright"
 
 const Footer = () => {
     return (
-        <footer className="relative bg- bg-[#16161d] pt-8 sm:pt-16 select-nonee text-white">
+        <footer className="relative bg- bg-[#16161d] pt-8 sm:pt-16 select-none text-white">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 z-[1] relative">
                 <AwardsRecognitions2 />
             </div>
