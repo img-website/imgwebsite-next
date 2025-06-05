@@ -9,7 +9,7 @@ const QuickInsight = () => {
               <div className="flex flex-col w-full">
                   <div className="flex flex-wrap justify-between">
                       <div className="md:w-5/12 w-full xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
-                          <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-#454444 text-balance relative z-10">A Quick Insight into <span className="text-[#2D86FF]">IMG</span> <span className="text-[#FF6B39]">Global Infotech</span></h2>
+                          <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-[#454444] text-balance relative z-10">A Quick Insight into <span className="text-[#2D86FF]">IMG</span> <span className="text-[#FF6B39]">Global Infotech</span></h2>
                           <div className="md:text-sm text-xs font-normal text-[#454444] line-clamp-3 pt-4">Step into the future with cutting-edge services and reshape the digital landscape with state-of-the-art solutions. Our dynamic work environment fosters creativity and collaboration to fuel groundbreaking ideas.</div>
                           <div className="w-full md:pt-20 max-md:hidden">
                               <Image loading="lazy" width="569" height="321" src="https://d1y41eupgbwbb2.cloudfront.net/images/svg/quickInsightImage.svg" className="w-full h-auto aspect-[569/321]" alt="QuickInsight" title="QuickInsight"/>

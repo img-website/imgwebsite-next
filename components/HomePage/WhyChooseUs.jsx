@@ -7,7 +7,7 @@ const WhyChooseUs = () => {
             <div className="flex flex-col w-full">
                 <div className="flex flex-wrap justify-between items-start lg:gap-0 gap-8">
                     <div className="lg:w-7/12 w-full xl:static xl:top-0 lg:sticky lg:top-32">
-                        <div className="w-8/12 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-#454444 text-balance relative z-10"><span className="text-[#2D86FF]">Why</span> We are a <span className="text-[#FF6B39]">Right Choice</span> for You?  </div>
+                        <div className="w-8/12 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-[#454444] text-balance relative z-10"><span className="text-[#2D86FF]">Why</span> We are a <span className="text-[#FF6B39]">Right Choice</span> for You?  </div>
                         <div className="w-full flex flex-wrap gap-y-6 pt-6">
                             <div className="md:w-1/3 w-1/2 flex flex-col">
                                 <div className="w-auto xl:text-5xl lg:text-4xl md:text-3xl sm:text-2xl text-xl font-bold text-[#454444]">10+</div>
