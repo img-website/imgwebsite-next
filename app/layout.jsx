@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "@/app/globals.css";
+import PageTransition from "@/components/PageTransition";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // choose weights you want
@@ -146,7 +147,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} antialiased scroll font-poppins group overflow-x-hidden overflow-y-auto has-[.leadPopup:checked]:overflow-hidden`}
       >
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );
