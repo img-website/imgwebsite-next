@@ -11,7 +11,7 @@ const AdvanceTech = () => {
                       <div className="lg:w-6/12 md:w-5/12 w-full md:sticky md:top-32">
                           <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10">Future-ready Solutions, Powered By Smart Technology</h2>
                           <div className="w-full">
-                              <Image loading="lazy" width="683" height="455" src="https://d1y41eupgbwbb2.cloudfront.net/images/advanceTechImage.webp" alt="Future-ready Solutions, Powered By Smart Technology" className="w-full aspect-[683/455]"/>
+                              <Image loading="lazy" width="683" height="455" sizes="(max-width: 768px) 100vw, (min-width: 1024px) 50vw, 42vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/advanceTechImage.webp" alt="Future-ready Solutions, Powered By Smart Technology" className="w-full aspect-[683/455]"/>
                           </div>
                       </div>
                       <div className="lg:w-6/12 md:w-7/12 w-full rounded-3xl flex flex-col relative md:pl-8">

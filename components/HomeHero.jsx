@@ -40,7 +40,7 @@ export default function HomeHero() {
             modules={[Pagination]}
             >
                 {!isMobile ? (
-                    <Image 
+                    <Image
                         loading="lazy"
                         fill={true}
                         sizes="100vw"
@@ -52,7 +52,7 @@ export default function HomeHero() {
                     <Image
                         loading="lazy"
                         fill={true}
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="100vw"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHeroMobile-768.webp"
                         alt="AI-Driven Digital Transformation Company"
                         className="my-auto w-full z-0 object-cover object-center pointer-events-none"
@@ -81,7 +81,7 @@ export default function HomeHero() {
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp" 
                                     placeholder="blur"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    sizes="(max-width: 768px) 100vw, 58vw"
                                     width="815" 
                                     height="579" 
                                     alt="AI-Driven Digital Transformation Company" 
@@ -93,7 +93,7 @@ export default function HomeHero() {
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     blurDataURL="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile-384.webp" 
                                     placeholder="blur"
-                                    sizes="(max-width: 768px) 100vw, 339px"
+                                    sizes="100vw"
                                     width="339" 
                                     height="438" 
                                     alt="AI-Driven Digital Transformation Company" 
@@ -129,9 +129,9 @@ export default function HomeHero() {
                         </div>
                         <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
                             {!isMobile ? (
-                                <Image loading='lazy' sizes="(max-width: 768px) 100vw, 797px" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain" />
+                                <Image loading='lazy' sizes="(max-width: 768px) 100vw, 58vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain" />
                                     ) : (
-                                <Image loading='lazy' sizes="(max-width: 768px) 100vw, 40vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496]" />
+                                <Image loading='lazy' sizes="100vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496]" />
                             )}
                             <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
                                 <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">

@@ -20,8 +20,8 @@ const Cta1 = () => {
                           </div>
                       </div>
                       <div className="md:w-5/12 w-full rounded-3xl flex items-center justify-center relative max-md:order-first max-md:pt-8">
-                          <Image loading="lazy" width={256} height={256} src="https://d1y41eupgbwbb2.cloudfront.net/images/svg/waveIcon1.svg" alt="Wave Icon" title="Wave Icon" className="md:size-64 size-40 object-contain max-md:m-auto absolute sm:inset-16 inset-0 z-0 md:-mb-28 md:-translate-x-1/4"/>
-                          <Image loading="lazy" width={256} height={256} src="https://d1y41eupgbwbb2.cloudfront.net/images/cta1Image.webp" alt="If You're a Person Who think out of the Box & Dream Big" className="size-full object-contain object-bottom relative z-10 mix-blend-hard-light"/>
+                          <Image loading="lazy" width={256} height={256} sizes="(max-width: 768px) 100vw, 42vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/svg/waveIcon1.svg" alt="Wave Icon" title="Wave Icon" className="md:size-64 size-40 object-contain max-md:m-auto absolute sm:inset-16 inset-0 z-0 md:-mb-28 md:-translate-x-1/4"/>
+                          <Image loading="lazy" width={256} height={256} sizes="(max-width: 768px) 100vw, 42vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/cta1Image.webp" alt="If You're a Person Who think out of the Box & Dream Big" className="size-full object-contain object-bottom relative z-10 mix-blend-hard-light"/>
                       </div>
                   </div>
               </div>

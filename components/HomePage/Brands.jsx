@@ -21,8 +21,8 @@ const Brands = () => {
                           </div>
                       </div>
                       <div className="md:w-5/12 w-full max-md:px-10 rounded-3xl aspect-square flex items-center justify-center md:pt-24 relative max-md:-mt-8">
-                          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/svg/waveIcon2.svg" alt="Wave Icon" width={300} height={300} title="Wave Icon" className="size-full object-contain absolute inset-0 z-0 md:translate-y-5" />
-                          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/brandsImage.webp" alt="Brands" width={300} height={300} className="size-full object-contain object-bottom relative z-10 -translate-x-5 md:translate-y-1/4" />
+                          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/svg/waveIcon2.svg" alt="Wave Icon" width={300} height={300} sizes="(max-width: 768px) 100vw, 42vw" title="Wave Icon" className="size-full object-contain absolute inset-0 z-0 md:translate-y-5" />
+                          <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/brandsImage.webp" alt="Brands" width={300} height={300} sizes="(max-width: 768px) 100vw, 42vw" className="size-full object-contain object-bottom relative z-10 -translate-x-5 md:translate-y-1/4" />
                       </div>
                   </div>
               </div>
