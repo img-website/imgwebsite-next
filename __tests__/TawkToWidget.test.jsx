@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import TawkToWidget from '../components/TawkToWidget'
+import TawkToWidget from '@/components/TawkToWidget'
 
 describe('TawkToWidget', () => {
   it('adds and removes script element', () => {

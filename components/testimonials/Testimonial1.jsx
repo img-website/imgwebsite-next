@@ -156,7 +156,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -174,7 +174,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -192,7 +192,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -210,7 +210,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -228,7 +228,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
@@ -246,7 +246,7 @@ const Testimonial = () => {
                                     </div>
                                     <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
                                         <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.mp4" type="video/mp4" />
-                                        <track src="/captions/empty.vtt" kind="captions" srclang="en" label="English" default />
+                                        <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                         Your browser does not support the video tag.
                                     </video>
                                 </div>
