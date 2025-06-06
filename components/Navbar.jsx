@@ -1,10 +1,36 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Svg from '@/components/svg';
 const Navbar = () => {
+  const headerRef = useRef(null);
+  const sidebar = useRef(null);
+  const sidebarChecked = useRef(null);
+
+  const handleHeaderClick = (event) => {
+    if (event.target.closest('a')) {
+      const el = headerRef.current;
+      if (el) {
+        el.style.pointerEvents = 'none';
+        setTimeout(() => {
+          if (el) {
+            el.style.pointerEvents = 'auto';
+          }
+        }, 1000);
+      }
+    }
+  };
+
+  const handleSidebarClick = (event) => {
+    if (event.target.closest('a')) {
+      if (sidebarChecked.current) {
+        sidebarChecked.current.checked = false;
+      }
+    }
+  };
+
   useEffect(() => {
     // Remove "group" class just once on mount
     if (document.body?.classList?.contains('group')) {
@@ -30,7 +56,11 @@ const Navbar = () => {
   }, []);
     return (
       <>
-        <header className="absolute top-0 left-0 right-0 z-[1010] bg-white select-none group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]">
+        <header
+          ref={headerRef}
+          onClickCapture={handleHeaderClick}
+          className="absolute top-0 left-0 right-0 z-[1010] bg-white select-none group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]"
+        >
           <nav className="!container flex items-center justify-between xl:py-4 lg:py-3 py-4" aria-label="Global">
             <div className="flex lg:hidden mr-2">
               <label htmlFor="sideToggle" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
@@ -1171,10 +1201,13 @@ const Navbar = () => {
           </nav>
         </header>
 
-        <input type="checkbox" className="peer/sideToggle hidden" name="sideToggle" id="sideToggle" />
+        <input ref={sidebarChecked} type="checkbox" className="peer/sideToggle hidden" name="sideToggle" id="sideToggle" />
         <label htmlFor="sideToggle" className="fixed inset-0 -z-[1011] backdrop-blur-xl bg-sky-950/70 peer-checked/sideToggle:z-[1010] peer-checked/sideToggle:opacity-100 opacity-0 duration-100"></label>
 
-        <div className="fixed flex flex-col h-screen inset-y-0 right-0 z-[1011] w-full overflow-y-auto bg-white select-none px-6 py-6 sm:max-w-sm peer-checked/sideToggle:translate-x-0 peer-checked/sideToggle:opacity-100 translate-x-full opacity-0 duration-300">
+        <div
+          ref={sidebar}
+          onClickCapture={handleSidebarClick}
+          className="fixed flex flex-col h-screen inset-y-0 right-0 z-[1011] w-full overflow-y-auto bg-white select-none px-6 py-6 sm:max-w-sm peer-checked/sideToggle:translate-x-0 peer-checked/sideToggle:opacity-100 -translate-x-full opacity-0 duration-300">
           <div className="flex items-center justify-between">
             <Link href="" className="-ml-1.5">
               <span className="sr-only">IMG</span>
