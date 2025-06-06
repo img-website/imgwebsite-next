@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
         {isProd && (
           <>
             <TawkToWidget />
-            <GoogleAnalytics gaId="G-N2QQNVDS4P" />
+            <GoogleAnalytics gaId="G-N2Q0NVDS4P" />
           </>
         )}
     </>
