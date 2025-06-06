@@ -30,10 +30,12 @@ export default function HomeHero() {
                         loading="lazy"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
                         alt="AI-Driven Digital Transformation Company"
-                        className="z-0 object-cover object-center pointer-events-none max-md:my-auto max-md:w-full"
+                        className="z-0 object-cover object-center pointer-events-none max-md:my-auto max-md:w-full absolute inset-0 size-full"
                         decoding="async"
                         sizes="100vw"
-                        style={{ width: '100%', height: '100%' }}
+                        width="1920"
+                        height="1080"
+                        title="AI-Driven Digital Transformation Company"
                     />
                 </picture>
                 <SwiperSlide className="swiper-slide xl:pt-[116px] lg:pt-[90px] md:pt-[88px] pt-16 relative overflow-hidden md:min-h-dvh max-md:!h-auto !flex !flex-col max-md:pb-6 group/slide">
