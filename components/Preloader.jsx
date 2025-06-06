@@ -1,36 +1,39 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import Router from 'next/router';
 
 export default function Preloader({ children }) {
-  const pathname = usePathname();
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [routeLoading, setRouteLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Initial load
   useEffect(() => {
-    const timeout = setTimeout(() => setInitialLoading(false), 700);
-    return () => clearTimeout(timeout);
+    const handleStart = () => setLoading(true);
+    const handleComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleStart);
+    Router.events.on('routeChangeComplete', handleComplete);
+    Router.events.on('routeChangeError', handleComplete);
+
+    if (document.readyState === 'complete') {
+      setLoading(false);
+    } else {
+      window.addEventListener('load', handleComplete);
+    }
+
+    return () => {
+      Router.events.off('routeChangeStart', handleStart);
+      Router.events.off('routeChangeComplete', handleComplete);
+      Router.events.off('routeChangeError', handleComplete);
+      window.removeEventListener('load', handleComplete);
+    };
   }, []);
 
-  // Route change
-  useEffect(() => {
-    if (!initialLoading) {
-      setRouteLoading(true);
-      const timeout = setTimeout(() => setRouteLoading(false), 500);
-      return () => clearTimeout(timeout);
-    }
-  }, [pathname, initialLoading]);
-
-  const show = initialLoading || routeLoading;
+  const show = loading;
   return (
     <>
       {show && (
-        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-white transition-opacity">
-          <div
-            className={`border-[#000019] border-t-transparent border-4 rounded-full animate-spin ${initialLoading ? 'h-16 w-16' : 'h-12 w-12'}`}
-          />
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-white">
+          <div className="border-[#000019] border-t-transparent border-4 rounded-full animate-spin h-16 w-16" />
         </div>
       )}
       {children}
