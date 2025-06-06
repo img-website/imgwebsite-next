@@ -6,12 +6,11 @@ import Link from 'next/link';
 import Svg from '@/components/svg';
 const Navbar = () => {
   const headerRef = useRef(null);
+  const sidebar = useRef(null);
+  const sidebarChecked = useRef(null);
 
   const handleHeaderClick = (event) => {
     if (event.target.closest('a')) {
-      const toggle = document.getElementById('sideToggle');
-      if (toggle) toggle.checked = false;
-
       const el = headerRef.current;
       if (el) {
         el.style.pointerEvents = 'none';
@@ -23,6 +22,15 @@ const Navbar = () => {
       }
     }
   };
+
+  const handleSidebarClick = (event) => {
+    if (event.target.closest('a')) {
+      if (sidebarChecked.current) {
+        sidebarChecked.current.checked = false;
+      }
+    }
+  };
+
   useEffect(() => {
     // Remove "group" class just once on mount
     if (document.body?.classList?.contains('group')) {
@@ -1193,10 +1201,13 @@ const Navbar = () => {
           </nav>
         </header>
 
-        <input type="checkbox" className="peer/sideToggle hidden" name="sideToggle" id="sideToggle" />
+        <input ref={sidebarChecked} type="checkbox" className="peer/sideToggle hidden" name="sideToggle" id="sideToggle" />
         <label htmlFor="sideToggle" className="fixed inset-0 -z-[1011] backdrop-blur-xl bg-sky-950/70 peer-checked/sideToggle:z-[1010] peer-checked/sideToggle:opacity-100 opacity-0 duration-100"></label>
 
-        <div className="fixed flex flex-col h-screen inset-y-0 right-0 z-[1011] w-full overflow-y-auto bg-white select-none px-6 py-6 sm:max-w-sm peer-checked/sideToggle:translate-x-0 peer-checked/sideToggle:opacity-100 translate-x-full opacity-0 duration-300">
+        <div
+          ref={sidebar}
+          onClickCapture={handleSidebarClick}
+          className="fixed flex flex-col h-screen inset-y-0 right-0 z-[1011] w-full overflow-y-auto bg-white select-none px-6 py-6 sm:max-w-sm peer-checked/sideToggle:translate-x-0 peer-checked/sideToggle:opacity-100 -translate-x-full opacity-0 duration-300">
           <div className="flex items-center justify-between">
             <Link href="" className="-ml-1.5">
               <span className="sr-only">IMG</span>
