@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
 import TawkToWidget from "@/components/TawkToWidget";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function RootLayout({ children }) {
   const LocalBusiness = {
       "@context": "https://schema.org",
@@ -110,6 +111,7 @@ export default function RootLayout({ children }) {
           <>
             <TawkToWidget />
             <GoogleAnalytics gaId="G-N2Q0NVDS4P" />
+            <SpeedInsights/>
           </>
         )}
     </>
