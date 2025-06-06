@@ -69,7 +69,7 @@ export default function GroceryAppDevelopment() {
                                         <div className="2xl:size-24 xl:size-20 lg:size-16 size-14 flex items-center justify-center rounded-full shrink-0 bg-[#6ACB8E]">
                                             <Svg name="analytics" className="2xl:size-12 xl:size-10 lg:size-8 size-6 relative z-10 text-white" />
                                         </div>
-                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Increased <br> sales</h3>
+                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Increased <br /> sales</h3>
                                     </div>
                                 </div>
                                 <div className="lg:w-1/4 w-1/2 2xl:px-4 xl:px-3 px-2.5 group">
@@ -77,7 +77,7 @@ export default function GroceryAppDevelopment() {
                                         <div className="2xl:size-24 xl:size-20 lg:size-16 size-14 flex items-center justify-center rounded-full shrink-0 bg-[#6ACB8E]">
                                             <Svg name="enhancedConvenience" className="2xl:size-12 xl:size-10 lg:size-8 size-6 relative z-10 text-white" />
                                         </div>
-                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Enhanced <br> convenience</h3>
+                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Enhanced <br /> convenience</h3>
                                     </div>
                                 </div>
                                 <div className="lg:w-1/4 w-1/2 2xl:px-4 xl:px-3 px-2.5 group">
@@ -85,7 +85,7 @@ export default function GroceryAppDevelopment() {
                                         <div className="2xl:size-24 xl:size-20 lg:size-16 size-14 flex items-center justify-center rounded-full shrink-0 bg-[#6ACB8E]">
                                             <Svg name="verified" className="2xl:size-12 xl:size-10 lg:size-8 size-6 relative z-10 text-white" />
                                         </div>
-                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Enhanced <br> Loyalty</h3>
+                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Enhanced <br /> Loyalty</h3>
                                     </div>
                                 </div>
                                 <div className="lg:w-1/4 w-1/2 2xl:px-4 xl:px-3 px-2.5 group">
@@ -93,7 +93,7 @@ export default function GroceryAppDevelopment() {
                                         <div className="2xl:size-24 xl:size-20 lg:size-16 size-14 flex items-center justify-center rounded-full shrink-0 bg-[#6ACB8E]">
                                             <Svg name="competitiveEdge" className="2xl:size-12 xl:size-10 lg:size-8 size-6 relative z-10 text-white" />
                                         </div>
-                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Competitive <br> edge</h3>
+                                        <h3 className="w-full 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-white text-center">Competitive <br /> edge</h3>
                                     </div>
                                 </div>
                             </div>
@@ -233,7 +233,7 @@ export default function GroceryAppDevelopment() {
                             </div>
                         </div>
                         <div className="w-full items-start has-[#panel1:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel1" className="hidden" checked>
+                            <input type="radio" name="panel" id="panel1" className="hidden" defaultChecked />
                             <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
                                     data-swiper='{
                                         "slidesPerView": 1,
@@ -250,7 +250,7 @@ export default function GroceryAppDevelopment() {
                                 <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel1" className="hidden" checked>
+                                            <input type="radio" name="userPanel" id="userPanel1" className="hidden" defaultChecked />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserSeamlessShopping.webp" alt="Seamless Shopping" title="Seamless Shopping" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -267,7 +267,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel2" className="hidden">
+                                            <input type="radio" name="userPanel" id="userPanel2" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserWishlist.webp" alt="Wishlist & Favorites" title="Wishlist & Favorites" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -284,7 +284,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel3" className="hidden">
+                                            <input type="radio" name="userPanel" id="userPanel3" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserFilters.webp" alt="Product Search Filters" title="Product Search Filters" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -301,7 +301,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel4" className="hidden">
+                                            <input type="radio" name="userPanel" id="userPanel4" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserTrack.webp" alt="Order Tracking" title="Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -318,7 +318,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel5" className="hidden">
+                                            <input type="radio" name="userPanel" id="userPanel5" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserPromotion.webp" alt="Discounts & Promotions" title="Discounts & Promotions" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -335,7 +335,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel6" className="hidden">
+                                            <input type="radio" name="userPanel" id="userPanel6" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserPayment.webp" alt="Multiple Payment Methods" title="Multiple Payment Methods" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -362,7 +362,7 @@ export default function GroceryAppDevelopment() {
                             </div>
                         </div>
                         <div className="w-full items-start has-[#panel2:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel2" className="hidden">
+                            <input type="radio" name="panel" id="panel2" className="hidden" />
                             <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
                                     data-swiper='{
                                         "slidesPerView": 1,
@@ -379,7 +379,7 @@ export default function GroceryAppDevelopment() {
                                 <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" checked>
+                                            <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" defaultChecked />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreRealTimeStock.webp" alt="Real-Time Stock Updates" title="Real-Time Stock Updates" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -396,7 +396,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel2" className="hidden">
+                                            <input type="radio" name="servicePanel" id="servicePanel2" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreOrderFulfilment.webp" alt="Order Fulfillment" title="Order Fulfillment" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -413,7 +413,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel3" className="hidden">
+                                            <input type="radio" name="servicePanel" id="servicePanel3" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreCategories.webp" alt="Product Categorization" title="Product Categorization" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -430,7 +430,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label  htmlFor="servicePanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel4" className="hidden">
+                                            <input type="radio" name="servicePanel" id="servicePanel4" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreDailySalesReport.webp" alt="Daily Sales Reports" title="Daily Sales Reports" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -447,7 +447,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel5" className="hidden">
+                                            <input type="radio" name="servicePanel" id="servicePanel5" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreFeedback.webp" alt="Customer Feedback" title="Customer Feedback" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -464,7 +464,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel6" className="hidden">
+                                            <input type="radio" name="servicePanel" id="servicePanel6" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreStorePerformence.webp" alt="Store Performance Insights" title="Store Performance Insights" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -491,7 +491,7 @@ export default function GroceryAppDevelopment() {
                             </div>
                         </div>
                         <div className="w-full items-start has-[#panel3:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel3" className="hidden">
+                            <input type="radio" name="panel" id="panel3" className="hidden" />
                             <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
                                     data-swiper='{
                                         "slidesPerView": 1,
@@ -508,7 +508,7 @@ export default function GroceryAppDevelopment() {
                                 <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" checked>
+                                            <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" defaultChecked />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="User management" title="User management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -525,7 +525,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel2" className="hidden">
+                                            <input type="radio" name="adminPanel" id="adminPanel2" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Products Management" title="Products Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -542,7 +542,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel3" className="hidden">
+                                            <input type="radio" name="adminPanel" id="adminPanel3" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Order management" title="Order management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -559,7 +559,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel4" className="hidden">
+                                            <input type="radio" name="adminPanel" id="adminPanel4" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Inventory Management" title="Inventory Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -576,7 +576,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel5" className="hidden">
+                                            <input type="radio" name="adminPanel" id="adminPanel5" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Promotions and Discounts" title="Promotions and Discounts" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -593,7 +593,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                     <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel6" className="hidden">
+                                            <input type="radio" name="adminPanel" id="adminPanel6" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Reports and Analytics" title="Reports and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
@@ -772,19 +772,19 @@ export default function GroceryAppDevelopment() {
                         <div className="flex flex-wrap justify-between xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8 gap-y-8">
                             <div className="md:w-7/12 w-full">
                                 <div className="w-full xl:text-2xl lg:text-xl md:text-lg text-base font-semibold text-white text-balance relative z-10 text-center pb-4">The global grocery retail market has demonstrated steady growth in recent years.</div>
-                                <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-white text-balance relative z-10 text-center pb-7">It's Perfect time to <br><span className="text-[#84CC02] font-bold">own your grocery app</span></h2>
+                                <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-white text-balance relative z-10 text-center pb-7">It's Perfect time to <br /><span className="text-[#84CC02] font-bold">own your grocery app</span></h2>
                                 <div className="w-full flex max-sm:flex-col sm:gap-3 gap-6 md:pt-6 pt-4 max-md:text-center bg-[#1AB063] py-5 px-8 rounded-t-2xl relative before:absolute before:bottom-0 before:left-0 sm:before:max-w-48 before:translate-y-full before:rounded-b-md before:h-3 before:w-full before:bg-[#84CC02]">
                                     <div className="sm:grow max-sm:w-full inline-flex flex-col">
                                         <div className="w-auto 2xl:text-4xl xl:text-2xl md:text-xl text-lg font-semibold text-white pb-0.5">$12.3 trillion</div>
-                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Annual Revenue <br>Generated</h3>
+                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Annual Revenue <br />Generated</h3>
                                     </div>
                                     <div className="sm:grow max-sm:w-full inline-flex flex-col">
                                         <div className="w-auto 2xl:text-4xl xl:text-2xl md:text-xl text-lg font-semibold text-white pb-0.5">$14.5 trillion</div>
-                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Expected Market Size <br>By 2029</h3>
+                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Expected Market Size <br />By 2029</h3>
                                     </div>
                                     <div className="sm:grow max-sm:w-full inline-flex flex-col">
                                         <div className="w-auto 2xl:text-4xl xl:text-2xl md:text-xl text-lg font-semibold text-white pb-0.5">3.4%</div>
-                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Compound Annual <br>Growth Rate</h3>
+                                        <h3 className="w-auto xl:text-base text-sm font-normal text-white">Compound Annual <br />Growth Rate</h3>
                                     </div>
                                 </div>
                             </div>
