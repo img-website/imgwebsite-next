@@ -234,21 +234,13 @@ export default function GroceryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel1:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel1" className="hidden" defaultChecked />
-                            <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
-                                    data-swiper='{
-                                        "slidesPerView": 1,
-                                        "spaceBetween": 8,
-                                        "speed": 1000,
-                                        "loop": true,
-                                        "keyboard": {"enabled": true},
-                                        "navigation": {
-                                            "nextEl": ".next",
-                                            "prevEl": ".prev"
-                                        }
-                                    }'
+                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
+                                slidesPerView={1}
+                                spaceBetween={8}
+                                speed={1000}
+                                loop={true}
                                 >
-                                <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel1" className="hidden" defaultChecked />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserSeamlessShopping.webp" alt="Seamless Shopping" title="Seamless Shopping" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -264,8 +256,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">The easy-to-use app features a straightforward design that allows the perusal of products in an integrated nurture for seamless grocery needs each time.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel2" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserWishlist.webp" alt="Wishlist & Favorites" title="Wishlist & Favorites" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -281,8 +273,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Save items in favor, building wishlists from which users can reorder or purchase later as per convenience.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel3" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserFilters.webp" alt="Product Search Filters" title="Product Search Filters" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -298,8 +290,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">With its diverse filters for category, pricing range, and ratings, our app makes your search easier.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel4" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserTrack.webp" alt="Order Tracking" title="Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -315,8 +307,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">You can remain aware of order status and be updated throughout the process from beginning to end.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel5" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserPromotion.webp" alt="Discounts & Promotions" title="Discounts & Promotions" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -332,8 +324,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">The app offers personalized discounts and special offers directly through it, which would give every user an additional savings opportunity.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="userPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel6" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserPayment.webp" alt="Multiple Payment Methods" title="Multiple Payment Methods" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -349,9 +341,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">The app can provide a variety of payment methods, ranging from cards to wallets, such as Visa, Paypal, etc.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                </div>
-                            </div>
+                                    </SwiperSlide>
+                            </Swiper>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserSeamlessShopping.webp" alt="Seamless Shopping" title="Seamless Shopping" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel1:checked]/key:md:block" />
                                 <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryUserWishlist.webp" alt="Wishlist & Favorites" title="Wishlist & Favorites" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel2:checked]/key:md:block" />
@@ -363,21 +354,13 @@ export default function GroceryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel2:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel2" className="hidden" />
-                            <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
-                                    data-swiper='{
-                                        "slidesPerView": 1,
-                                        "spaceBetween": 8,
-                                        "speed": 1000,
-                                        "loop": true,
-                                        "keyboard": {"enabled": true},
-                                        "navigation": {
-                                            "nextEl": ".next",
-                                            "prevEl": ".prev"
-                                        }
-                                    }'
+                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
+                                slidesPerView={1}
+                                spaceBetween={8}
+                                speed={1000}
+                                loop={true}
                                 >
-                                <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" defaultChecked />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreRealTimeStock.webp" alt="Real-Time Stock Updates" title="Real-Time Stock Updates" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -393,8 +376,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Monitor the stock levels by real-time alerts, so managers never run out of popular products and subsequently manage effective inventory management.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel2" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreOrderFulfilment.webp" alt="Order Fulfillment" title="Order Fulfillment" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -410,8 +393,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Make sure that the app will process customer orders accurately and fast to provide timely deliveries or pickups.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel3" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreCategories.webp" alt="Product Categorization" title="Product Categorization" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -427,8 +410,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Allow easy organization of products into categories to make inventory management and customer browsing easy and efficient.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label  htmlFor="servicePanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel4" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreDailySalesReport.webp" alt="Daily Sales Reports" title="Daily Sales Reports" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -444,8 +427,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Let the store manager receive daily summaries of sales to keep track of how well your store is performing and what areas need improvement.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel5" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreFeedback.webp" alt="Customer Feedback" title="Customer Feedback" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -461,8 +444,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Get, read customer feedback, and reviews within the panel to further improve the quality of service rendered in your store.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="servicePanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel6" className="hidden" />
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreStorePerformence.webp" alt="Store Performance Insights" title="Store Performance Insights" className="max-w-64 w-full mx-auto md:hidden aspect-[375/527]" width="375" height="527" />
@@ -478,9 +461,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Provide detailed sales data and performance analysis to recognize trends and help enhance operations in-store.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                </div>
-                            </div>
+                                    </SwiperSlide>
+                            </Swiper>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreRealTimeStock.webp" alt="Real-Time Stock Updates" title="Real-Time Stock Updates" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel1:checked]/key:md:block" />
                                 <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryStoreOrderFulfilment.webp" alt="Order Fulfillment" title="Order Fulfillment" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel2:checked]/key:md:block" />
@@ -492,24 +474,16 @@ export default function GroceryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel3:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel3" className="hidden" />
-                            <div className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible"
-                                    data-swiper='{
-                                        "slidesPerView": 1,
-                                        "spaceBetween": 8,
-                                        "speed": 1000,
-                                        "loop": true,
-                                        "keyboard": {"enabled": true},
-                                        "navigation": {
-                                            "nextEl": ".next",
-                                            "prevEl": ".prev"
-                                        }
-                                    }'
+                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
+                                slidesPerView={1}
+                                spaceBetween={8}
+                                speed={1000}
+                                loop={true}
                                 >
-                                <div className="swiper-wrapper max-md:!items-stretch md:grid xl:grid-cols-2 md:grid-cols-1 md:gap-x-8 md:gap-y-6 md:!transform-none">
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" defaultChecked />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="User management" title="User management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="User management" title="User management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -522,11 +496,11 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Manage and assign roles for your team members and make sure the right people have access to the right information for smooth operations.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel2" className="hidden" />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Products Management" title="Products Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Products Management" title="Products Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -539,11 +513,11 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">You can add, update and delete products stored in your inventory from the admin panel with the push of a button.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel3" className="hidden" />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Order management" title="Order management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Order management" title="Order management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -556,11 +530,11 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">View and process user orders easily including an integrated order tracking, shipping, and returns handling tool, all in one place.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel4" className="hidden" />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Inventory Management" title="Inventory Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Inventory Management" title="Inventory Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -573,11 +547,11 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">We allow you to keep a close eye on stock levels in real time and control product availability to avoid overselling stockouts.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel5" className="hidden" />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Promotions and Discounts" title="Promotions and Discounts" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Promotions and Discounts" title="Promotions and Discounts" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -590,11 +564,11 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Create, track, and manage sales events or discount codes right from the admin panel so that your business can receive more engagement and sales.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                    <div className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </SwiperSlide>
+                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
                                         <label htmlFor="adminPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel6" className="hidden" />
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Reports and Analytics" title="Reports and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="Reports and Analytics" title="Reports and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
                                             <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
                                                 <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
                                                 <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
@@ -607,9 +581,8 @@ export default function GroceryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Get detailed reports based on sales, inventory, and customer habits, so you can make informed decisions based on your precious data.</div>
                                             </div>
                                         </label>
-                                    </div>
-                                </div>
-                            </div>
+                                    </SwiperSlide>
+                            </Swiper>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryAdmin.webp" alt="admin" title="admin" width="375" height="262" className="w-full mx-auto xl:max-w-96 max-w-64 max-md:hidden aspect-[375/262]" />
                             </div>
@@ -647,22 +620,22 @@ export default function GroceryAppDevelopment() {
                     <div className="flex flex-col w-full">
                         <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-[#454444] text-balance relative z-10 md:text-center md:pb-4 pb-2">Our Successful Grocery App Development Projects</h2>
                         <div className="w-full 2xl:text-lg xl:text-base md:text-sm text-xs md:font-medium font-normal text-[#454444] text-balance relative z-10 md:text-center md:pb-12 pb-5">Check out our success stories here and see how we assisted businesses grow with effective and customer-oriented grocery apps.</div>
-                        <div className="w-full swiper rounded-3xl"
-                                data-swiper='{
-                                    "slidesPerView": 1,
-                                    "spaceBetween": 32,
-                                    "autoplay": {"delay": 5000, "disableOnInteraction": false},
-                                    "speed": 1000,
-                                    "loop": true,
-                                    "keyboard": {"enabled": true},
-                                    "navigation": {
-                                        "nextEl": ".next",
-                                        "prevEl": ".prev"
-                                    }
-                                }'
+                        <Swiper className="w-full swiper rounded-3xl"
+                            slidesPerView={1}
+                            spaceBetween={32}
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false
+                            }}
+                            speed={1000}
+                            loop={true}
+                            navigation={{
+                                nextEl: ".next",
+                                prevEl: ".prev"
+                            }}
+                            modules={[Autoplay, Navigation]}
                             >    
-                            <div className="swiper-wrapper">
-                                <div className="swiper-slide flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
+                                <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
                                     <div className="md:w-7/12 w-full">
                                         <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                             <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/quickBasketLogo.webp" className="w-auto md:h-14 h-12aspect-square" width="56" height="56" alt="QuickBasket Logo" title="QuickBasket Logo" />
@@ -702,13 +675,13 @@ export default function GroceryAppDevelopment() {
                                         </div>
                                     </div>
                                     <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#88E7A8] to-[#019A34] p-6">
-                                        <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/quickBasket.webp" alt="QuickBasket" title="QuickBasket" className="size-full object-contain object-center" />
+                                        <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/quickBasket.webp" alt="QuickBasket" title="QuickBasket" className="size-full object-contain object-center" width={375} height={375} />
                                     </div>
-                                </div>
-                                <div className="swiper-slide flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
                                     <div className="md:w-7/12 w-full">
                                         <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
-                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/freshPickLogo.webp" className="w-auto md:h-14 h-12aspect-square" width="56" height="56" alt="FreshPick Logo" title="FreshPick Logo" />
+                                            <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/freshPickLogo.webp" className="w-auto md:h-14 h-12aspect-square" width="67" height="56" alt="FreshPick Logo" title="FreshPick Logo" />
                                             <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#FF8933]">FreshPick</h3>
                                         </div>
                                         <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-white xl:pt-4 pt-2 xl:pb-6 pb-4">FreshPick is a feature-rich grocery app developed by our talented team of experts with cutting-edge technology. It offers features like quick store selection, order customization, and easy & quick search, providing users with a top-notch experience.</div>
@@ -745,10 +718,9 @@ export default function GroceryAppDevelopment() {
                                         </div>
                                     </div>
                                     <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FEBA56] to-[#FF8837] p-6">
-                                        <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/freshPick.webp" alt="FreshPick" title="FreshPick" className="size-full object-contain object-center" />
+                                        <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/freshPick.webp" alt="FreshPick" title="FreshPick" className="size-full object-contain object-center" width={375} height={375} />
                                     </div>
-                                </div>
-                            </div>
+                                </SwiperSlide>
                             <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
                                 <div className="inline-flex items-center justify-center md:gap-8 gap-6 relative bg-white md:rounded-t-3xl rounded-tl-3xl p-2">
                                     <Svg name="clipLeftBottom" className="size-6 absolute bottom-0 left-0 -translate-x-full z-10 text-white" />
@@ -761,7 +733,7 @@ export default function GroceryAppDevelopment() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Swiper>
                     </div>
                 </div>
             </section>
@@ -916,7 +888,7 @@ export default function GroceryAppDevelopment() {
                             </div>
                             <div className="xl:w-4/12 lg:w-5/12 w-full lg:bottom-0 lg:sticky">
                                 <div className="w-full md:pt-8 max-md:px-8">
-                                    <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/nextGen.webp" alt="How our Next Gen Technology make your Grocery App Smart, Efficient, fast & Secure" title="How our Next Gen Technology make your Grocery App Smart, Efficient, fast & Secure" className="w-full aspect-[455/365]" />
+                                    <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/nextGen.webp" width={455} height={365} alt="How our Next Gen Technology make your Grocery App Smart, Efficient, fast & Secure" title="How our Next Gen Technology make your Grocery App Smart, Efficient, fast & Secure" className="w-full aspect-[455/365]" />
                                 </div>
                             </div>
                         </div>
@@ -928,50 +900,51 @@ export default function GroceryAppDevelopment() {
                 <div className="!container flex xl:pt-16 lg:pt-14 md:pt-12 sm:pt-10 pt-8 max-sm:!px-0">
                     <div className="flex flex-col w-full">
                         <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-white text-balance relative z-10 text-center max-sm:px-4">Your Next On-demand Grocery Delivery Mobile App Could Look Like This</h2>
-                        <div className="swiper flex xl:w-7/12 lg:w-3/4 w-full -mt-6 xl:!py-16 lg:!py-14 !py-12 before:absolute before:left-0 before:h-full before:w-1/4 before:bg-gradient-to-r before:from-[#131514]/60 before:to-transparent before:z-10 before:pointer-events-none after:absolute after:right-0 after:h-full after:w-1/4 after:bg-gradient-to-l after:from-[#131514]/60 after:to-transparent after:z-10 after:pointer-events-none"
-                                data-swiper='{
-                                    "slidesPerView": 1.6,
-                                    "spaceBetween": 8,
-                                    "speed": 1000,
-                                    "loop": true,
-                                    "centeredSlides": true,
-                                    "keyboard": {"enabled": true},
-                                    "breakpoints": {
-                                        "320": {"slidesPerView": 1.6, "spaceBetween": 8},
-                                        "480": {"slidesPerView": 1.6, "spaceBetween": 16},
-                                        "640": {"slidesPerView": 2, "spaceBetween": 16},
-                                        "1024": {"slidesPerView": 3, "spaceBetween": 32},
-                                        "1350": {"slidesPerView": 3, "spaceBetween": 32}
-                                    }
-                                }'
+                        <Swiper className="swiper flex xl:w-7/12 lg:w-3/4 w-full -mt-6 xl:!py-16 lg:!py-14 !py-12 before:absolute before:left-0 before:h-full before:w-1/4 before:bg-gradient-to-r before:from-[#131514]/60 before:to-transparent before:z-10 before:pointer-events-none after:absolute after:right-0 after:h-full after:w-1/4 after:bg-gradient-to-l after:from-[#131514]/60 after:to-transparent after:z-10 after:pointer-events-none"
+                                
+                            modules={[Autoplay]}
+                            slidesPerView={1.6}
+                            spaceBetween={8}
+                            speed={1000}
+                            loop={true}
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false
+                            }}
+                            centeredSlides={true}
+                            breakpoints={{
+                                320: { slidesPerView: 1.6, spaceBetween: 8 },
+                                480: { slidesPerView: 1.6, spaceBetween: 16 },
+                                640: { slidesPerView: 2, spaceBetween: 16 },
+                                1024: { slidesPerView: 3, spaceBetween: 32 },
+                                1350: { slidesPerView: 3, spaceBetween: 32 }
+                            }}
                             >
-                            <div className="swiper-wrapper">
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike1.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike2.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike3.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike1.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike2.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                                <div className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
+                                </SwiperSlide>
+                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
                                     <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
                                     <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/grocerylookLike3.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center aspect-[25/56]" width="225" height="505" />
-                                </div>
-                            </div>
-                        </div>
+                                </SwiperSlide>
+                        </Swiper>
                     </div>
                 </div>
             </section>
@@ -1176,7 +1149,7 @@ export default function GroceryAppDevelopment() {
                         <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-[#454444] text-balance relative z-10 md:text-center lg:pb-4 pb-8">Why Choose IMG Global Infotech As Your On-Demand Grocery Delivery App Development Company?</h2>
                         <div className="flex flex-wrap lg:items-center items-start justify-between">
                             <div className="xl:w-3/12 sm:w-4/12 w-7/12 lg:static sm:sticky top-32 max-sm:order-last">
-                                <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryWhyChooseUs.webp" alt="Grocery App" title="Grocery App" className="size-full object-contain object-center" />
+                                <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/groceryWhyChooseUs.webp" width={341} height={513} alt="Grocery App" title="Grocery App" className="size-full object-contain object-center" />
                             </div>
                             <div className="xl:w-8/12 sm:w-8/12 flex flex-wrap gap-y-5 -mx-2.5">
                                 <div className="lg:w-1/2 w-full px-2.5">
