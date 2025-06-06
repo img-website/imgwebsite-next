@@ -1,10 +1,25 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Svg from '@/components/svg';
 const Navbar = () => {
+  const headerRef = useRef(null);
+
+  const handleHeaderClick = (event) => {
+    if (event.target.closest('a')) {
+      const el = headerRef.current;
+      if (el) {
+        el.style.pointerEvents = 'none';
+        setTimeout(() => {
+          if (el) {
+            el.style.pointerEvents = '';
+          }
+        }, 1000);
+      }
+    }
+  };
   useEffect(() => {
     // Remove "group" class just once on mount
     if (document.body?.classList?.contains('group')) {
@@ -30,7 +45,11 @@ const Navbar = () => {
   }, []);
     return (
       <>
-        <header className="absolute top-0 left-0 right-0 z-[1010] bg-white select-none group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]">
+        <header
+          ref={headerRef}
+          onClickCapture={handleHeaderClick}
+          className="absolute top-0 left-0 right-0 z-[1010] bg-white select-none group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]"
+        >
           <nav className="!container flex items-center justify-between xl:py-4 lg:py-3 py-4" aria-label="Global">
             <div className="flex lg:hidden mr-2">
               <label htmlFor="sideToggle" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
