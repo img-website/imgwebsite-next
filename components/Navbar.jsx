@@ -9,12 +9,15 @@ const Navbar = () => {
 
   const handleHeaderClick = (event) => {
     if (event.target.closest('a')) {
+      const toggle = document.getElementById('sideToggle');
+      if (toggle) toggle.checked = false;
+
       const el = headerRef.current;
       if (el) {
         el.style.pointerEvents = 'none';
         setTimeout(() => {
           if (el) {
-            el.style.pointerEvents = '';
+            el.style.pointerEvents = 'auto';
           }
         }, 1000);
       }
