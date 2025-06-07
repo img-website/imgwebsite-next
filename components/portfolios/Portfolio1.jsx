@@ -5,14 +5,16 @@ import Image from "next/image"
 import Svg from "@/components/svg"
 
 import { Swiper, SwiperSlide, Autoplay } from '@/components/CustomSwiper';
+import { useInView } from "react-intersection-observer";
 
 const Portfolio1= () => {
+    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
     return (
       <section className="portfolioSection w-full relative overflow-hidden bg-white">
           <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioBg.webp" alt="Portfolio Background" width="1340" height="523" sizes="100vw" className="absolute inset-0 pt-8 size-full z-0 pointer-events-none max-md:hidden"/>
           <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8 z-10 relative">
               <div className="flex flex-col w-full">
-                  <div className="flex flex-wrap justify-between relative">
+                  <div ref={ref} className="flex flex-wrap justify-between relative">
                       <div className="lg:w-4/12 md:w-6/12 w-full">
                           <div className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-[#454444] text-balance relative z-10 max-md:text-center">Here is what it takes to <span className="text-[#2D86FF]">seal</span> the <span className="text-[#FF6B39]">deal</span></div>
                           <div className="md:w-10/12 w-full md:text-sm text-xs font-normal text-[#454444] line-clamp-3 md:pt-4 pt-3 text-pretty max-md:text-center">Explore some of the masterpieces delivered, depicting IMG Global Infotech's industry expertise.</div>
@@ -27,6 +29,7 @@ const Portfolio1= () => {
                           </div>
                       </div>
                       
+                    {inView && (
                       <Swiper className="md:!w-6/12 !w-full !mx-0 swiper"
                         modules={[Autoplay]}
                         slidesPerView={1}
@@ -150,6 +153,7 @@ const Portfolio1= () => {
                                   </div>
                               </SwiperSlide>
                       </Swiper>
+                    )}
                   </div>
               </div>
           </div>

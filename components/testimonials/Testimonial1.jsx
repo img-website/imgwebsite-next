@@ -2,6 +2,7 @@
 import Svg from "@/components/svg"
 import { useEffect } from 'react';
 import { Swiper, SwiperSlide } from '@/components/CustomSwiper';
+import { useInView } from "react-intersection-observer";
 
 const Testimonial = () => {
   useEffect(() => {
@@ -124,13 +125,15 @@ const Testimonial = () => {
       handleDesktopSoundButton();
     }
   }, []);
+    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
     return (
       <section className="testimonialsSection w-full relative overflow-hidden bg-[#14152C]">
           <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
               <div className="flex flex-col w-full">
                   <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 text-center md:pb-4 pb-2">The Reviews are in</h2>
                   <div className="w-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs md:font-medium font-normal text-white text-balance relative z-10 text-center md:pb-12 pb-5">our patrons have some <span className="text-[#FF6B39]">pretty nice things</span> to say too!</div>
-                  <div className="flex flex-wrap justify-center">
+                  <div ref={ref} className="flex flex-wrap justify-center">
+                    {inView && (
                       <Swiper className="xl:w-8/12 lg:w-10/12 flex flex-wrap gap-y-8 items-start -mx-4 swiper"
                         slidesPerView={1}
                         spaceBetween={4}
@@ -254,6 +257,7 @@ const Testimonial = () => {
                                 <div className="w-full text-center text-xs font-normal text-white">Chief Operating Officer</div>
                             </SwiperSlide>
                       </Swiper>
+                    )}
                   </div>
               </div>
           </div>

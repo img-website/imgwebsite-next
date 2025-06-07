@@ -1,25 +1,39 @@
 'use client';
 
-import { Swiper, SwiperSlide, Pagination } from '@/components/CustomSwiper';
+import { Swiper, SwiperSlide, Pagination, Autoplay } from '@/components/CustomSwiper';
 import Image from 'next/image';
 import Svg from '@/components/svg';
+import { useEffect, useRef } from 'react';
 
 export default function HomeHero() {
+    const swiperRef = useRef(null)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        if (swiperRef.current && swiperRef.current.swiper.autoplay) {
+            swiperRef.current.swiper.autoplay.start()
+        }
+        }, 2000) // start autoplay after 2s
+
+        return () => clearTimeout(timer)
+    }, [])
     return (
         <Swiper className="heroSection w-full swiper bg-white [&_.swiper-slide]:z-0 [&_.swiper-slide.swiper-slide-prev]:!z-10 [&_.swiper-slide.swiper-slide-next]:!z-10 [&_.swiper-slide.swiper-slide-active]:!z-20 [&_.swiper-wrapper]:max-md:!items-stretch"
+            ref={swiperRef}
             slidesPerView={1}
             spaceBetween={0}
-            // loop={true}
+            autoplay={{
+                delay: 3000,
+                disableOnInteraction: false, // ye default off hai → autoplay continue rahe after interaction
+                pauseOnMouseEnter: true, // optional → mouse enter pe pause ho
+            }}
+            loop={true}
             speed={1000}
-            // autoplay={{
-            //     delay: 3000,
-            //     disableOnInteraction: false,
-            // }}
             pagination={{
                 clickable: true,
                 el: '.swiper-pagination',
             }}
-            modules={[Pagination]}
+            modules={[Pagination, Autoplay]}
             >
                 <picture>
                     <source
@@ -27,7 +41,8 @@ export default function HomeHero() {
                         media="(max-width: 768px)"
                     />
                     <img
-                        loading="lazy"
+                        loading="eager"
+                        fetchPriority="high"
                         src="https://d1y41eupgbwbb2.cloudfront.net/images/bgHero-1920.webp"
                         alt="AI-Driven Digital Transformation Company"
                         className="z-0 object-cover object-center pointer-events-none max-md:my-auto max-md:w-full absolute inset-0 size-full"
@@ -78,6 +93,7 @@ export default function HomeHero() {
                                     <img
                                         src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp"
                                         loading="eager"
+                                        fetchPriority="high"
                                         width="815"
                                         height="579"
                                         alt="AI-Driven Digital Transformation Company"
