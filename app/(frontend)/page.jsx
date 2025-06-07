@@ -1,20 +1,31 @@
-export const dynamic = 'force-static';
+// export const dynamic = 'force-static';
 
 
-import HomeHero from '@/components/HomeHero';
+import dynamic from 'next/dynamic';
+const HomeHero = dynamic(() => import('@/components/HomeHero'), {
+  loading: () => <HomeHeroSkeleton />
+})
 import CoreServices from '@/components/HomePage/CoreServices';
-import CaseStudy from '@/components/HomePage/CaseStudy';
+const CaseStudy = dynamic(() => import('@/components/HomePage/CaseStudy'), {
+  loading: () =>  <div className="flex justify-center items-center w-full h-[795px] bg-gray-300 animate-pulse"></div>
+})
+
 import Brands from '@/components/HomePage/Brands';
 import Cta1 from '@/components/cta/Cta1';
-import Portfolio1 from '@/components/portfolios/Portfolio1';
+const Portfolio1 = dynamic(() => import('@/components/portfolios/Portfolio1'), {
+  loading: () =>  <div className="flex justify-center items-center w-full h-[795px] bg-gray-300 animate-pulse"></div>
+})
 import AdvanceTech from '@/components/HomePage/AdvanceTech';
 import Industries from '@/components/HomePage/Industries';
 import QuickInsight from '@/components/HomePage/QuickInsight';
 import WhyChooseUs from '@/components/HomePage/WhyChooseUs';
 import Cta2 from '@/components/cta/Cta2';
 import Usp from '@/components/Usp';
-import Testimonial from '@/components/testimonials/Testimonial1';
+const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1'), {
+  loading: () =>  <div className="flex justify-center items-center w-full h-[795px] bg-gray-300 animate-pulse"></div>
+})
 import Faq from '@/components/Faq';
+import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 
 export const metadata = {
     title: "Mobile App Development & IT Consulting Services in USA | IMG Global Infotech",

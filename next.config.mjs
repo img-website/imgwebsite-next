@@ -24,12 +24,12 @@ const nextConfig = {
     ],
   },
   experimental: {
-    inlineCss: true,
+    // inlineCss: true,
     // optimizePackageImports: ['swiper'],
     // staticGenerationRetryCount: 1,
     // staticGenerationMaxConcurrency: 8,
     // staticGenerationMinPagesPerWorker: 25,
-    useCache: true
+    // useCache: true
   },
   // transpilePackages: ['swiper'],
 };

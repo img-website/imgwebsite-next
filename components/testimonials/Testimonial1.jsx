@@ -132,7 +132,7 @@ const Testimonial = () => {
               <div className="flex flex-col w-full">
                   <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 text-center md:pb-4 pb-2">The Reviews are in</h2>
                   <div className="w-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs md:font-medium font-normal text-white text-balance relative z-10 text-center md:pb-12 pb-5">our patrons have some <span className="text-[#FF6B39]">pretty nice things</span> to say too!</div>
-                  <div ref={ref} className="flex flex-wrap justify-center">
+                  <div ref={ref} className="flex flex-wrap justify-center min-h-[565.39px]">
                     {inView && (
                       <Swiper className="xl:w-8/12 lg:w-10/12 flex flex-wrap gap-y-8 items-start -mx-4 swiper"
                         slidesPerView={1}
