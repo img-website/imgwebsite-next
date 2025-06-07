@@ -2,12 +2,20 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import Svg from '@/components/svg';
+import Link from 'next/link';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+
+
 const Navbar = () => {
   const headerRef = useRef(null);
-  const sidebar = useRef(null);
-  const sidebarChecked = useRef(null);
 
   const handleHeaderClick = (event) => {
     if (event.target.closest('a')) {
@@ -23,13 +31,6 @@ const Navbar = () => {
     }
   };
 
-  const handleSidebarClick = (event) => {
-    if (event.target.closest('a')) {
-      if (sidebarChecked.current) {
-        sidebarChecked.current.checked = false;
-      }
-    }
-  };
 
   useEffect(() => {
     // Remove "group" class just once on mount
@@ -54,20 +55,21 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
     return (
-      <>
+      <Sheet>
         <header
           ref={headerRef}
           onClickCapture={handleHeaderClick}
           className="absolute top-0 left-0 right-0 z-[1010] bg-white select-none group-[body]/ns:fixed group-[body]/ns:animate-fixed-nav shadow-[0px_4px_4px_0px_#0000001F]"
-        >
+          >
           <nav className="!container flex items-center justify-between xl:py-4 lg:py-3 py-4" aria-label="Global">
-            <div className="flex lg:hidden mr-2">
-              <label htmlFor="sideToggle" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
+            <SheetTrigger asChild className="flex lg:hidden mr-2">
+              <button type="button" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5">
                 <span className="sr-only">Open menu</span>
                 <Svg name="widgets" className="size-6" />
-              </label>
-            </div>
+              </button>
+            </SheetTrigger>
             <div className="flex lg:flex-1">
               <Link href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">IMG</span>
@@ -108,7 +110,7 @@ const Navbar = () => {
                                   About Us
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                                <p className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Your IT Partner for Tomorrow's Solutions</p>
+                                <div className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Your IT Partner for Tomorrow's Solutions</div>
                               </div>
                             </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
@@ -120,7 +122,7 @@ const Navbar = () => {
                                   Testimonials
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                                <p className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Hear What Our Clients Have to Say</p>
+                                <div className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Hear What Our Clients Have to Say</div>
                               </div>
                             </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
@@ -132,7 +134,7 @@ const Navbar = () => {
                                   LIFE@IMG
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                                <p className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Memories Made Beyond the Workplace</p>
+                                <div className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Memories Made Beyond the Workplace</div>
                               </div>
                             </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
@@ -144,7 +146,7 @@ const Navbar = () => {
                                   Career
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                                <p className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Build Your Future with Us</p>
+                                <div className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Build Your Future with Us</div>
                               </div>
                             </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
@@ -156,7 +158,7 @@ const Navbar = () => {
                                   Case Study
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                                <p className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Success Stories that Speak Volumes</p>
+                                <div className="xl:text-xs lg:text-[10px] text-xs xl:mt-1 relative z-0">Success Stories that Speak Volumes</div>
                               </div>
                             </div>
                             <div className="grid grid-cols-2 mt-2 rounded-b-xl bg-gray-100">
@@ -1201,25 +1203,17 @@ const Navbar = () => {
           </nav>
         </header>
 
-        <input ref={sidebarChecked} type="checkbox" className="peer/sideToggle hidden" name="sideToggle" id="sideToggle" />
-        <label htmlFor="sideToggle" className="fixed inset-0 -z-[1011] backdrop-blur-xl bg-sky-950/70 peer-checked/sideToggle:z-[1010] peer-checked/sideToggle:opacity-100 opacity-0 duration-100"></label>
-
-        <div
-          ref={sidebar}
-          onClickCapture={handleSidebarClick}
-          className="fixed flex flex-col h-screen inset-y-0 right-0 z-[1011] w-full overflow-y-auto bg-white select-none px-6 py-6 sm:max-w-sm peer-checked/sideToggle:translate-x-0 peer-checked/sideToggle:opacity-100 -translate-x-full opacity-0 duration-300">
-          <div className="flex items-center justify-between">
-            <Link href="" className="-ml-1.5">
+        <SheetContent
+          side='left'
+          className="flex flex-col z-[1011] w-full bg-white select-none sm:max-w-sm *:last:mt-2 *:last:mr-2">
+          <SheetHeader>
+            <SheetTitle>
               <span className="sr-only">IMG</span>
               <Image className="h-8 w-auto aspect-[174/48]"  width="174" height="48" loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/xl-logo.webp" alt="IMG Global Infotech Logo" title="IMG Global Infotech Logo" />
-            </Link>
-            <label htmlFor="sideToggle" className="-m-2.5 rounded-md p-2.5 text-gray-200">
-              <span className="sr-only">Close menu</span>
-              <Svg name="close" className="xl:size-5 lg:size-4 size-5 text-black" />
-            </label>
-          </div>
-          <div className="mt-6 flow-root flex-fill overflow-auto -mr-4 pr-4">
-            <div className="-my-6 divide-y divide-gray-500/10">
+            </SheetTitle>
+          </SheetHeader>
+          <SheetDescription asChild className="px-6 overflow-auto">
+            <div className="divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 <div className="flex flex-col gap-5 items-center">
                     <div className="flex flex-col w-full gap-y-5">
@@ -2316,9 +2310,9 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </>
+          </SheetDescription>
+        </SheetContent>
+      </Sheet>
     )
 }
 
