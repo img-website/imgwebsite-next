@@ -37,11 +37,9 @@ const Portfolio1= () => {
                         speed={100}
                         loop={true}
                         autoplay={{
-                          delay: 5000,
-                          disableOnInteraction: false,
-                        }}
-                        keyboard={{
-                          enabled: true,
+                            delay: 5000,
+                            disableOnInteraction: false,
+                            pauseOnMouseEnter: true,
                         }}
                       >
                               <SwiperSlide className="swiper-slide [&.swiper-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">

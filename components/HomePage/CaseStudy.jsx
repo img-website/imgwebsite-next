@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Svg from "@/components/svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Keyboard } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { useInView } from "react-intersection-observer";
@@ -22,7 +22,7 @@ const CaseStudy = () => {
                         <Swiper className="w-full swiper rounded-3xl"
                             observer={true}
                             observeParents={true}
-                            modules={[Autoplay, Navigation, Keyboard]}
+                            modules={[Autoplay, Navigation]}
                             slidesPerView={1}
                             spaceBetween={32}
                             speed={1000}
@@ -31,9 +31,6 @@ const CaseStudy = () => {
                                 delay: 5000,
                                 disableOnInteraction: false,
                                 pauseOnMouseEnter: true,
-                            }}
-                            keyboard={{
-                                enabled: true,
                             }}
                             navigation={{
                                 nextEl: '.next',
