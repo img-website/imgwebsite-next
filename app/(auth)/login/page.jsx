@@ -26,8 +26,8 @@ const page = () => {
           alt="IMG Logo"
           priority
           src="https://d1y41eupgbwbb2.cloudfront.net/images/android-chrome-192x192.png"
-          className="mx-auto h-12 w-auto brightness-0"
-          width={118}
+          className="mx-auto size-12 w-auto brightness-0"
+          width={48}
           height={48}
         />
         <CardTitle className="text-2xl text-center pt-6">Welcome Back!</CardTitle>

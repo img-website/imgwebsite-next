@@ -14,7 +14,9 @@ export default function AuthLayout({ children }) {
           <Image
             src="https://d1y41eupgbwbb2.cloudfront.net/images/adminAuth.webp"
             alt="Image"
+            priority={true}
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="size-full object-cover object-center"
           />
         </div>
