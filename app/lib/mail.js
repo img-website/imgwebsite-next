@@ -41,7 +41,7 @@ export async function sendLoginEmail(admin) {
             <tr>
               <td style="padding: 30px;">
                 <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">New Login Detected 🔔</h2>
-                <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Hello ${admin.firstName},</p>
+                <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Hello ${admin.firstName || "Admin"},</p>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">We detected a new login to your IMG admin account. Here are the details:</p>
                 
                 <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -143,7 +143,7 @@ export async function sendWelcomeEmail(admin) {
             </tr>
             <tr>
               <td style="padding: 40px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 24px;">Hello ${admin.firstName} 👋</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 24px;">Hello ${admin.firstName || "Admin"} 👋</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Welcome to the IMG admin team! We're excited to have you on board.</p>
                 
                 <div style="background: #f8fafc; padding: 25px; border-radius: 8px; margin: 30px 0;">
@@ -247,11 +247,12 @@ export async function sendPasswordResetEmail(admin, resetToken) {
             </tr>
             <tr>
               <td style="padding: 30px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName},</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName || "Admin"},</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">We received a request to reset your password. Click the button below to create a new password:</p>
                 
+                
                 <div style="text-align: center; margin: 30px 0;">
-                  <a href="${process.env.NEXT_PUBLIC_BASE_URL}/admin/reset-password?token=${resetToken}" 
+                  <a href="${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${resetToken}" 
                      style="display: inline-block; padding: 12px 24px; background: #dc2626; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold;">
                     Reset Password
                   </a>
@@ -341,7 +342,7 @@ export async function sendPasswordResetConfirmationEmail(admin) {
             </tr>
             <tr>
               <td style="padding: 30px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName},</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName || "Admin"},</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Your password has been successfully changed.</p>
                 
                 <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">

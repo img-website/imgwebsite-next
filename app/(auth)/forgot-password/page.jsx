@@ -1,13 +1,13 @@
 import Image from "next/image";
-import LoginForm from "./loginForm";
+import ForgotForm from "./forgotForm";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const title = 'Login';
+const title = 'Forgot Password';
 
 export const metadata = {
   title,
-  description: 'Login to your account',
+  description: 'Reset your password',
   robots: {
     index: true,
     follow: true,
@@ -18,7 +18,7 @@ export const metadata = {
   },
 };
 
-const page = () => {
+const ForgotPasswordPage = () => {
   return (
     <Card className="m-auto w-full max-w-sm border-0 shadow-none">
       <CardHeader>
@@ -28,23 +28,24 @@ const page = () => {
           src="https://d1y41eupgbwbb2.cloudfront.net/images/android-chrome-192x192.png"
           className="mx-auto h-12 w-auto brightness-0"
           width={118}
-          height={48}
+          height={24}
         />
-        <CardTitle className="text-2xl text-center pt-6">Welcome Back!</CardTitle>
+        <CardTitle className="text-2xl text-center pt-6">Forgot Password</CardTitle>
         <CardDescription className="text-center">
-          Enter details to login to your account
+          Enter your email to reset your password
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <LoginForm />
+        <ForgotForm />
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="underline">
-            Sign up
+          Remember your password?{" "}
+          <Link href="/login" className="underline">
+            Login
           </Link>
         </div>
       </CardContent>
     </Card>
   );
-}
-export default page
+};
+
+export default ForgotPasswordPage;

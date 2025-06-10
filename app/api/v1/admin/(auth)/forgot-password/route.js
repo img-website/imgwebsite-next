@@ -4,6 +4,12 @@ import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
 import { sendPasswordResetEmail } from '@/app/lib/mail';
 import { passwordResetLimiter } from '@/app/middleware/rateLimiter';
+import { z } from "zod";
+
+// Zod schema for validation
+const forgotPasswordSchema = z.object({
+    email: z.string().email({ message: "Invalid email address" }),
+});
 
 /**
  * @route POST /api/v1/admin/forgot-password
@@ -17,14 +23,19 @@ export async function POST(req) {
     const rateLimitResult = await passwordResetLimiter(req);
     if (rateLimitResult?.status === 429) return rateLimitResult;
 
-    const { email } = await req.json();
+    const body = await req.json();
 
-    if (!email) {
+    try {
+      forgotPasswordSchema.parse(body);
+    } catch (error) {
+      console.log(error)
       return NextResponse.json(
-        { success: false, error: 'Email is required' },
+        { success: false, error: 'Invalid email' },
         { status: 400 }
       );
     }
+
+    const { email } = body;
 
     // Connect to database
     await connectDB();
@@ -51,15 +62,25 @@ export async function POST(req) {
     await admin.save();
 
     // Send password reset email
-    await sendPasswordResetEmail(admin, resetToken);
+    const emailResult = await sendPasswordResetEmail(admin, resetToken);
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Password reset email sent'
-      },
-      { status: 200 }
-    );
+    if (emailResult.success) {
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Password reset email sent'
+        },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        {
+          success: false,
+          error: emailResult.error
+        },
+        { status: 500 }
+      );
+    }
 
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -71,4 +92,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-} 
+}

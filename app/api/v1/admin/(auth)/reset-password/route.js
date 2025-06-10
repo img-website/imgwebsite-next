@@ -1,43 +1,49 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import bcrypt from 'bcryptjs';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
-import { sendPasswordResetConfirmationEmail } from '@/app/lib/mail';
-import { passwordResetLimiter } from '@/app/middleware/rateLimiter';
+import bcrypt from 'bcryptjs';
+import { z } from "zod";
+
+// Zod schema for validation
+const resetPasswordSchema = z.object({
+    password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
+    token: z.string().min(32, { message: "Invalid token" }),
+});
 
 /**
  * @route POST /api/v1/admin/reset-password
- * @desc Reset admin password using token
+ * @desc Reset admin password
  * @access Public
- * @param {string} token - Reset password token
- * @param {string} password - New password
+ * @param {string} password - Admin's new password
+ * @param {string} token - Reset token
  */
 export async function POST(req) {
   try {
-    // Check rate limit
-    const rateLimitResult = await passwordResetLimiter(req);
-    if (rateLimitResult?.status === 429) return rateLimitResult;
+    const body = await req.json();
 
-    const { token, password } = await req.json();
-
-    if (!token || !password) {
+    try {
+      resetPasswordSchema.parse(body);
+    } catch (error) {
+      console.log(error)
       return NextResponse.json(
-        { success: false, error: 'Token and password are required' },
+        { success: false, error: 'Invalid data' },
         { status: 400 }
       );
     }
 
+    const { password, token } = body;
+
     // Connect to database
     await connectDB();
 
-    // Hash token
+    // Hash the token
     const hashedToken = crypto
       .createHash('sha256')
       .update(token)
       .digest('hex');
 
-    // Find admin by token and check if token is expired
+    // Find admin with reset token and within expiry time
     const admin = await Admin.findOne({
       resetPasswordToken: hashedToken,
       resetPasswordExpire: { $gt: Date.now() }
@@ -45,36 +51,25 @@ export async function POST(req) {
 
     if (!admin) {
       return NextResponse.json(
-        { success: false, error: 'Invalid or expired reset token' },
+        { success: false, error: 'Invalid or expired token' },
         { status: 400 }
       );
     }
 
-    // Validate password
-    if (password.length < 6) {
-      return NextResponse.json(
-        { success: false, error: 'Password must be at least 6 characters' },
-        { status: 400 }
-      );
-    }
-
-    // Hash new password
+    // Hash the new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Update admin password and clear reset token
+    // Update admin password and reset token fields
     admin.password = hashedPassword;
     admin.resetPasswordToken = undefined;
     admin.resetPasswordExpire = undefined;
     await admin.save();
 
-    // Send password reset confirmation email
-    await sendPasswordResetConfirmationEmail(admin);
-
     return NextResponse.json(
       {
         success: true,
-        message: 'Password reset successful'
+        message: 'Password reset successfully'
       },
       { status: 200 }
     );
@@ -89,4 +84,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-} 
+}

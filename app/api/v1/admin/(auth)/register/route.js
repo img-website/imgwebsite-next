@@ -22,7 +22,7 @@ export async function POST(req) {
     if (rateLimitResult) return rateLimitResult;
 
     const formData = await req.formData();
-    const result = await registerAdmin(formData);
+    const result = await registerAdmin(formData,req);
 
     if (!result.success) {
       return NextResponse.json(
@@ -30,6 +30,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+    
 
     return NextResponse.json(
       {
@@ -51,4 +52,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-} 
+}

@@ -9,20 +9,15 @@ import { adminRegistrationSchema } from '@/app/lib/validations/admin';
 import { uploadProfileImage } from '@/app/middleware/imageUpload';
 import { sendLoginEmail, sendWelcomeEmail } from '@/app/lib/mail';
 
-export async function registerAdmin(formData) {
+export async function registerAdmin(formData, req) {
   try {
     // Connect to database
     await connectDB();
 
     // Extract form data
     const data = {
-      firstName: formData.get('firstName'),
-      lastName: formData.get('lastName'),
-      username: formData.get('username'),
       email: formData.get('email'),
       password: formData.get('password'),
-      mobileNumber: formData.get('mobileNumber') || null,
-      profileImage: formData.get('profileImage')
     };
 
     // Validate data
@@ -30,23 +25,29 @@ export async function registerAdmin(formData) {
 
     // Check if admin exists
     const existingAdmin = await Admin.findOne({
-      $or: [{ email: validatedData.email }, { username: validatedData.username }]
+      email: validatedData.email
     });
 
     if (existingAdmin) {
       return {
         success: false,
-        error: 'Admin with this email or username already exists'
+        error: 'Admin with this email already exists'
       };
     }
 
-    // Handle file upload
-    const uploadResult = await uploadProfileImage(formData);
-    if (!uploadResult.success) {
-      return {
-        success: false,
-        error: uploadResult.error
-      };
+    // Check if username exists only if username is provided
+    const username = formData.get('username');
+    if (username) {
+      const existingUsername = await Admin.findOne({
+        username: username
+      });
+
+      if (existingUsername) {
+        return {
+          success: false,
+          error: 'This username is already taken'
+        };
+      }
     }
 
     // Hash password
@@ -55,11 +56,8 @@ export async function registerAdmin(formData) {
 
     // Create admin
     const admin = await Admin.create({
-      ...validatedData,
+      email: validatedData.email,
       password: hashedPassword,
-      profileImage: uploadResult.profileImagePath,
-      thumbnailImage: uploadResult.thumbnailPath,
-      largeImage: uploadResult.largePath,
       registrationIP: 'unknown' // Will be set by middleware
     });
 
@@ -68,7 +66,7 @@ export async function registerAdmin(formData) {
 
     // Generate token
     const token = jwt.sign(
-      { id: admin._id, email: admin.email, username: admin.username, role: admin.role },
+      { id: admin._id, email: admin.email, role: admin.role },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '24h' }
     );
@@ -83,18 +81,21 @@ export async function registerAdmin(formData) {
     adminResponse.fullName = admin.fullName;
     adminResponse.initials = admin.initials;
 
-    // Revalidate paths
+   // Revalidate paths
     revalidatePath('/admin');
 
     return {
       success: true,
       data: adminResponse,
-      token
+      token,
+      successCallback: () => {
+        console.log('Registration successful, resetting rate limit counter');
+      },
     };
 
   } catch (error) {
     console.error('Admin registration error:', error);
-    
+
     if (error.name === 'ZodError') {
       return {
         success: false,
@@ -104,7 +105,7 @@ export async function registerAdmin(formData) {
 
     return {
       success: false,
-      error: 'Error registering admin'
+      error: error.message || 'Error registering admin'
     };
   }
 }
@@ -209,4 +210,4 @@ export async function loginAdmin(email, password) {
       error: 'Error logging in'
     };
   }
-} 
+}

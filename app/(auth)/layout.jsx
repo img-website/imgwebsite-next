@@ -15,7 +15,7 @@ export default function AuthLayout({ children }) {
             src="https://d1y41eupgbwbb2.cloudfront.net/images/instantCta1.webp"
             alt="Image"
             fill
-            className="size-full object-contain object-bottom-right"
+            className="size-full object-cover object-top-left"
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,24 +18,27 @@ import {
     FormControl,
     FormMessage,
 } from "@/components/ui/form"
+import { cn } from "@/lib/utils"
+import { Eye, EyeOff } from "lucide-react"
 
 // Zod schema for validation
 const loginSchema = z.object({
-    email: 
+    email:
     z.string()
-    .min(4, { 
-        message: "Email or Username must be at least 4 characters"
-    })
-    .email("Enter a valid email"),
-    
-    password: 
+        .min(4, {
+            message: "Email or Username must be at least 4 characters"
+        })
+        .email("Enter a valid email"),
+
+    password:
     z.string()
-    .min(8, { 
-        message: "Password must be at least 8 characters" 
-    }),
+        .min(8, {
+            message: "Password must be at least 8 characters"
+        }),
 })
 
 export function LoginForm() {
+    const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
     const handleError = useErrorHandler()
 
@@ -116,15 +120,31 @@ export function LoginForm() {
                         <FormItem>
                             <div className="flex items-center">
                                 <FormLabel>Password</FormLabel>
-                                <Link href="#" className="ml-auto text-sm underline">Forgot your password?</Link>
+                                <Link href="/forgot-password" className="ml-auto text-sm underline">Forgot your password?</Link>
                             </div>
                             <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    autoComplete="current-password"
-                                    {...field}
-                                />
+                                <div className="relative">
+                                    <Input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Password"
+                                        autoComplete="current-password"
+                                        {...field}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {!showPassword ? (
+                                            <EyeOff className="h-4 w-4" />
+                                        ) : (
+                                            <Eye className="h-4 w-4" />
+                                        )}
+                                        <span className="sr-only">Show password</span>
+                                    </Button>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>

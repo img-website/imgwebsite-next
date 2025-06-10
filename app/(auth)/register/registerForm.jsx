@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,23 +17,16 @@ import {
     FormControl,
     FormMessage,
 } from "@/components/ui/form"
+import { Eye, EyeOff } from "lucide-react"
 
 // Zod schema for validation
 const registerSchema = z.object({
-    firstName: z.string().min(2, { message: "First Name must be at least 2 characters long" }),
-    lastName: z.string().min(2, { message: "Last Name must be at least 2 characters long" }),
-    username: z.string().min(4, { message: "Username must be at least 4 characters long" }),
     email: z.string().email({ message: "Invalid email address" }),
     password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
-    mobileNumber: z.string()
-        .regex(/^[0-9]{10}$/, { message: "If provided, mobile number must be 10 digits" })
-        .optional()
-        .nullable()
-        .or(z.literal("")),
-    profileImage: z.instanceof(File).optional().nullable().or(z.literal("")),
 })
 
 export function RegisterForm() {
+    const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
     const handleError = useErrorHandler()
 
@@ -40,36 +34,18 @@ export function RegisterForm() {
     const form = useForm({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            firstName: '',
-            lastName: '',
-            username: '',
             email: '',
             password: '',
-            mobileNumber: '',
-            profileImage: null, // Assuming you will handle file upload separately
         },
     })
     
 
     const registerHandler = async (values) => {
-        const { firstName, lastName, username, email, password, mobileNumber, profileImage } = values
+        const { email, password } = values
         
         const formData = new FormData();
-        formData.append("firstName", firstName);
-        formData.append("lastName", lastName);
-        formData.append("username", username);
         formData.append("email", email);
         formData.append("password", password);
-        
-        // Append mobile number if available
-        if (mobileNumber) {
-            formData.append("mobileNumber", mobileNumber);
-        }
-
-        // Append profile image if available
-        if (profileImage) {
-            formData.append("profileImage", profileImage);
-        }
 
         try {
             const response = await fetch("/api/v1/admin/register", {
@@ -104,59 +80,6 @@ export function RegisterForm() {
             <form onSubmit={form.handleSubmit(registerHandler)} className="grid gap-4">
                 <FormField
                     control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>First Name</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="First Name"
-                                    autoComplete="off"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Last Name</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="Last Name"
-                                    autoComplete="off"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="Username"
-                                    autoComplete="off"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
                     name="email"
                     render={({ field }) => (
                         <FormItem>
@@ -180,54 +103,28 @@ export function RegisterForm() {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    autoComplete="off"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="mobileNumber"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Mobile Number (Optional)</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="tel"
-                                    placeholder="10-digit mobile number"
-                                    autoComplete="tel"
-                                    {...field}
-                                    value={field.value || ''}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="profileImage"
-                    render={({ field: { value, onChange, ...field } }) => (
-                        <FormItem>
-                            <FormLabel>Profile Image (Optional)</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        const file = e.target.files?.[0]
-                                        onChange(file || '')
-                                    }}
-                                    {...field}
-                                />
+                                <div className="relative">
+                                    <Input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Password"
+                                        autoComplete="off"
+                                        {...field}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff className="h-4 w-4" />
+                                        ) : (
+                                            <Eye className="h-4 w-4" />
+                                        )}
+                                        <span className="sr-only">Show password</span>
+                                    </Button>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
