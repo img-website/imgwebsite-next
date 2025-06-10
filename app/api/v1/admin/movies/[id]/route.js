@@ -30,7 +30,6 @@ export async function GET(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Get movie error:', error);
     return NextResponse.json({
       success: false,
       error: 'Error fetching movie'
@@ -172,7 +171,6 @@ export async function PUT(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Update movie error:', error);
 
     if (error.code === 11000) {
       return NextResponse.json({
@@ -250,7 +248,6 @@ export async function DELETE(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Delete movie error:', error);
     return NextResponse.json({
       success: false,
       error: 'Error deleting movie'

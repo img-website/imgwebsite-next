@@ -53,7 +53,8 @@ export function RegisterForm() {
                 body: formData,
             });
 
-            const data = await response.json();            if (!response.ok) {
+            const data = await response.json();            
+            if (!response.ok) {
                 const error = new Error(data?.error || 'Registration failed');
                 error.status = response.status;
                 throw error;
@@ -71,7 +72,7 @@ export function RegisterForm() {
                 throw new Error(data?.error || 'Registration failed');
             }
         } catch (error) {
-            handleError(error);
+            handleError(error?.message);
         }
     }
 
@@ -117,7 +118,7 @@ export function RegisterForm() {
                                         className="absolute right-2 top-1/2 -translate-y-1/2"
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? (
+                                        {!showPassword ? (
                                             <EyeOff className="h-4 w-4" />
                                         ) : (
                                             <Eye className="h-4 w-4" />
@@ -131,7 +132,7 @@ export function RegisterForm() {
                     )}
                 />
 
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'Registering...' : 'Register'}
                 </Button>
             </form>

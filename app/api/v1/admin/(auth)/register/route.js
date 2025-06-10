@@ -43,7 +43,6 @@ export async function POST(req) {
     );
 
   } catch (error) {
-    console.error('Admin registration error:', error);
     return NextResponse.json(
       {
         success: false,

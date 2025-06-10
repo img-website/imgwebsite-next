@@ -56,7 +56,6 @@ export async function PUT(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Update genre error:', error);
 
     if (error.code === 11000) {
       return NextResponse.json({
@@ -151,7 +150,6 @@ export async function DELETE(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Delete genre error:', error);
     return NextResponse.json({
       success: false,
       error: 'Error deleting genre'
@@ -184,7 +182,6 @@ export async function GET(req, { params }) {
     });
 
   } catch (error) {
-    console.error('Get genre error:', error);
     return NextResponse.json({
       success: false,
       error: 'Error fetching genre'

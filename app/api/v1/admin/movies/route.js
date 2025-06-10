@@ -93,7 +93,6 @@ export async function POST(req) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Add movie error:', error);
 
     if (error.code === 11000) {
       return NextResponse.json({
@@ -208,7 +207,6 @@ export async function GET(req) {
       }
     });
   } catch (error) {
-    console.error('Error in GET /api/v1/admin/movies:', error);
     return NextResponse.json(
       { success: false, error: error.message },
       { status: 500 }

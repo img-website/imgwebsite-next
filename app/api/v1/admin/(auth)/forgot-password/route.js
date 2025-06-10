@@ -28,7 +28,6 @@ export async function POST(req) {
     try {
       forgotPasswordSchema.parse(body);
     } catch (error) {
-      console.log(error)
       return NextResponse.json(
         { success: false, error: 'Invalid email' },
         { status: 400 }
@@ -83,7 +82,6 @@ export async function POST(req) {
     }
 
   } catch (error) {
-    console.error('Forgot password error:', error);
     return NextResponse.json(
       {
         success: false,

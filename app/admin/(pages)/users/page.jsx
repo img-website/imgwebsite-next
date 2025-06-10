@@ -263,7 +263,7 @@ export default function UsersPage() {
                 throw new Error(data?.message || "Failed to fetch category");
             }
         } catch (error) {
-            handleError(error);
+            handleError(error?.message);
         } finally {
             setLoading(false);
         }

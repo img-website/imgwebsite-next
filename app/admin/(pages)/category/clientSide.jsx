@@ -25,7 +25,7 @@ const ClientSide = () => {
             }
         } catch (error) {
             setError(error.message || "Something went wrong while fetching categories");
-            handleError(error);
+            handleError(error?.message);
         } finally {
             setLoading(false);
         }
@@ -56,7 +56,7 @@ const ClientSide = () => {
                 throw new Error(data?.message || "Failed to delete category");
             }
         } catch (error) {
-            handleError(error);
+            handleError(error?.message);
         } finally {
             setLoading(false);
             setDeletingCategoryId(null);
@@ -96,8 +96,7 @@ const ClientSide = () => {
 
             toast.success('Category status updated successfully');
         } catch (error) {
-            console.error(error);
-            handleError(error);
+            handleError(error?.message);
         }
     };
 

@@ -51,7 +51,6 @@ export async function POST(req) {
     });
 
   } catch (error) {
-    console.error('2FA setup error:', error);
     return NextResponse.json(
       { success: false, error: 'Error setting up 2FA' },
       { status: 500 }
@@ -108,7 +107,6 @@ export async function PUT(req) {
     });
 
   } catch (error) {
-    console.error('2FA verification error:', error);
     return NextResponse.json(
       { success: false, error: 'Error verifying 2FA setup' },
       { status: 500 }

@@ -23,7 +23,6 @@ export async function generateQRCode(otpauth_url) {
     const qrCodeUrl = await QRCode.toDataURL(otpauth_url);
     return qrCodeUrl;
   } catch (error) {
-    console.error('QR Code generation error:', error);
     throw error;
   }
 }
@@ -40,7 +39,6 @@ export function verifyToken(secret, token) {
       window: 1 // Allow 30 seconds clock skew
     });
   } catch (error) {
-    console.error('Token verification error:', error);
     return false;
   }
 }

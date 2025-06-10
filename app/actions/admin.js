@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
 import { adminRegistrationSchema } from '@/app/lib/validations/admin';
-import { uploadProfileImage } from '@/app/middleware/imageUpload';
 import { sendLoginEmail, sendWelcomeEmail } from '@/app/lib/mail';
 
 export async function registerAdmin(formData, req) {
@@ -94,8 +93,6 @@ export async function registerAdmin(formData, req) {
     };
 
   } catch (error) {
-    console.error('Admin registration error:', error);
-
     if (error.name === 'ZodError') {
       return {
         success: false,

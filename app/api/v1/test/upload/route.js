@@ -30,7 +30,6 @@ const processImage = async (file, type) => {
 
     return `/uploads/test/${filename}`;
   } catch (error) {
-    console.error('Image processing error:', error);
     throw new Error('Failed to process image');
   }
 };
@@ -62,7 +61,6 @@ const getAllImages = async () => {
     // Sort by creation date (newest first)
     return images.sort((a, b) => b.createdAt - a.createdAt);
   } catch (error) {
-    console.error('Error reading images:', error);
     throw new Error('Failed to read images');
   }
 };
@@ -79,7 +77,6 @@ export async function GET() {
       }
     });
   } catch (error) {
-    console.error('Get images error:', error);
     return NextResponse.json({
       success: false,
       error: error.message
@@ -115,7 +112,6 @@ export async function POST(req) {
       data: results
     });
   } catch (error) {
-    console.error('Upload error:', error);
     return NextResponse.json({
       success: false,
       error: error.message
@@ -156,7 +152,6 @@ export async function DELETE(req) {
       message: 'Image deleted successfully'
     });
   } catch (error) {
-    console.error('Delete error:', error);
     return NextResponse.json({
       success: false,
       error: error.message

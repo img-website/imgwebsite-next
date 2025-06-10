@@ -41,7 +41,7 @@ const CategoryForm = ({ id, setAddCategoryPopup }) => {
                         throw new Error(data?.message || 'Failed to fetch category');
                     }
                 } catch (error) {
-                    handleError(error);
+                    handleError(error?.message || 'Something went wrong while fetching category');
                 } finally {
                     setLoading(false);
                 }
@@ -104,8 +104,7 @@ const CategoryForm = ({ id, setAddCategoryPopup }) => {
                 setAddCategoryPopup(false);
             }
         } catch (error) {
-            console.error(error);
-            handleError(error);
+            handleError(error?.message || 'Something went wrong while saving category');
         } finally {
             setLoading(false);
         }

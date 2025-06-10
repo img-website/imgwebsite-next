@@ -25,7 +25,6 @@ export async function POST(req) {
     try {
       resetPasswordSchema.parse(body);
     } catch (error) {
-      console.log(error)
       return NextResponse.json(
         { success: false, error: 'Invalid data' },
         { status: 400 }

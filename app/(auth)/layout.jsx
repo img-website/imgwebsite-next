@@ -12,10 +12,10 @@ export default function AuthLayout({ children }) {
 
         <div className="hidden bg-muted lg:block relative">
           <Image
-            src="https://d1y41eupgbwbb2.cloudfront.net/images/instantCta1.webp"
+            src="https://d1y41eupgbwbb2.cloudfront.net/images/adminAuth.webp"
             alt="Image"
             fill
-            className="size-full object-cover object-top-left"
+            className="size-full object-cover object-center"
           />
         </div>
       </div>

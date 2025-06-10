@@ -52,10 +52,10 @@ export function ForgotForm() {
                 toast.success(data.message);
                 router.push('/login');
             } else {
-                handleError(data);
+                handleError(data?.error);
             }
         } catch (error) {
-            handleError(error);
+            handleError(error?.message);
         }
     };
 
@@ -80,7 +80,7 @@ export function ForgotForm() {
                     )}
                 />
 
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'Send Reset Link' : 'Send Reset Link'}
                 </Button>
             </form>

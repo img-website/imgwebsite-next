@@ -47,7 +47,6 @@ export async function POST(req) {
     );
 
   } catch (error) {
-    console.error('Admin login error:', error);
     return NextResponse.json(
       {
         success: false,

@@ -111,7 +111,6 @@ export async function sendLoginEmail(admin) {
     return { success: true };
 
   } catch (error) {
-    console.error('Send login email error:', error);
     return {
       success: false,
       error: 'Error sending login email'
@@ -210,7 +209,6 @@ export async function sendWelcomeEmail(admin) {
     return { success: true };
 
   } catch (error) {
-    console.error('Send welcome email error:', error);
     return {
       success: false,
       error: 'Error sending welcome email'
@@ -306,7 +304,6 @@ export async function sendPasswordResetEmail(admin, resetToken) {
     return { success: true };
 
   } catch (error) {
-    console.error('Send password reset email error:', error);
     return {
       success: false,
       error: 'Error sending password reset email'
@@ -410,7 +407,6 @@ export async function sendPasswordResetConfirmationEmail(admin) {
     return { success: true };
 
   } catch (error) {
-    console.error('Send password reset confirmation email error:', error);
     return {
       success: false,
       error: 'Error sending password reset confirmation email'

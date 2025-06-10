@@ -18,7 +18,6 @@ import {
     FormControl,
     FormMessage,
 } from "@/components/ui/form"
-import { cn } from "@/lib/utils"
 import { Eye, EyeOff } from "lucide-react"
 
 // Zod schema for validation
@@ -83,10 +82,10 @@ export function LoginForm() {
 
                 router.refresh();
             } else {
-                handleError(data);
+                handleError(data?.error);
             }
         } catch (error) {
-            handleError(error);
+            handleError(error?.message);
         }
     }
 
@@ -152,7 +151,7 @@ export function LoginForm() {
                 />
 
                 {/* Submit Button */}
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
                 </Button>
             </form>

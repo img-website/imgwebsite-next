@@ -78,7 +78,6 @@ export async function uploadProfileImage(formData) {
     };
 
   } catch (error) {
-    console.error('File upload error:', error);
     return {
       success: false,
       error: 'Error uploading profile image'
@@ -167,7 +166,6 @@ export async function uploadMovieImage(formData, type) {
     };
 
   } catch (error) {
-    console.error('Movie image upload error:', error);
     return {
       success: false,
       error: `Error uploading ${type} image`

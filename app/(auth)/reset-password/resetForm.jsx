@@ -47,7 +47,7 @@ export function ResetForm() {
         const { password } = values;
 
         try {
-            const response = await fetch("/api/v1/admin/auth/reset-password", {
+            const response = await fetch("/api/v1/admin/reset-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -64,8 +64,7 @@ export function ResetForm() {
                 toast.error(data.error || "Failed to reset password. Please try again.");
             }
         } catch (error) {
-            console.error(error);
-            toast.error("Failed to reset password. Please try again.");
+            toast.error(error?.message || "Failed to reset password. Please try again.");
         }
     };
 
@@ -93,7 +92,7 @@ export function ResetForm() {
                                         className="absolute right-2 top-1/2 -translate-y-1/2"
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? (
+                                        {!showPassword ? (
                                             <EyeOff className="h-4 w-4" />
                                         ) : (
                                             <Eye className="h-4 w-4" />
@@ -128,7 +127,7 @@ export function ResetForm() {
                                         className="absolute right-2 top-1/2 -translate-y-1/2"
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? (
+                                        {!showPassword ? (
                                             <EyeOff className="h-4 w-4" />
                                         ) : (
                                             <Eye className="h-4 w-4" />
@@ -142,7 +141,7 @@ export function ResetForm() {
                     )}
                 />
 
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'Resetting...' : 'Reset Password'}
                 </Button>
             </form>

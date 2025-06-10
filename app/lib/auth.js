@@ -10,7 +10,6 @@ export function verifyToken(token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
     return decoded;
   } catch (error) {
-    console.error('Token verification error:', error);
     return null;
   }
 }

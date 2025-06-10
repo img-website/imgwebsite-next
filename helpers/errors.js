@@ -21,7 +21,7 @@ const useErrorHandler = () => {
             return;
         }
 
-        const { message, status } = error;
+        const { error: message, status } = error;
 
         // Handle common HTTP errors
         if (status) {
@@ -89,6 +89,14 @@ const useErrorHandler = () => {
                 handleToast("Validation Error", message);
                 break;
 
+            case message?.includes("Invalid email or password"):
+                handleToast("Login Failed", "Invalid email or password. Please check your credentials.");
+                break;
+            
+            case message?.includes("Admin with this email already exists"):
+                handleToast("Registration Failed", "Admin with this email already exists. Please use a different email.");
+                break;
+
             // Other Errors
             default:
                 handleToast(
@@ -98,6 +106,7 @@ const useErrorHandler = () => {
                 console.error(error);
         }
     };
+
 
     return handleError;  // Return the error handler function
 };

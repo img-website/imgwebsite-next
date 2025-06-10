@@ -64,7 +64,6 @@ export async function POST(req) {
     });
 
   } catch (error) {
-    console.error('2FA verification error:', error);
     return NextResponse.json(
       { success: false, error: 'Error verifying 2FA' },
       { status: 500 }

@@ -40,7 +40,6 @@ export async function POST(req) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Add genre error:', error);
 
     if (error.code === 11000) {
       return NextResponse.json({
@@ -105,7 +104,6 @@ export async function GET(req) {
     });
 
   } catch (error) {
-    console.error('Get genres error:', error);
     return NextResponse.json({
       success: false,
       error: 'Error fetching genres'
