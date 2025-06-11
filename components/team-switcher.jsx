@@ -1,10 +1,9 @@
-"use client"
-
 "use client";
 
 import * as React from "react";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useMainContext } from "@/app/context/main-context";
 
 import {
   DropdownMenu,
@@ -22,77 +21,97 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-// Create a context for the active team
-export const ActiveTeamContext = React.createContext(null);
-
 export function TeamSwitcher({ teams }) {
   const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  const { activeTeam, setActiveTeam } = useMainContext();
+
+  // Set initial active team from localStorage or default to first team
+  React.useEffect(() => {
+    const savedTeam = localStorage.getItem('activeTeam');
+    if (!activeTeam && teams.length > 0) {
+      if (savedTeam) {
+        const team = teams.find(t => t.name === savedTeam);
+        if (team) {
+          setActiveTeam(team);
+        } else {
+          setActiveTeam(teams[0]);
+        }
+      } else {
+        setActiveTeam(teams[0]);
+      }
+    }
+  }, [teams, activeTeam, setActiveTeam]);
+
+  // Save team selection to localStorage
+  React.useEffect(() => {
+    if (activeTeam) {
+      localStorage.setItem('activeTeam', activeTeam.name);
+    }
+  }, [activeTeam]);
+
+  // Setup hotkeys for team switching
+  useHotkeys('shift+1', () => teams[0] && setActiveTeam(teams[0]));
+  useHotkeys('shift+2', () => teams[1] && setActiveTeam(teams[1]));
+  useHotkeys('shift+3', () => teams[2] && setActiveTeam(teams[2]));
+  useHotkeys('shift+4', () => teams[3] && setActiveTeam(teams[3]));
 
   if (!activeTeam) {
     return null;
   }
 
-  // Define hotkeys for each team
-  teams.forEach((team, index) => {
-    useHotkeys(`shift+${index + 1}`, () => setActiveTeam(team));
-  });
-
   return (
-    <ActiveTeamContext.Provider value={activeTeam}>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              >
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <activeTeam.logo className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{activeTeam.name}</span>
-                  <span className="truncate text-xs">{activeTeam.plan}</span>
-                </div>
-                <ChevronsUpDown className="ml-auto" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-              align="start"
-              side={isMobile ? "bottom" : "right"}
-              sideOffset={4}
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <DropdownMenuLabel className="text-muted-foreground text-xs">
-                Teams
-              </DropdownMenuLabel>
-              {teams.map((team, index) => (
-                <DropdownMenuItem
-                  key={team.name}
-                  onClick={() => setActiveTeam(team)}
-                  className="gap-2 p-2"
-                >
-                  <div className="flex size-6 items-center justify-center rounded-md border">
-                    <team.logo className="size-3.5 shrink-0" />
-                  </div>
-                  {team.name}
-                  <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="gap-2 p-2">
-                <div
-                  className="flex size-6 items-center justify-center rounded-md border bg-transparent"
-                >
-                  <Plus className="size-4" />
+              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                <activeTeam.logo className="size-4" />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{activeTeam.name}</span>
+                <span className="truncate text-xs">{activeTeam.plan}</span>
+              </div>
+              <ChevronsUpDown className="ml-auto" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            align="start"
+            side={isMobile ? "bottom" : "right"}
+            sideOffset={4}
+          >
+            <DropdownMenuLabel className="text-muted-foreground text-xs">
+              Teams
+            </DropdownMenuLabel>
+            {teams.map((team, index) => (
+              <DropdownMenuItem
+                key={team.name}
+                onClick={() => setActiveTeam(team)}
+                className="gap-2 p-2"
+              >
+                <div className="flex size-6 items-center justify-center rounded-md border">
+                  <team.logo className="size-3.5 shrink-0" />
                 </div>
-                <div className="text-muted-foreground font-medium">Add team</div>
+                {team.name}
+                <DropdownMenuShortcut>⇧{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </ActiveTeamContext.Provider>
+            ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="gap-2 p-2">
+              <div
+                className="flex size-6 items-center justify-center rounded-md border bg-transparent"
+              >
+                <Plus className="size-4" />
+              </div>
+              <div className="text-muted-foreground font-medium">Add team</div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 }

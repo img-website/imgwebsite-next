@@ -6,19 +6,20 @@ import {
   BookOpen,
   Bot,
   AArrowUp,
-  Frame,
   Rss,
-  Map,
-  PieChart,
   Split,
   SquareTerminal,
   Settings2,
+  ChartBarStacked,
+  Images,
+  Tags,
+  UserRoundPen,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
+import { useMainContext } from "@/app/context/main-context"
 import {
   Sidebar,
   SidebarContent,
@@ -30,9 +31,9 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "https://d1y41eupgbwbb2.cloudfront.net/images/blogauthor/blogauthor-1747657485.webp",
+    name: "Mohit Mittal",
+    email: "mohit@imgglobalinfotech.com",
+    avatar: "https://d1y41eupgbwbb2.cloudfront.net/images/blogauthor/blogauthor-1747657504.webp",
   },
   teams: [
     {
@@ -64,20 +65,80 @@ const data = {
     {
       title: "Blogs",
       url: "#",
-      icon: SquareTerminal,
+      icon: Rss,
       isActive: true,
       team: "Blogs",
       items: [
         {
-          title: "History",
+          title: "Add Blog",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "View Blogs",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Categories",
+      url: "#",
+      icon: ChartBarStacked,
+      team: "Blogs",
+      items: [
+        {
+          title: "Add Category",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "View Categories",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Images",
+      url: "#",
+      icon: Images,
+      team: "Blogs",
+      items: [
+        {
+          title: "Add Image",
+          url: "#",
+        },
+        {
+          title: "View Images",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Tags",
+      url: "#",
+      icon: Tags,
+      team: "Blogs",
+      items: [
+        {
+          title: "Add Tag",
+          url: "#",
+        },
+        {
+          title: "View Tags",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Authors",
+      url: "#",
+      icon: UserRoundPen,
+      team: "Blogs",
+      items: [
+        {
+          title: "Add Author",
+          url: "#",
+        },
+        {
+          title: "View Authors",
           url: "#",
         },
       ],
@@ -151,41 +212,31 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 }
 
 export function AppSidebar({
   ...props
 }) {
+  const { activeTeam } = useMainContext();
+
+  // Filter nav items based on active team
+  const filteredItems = React.useMemo(() => {
+    if (!activeTeam) return [];
+    return data.navMain.filter(item => item.team === activeTeam.name);
+  }, [activeTeam]);
+
   return (
-    (<Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={filteredItems} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
-    </Sidebar>)
+    </Sidebar>
   );
 }
