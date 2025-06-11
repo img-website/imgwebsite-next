@@ -2,16 +2,17 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
+  Target,
   BookOpen,
   Bot,
-  Command,
+  AArrowUp,
   Frame,
-  GalleryVerticalEnd,
+  Rss,
   Map,
   PieChart,
-  Settings2,
+  Split,
   SquareTerminal,
+  Settings2,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -35,27 +36,37 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      name: "Blogs",
+      logo: Rss,
+      description: "Blogs team",
+      isActive: true,
     },
     {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
+      name: "Leads",
+      logo: Target,
+      description: "Leads team",
+      isActive: true,
     },
     {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Meta & Schema",
+      logo: AArrowUp,
+      description: "SEO team",
+      isActive: true,
+    },
+    {
+      name: "Redirections",
+      logo: Split,
+      description: "SEO team",
+      isActive: true,
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Blogs",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
+      team: "Blogs",
       items: [
         {
           title: "History",
@@ -72,9 +83,10 @@ const data = {
       ],
     },
     {
-      title: "Models",
+      title: "Leads",
       url: "#",
       icon: Bot,
+      team: "Leads",
       items: [
         {
           title: "Genesis",
@@ -91,9 +103,10 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
+      title: "Meta & Schema",
       url: "#",
       icon: BookOpen,
+      team: "Meta & Schema",
       items: [
         {
           title: "Introduction",
@@ -114,9 +127,10 @@ const data = {
       ],
     },
     {
-      title: "Settings",
+      title: "Redirections",
       url: "#",
       icon: Settings2,
+      team: "Redirections",
       items: [
         {
           title: "General",
