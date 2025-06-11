@@ -1,48 +1,55 @@
 import { NextResponse } from 'next/server';
 import { registerAdmin } from '@/app/actions/admin';
-import { registerLimiter } from '@/app/middleware/rateLimiter';
+import { rateLimit } from '@/app/middleware/rateLimiter';
 
 /**
  * @route POST /api/v1/admin/register
  * @desc Register a new admin
  * @access Public
- * @param {string} firstName - Admin's first name
- * @param {string} lastName - Admin's last name
- * @param {string} username - Admin's username
- * @param {string} email - Admin's email
- * @param {string} password - Admin's password
- * @param {string} mobileNumber - Admin's mobile number
- * @param {File} profileImage - Admin's profile image file
  */
+async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAttempts) {
+  // Check if IP is locked out
+  const lockoutTime = failedLoginAttempts.get(ip)?.lockoutUntil;
+  if (lockoutTime && lockoutTime > Date.now()) {
+    const remainingTime = Math.ceil((lockoutTime - Date.now()) / 60000);
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Too many failed attempts. Please try again in ${remainingTime} minutes.`
+      },
+      { status: 429 }
+    );
+  }
+
+  const formData = await req.formData();
+  const result = await registerAdmin(formData, req);
+
+  if (!result.success) {
+    // Increment failed login attempts
+    const attempts = (failedLoginAttempts.get(ip)?.attempts || 0) + 1;
+    failedLoginAttempts.set(ip, { attempts });
+
+    if (attempts >= failedAttempts) {
+      // Lockout IP for 10 minutes
+      failedLoginAttempts.set(ip, {
+        attempts,
+        lockoutUntil: Date.now() + lockoutDuration
+      });
+    }
+  } else {
+    // Clear failed login attempts on successful registration
+    failedLoginAttempts.delete(ip);
+  }
+
+  return NextResponse.json(result, { status: result.success ? 201 : 400 });
+}
 
 export async function POST(req) {
   try {
-    // Check rate limit
-    const rateLimitResult = await registerLimiter(req);
-    if (rateLimitResult) return rateLimitResult;
-
-    const formData = await req.formData();
-    const result = await registerAdmin(formData,req);
-
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 400 }
-      );
-    }
-    
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Admin registered successfully',
-        data: result.data,
-        token: result.token
-      },
-      { status: 201 }
-    );
-
+    // Apply rate limit
+    return rateLimit(req, handler);
   } catch (error) {
+    console.error('Admin registration error:', error);
     return NextResponse.json(
       {
         success: false,

@@ -1,52 +1,63 @@
 import { NextResponse } from 'next/server';
 import { loginAdmin } from '@/app/actions/admin';
-import { loginLimiter } from '@/app/middleware/rateLimiter';
+import { rateLimit } from '@/app/middleware/rateLimiter';
 
 /**
  * @route POST /api/v1/admin/login
  * @desc Login admin
  * @access Public
- * @param {string} email - Admin's email
- * @param {string} password - Admin's password
  */
+async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAttempts) {
+  const body = await req.json();
+  const { email, password } = body;
 
-export async function POST(req) {
-  try {
-    // Check rate limit
-    const rateLimitResult = await loginLimiter(req);
-    if (rateLimitResult) return rateLimitResult;
+  if (!email || !password) {
+    return NextResponse.json(
+      { success: false, error: 'Email and password are required' },
+      { status: 400 }
+    );
+  }
 
-    const body = await req.json();
-    const { email, password } = body;
+  const result = await loginAdmin(email, password);
 
-    // Validate required fields
-    if (!email || !password) {
-      return NextResponse.json(
-        { success: false, error: 'Email and password are required' },
-        { status: 400 }
-      );
-    }
+  if (!result.success) {
+    // Increment failed login attempts
+    const attempts = (failedLoginAttempts.get(ip)?.attempts || 0) + 1;
+    failedLoginAttempts.set(ip, { attempts });
 
-    const result = await loginAdmin(email, password);
-
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 400 }
-      );
+    if (attempts >= failedAttempts) {
+      // Lockout IP for 10 minutes
+      failedLoginAttempts.set(ip, {
+        attempts,
+        lockoutUntil: Date.now() + lockoutDuration
+      });
     }
 
     return NextResponse.json(
-      {
-        success: true,
-        message: 'Login successful',
-        data: result.data,
-        token: result.token
-      },
-      { status: 200 }
+      { success: false, error: result.error },
+      { status: 400 }
     );
+  }
 
+  // Clear failed login attempts on successful login
+  failedLoginAttempts.delete(ip);
+
+  return NextResponse.json(
+    {
+      success: true,
+      message: 'Login successful',
+      data: result.data,
+      token: result.token
+    },
+    { status: 200 }
+  );
+}
+
+export async function POST(req) {
+  try {
+    return rateLimit(req, handler);
   } catch (error) {
+    console.error('Login error:', error);
     return NextResponse.json(
       {
         success: false,
@@ -55,4 +66,4 @@ export async function POST(req) {
       { status: 500 }
     );
   }
-} 
+}
