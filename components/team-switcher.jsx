@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { ChevronsUpDown } from "lucide-react";
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useMainContext } from "@/app/context/main-context";
 
 import {
@@ -19,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export function TeamSwitcher({ teams }) {
   const { isMobile } = useSidebar();
