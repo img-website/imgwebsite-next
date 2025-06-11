@@ -155,7 +155,7 @@ export default function Navbar() {
             }
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="icon" className="rounded-full">
+                    <Button variant="secondary" size="icon" className="rounded-full cursor-pointer">
                         <CircleUser className="size-5" />
                         <span className="sr-only">Toggle user menu</span>
                     </Button>
