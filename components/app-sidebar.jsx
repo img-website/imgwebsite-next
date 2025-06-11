@@ -14,6 +14,9 @@ import {
   Images,
   Tags,
   UserRoundPen,
+  LineChart,
+  Mail,
+  BellRing,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -68,6 +71,7 @@ const data = {
       icon: Rss,
       isActive: true,
       team: "Blogs",
+      type: "dropdown",
       items: [
         {
           title: "Add Blog",
@@ -84,6 +88,7 @@ const data = {
       url: "#",
       icon: ChartBarStacked,
       team: "Blogs",
+      type: "dropdown",
       items: [
         {
           title: "Add Category",
@@ -142,6 +147,20 @@ const data = {
           url: "#",
         },
       ],
+    },
+    {
+      title: "Comments",
+      url: "/admin/comments",
+      icon: Mail,
+      team: "Blogs",
+      type: "link"
+    },
+    {
+      title: "Notifications",
+      url: "/admin/notifications",
+      icon: BellRing,
+      team: "Blogs",
+      type: "link"
     },
     {
       title: "Leads",
