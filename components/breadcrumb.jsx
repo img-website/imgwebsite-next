@@ -10,6 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import React from 'react'
 
 export function DynamicBreadcrumb() {
   const pathname = usePathname()
@@ -34,24 +35,30 @@ export function DynamicBreadcrumb() {
   return (
     <Breadcrumb>
       <BreadcrumbList>
+        {/* First render the Home link */}
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        
-        {breadcrumbItems.map(({ href, label, isLast }) => (
-          <BreadcrumbItem key={href}>
-            {isLast ? (
-              <BreadcrumbPage>{label}</BreadcrumbPage>
-            ) : (
-              <BreadcrumbLink asChild>
-                <Link href={href}>{label}</Link>
-              </BreadcrumbLink>
-            )}
-            {!isLast && <BreadcrumbSeparator />}
-          </BreadcrumbItem>
+
+        {/* Then render all breadcrumb items */}
+        {breadcrumbItems.map(({ href, label, isLast }, index) => (
+          <React.Fragment key={href}>
+            {/* Separator between items */}
+            <BreadcrumbSeparator />
+            
+            {/* Breadcrumb item */}
+            <BreadcrumbItem>
+              {isLast ? (
+                <BreadcrumbPage>{label}</BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink asChild>
+                  <Link href={href}>{label}</Link>
+                </BreadcrumbLink>
+              )}
+            </BreadcrumbItem>
+          </React.Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
