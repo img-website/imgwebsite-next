@@ -72,6 +72,7 @@ export function ForgotForm() {
                                 <Input
                                     placeholder="Email Address"
                                     autoComplete="off"
+                                    type="email"
                                     {...field}
                                 />
                             </FormControl>

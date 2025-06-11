@@ -103,6 +103,7 @@ export function LoginForm() {
                                 <Input
                                     placeholder="Email"
                                     autoComplete="email"
+                                    type={"email"}
                                     {...field}
                                 />
                             </FormControl>

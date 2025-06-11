@@ -89,6 +89,7 @@ export function RegisterForm() {
                                 <Input
                                     placeholder="Email Address"
                                     autoComplete="off"
+                                    type="email"
                                     {...field}
                                 />
                             </FormControl>

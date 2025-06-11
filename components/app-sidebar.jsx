@@ -3,20 +3,21 @@
 import * as React from "react"
 import {
   Target,
-  BookOpen,
-  Bot,
   AArrowUp,
   Rss,
   Split,
-  SquareTerminal,
-  Settings2,
   ChartBarStacked,
   Images,
   Tags,
   UserRoundPen,
-  LineChart,
   Mail,
   BellRing,
+  CaptionsOff,
+  MonitorDown,
+  CircleCheckBig,
+  UserSearch,
+  Braces,
+  Quote,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -46,7 +47,7 @@ const data = {
       isActive: true,
     },
     {
-      name: "Leads",
+      name: "Leads & Contacts",
       logo: Target,
       description: "Leads team",
       isActive: true,
@@ -75,11 +76,11 @@ const data = {
       items: [
         {
           title: "Add Blog",
-          url: "#",
+          url: "/admin/blogs/add",
         },
         {
           title: "View Blogs",
-          url: "#",
+          url: "/admin/blogs",
         },
       ],
     },
@@ -92,11 +93,11 @@ const data = {
       items: [
         {
           title: "Add Category",
-          url: "#",
+          url: "/admin/blogs/categories/add",
         },
         {
           title: "View Categories",
-          url: "#",
+          url: "/admin/blogs/categories",
         },
       ],
     },
@@ -108,11 +109,11 @@ const data = {
       items: [
         {
           title: "Add Image",
-          url: "#",
+          url: "/admin/blogs/images/add",
         },
         {
           title: "View Images",
-          url: "#",
+          url: "/admin/blogs/images",
         },
       ],
     },
@@ -124,11 +125,11 @@ const data = {
       items: [
         {
           title: "Add Tag",
-          url: "#",
+          url: "/admin/blogs/tags/add",
         },
         {
           title: "View Tags",
-          url: "#",
+          url: "/admin/blogs/tags",
         },
       ],
     },
@@ -140,24 +141,24 @@ const data = {
       items: [
         {
           title: "Add Author",
-          url: "#",
+          url: "/admin/blogs/authors/add",
         },
         {
           title: "View Authors",
-          url: "#",
+          url: "/admin/blogs/authors",
         },
       ],
     },
     {
       title: "Comments",
-      url: "/admin/comments",
+      url: "/admin/blogs/comments",
       icon: Mail,
       team: "Blogs",
       type: "link"
     },
     {
       title: "Notifications",
-      url: "/admin/notifications",
+      url: "/admin/blogs/notifications",
       icon: BellRing,
       team: "Blogs",
       type: "link"
@@ -165,68 +166,134 @@ const data = {
     {
       title: "Leads",
       url: "#",
-      icon: Bot,
-      team: "Leads",
+      icon: Target,
+      team: "Leads & Contacts",
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Add Lead",
+          url: "/admin/leads/add",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "View Leads",
+          url: "/admin/leads",
         },
       ],
     },
     {
-      title: "Meta & Schema",
+      title: "Rejected Leads",
+      url: "/admin/leads/rejected",
+      icon: CaptionsOff,
+      team: "Leads & Contacts",
+      type: "link"
+    },
+    {
+      title: "Upcoming Leads",
+      url: "/admin/leads/upcoming",
+      icon: MonitorDown,
+      team: "Leads & Contacts",
+      type: "link"
+    },
+    {
+      title: "Approved Leads",
+      url: "/admin/leads/approved",
+      icon: CircleCheckBig,
+      team: "Leads & Contacts",
+      type: "link"
+    },
+    {
+      title: "Careers",
+      url: "/admin/careers",
+      icon: UserSearch,
+      team: "Leads & Contacts",
+      type: "link"
+    },
+    {
+      title: "Newsletter",
+      url: "/admin/newsletter",
+      icon: BellRing,
+      team: "Leads & Contacts",
+      type: "link"
+    },
+    {
+      title: "Meta Tags",
       url: "#",
-      icon: BookOpen,
+      icon: AArrowUp,
       team: "Meta & Schema",
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Static Meta",
+          url: "/admin/meta/static",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Dynamic Meta",
+          url: "/admin/meta/dynamic",
         },
       ],
+    },
+    {
+      title: "Schemas",
+      url: "#",
+      icon: Braces,
+      team: "Meta & Schema",
+      items: [
+        {
+          title: "Corporation",
+          url: "/admin/schemas/corporation",
+        },
+        {
+          title: "WebPage",
+          url: "/admin/schemas/webpage",
+        },
+        {
+          title: "Organization",
+          url: "/admin/schemas/organization",
+        },
+        {
+          title: "LocalBusiness",
+          url: "/admin/schemas/localbusiness",
+        },
+        {
+          title: "BreadcrumbList",
+          url: "/admin/schemas/breadcrumblist",
+        },
+        {
+          title: "WebSite",
+          url: "/admin/schemas/website",
+        },
+        {
+          title: "Service",
+          url: "/admin/schemas/service",
+        },
+        {
+          title: "Product",
+          url: "/admin/schemas/product",
+        },
+        {
+          title: "NewsArticle",
+          url: "/admin/schemas/newsarticle",
+        },
+      ],
+    },
+    {
+      title: "FAQs",
+      url: "/admin/faqs",
+      icon: Quote,
+      team: "Meta & Schema",
+      type: "link"
     },
     {
       title: "Redirections",
       url: "#",
-      icon: Settings2,
+      icon: Split,
       team: "Redirections",
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Add Redirection",
+          url: "/admin/redirections/add",
         },
         {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "View Redirections",
+          url: "/admin/redirections",
         },
       ],
     },
