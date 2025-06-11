@@ -1,8 +1,11 @@
+import { AuthorTable } from "@/components/authorTable";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+
+import data from "./data.json"
 
 
 export default function Page() {
@@ -16,12 +19,12 @@ export default function Page() {
         </div>
       </header>
       <Separator />
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-2">
-        <div className="space-y-1">
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        {/* <div className="space-y-1">
           <h2 className="text-3xl font-bold tracking-tight">Authors</h2>
           <p className="text-muted-foreground">Authors are the people who have contributed to the blogs.</p>
-        </div>
-        
+        </div> */}
+        <AuthorTable data={data} />
       </div>
     </>
   );
