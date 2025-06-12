@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 const adminSchema = new mongoose.Schema({
   firstName: {
@@ -151,7 +151,7 @@ adminSchema.virtual('initials').get(function() {
 
 // Method to compare password
 adminSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+  return await bcryptjs.compare(candidatePassword, this.password);
 };
 
 const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
