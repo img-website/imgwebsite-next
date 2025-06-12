@@ -1,6 +1,7 @@
-import fs from 'fs';
-import path from 'path';
 import sharp from 'sharp';
+import path from 'path';
+import fs from 'fs/promises';
+import { fileTypeFromBuffer } from 'file-type';
 
 /**
  * Middleware to handle profile image upload with compression and multiple sizes
@@ -171,4 +172,93 @@ export async function uploadMovieImage(formData, type) {
       error: `Error uploading ${type} image`
     };
   }
-} 
+}
+
+/**
+ * Validate image file type
+ * @param {Buffer} buffer - File buffer to validate
+ * @returns {Promise<{success: boolean, error?: string}>}
+ */
+async function validateImageType(buffer) {
+  try {
+    const fileType = await fileTypeFromBuffer(buffer);
+    
+    if (!fileType) {
+      return {
+        success: false,
+        error: 'Could not determine file type'
+      };
+    }
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!validTypes.includes(fileType.mime)) {
+      return {
+        success: false,
+        error: 'Please upload only image files (JPEG, PNG, WebP, or GIF)'
+      };
+    }
+
+    return {
+      success: true
+    };
+  } catch (error) {
+    console.error('Error validating file type:', error);
+    return {
+      success: false,
+      error: 'Error validating file type'
+    };
+  }
+}
+
+/**
+ * Upload and process author image
+ * @param {File} file - The image file from form data
+ * @returns {Promise<{success: boolean, imagePath?: string, error?: string}>}
+ */
+export async function uploadAuthorImage(file) {
+  try {
+    if (!file) {
+      return {
+        success: false,
+        error: 'Please provide an image file'
+      };
+    }
+
+    // Get file buffer
+    const buffer = await file.arrayBuffer();
+
+    // Validate file type
+    const fileType = await validateImageType(Buffer.from(buffer));
+    if (!fileType.success) {
+      return fileType;
+    }
+
+    // Ensure upload directory exists
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'authors');
+    await fs.mkdir(uploadDir, { recursive: true });
+
+    // Generate unique filename
+    const filename = `author-${Date.now()}.webp`;
+    const filepath = path.join(uploadDir, filename);
+
+    // Process and save image
+    await sharp(Buffer.from(buffer))
+      .resize(400, 400, { 
+        fit: 'cover',
+        position: 'center'
+      })
+      .webp({ quality: 80 })
+      .toFile(filepath);
+
+    return {
+      success: true,
+      imagePath: `/uploads/authors/${filename}`
+    };
+  } catch (error) {
+    console.error('Error uploading author image:', error);
+    return {
+      success: false,
+      error: 'Error processing image'
+    };
+  }
+}
