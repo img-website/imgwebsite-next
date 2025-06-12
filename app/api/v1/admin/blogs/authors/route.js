@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Author, { AUTHOR_STATUS } from '@/app/models/Author';
-import Blog from '@/app/models/Blog'; // We'll need this for blog count
+import Blog from '@/app/models/Blog';
+import Fuse from 'fuse.js';// We'll need this for blog count
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadAuthorImage } from '@/app/middleware/imageUpload';
 
@@ -12,17 +13,28 @@ import { uploadAuthorImage } from '@/app/middleware/imageUpload';
  */
 export async function GET(req) {
   try {
-    await connectDB();    const { searchParams } = new URL(req.url);
+    await connectDB();
+    const { searchParams } = new URL(req.url);
     
+    // Get all query parameters
+    const search = searchParams.get('search');
+    const showDeleted = searchParams.get('deleted') === 'true';
+    const status = searchParams.get('status');
+    const sortBy = searchParams.get('sortBy') || 'created_date';
+    const sortOrder = parseInt(searchParams.get('sortOrder')) || -1;
+    const page = parseInt(searchParams.get('page')) || 1;
+    const limit = parseInt(searchParams.get('limit')) || 10;
+    const skip = (page - 1) * limit;
+
     // Build base query for filtering
     const baseQuery = {};
     
     // Handle deleted items
-    const showDeleted = searchParams.get('deleted') === 'true';
     if (!showDeleted) {
       baseQuery.deleted_at = null;
-    }    // Status filter
-    const status = searchParams.get('status');
+    }
+
+    // Status filter
     if (status) {
       const numericStatus = parseInt(status, 10);
       // Only add status to query if it's a valid value
@@ -35,49 +47,45 @@ export async function GET(req) {
       baseQuery.status = numericStatus;
     }
 
-    // Search filter
-    const search = searchParams.get('search');
+    // Get all authors first for Fuse.js search
+    let allAuthors = await Author.find(baseQuery)
+      .select('-__v')
+      .lean(); // Using lean for better performance
+
+    // Apply Fuse.js search if search parameter exists
     if (search) {
-      baseQuery.$or = [
-        { author_name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { slug: { $regex: search, $options: 'i' } }
-      ];
+      const fuseOptions = {
+        keys: ['author_name', 'description', 'slug'],
+        threshold: 0.3, // Adjust this value for search sensitivity (0.0 is exact match)
+        includeScore: true
+      };
+      const fuse = new Fuse(allAuthors, fuseOptions);
+      const searchResults = fuse.search(search);
+      allAuthors = searchResults.map(result => result.item);
     }
 
-    // Sort options
-    const sortBy = searchParams.get('sortBy') || 'created_date';
-    const sortOrder = parseInt(searchParams.get('sortOrder')) || -1;
-    const sortOptions = { [sortBy]: sortOrder };
+    // Get total count after search
+    const total = allAuthors.length;
 
-    // Pagination
-    const page = parseInt(searchParams.get('page')) || 1;
-    const limit = parseInt(searchParams.get('limit')) || 10;
-    const skip = (page - 1) * limit;    // Merge baseQuery with other filters
-    const finalQuery = {
-      ...baseQuery,
-      ...(status && { status }),
-      ...(search && { $or: [
-        { author_name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { slug: { $regex: search, $options: 'i' } }
-      ]})
-    };    // Get authors with pagination
-    const [authors, total] = await Promise.all([
-      Author.find(baseQuery, null, { showDeleted }) // Pass showDeleted option
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(limit)
-        .select('-__v'),
-      Author.countDocuments(baseQuery, { showDeleted }) // Pass showDeleted option
-    ]);
+    // Apply sorting
+    if (sortBy) {
+      allAuthors.sort((a, b) => {
+        const aValue = a[sortBy];
+        const bValue = b[sortBy];
+        return sortOrder * (aValue > bValue ? 1 : -1);
+      });
+    }
+
+    // Apply pagination manually after search
+    const authors = allAuthors.slice(skip, skip + limit);
 
     // Update blog counts for all authors
     const authorsWithCounts = await Promise.all(authors.map(async (author) => {
       const blogCount = await Blog.countDocuments({ author: author._id, status: 'published' });
-      author.blog_count = blogCount;
-      await author.save();
-      return author;
+      return {
+        ...author,
+        blog_count: blogCount
+      };
     }));
 
     return NextResponse.json({
@@ -87,7 +95,7 @@ export async function GET(req) {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit)
       }
     });
 
