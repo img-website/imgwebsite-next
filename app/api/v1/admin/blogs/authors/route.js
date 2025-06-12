@@ -1,35 +1,47 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
-import Author from '@/app/models/Author';
+import Author, { AUTHOR_STATUS } from '@/app/models/Author';
+import Blog from '@/app/models/Blog'; // We'll need this for blog count
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadAuthorImage } from '@/app/middleware/imageUpload';
 
 /**
  * @route GET /api/v1/admin/blogs/authors
- * @desc Get all authors
+ * @desc Get all authors with filters, sorting, and pagination
  * @access Public
  */
 export async function GET(req) {
   try {
-    await connectDB();
-
-    const { searchParams } = new URL(req.url);
+    await connectDB();    const { searchParams } = new URL(req.url);
     
-    // Build query
-    const query = {};
-
-    // Status filter
+    // Build base query for filtering
+    const baseQuery = {};
+    
+    // Handle deleted items
+    const showDeleted = searchParams.get('deleted') === 'true';
+    if (!showDeleted) {
+      baseQuery.deleted_at = null;
+    }    // Status filter
     const status = searchParams.get('status');
-    if (status && ['active', 'inactive'].includes(status)) {
-      query.status = status;
+    if (status) {
+      const numericStatus = parseInt(status, 10);
+      // Only add status to query if it's a valid value
+      if (![1, 2, 3].includes(numericStatus)) {
+        return NextResponse.json({
+          success: false,
+          error: 'Invalid status value. Must be 1 (Active), 2 (Inactive), or 3 (Suspended)'
+        }, { status: 400 });
+      }
+      baseQuery.status = numericStatus;
     }
 
     // Search filter
     const search = searchParams.get('search');
     if (search) {
-      query.$or = [
+      baseQuery.$or = [
         { author_name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
+        { description: { $regex: search, $options: 'i' } },
+        { slug: { $regex: search, $options: 'i' } }
       ];
     }
 
@@ -41,21 +53,36 @@ export async function GET(req) {
     // Pagination
     const page = parseInt(searchParams.get('page')) || 1;
     const limit = parseInt(searchParams.get('limit')) || 10;
-    const skip = (page - 1) * limit;
-
-    // Get authors with pagination
+    const skip = (page - 1) * limit;    // Merge baseQuery with other filters
+    const finalQuery = {
+      ...baseQuery,
+      ...(status && { status }),
+      ...(search && { $or: [
+        { author_name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { slug: { $regex: search, $options: 'i' } }
+      ]})
+    };    // Get authors with pagination
     const [authors, total] = await Promise.all([
-      Author.find(query)
+      Author.find(baseQuery, null, { showDeleted }) // Pass showDeleted option
         .sort(sortOptions)
         .skip(skip)
         .limit(limit)
         .select('-__v'),
-      Author.countDocuments(query)
+      Author.countDocuments(baseQuery, { showDeleted }) // Pass showDeleted option
     ]);
+
+    // Update blog counts for all authors
+    const authorsWithCounts = await Promise.all(authors.map(async (author) => {
+      const blogCount = await Blog.countDocuments({ author: author._id, status: 'published' });
+      author.blog_count = blogCount;
+      await author.save();
+      return author;
+    }));
 
     return NextResponse.json({
       success: true,
-      data: authors,
+      data: authorsWithCounts,
       pagination: {
         total,
         page,
@@ -65,6 +92,7 @@ export async function GET(req) {
     });
 
   } catch (error) {
+    console.error('Error fetching authors:', error);
     return NextResponse.json({
       success: false,
       error: 'Error fetching authors'
@@ -79,7 +107,6 @@ export async function GET(req) {
  */
 export async function POST(req) {
   try {
-    // Verify admin token
     const token = extractToken(req.headers);
     if (!token) {
       return NextResponse.json({
@@ -100,28 +127,53 @@ export async function POST(req) {
     
     const formData = await req.formData();
 
-    // Upload author image
-    let imagePath = formData.get('image');
-    if (imagePath && typeof imagePath !== 'string') {
-      const imageResult = await uploadAuthorImage(formData.get('image'));
-      if (!imageResult.success) {
-        return NextResponse.json({
-          success: false,
-          error: imageResult.error
-        }, { status: 400 });
-      }
-      imagePath = imageResult.imagePath;
+    // Check if author with same name exists
+    const existingAuthor = await Author.findOne({ 
+      author_name: formData.get('author_name')
+    });
+
+    if (existingAuthor) {
+      return NextResponse.json({
+        success: false,
+        error: 'Author with this name already exists'
+      }, { status: 400 });
     }
 
-    // Create author data object
+    // Upload author image
+    const imageFile = formData.get('image');
+    if (!imageFile) {
+      return NextResponse.json({
+        success: false,
+        error: 'Author image is required'
+      }, { status: 400 });
+    }
+
+    const imageResult = await uploadAuthorImage(imageFile);
+    if (!imageResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: imageResult.error
+      }, { status: 400 });
+    }
+
+    // Create author data object with proper numeric status
+    const status = Number(formData.get('status')) || 1;
+    if (![1, 2, 3].includes(status)) {
+      return NextResponse.json({
+        success: false,
+        error: 'Status must be 1 (Active), 2 (Inactive), or 3 (Suspended)'
+      }, { status: 400 });
+    }
+
     const authorData = {
       author_name: formData.get('author_name'),
       description: formData.get('description'),
       linkedin_link: formData.get('linkedin_link'),
       facebook_link: formData.get('facebook_link'),
       twitter_link: formData.get('twitter_link'),
-      image: imagePath,
-      status: formData.get('status') || 'active'
+      image: imageResult.filename,
+      status: status,
+      blog_count: 0
     };
 
     // Create new author
@@ -133,6 +185,14 @@ export async function POST(req) {
     }, { status: 201 });
 
   } catch (error) {
+    console.error('Error creating author:', error);
+    if (error.code === 11000) {
+      return NextResponse.json({
+        success: false,
+        error: 'Author with this name already exists'
+      }, { status: 400 });
+    }
+
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);
       return NextResponse.json({
