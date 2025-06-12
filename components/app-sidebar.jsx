@@ -23,7 +23,7 @@ import {
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
-import { useMainContext } from "@/app/context/main-context"
+import { useTeamStore } from "@/app/store/use-team-store"
 import {
   Sidebar,
   SidebarContent,
@@ -303,7 +303,7 @@ const data = {
 export function AppSidebar({
   ...props
 }) {
-  const { activeTeam } = useMainContext();
+  const activeTeam = useTeamStore((state) => state.activeTeam);
 
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {

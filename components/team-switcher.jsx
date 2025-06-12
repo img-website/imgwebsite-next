@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { ChevronsUpDown } from "lucide-react";
-import { useMainContext } from "@/app/context/main-context";
+import { getCookie, setCookie } from "cookies-next";
+import { useTeamStore } from "@/app/store/use-team-store";
 
 import {
   DropdownMenu,
@@ -19,14 +20,39 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export function TeamSwitcher({ teams }) {
+export function TeamSwitcher({ teams, isLoading }) {
   const { isMobile } = useSidebar();
-  const { activeTeam, setActiveTeam } = useMainContext();
+  const activeTeam = useTeamStore((state) => state.activeTeam);
+  const setActiveTeam = useTeamStore((state) => state.setActiveTeam);
 
-  // Set initial active team from localStorage or default to first team
+  // Loading skeleton
+  if (isLoading) {
+    return isMobile ? (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="flex items-center justify-between w-full p-2">
+            <Skeleton className="h-6 w-[100px]" />
+            <Skeleton className="h-4 w-4" />
+          </div>
+        </DropdownMenuTrigger>
+      </DropdownMenu>
+    ) : (
+      <SidebarMenu>
+        <SidebarMenuButton>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-[100px]" />
+            <Skeleton className="h-4 w-4" />
+          </div>
+        </SidebarMenuButton>
+      </SidebarMenu>
+    );
+  }
+
+  // Set initial active team from cookie or default to first team
   React.useEffect(() => {
-    const savedTeam = localStorage.getItem('activeTeam');
+    const savedTeam = getCookie('activeTeam');
     if (!activeTeam && teams.length > 0) {
       if (savedTeam) {
         const team = teams.find(t => t.name === savedTeam);
@@ -41,10 +67,13 @@ export function TeamSwitcher({ teams }) {
     }
   }, [teams, activeTeam, setActiveTeam]);
 
-  // Save team selection to localStorage
+  // Save team selection to cookie
   React.useEffect(() => {
     if (activeTeam) {
-      localStorage.setItem('activeTeam', activeTeam.name);
+      setCookie('activeTeam', activeTeam.name, {
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        path: '/'
+      });
     }
   }, [activeTeam]);
 
