@@ -21,7 +21,6 @@ import {
 } from "lucide-react"
 
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
 import { useTeamStore } from "@/app/store/use-team-store"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
