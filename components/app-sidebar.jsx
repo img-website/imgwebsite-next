@@ -20,10 +20,13 @@ import {
   Quote,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 import { useTeamStore } from "@/app/store/use-team-store"
+import { ErrorBoundary } from "@/components/error-boundary"
+import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
+import { NavMainSkeleton } from "@/components/skeleton/nav-main-skeleton"
+import { NavUserSkeleton } from "@/components/skeleton/nav-user-skeleton"
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +34,31 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+
+// Show loading state immediately by disabling preload and setting loading prop
+const NavMain = dynamic(
+  () => import("@/components/nav-main").then(mod => mod.NavMain),
+  {
+    loading: () => <NavMainSkeleton />,
+    ssr: false
+  }
+);
+
+const NavUser = dynamic(
+  () => import("@/components/nav-user").then(mod => mod.NavUser),
+  {
+    loading: () => <NavUserSkeleton />,
+    ssr: false
+  }
+);
+
+const TeamSwitcher = dynamic(
+  () => import("@/components/team-switcher").then(mod => mod.TeamSwitcher),
+  {
+    loading: () => <TeamSwitcherSkeleton />,
+    ssr: false
+  }
+);
 
 // This is sample data.
 const data = {
@@ -314,13 +342,19 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <ErrorBoundary>
+          <TeamSwitcher teams={data.teams} />
+        </ErrorBoundary>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={filteredItems} />
+        <ErrorBoundary>
+          <NavMain items={filteredItems} />
+        </ErrorBoundary>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <ErrorBoundary>
+          <NavUser user={data.user} />
+        </ErrorBoundary>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
