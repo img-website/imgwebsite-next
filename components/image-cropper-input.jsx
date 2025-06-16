@@ -56,6 +56,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
         <DialogContent className="max-w-xl">
           <DialogHeader>
             <DialogTitle>Crop Image</DialogTitle>
+            <DialogDescription>Select the area of the image you want to keep.</DialogDescription>
           </DialogHeader>
           {imageSrc && (
             <Cropper
