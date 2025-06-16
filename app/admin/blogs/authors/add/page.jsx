@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import ImageCropperInput from "@/components/image-cropper-input";
 import {
   Form,
   FormControl,
@@ -139,15 +140,14 @@ export default function Page() {
                     <FormField
                       control={form.control}
                       name="image"
-                      render={({ field: { onChange, value, ...field } }) => (
+                      render={({ field: { onChange, value } }) => (
                         <FormItem>
                           <FormLabel>Profile Image</FormLabel>
                           <FormControl>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => onChange(e.target.files)}
-                              {...field}
+                            <ImageCropperInput
+                              aspectRatio={1}
+                              value={value}
+                              onChange={onChange}
                             />
                           </FormControl>
                           <FormDescription>
