@@ -21,6 +21,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
@@ -35,6 +38,73 @@ import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import TokenFromCookie from "@/helpers/tokenFromCookie"
+
+function AuthorActions({ author }) {
+  const router = useRouter()
+
+  const handleStatusChange = async (status) => {
+    try {
+      const formData = new FormData()
+      formData.append('status', status)
+      const token = TokenFromCookie()
+      const res = await fetch(`/api/v1/admin/blogs/authors/${author.id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Status updated')
+        router.refresh()
+      } else {
+        toast.error(data.error || 'Failed to update status')
+      }
+    } catch (error) {
+      toast.error('Failed to update status')
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(author.id)}>
+          Copy author ID
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => window.open(author.linkedin_link, '_blank')}>
+          View LinkedIn
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => window.open(author.twitter_link, '_blank')}>
+          View Twitter
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => window.open(author.facebook_link, '_blank')}>
+          View Facebook
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem onClick={() => handleStatusChange(1)}>Active</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(2)}>Inactive</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(3)}>Suspend</DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 export const columns = [
   {
@@ -131,38 +201,7 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const author = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(author.id)}
-            >
-              Copy author ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => window.open(author.linkedin_link, '_blank')}>
-              View LinkedIn
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => window.open(author.twitter_link, '_blank')}>
-              View Twitter
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => window.open(author.facebook_link, '_blank')}>
-              View Facebook
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: ({ row }) => <AuthorActions author={row.original} />,
   },
 ]
 
