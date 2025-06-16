@@ -151,7 +151,12 @@ export const columns = [
             <AvatarFallback className="rounded-lg">IMG</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">{row.getValue("author_name")}</span>
+            <Link
+              href={`/admin/blogs/authors/${row.original.id}`}
+              className="truncate font-medium text-primary hover:underline"
+            >
+              {row.getValue("author_name")}
+            </Link>
           </div>
         </div>
       )
