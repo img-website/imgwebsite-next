@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
   const inputRef = useRef(null);
@@ -49,9 +50,6 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      {preview && (
-        <img src={preview} alt="Preview" className="h-24 w-24 rounded-md object-cover" />
-      )}
       <Input type="file" accept="image/*" ref={inputRef} onChange={handleFileChange} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-xl">
@@ -77,6 +75,9 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {preview && (
+        <Image src={preview} alt="Preview" className="h-24 w-24 rounded-md object-cover" width={100} height={100} />
+      )}
     </div>
   );
 }
