@@ -104,9 +104,9 @@ export async function createAuthor(formData) {
     // Revalidate the authors list page
     revalidatePath('/admin/blogs/authors');
     
-    return { 
+    return {
       success: true,
-      data: author
+      data: author.toJSON()
     };
   } catch (error) {
     console.error('Author creation error:', error);
