@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import {
   Collapsible,
@@ -22,6 +23,8 @@ import Link from "next/link";
 export function NavMain({
   items
 }) {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -40,11 +43,13 @@ export function NavMain({
             );
           }
 
+          const isCurrent = item.items?.some((subItem) => pathname.startsWith(subItem.url));
+
           return (
             <Collapsible
               key={item.title}
               asChild
-              defaultOpen={item.isActive}
+              defaultOpen={item.isActive || isCurrent}
               className="group/collapsible">
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
