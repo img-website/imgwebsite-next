@@ -1,22 +1,19 @@
 "use client";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
 
 export default function DeleteAuthorButtons({ id }) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
-  const handleDelete = async (force) => {
-    const confirmMessage = force
-      ? "This will permanently delete the author. Continue?"
-      : "Soft delete this author?";
-    if (!window.confirm(confirmMessage)) return;
+  const handleDelete = async () => {
     try {
       const token = TokenFromCookie();
-      const url = force
-        ? `/api/v1/admin/blogs/authors/${id}?force=true`
-        : `/api/v1/admin/blogs/authors/${id}`;
+      const url = `/api/v1/admin/blogs/authors/${id}`;
       const res = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -32,17 +29,32 @@ export default function DeleteAuthorButtons({ id }) {
       }
     } catch (error) {
       toast.error("Failed to delete author");
+    } finally {
+      setOpen(false);
     }
   };
 
   return (
-    <div className="flex gap-2 mt-4">
-      <Button variant="outline" onClick={() => handleDelete(false)}>
-        Soft Delete
-      </Button>
-      <Button variant="destructive" onClick={() => handleDelete(true)}>
-        Hard Delete
-      </Button>
-    </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="destructive" className="mt-4">Delete</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Author</DialogTitle>
+          <DialogDescription>
+            This will soft delete the author. Continue?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={handleDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

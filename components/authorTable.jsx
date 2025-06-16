@@ -152,7 +152,7 @@ export const columns = [
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <Link
-              href={`/admin/blogs/authors/${row.original.id}`}
+              href={`/admin/blogs/authors/${row.original.slug}`}
               className="truncate font-medium text-primary hover:underline"
             >
               {row.getValue("author_name")}

@@ -12,6 +12,7 @@ export default async function Page() {
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
   const data = authors.map(author => ({
     id: author._id,
+    slug: author.slug,
     author_name: author.author_name,
     description: author.description,
     linkedin_link: author.linkedin_link,
