@@ -2,6 +2,7 @@
 
 import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 import {
   Collapsible,
@@ -25,6 +26,25 @@ export function NavMain({
 }) {
   const pathname = usePathname();
 
+  const activeItemTitle = React.useMemo(() => {
+    let matchTitle = null;
+    let matchLength = -1;
+    items.forEach((item) => {
+      item.items?.forEach((subItem) => {
+        if (
+          pathname === subItem.url ||
+          pathname.startsWith(subItem.url + "/")
+        ) {
+          if (subItem.url.length > matchLength) {
+            matchLength = subItem.url.length;
+            matchTitle = item.title;
+          }
+        }
+      });
+    });
+    return matchTitle;
+  }, [items, pathname]);
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -43,7 +63,7 @@ export function NavMain({
             );
           }
 
-          const isCurrent = item.items?.some((subItem) => pathname.startsWith(subItem.url));
+          const isCurrent = item.title === activeItemTitle;
 
           return (
             <Collapsible
