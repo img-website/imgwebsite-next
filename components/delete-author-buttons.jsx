@@ -37,7 +37,7 @@ export default function DeleteAuthorButtons({ id }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" className="mt-4">Delete</Button>
+        <Button variant="destructive" className="mt-4 cursor-pointer">Delete</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
