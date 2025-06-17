@@ -81,6 +81,9 @@ export async function uploadAuthorImage(file) {
       return fileType;
     }
 
+    // Ensure the authors directory exists in case it was deleted at runtime
+    await fs.mkdir(UPLOAD_DIRS.authors, { recursive: true });
+
     // Generate unique filename
     const filename = `author-${Date.now()}.webp`;
     const filepath = path.join(UPLOAD_DIRS.authors, filename);
