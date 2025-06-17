@@ -3,7 +3,9 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteAuthorButtons from "@/components/delete-author-buttons";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({ params }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/${params.id}`, { cache: 'no-store' });
@@ -59,7 +61,12 @@ export default async function Page({ params }) {
                 )}
               </div>
             </div>
-            <DeleteAuthorButtons id={author._id} />
+            <div className="mt-4 flex gap-2">
+              <Link href={`/admin/blogs/authors/${author._id}/edit`}>
+                <Button type="button">Edit</Button>
+              </Link>
+              <DeleteAuthorButtons id={author._id} />
+            </div>
           </CardContent>
         </Card>
       </div>

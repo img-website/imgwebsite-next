@@ -119,3 +119,89 @@ export async function createAuthor(formData) {
     };
   }
 }
+
+export async function updateAuthor(id, formData) {
+  try {
+    await connectDB();
+
+    const author = await Author.findById(id);
+    if (!author) {
+      return {
+        success: false,
+        error: 'Author not found'
+      };
+    }
+
+    const name = formData.get('author_name')?.trim();
+    if (name && name !== author.author_name) {
+      if (name.length > 100) {
+        return { success: false, error: 'Author name cannot exceed 100 characters' };
+      }
+      const existing = await Author.findOne({ author_name: name, _id: { $ne: id } });
+      if (existing) {
+        return { success: false, error: 'An author with this name already exists' };
+      }
+      author.author_name = name;
+    }
+
+    const description = formData.get('description')?.trim();
+    if (description) {
+      if (description.length > 500) {
+        return { success: false, error: 'Description cannot exceed 500 characters' };
+      }
+      author.description = description;
+    }
+
+    const imageFile = formData.get('image');
+    if (imageFile && typeof imageFile !== 'string') {
+      const uploadResult = await uploadAuthorImage(imageFile);
+      if (!uploadResult.success) {
+        return { success: false, error: uploadResult.error || 'Failed to upload image' };
+      }
+      author.image = uploadResult.filename;
+    }
+
+    const socialLinks = ['linkedin_link', 'facebook_link', 'twitter_link'];
+    for (const link of socialLinks) {
+      const value = formData.get(link);
+      if (value !== null) {
+        const trimmed = value.trim();
+        if (trimmed) {
+          try {
+            new URL(trimmed);
+            author[link] = trimmed;
+          } catch (e) {
+            return { success: false, error: `Invalid ${link.replace('_', ' ')} URL format` };
+          }
+        } else {
+          author[link] = '';
+        }
+      }
+    }
+
+    const status = Number(formData.get('status'));
+    if ([1, 2, 3].includes(status)) {
+      author.status = status;
+    }
+
+    author.modified_date = new Date();
+    await author.save();
+
+    revalidatePath('/admin/blogs/authors');
+    revalidatePath(`/admin/blogs/authors/${id}`);
+
+    const updated = author.toObject();
+    updated._id = updated._id.toString();
+
+    return {
+      success: true,
+      data: updated
+    };
+  } catch (error) {
+    console.error('Author update error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to update author'
+    };
+  }
+}

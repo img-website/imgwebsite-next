@@ -92,6 +92,9 @@ function AuthorActions({ author }) {
         <DropdownMenuItem onClick={() => window.open(author.facebook_link, '_blank')}>
           View Facebook
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/admin/blogs/authors/${author.id}/edit`}>Edit</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
