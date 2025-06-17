@@ -112,3 +112,38 @@ export async function uploadAuthorImage(file) {
 
 // Call initializeUploadDirs when the module loads
 initializeUploadDirs();
+
+// Upload and process blog image
+export async function uploadBlogImage(file) {
+  try {
+    if (!file) {
+      return {
+        success: false,
+        error: 'Please provide an image file'
+      };
+    }
+
+    const buffer = await file.arrayBuffer();
+    const fileType = await validateImageType(Buffer.from(buffer));
+    if (!fileType.success) {
+      return fileType;
+    }
+
+    await fs.mkdir(UPLOAD_DIRS.blogs, { recursive: true });
+    const filename = `blog-${Date.now()}.webp`;
+    const filepath = path.join(UPLOAD_DIRS.blogs, filename);
+
+    await sharp(Buffer.from(buffer))
+      .resize(1080, 617, {
+        fit: 'cover',
+        position: 'center'
+      })
+      .webp({ quality: 80 })
+      .toFile(filepath);
+
+    return { success: true, filename };
+  } catch (error) {
+    console.error('Error uploading blog image:', error);
+    return { success: false, error: 'Error processing image' };
+  }
+}
