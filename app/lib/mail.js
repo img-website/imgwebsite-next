@@ -11,6 +11,29 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Simple in-memory queue to process emails without blocking API responses
+const emailQueue = [];
+let processingQueue = false;
+
+async function processQueue() {
+  if (processingQueue || emailQueue.length === 0) return;
+  processingQueue = true;
+  const mailOptions = emailQueue.shift();
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error('Email send error:', err);
+  } finally {
+    processingQueue = false;
+    process.nextTick(processQueue);
+  }
+}
+
+function queueEmail(mailOptions) {
+  emailQueue.push(mailOptions);
+  process.nextTick(processQueue);
+}
+
 export async function sendLoginEmail(admin) {
   try {
     const currentTime = new Date().toLocaleString('en-US', {
@@ -41,7 +64,7 @@ export async function sendLoginEmail(admin) {
             <tr>
               <td style="padding: 30px;">
                 <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">New Login Detected 🔔</h2>
-                <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Hello ${admin.firstName || "Admin"},</p>
+                <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Hello ${admin?.firstName || "Admin"},</p>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">We detected a new login to your IMG admin account. Here are the details:</p>
                 
                 <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -55,13 +78,13 @@ export async function sendLoginEmail(admin) {
                     <tr>
                       <td style="padding: 10px 0;">
                         <strong style="color: #1f2937;">Username:</strong>
-                        <span style="color: #4b5563;">${admin.username}</span>
+                        <span style="color: #4b5563;">${admin?.username || "Not Set Yet"}</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 10px 0;">
                         <strong style="color: #1f2937;">Account Type:</strong>
-                        <span style="color: #4b5563; text-transform: capitalize;">${admin.role}</span>
+                        <span style="color: #4b5563; text-transform: capitalize;">${admin?.role}</span>
                       </td>
                     </tr>
                   </table>
@@ -106,8 +129,8 @@ export async function sendLoginEmail(admin) {
       `
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Queue email for background sending
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -142,7 +165,7 @@ export async function sendWelcomeEmail(admin) {
             </tr>
             <tr>
               <td style="padding: 40px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 24px;">Hello ${admin.firstName || "Admin"} 👋</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 24px;">Hello ${admin?.firstName || "Admin"} 👋</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Welcome to the IMG admin team! We're excited to have you on board.</p>
                 
                 <div style="background: #f8fafc; padding: 25px; border-radius: 8px; margin: 30px 0;">
@@ -151,13 +174,13 @@ export async function sendWelcomeEmail(admin) {
                     <tr>
                       <td style="padding: 10px 0;">
                         <strong style="color: #1f2937;">Username:</strong>
-                        <span style="color: #4b5563;">${admin.username}</span>
+                        <span style="color: #4b5563;">${admin?.username || "Not Set Yet"}</span>
                       </td>
                     </tr>
                     <tr>
                       <td style="padding: 10px 0;">
                         <strong style="color: #1f2937;">Role:</strong>
-                        <span style="color: #4b5563; text-transform: capitalize;">${admin.role}</span>
+                        <span style="color: #4b5563; text-transform: capitalize;">${admin?.role}</span>
                       </td>
                     </tr>
                   </table>
@@ -205,7 +228,7 @@ export async function sendWelcomeEmail(admin) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -245,7 +268,7 @@ export async function sendPasswordResetEmail(admin, resetToken) {
             </tr>
             <tr>
               <td style="padding: 30px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName || "Admin"},</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin?.firstName || "Admin"},</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">We received a request to reset your password. Click the button below to create a new password:</p>
                 
                 
@@ -300,7 +323,7 @@ export async function sendPasswordResetEmail(admin, resetToken) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -339,7 +362,7 @@ export async function sendPasswordResetConfirmationEmail(admin) {
             </tr>
             <tr>
               <td style="padding: 30px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin.firstName || "Admin"},</h2>
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Hello ${admin?.firstName || "Admin"},</h2>
                 <p style="color: #4b5563; margin: 0 0 20px; font-size: 16px;">Your password has been successfully changed.</p>
                 
                 <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -354,7 +377,7 @@ export async function sendPasswordResetConfirmationEmail(admin) {
                     <tr>
                       <td style="padding: 10px 0;">
                         <strong style="color: #1f2937;">Account:</strong>
-                        <span style="color: #4b5563;">${admin.email}</span>
+                        <span style="color: #4b5563;">${admin?.email}</span>
                       </td>
                     </tr>
                   </table>
@@ -403,7 +426,7 @@ export async function sendPasswordResetConfirmationEmail(admin) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
