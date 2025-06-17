@@ -11,6 +11,29 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Simple in-memory queue to process emails without blocking API responses
+const emailQueue = [];
+let processingQueue = false;
+
+async function processQueue() {
+  if (processingQueue || emailQueue.length === 0) return;
+  processingQueue = true;
+  const mailOptions = emailQueue.shift();
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error('Email send error:', err);
+  } finally {
+    processingQueue = false;
+    process.nextTick(processQueue);
+  }
+}
+
+function queueEmail(mailOptions) {
+  emailQueue.push(mailOptions);
+  process.nextTick(processQueue);
+}
+
 export async function sendLoginEmail(admin) {
   try {
     const currentTime = new Date().toLocaleString('en-US', {
@@ -106,8 +129,8 @@ export async function sendLoginEmail(admin) {
       `
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Queue email for background sending
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -205,7 +228,7 @@ export async function sendWelcomeEmail(admin) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -300,7 +323,7 @@ export async function sendPasswordResetEmail(admin, resetToken) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
@@ -403,7 +426,7 @@ export async function sendPasswordResetConfirmationEmail(admin) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    queueEmail(mailOptions);
     return { success: true };
 
   } catch (error) {
