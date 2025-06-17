@@ -6,7 +6,7 @@ import DeleteAuthorButtons from "@/components/delete-author-buttons";
 import Image from "next/image";
 
 export default async function Page({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/slug/${params.slug}`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/${params.id}`, { cache: 'no-store' });
   const json = await res.json();
   const author = json?.data;
 
