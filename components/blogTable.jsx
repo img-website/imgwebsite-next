@@ -325,9 +325,7 @@ export function BlogTable({ data }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({
-    status: false,
     comment_show_status: false,
-    created_date: false,
   });
   const [rowSelection, setRowSelection] = React.useState({});
 
