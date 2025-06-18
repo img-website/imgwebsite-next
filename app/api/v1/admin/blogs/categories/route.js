@@ -34,7 +34,9 @@ export async function GET(req) {
       baseQuery.status = numericStatus;
     }
 
-    let allCategories = await Category.find(baseQuery).select('-__v').lean();
+    let allCategories = await Category.find(baseQuery, null, { showDeleted })
+      .select('-__v')
+      .lean();
 
     if (search) {
       const fuseOptions = {

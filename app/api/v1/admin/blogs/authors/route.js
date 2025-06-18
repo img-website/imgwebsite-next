@@ -48,7 +48,7 @@ export async function GET(req) {
     }
 
     // Get all authors first for Fuse.js search
-    let allAuthors = await Author.find(baseQuery)
+    let allAuthors = await Author.find(baseQuery, null, { showDeleted })
       .select('-__v')
       .lean(); // Using lean for better performance
 

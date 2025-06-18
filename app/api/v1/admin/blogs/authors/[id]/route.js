@@ -26,10 +26,11 @@ export async function GET(request, context) {
 
     // Find author, optionally including soft-deleted ones
     const query = { _id: id };
+    const options = {};
     if (showDeleted) {
-      query.showDeleted = true;
+      options.showDeleted = true;
     }
-    const author = await Author.findOne(query).select('-__v');
+    const author = await Author.findOne(query, null, options).select('-__v');
 
     if (!author) {
       return NextResponse.json({

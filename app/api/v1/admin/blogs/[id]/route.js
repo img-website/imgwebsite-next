@@ -19,11 +19,14 @@ export async function GET(request, context) {
     const showDeleted = searchParams.get('deleted') === 'true';
 
     const query = { _id: id };
+    const options = {};
     if (showDeleted) {
-      query.showDeleted = true;
+      options.showDeleted = true;
     }
 
-    const blog = await Blog.findOne(query).populate('author').populate('category');
+    const blog = await Blog.findOne(query, null, options)
+      .populate('author')
+      .populate('category');
 
     if (!blog) {
       return NextResponse.json({ success: false, error: 'Blog not found' }, { status: 404 });

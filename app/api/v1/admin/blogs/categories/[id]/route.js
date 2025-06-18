@@ -17,10 +17,11 @@ export async function GET(request, context) {
     const showDeleted = searchParams.get('deleted') === 'true';
 
     const query = { _id: id };
+    const options = {};
     if (showDeleted) {
-      query.showDeleted = true;
+      options.showDeleted = true;
     }
-    const category = await Category.findOne(query).select('-__v');
+    const category = await Category.findOne(query, null, options).select('-__v');
 
     if (!category) {
       return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 });

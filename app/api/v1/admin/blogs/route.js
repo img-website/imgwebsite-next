@@ -35,7 +35,7 @@ export async function GET(req) {
       baseQuery.status = numericStatus;
     }
 
-    let allBlogs = await Blog.find(baseQuery)
+    let allBlogs = await Blog.find(baseQuery, null, { showDeleted })
       .populate('author')
       .populate('category')
       .select('-__v')
