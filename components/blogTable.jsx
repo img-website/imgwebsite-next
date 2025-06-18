@@ -244,6 +244,19 @@ export const columns = [
     enableHiding: false,
   },
   {
+    accessorKey: "banner",
+    header: "Banner",
+    cell: ({ row }) => (
+      <Image
+        src={row.getValue("banner")}
+        alt={row.original.title}
+        width={80}
+        height={45}
+        className="rounded-md object-cover"
+      />
+    ),
+  },
+  {
     accessorKey: "title",
     header: ({ column }) => (
       <Button
@@ -263,19 +276,6 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "banner",
-    header: "Banner",
-    cell: ({ row }) => (
-      <Image
-        src={row.getValue("banner")}
-        alt={row.original.title}
-        width={80}
-        height={45}
-        className="rounded-md object-cover"
-      />
-    ),
-  },
-  {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
@@ -291,6 +291,30 @@ export const columns = [
     },
   },
   {
+    accessorKey: "comment_show_status",
+    header: "Comments",
+    cell: ({ row }) => (row.getValue("comment_show_status") ? "Shown" : "Hidden"),
+  },
+  {
+    accessorKey: "created_date",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Created Date
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("created_date"));
+      return new Intl.DateTimeFormat("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => <BlogActions blog={row.original} />,
@@ -300,7 +324,11 @@ export const columns = [
 export function BlogTable({ data }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [columnVisibility, setColumnVisibility] = React.useState({
+    status: false,
+    comment_show_status: false,
+    created_date: false,
+  });
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
