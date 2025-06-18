@@ -8,10 +8,6 @@ const blogSchema = new mongoose.Schema(
       enum: [1, 2, 3], // 1=draft, 2=published, 3=archived
       default: 1
     },
-    deleted_at: {
-      type: Date,
-      default: null
-    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
@@ -125,12 +121,6 @@ blogSchema.pre('validate', async function (next) {
   next();
 });
 
-blogSchema.pre(['find', 'findOne', 'countDocuments'], function () {
-  const showDeleted = this.getOptions().showDeleted;
-  if (!showDeleted && !this._conditions.deleted_at) {
-    this.where({ deleted_at: null });
-  }
-});
 
 blogSchema.index({ title: 'text', short_description: 'text', description: 'text' });
 

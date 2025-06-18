@@ -12,7 +12,6 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
 
     const search = searchParams.get('search');
-    const showDeleted = searchParams.get('deleted') === 'true';
     const status = searchParams.get('status');
     const sortBy = searchParams.get('sortBy') || 'created_date';
     const sortOrder = parseInt(searchParams.get('sortOrder')) || -1;
@@ -21,9 +20,6 @@ export async function GET(req) {
     const skip = (page - 1) * limit;
 
     const baseQuery = {};
-    if (!showDeleted) {
-      baseQuery.deleted_at = null;
-    }
     if (status) {
       const numericStatus = parseInt(status, 10);
       if (![1, 2, 3].includes(numericStatus)) {
@@ -35,7 +31,7 @@ export async function GET(req) {
       baseQuery.status = numericStatus;
     }
 
-    let allBlogs = await Blog.find(baseQuery, null, { showDeleted })
+    let allBlogs = await Blog.find(baseQuery)
       .populate('author')
       .populate('category')
       .select('-__v')

@@ -15,16 +15,9 @@ export async function GET(request, context) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }
 
-    const { searchParams } = new URL(request.url);
-    const showDeleted = searchParams.get('deleted') === 'true';
-
     const query = { _id: id };
-    const options = {};
-    if (showDeleted) {
-      options.showDeleted = true;
-    }
 
-    const blog = await Blog.findOne(query, null, options)
+    const blog = await Blog.findOne(query)
       .populate('author')
       .populate('category');
 
@@ -194,33 +187,20 @@ export async function DELETE(request, context) {
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }
-    const { searchParams } = new URL(request.url);
-    const force = searchParams.get('force') === 'true';
-
-    const blog = await Blog.findOne({ _id: id }, null, { showDeleted: true });
+    const blog = await Blog.findById(id);
     if (!blog) {
       return NextResponse.json({ success: false, error: 'Blog not found' }, { status: 404 });
     }
 
-    if (blog.status !== 1 && !force) {
+    if (blog.status !== 1) {
       return NextResponse.json(
         { success: false, error: 'Published or archived blogs cannot be deleted' },
         { status: 400 }
       );
     }
 
-    if (force) {
-      await Blog.findByIdAndDelete(id, { showDeleted: true });
-      return NextResponse.json({ success: true, message: 'Blog has been permanently deleted' });
-    }
-
-    if (blog.deleted_at) {
-      return NextResponse.json({ success: true, message: 'Blog is already soft deleted', data: blog });
-    }
-
-    blog.deleted_at = new Date();
-    await blog.save();
-    return NextResponse.json({ success: true, message: 'Blog has been soft deleted', data: blog });
+    await Blog.findByIdAndDelete(id);
+    return NextResponse.json({ success: true, message: 'Blog has been permanently deleted' });
   } catch (error) {
     console.error('Error deleting blog:', error);
     return NextResponse.json({ success: false, error: 'Error deleting blog' }, { status: 500 });
