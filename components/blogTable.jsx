@@ -1,0 +1,401 @@
+"use client";
+import * as React from "react";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import TokenFromCookie from "@/helpers/tokenFromCookie";
+
+function BlogActions({ blog }) {
+  const router = useRouter();
+
+  const handleStatusChange = async (status) => {
+    try {
+      const formData = new FormData();
+      formData.append("status", status);
+      const token = TokenFromCookie();
+      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Status updated");
+        router.refresh();
+      } else {
+        toast.error(data.error || "Failed to update status");
+      }
+    } catch (error) {
+      toast.error("Failed to update status");
+    }
+  };
+
+  const handleToggleComments = async () => {
+    try {
+      const formData = new FormData();
+      formData.append(
+        "commentShowStatus",
+        blog.comment_show_status ? "false" : "true"
+      );
+      const token = TokenFromCookie();
+      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Comment setting updated");
+        router.refresh();
+      } else {
+        toast.error(data.error || "Failed to update comment setting");
+      }
+    } catch (error) {
+      toast.error("Failed to update comment setting");
+    }
+  };
+
+  const handleSendNotification = async () => {
+    try {
+      const token = TokenFromCookie();
+      const res = await fetch(`/api/v1/admin/blogs/${blog.id}/notify`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Notification sent");
+      } else {
+        toast.error(data.error || "Failed to send notification");
+      }
+    } catch (error) {
+      toast.error("Failed to send notification");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const token = TokenFromCookie();
+      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message || "Blog deleted");
+        router.refresh();
+      } else {
+        toast.error(data.error || "Failed to delete blog");
+      }
+    } catch (error) {
+      toast.error("Failed to delete blog");
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(blog.id)}>
+          Copy blog ID
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSendNotification}>
+          Send Notification
+        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem onClick={() => handleStatusChange(1)}>
+              Draft
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+              Published
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+              Archived
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuCheckboxItem
+          checked={blog.comment_show_status}
+          onCheckedChange={handleToggleComments}
+        >
+          Show Comments
+        </DropdownMenuCheckboxItem>
+        {blog.status === "draft" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} variant="destructive">
+              Delete
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export const columns = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "title",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Title
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <div className="font-medium">
+        <Link href={`/admin/blogs/${row.original.id}`} className="hover:underline">
+          {row.getValue("title")}
+        </Link>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "banner",
+    header: "Banner",
+    cell: ({ row }) => (
+      <Image
+        src={row.getValue("banner")}
+        alt={row.original.title}
+        width={80}
+        height={45}
+        className="rounded-md object-cover"
+      />
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return (
+        <Badge
+          variant={status === "published" ? "default" : "secondary"}
+          className="capitalize"
+        >
+          {status}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <BlogActions blog={row.original} />,
+  },
+];
+
+export function BlogTable({ data }) {
+  const [sorting, setSorting] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+
+  return (
+    <div className="w-full">
+      <div className="flex gap-3 items-center py-4">
+        <Input
+          placeholder="Filter by title..."
+          value={table.getColumn("title")?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table.getColumn("title")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button asChild>
+          <Link href="/admin/blogs/add"><Plus /> Add Blog</Link>
+        </Button>
+      </div>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="text-muted-foreground flex-1 text-sm">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

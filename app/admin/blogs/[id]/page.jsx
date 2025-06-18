@@ -1,0 +1,64 @@
+import { DynamicBreadcrumb } from "@/components/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import DeleteBlogButtons from "@/components/delete-blog-buttons";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
+
+export default async function Page({ params }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/${params.id}`, { cache: 'no-store' });
+  const json = await res.json();
+  const blog = json?.data;
+
+  if (!blog) {
+    return <div className="p-4">Blog not found</div>;
+  }
+
+  const statusMap = { 1: 'draft', 2: 'published', 3: 'archived' };
+  const bannerSrc = blog.banner?.startsWith('http') ? blog.banner : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`;
+  const thumbnailSrc = blog.thumbnail?.startsWith('http') ? blog.thumbnail : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`;
+
+  return (
+    <>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+          <DynamicBreadcrumb />
+        </div>
+      </header>
+      <Separator />
+      <div className="w-full p-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Blog Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 text-sm">
+              <Image src={bannerSrc} alt={blog.title} width={160} height={90} className="rounded" />
+              <Image src={thumbnailSrc} alt={blog.title} width={120} height={80} className="rounded" />
+              <p><strong>Title:</strong> {blog.title}</p>
+              <p><strong>Slug:</strong> {blog.slug}</p>
+              <p><strong>Category:</strong> {blog.category?.category_name}</p>
+              <p><strong>Author:</strong> {blog.author?.author_name}</p>
+              <p><strong>Status:</strong> {statusMap[blog.status]}</p>
+              <p><strong>Comments:</strong> {blog.comment_show_status ? 'Shown' : 'Hidden'}</p>
+              <p><strong>Created:</strong> {new Date(blog.created_date).toLocaleString()}</p>
+              {blog.published_date_time && (
+                <p><strong>Published:</strong> {new Date(blog.published_date_time).toLocaleString()}</p>
+              )}
+            </div>
+            <div className="mt-4 flex gap-2">
+              <Link href={`/admin/blogs/${blog._id}/edit`}>
+                <Button type="button">Edit</Button>
+              </Link>
+              {blog.status === 1 && <DeleteBlogButtons id={blog._id} />}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+}
