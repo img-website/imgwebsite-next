@@ -41,28 +41,78 @@ export async function PUT(req, { params }) {
     const formData = await req.formData();
     const title = formData.get('title');
     if (title) blog.title = title.trim();
-    const excerpt = formData.get('excerpt');
-    if (excerpt) blog.excerpt = excerpt.trim();
-    const content = formData.get('content');
-    if (content) blog.content = content.trim();
-    const author = formData.get('author');
-    if (author) blog.author = author;
-    const cats = formData.get('categories');
-    if (cats) blog.categories = cats.split(',').filter(Boolean);
-    const status = formData.get('status');
-    if (status) blog.status = status;
-    const metaTitle = formData.get('meta_title');
-    if (metaTitle) blog.meta_title = metaTitle.trim();
-    const metaDesc = formData.get('meta_description');
-    if (metaDesc) blog.meta_description = metaDesc.trim();
-    const imgFile = formData.get('featured_image');
-    if (imgFile && typeof imgFile !== 'string') {
-      const img = await uploadBlogImage(imgFile);
+    const shortDescription = formData.get('shortDescription');
+    if (shortDescription) blog.shortDescription = shortDescription.trim();
+    const description = formData.get('description');
+    if (description) blog.description = description.trim();
+    const authorId = formData.get('authorId');
+    if (authorId) blog.authorId = authorId;
+    const category = formData.get('category');
+    if (category) blog.category = category;
+    const bannerFile = formData.get('banner');
+    if (bannerFile && typeof bannerFile !== 'string') {
+      const img = await uploadBlogImage(bannerFile);
       if (!img.success) {
         return NextResponse.json({ success: false, error: img.error }, { status: 400 });
       }
-      blog.featured_image = img.filename;
+      blog.banner = img.filename;
     }
+    const thumbFile = formData.get('thumbnail');
+    if (thumbFile && typeof thumbFile !== 'string') {
+      const img = await uploadBlogImage(thumbFile);
+      if (!img.success) {
+        return NextResponse.json({ success: false, error: img.error }, { status: 400 });
+      }
+      blog.thumbnail = img.filename;
+    }
+    const ogFile = formData.get('ogImage');
+    if (ogFile && typeof ogFile !== 'string') {
+      const img = await uploadBlogImage(ogFile, 1200, 630);
+      if (!img.success) {
+        return NextResponse.json({ success: false, error: img.error }, { status: 400 });
+      }
+      blog.ogImage = img.filename;
+    }
+    const xFile = formData.get('xImage');
+    if (xFile && typeof xFile !== 'string') {
+      const img = await uploadBlogImage(xFile);
+      if (!img.success) {
+        return NextResponse.json({ success: false, error: img.error }, { status: 400 });
+      }
+      blog.xImage = img.filename;
+    }
+    const status = formData.get('status');
+    if (status) blog.status = status;
+    const metaTitle = formData.get('metaTitle');
+    if (metaTitle) blog.metaTitle = metaTitle.trim();
+    const metaKeyword = formData.get('metaKeyword');
+    if (metaKeyword) blog.metaKeyword = metaKeyword.trim();
+    const metaDesc = formData.get('metaDescription');
+    if (metaDesc) blog.metaDescription = metaDesc.trim();
+    const metaOgDesc = formData.get('metaOgDescription');
+    if (metaOgDesc) blog.metaOgDescription = metaOgDesc.trim();
+    const metaOgTitle = formData.get('metaOgTitle');
+    if (metaOgTitle) blog.metaOgTitle = metaOgTitle.trim();
+    const metaXTitle = formData.get('metaXTitle');
+    if (metaXTitle) blog.metaXTitle = metaXTitle.trim();
+    const metaXDesc = formData.get('metaXDescription');
+    if (metaXDesc) blog.metaXDescription = metaXDesc.trim();
+    const imageAlt = formData.get('imageAlt');
+    if (imageAlt) blog.imageAlt = imageAlt.trim();
+    const xImageAlt = formData.get('xImageAlt');
+    if (xImageAlt) blog.xImageAlt = xImageAlt.trim();
+    const ogImageAlt = formData.get('ogImageAlt');
+    if (ogImageAlt) blog.ogImageAlt = ogImageAlt.trim();
+    const publishedDateTime = formData.get('publishedDateTime');
+    if (publishedDateTime) blog.publishedDateTime = publishedDateTime;
+    const faq = formData.get('faq');
+    if (faq) blog.faq = faq;
+    const bgColor = formData.get('bgColor');
+    if (bgColor) blog.bgColor = bgColor;
+    const bgColorStatus = formData.get('bgColorStatus');
+    if (bgColorStatus !== null) blog.bgColorStatus = bgColorStatus === 'true';
+    const commentShowStatus = formData.get('commentShowStatus');
+    if (commentShowStatus !== null) blog.commentShowStatus = commentShowStatus === 'true';
     await blog.save();
     return NextResponse.json({ success: true, data: { ...blog.toObject(), id: blog._id.toString() } });
   } catch (error) {

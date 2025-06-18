@@ -8,26 +8,63 @@ export async function createBlog(formData) {
   try {
     await connectDB();
     const title = formData.get('title')?.trim();
-    const excerpt = formData.get('excerpt')?.trim();
-    const content = formData.get('content')?.trim();
-    const author = formData.get('author');
-    const imageFile = formData.get('featured_image');
-    if (!title || !excerpt || !content || !author || !imageFile) {
+    const shortDescription = formData.get('shortDescription')?.trim();
+    const description = formData.get('description')?.trim();
+    const authorId = formData.get('authorId');
+    const category = formData.get('category');
+    const bannerFile = formData.get('banner');
+    if (!title || !shortDescription || !description || !authorId || !category || !bannerFile) {
       return { success: false, error: 'Please fill in all required fields' };
     }
-    const imageRes = await uploadBlogImage(imageFile);
+    const bannerRes = await uploadBlogImage(bannerFile);
+    if (!bannerRes.success) {
+      return { success: false, error: bannerRes.error };
+    }
+    const thumbnailFile = formData.get('thumbnail');
+    const thumbRes = thumbnailFile ? await uploadBlogImage(thumbnailFile) : { success: true };
+    if (thumbRes && !thumbRes.success) {
+      return { success: false, error: thumbRes.error };
+    }
+    const ogFile = formData.get('ogImage');
+    const ogRes = ogFile ? await uploadBlogImage(ogFile, 1200, 630) : { success: true };
+    if (ogRes && !ogRes.success) {
+      return { success: false, error: ogRes.error };
+    }
+    const xImageFile = formData.get('xImage');
+    const xRes = xImageFile ? await uploadBlogImage(xImageFile) : { success: true };
+    if (xRes && !xRes.success) {
+      return { success: false, error: xRes.error };
+    }
     if (!imageRes.success) {
       return { success: false, error: imageRes.error };
     }
     const blog = new Blog({
+      category,
       title,
-      excerpt,
-      content,
-      author,
-      featured_image: imageRes.filename,
+      authorId,
+      blogWrittenDate: formData.get('blogWrittenDate') || new Date(),
+      shortDescription,
+      description,
+      banner: bannerRes.filename,
+      thumbnail: thumbRes.filename,
+      imageAlt: formData.get('imageAlt') || '',
+      xImage: xRes.filename,
+      xImageAlt: formData.get('xImageAlt') || '',
+      ogImage: ogRes.filename,
+      ogImageAlt: formData.get('ogImageAlt') || '',
+      metaTitle: formData.get('metaTitle')?.trim() || title,
+      metaKeyword: formData.get('metaKeyword')?.trim() || '',
+      metaDescription: formData.get('metaDescription')?.trim() || shortDescription,
+      metaOgDescription: formData.get('metaOgDescription')?.trim() || '',
+      metaOgTitle: formData.get('metaOgTitle')?.trim() || '',
+      metaXTitle: formData.get('metaXTitle')?.trim() || '',
+      metaXDescription: formData.get('metaXDescription')?.trim() || '',
+      commentShowStatus: formData.get('commentShowStatus') === 'true',
       status: formData.get('status') || 'draft',
-      meta_title: formData.get('meta_title')?.trim() || title,
-      meta_description: formData.get('meta_description')?.trim() || excerpt,
+      publishedDateTime: formData.get('publishedDateTime') || null,
+      faq: formData.get('faq') || '',
+      bgColor: formData.get('bgColor') || '',
+      bgColorStatus: formData.get('bgColorStatus') === 'true'
     });
     await blog.save();
     revalidatePath('/admin/blogs');
@@ -47,25 +84,71 @@ export async function updateBlog(id, formData) {
     }
     const title = formData.get('title')?.trim();
     if (title) blog.title = title;
-    const excerpt = formData.get('excerpt')?.trim();
-    if (excerpt) blog.excerpt = excerpt;
-    const content = formData.get('content')?.trim();
-    if (content) blog.content = content;
-    const author = formData.get('author');
-    if (author) blog.author = author;
-    const imageFile = formData.get('featured_image');
-    if (imageFile && typeof imageFile !== 'string') {
-      const res = await uploadBlogImage(imageFile);
+    const shortDescription = formData.get('shortDescription')?.trim();
+    if (shortDescription) blog.shortDescription = shortDescription;
+    const description = formData.get('description')?.trim();
+    if (description) blog.description = description;
+    const authorId = formData.get('authorId');
+    if (authorId) blog.authorId = authorId;
+    const category = formData.get('category');
+    if (category) blog.category = category;
+    const bannerFile = formData.get('banner');
+    if (bannerFile && typeof bannerFile !== 'string') {
+      const res = await uploadBlogImage(bannerFile);
       if (!res.success) return { success: false, error: res.error };
-      blog.featured_image = res.filename;
+      blog.banner = res.filename;
+    }
+    const thumbnailFile = formData.get('thumbnail');
+    if (thumbnailFile && typeof thumbnailFile !== 'string') {
+      const res = await uploadBlogImage(thumbnailFile);
+      if (!res.success) return { success: false, error: res.error };
+      blog.thumbnail = res.filename;
+    }
+    const ogFile = formData.get('ogImage');
+    if (ogFile && typeof ogFile !== 'string') {
+      const res = await uploadBlogImage(ogFile, 1200, 630);
+      if (!res.success) return { success: false, error: res.error };
+      blog.ogImage = res.filename;
+    }
+    const xImageFile = formData.get('xImage');
+    if (xImageFile && typeof xImageFile !== 'string') {
+      const res = await uploadBlogImage(xImageFile);
+      if (!res.success) return { success: false, error: res.error };
+      blog.xImage = res.filename;
     }
     const status = formData.get('status');
     if (status) blog.status = status;
-    const metaTitle = formData.get('meta_title');
-    if (metaTitle) blog.meta_title = metaTitle.trim();
-    const metaDesc = formData.get('meta_description');
-    if (metaDesc) blog.meta_description = metaDesc.trim();
-    blog.modified_date = new Date();
+    const metaTitle = formData.get('metaTitle');
+    if (metaTitle) blog.metaTitle = metaTitle.trim();
+    const metaKeyword = formData.get('metaKeyword');
+    if (metaKeyword) blog.metaKeyword = metaKeyword.trim();
+    const metaDesc = formData.get('metaDescription');
+    if (metaDesc) blog.metaDescription = metaDesc.trim();
+    const metaOgDesc = formData.get('metaOgDescription');
+    if (metaOgDesc) blog.metaOgDescription = metaOgDesc.trim();
+    const metaOgTitle = formData.get('metaOgTitle');
+    if (metaOgTitle) blog.metaOgTitle = metaOgTitle.trim();
+    const metaXTitle = formData.get('metaXTitle');
+    if (metaXTitle) blog.metaXTitle = metaXTitle.trim();
+    const metaXDesc = formData.get('metaXDescription');
+    if (metaXDesc) blog.metaXDescription = metaXDesc.trim();
+    const imageAlt = formData.get('imageAlt');
+    if (imageAlt) blog.imageAlt = imageAlt.trim();
+    const xImageAlt = formData.get('xImageAlt');
+    if (xImageAlt) blog.xImageAlt = xImageAlt.trim();
+    const ogImageAlt = formData.get('ogImageAlt');
+    if (ogImageAlt) blog.ogImageAlt = ogImageAlt.trim();
+    const publishedDateTime = formData.get('publishedDateTime');
+    if (publishedDateTime) blog.publishedDateTime = publishedDateTime;
+    const faq = formData.get('faq');
+    if (faq) blog.faq = faq;
+    const bgColor = formData.get('bgColor');
+    if (bgColor) blog.bgColor = bgColor;
+    const bgColorStatus = formData.get('bgColorStatus');
+    if (bgColorStatus !== null) blog.bgColorStatus = bgColorStatus === 'true';
+    const commentShowStatus = formData.get('commentShowStatus');
+    if (commentShowStatus !== null) blog.commentShowStatus = commentShowStatus === 'true';
+    blog.modifiedDate = new Date();
     await blog.save();
     revalidatePath('/admin/blogs');
     revalidatePath(`/admin/blogs/${id}`);

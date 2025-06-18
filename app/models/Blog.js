@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import slugify from 'slugify';
 
 const blogSchema = new mongoose.Schema({
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   title: {
     type: String,
     required: [true, 'Blog title is required'],
@@ -9,94 +10,54 @@ const blogSchema = new mongoose.Schema({
     maxlength: [200, 'Title cannot be more than 200 characters'],
     unique: true
   },
-  slug: {
+  authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true },
+  blogWrittenDate: { type: Date, default: Date.now },
+  slug: { type: String, unique: true, index: true },
+  shortDescription: {
     type: String,
-    unique: true,
-    index: true
+    required: [true, 'Blog short description is required'],
+    maxlength: [500, 'Short description cannot be more than 500 characters']
   },
-  content: {
-    type: String,
-    required: [true, 'Blog content is required']
-  },
-  excerpt: {
-    type: String,
-    required: [true, 'Blog excerpt is required'],
-    maxlength: [500, 'Excerpt cannot be more than 500 characters']
-  },
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Author',
-    required: [true, 'Blog author is required']
-  },
-  categories: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category'
-  }],
-  tags: [{
-    type: String,
-    trim: true
-  }],
-  featured_image: {
-    type: String,
-    required: [true, 'Featured image is required']
-  },
-  status: {
-    type: String,
-    enum: ['draft', 'published', 'archived'],
-    default: 'draft'
-  },
-  meta_title: {
-    type: String,
-    required: [true, 'Meta title is required'],
-    maxlength: [60, 'Meta title cannot be more than 60 characters']
-  },
-  meta_description: {
-    type: String,
-    required: [true, 'Meta description is required'],
-    maxlength: [160, 'Meta description cannot be more than 160 characters']
-  },
-  views: {
-    type: Number,
-    default: 0
-  },
-  created_date: {
-    type: Date,
-    default: Date.now
-  },
-  modified_date: {
-    type: Date,
-    default: Date.now
-  }
+  description: { type: String, required: [true, 'Blog description is required'] },
+  banner: { type: String },
+  thumbnail: { type: String },
+  imageAlt: { type: String },
+  xImage: { type: String },
+  xImageAlt: { type: String },
+  ogImage: { type: String },
+  ogImageAlt: { type: String },
+  metaTitle: { type: String },
+  metaKeyword: { type: String },
+  metaDescription: { type: String },
+  metaOgDescription: { type: String },
+  metaOgTitle: { type: String },
+  metaXTitle: { type: String },
+  metaXDescription: { type: String },
+  commentShowStatus: { type: Boolean, default: true },
+  status: { type: String, enum: ['draft', 'published', 'archived'], default: 'draft' },
+  publishedDateTime: { type: Date },
+  faq: { type: String },
+  bgColor: { type: String },
+  bgColorStatus: { type: Boolean, default: false },
+  createdDate: { type: Date, default: Date.now },
+  modifiedDate: { type: Date, default: Date.now }
 }, {
-  timestamps: { 
-    createdAt: 'created_date',
-    updatedAt: 'modified_date'
-  }
+  timestamps: { createdAt: 'createdDate', updatedAt: 'modifiedDate' }
 });
 
-// Generate slug before saving
 blogSchema.pre('save', function(next) {
   if (this.isModified('title')) {
-    // Create base slug from title
-    let baseSlug = slugify(this.title, { 
-      lower: true,
-      strict: true,
-      trim: true
-    });
-    
-    // Add timestamp to ensure uniqueness
+    const baseSlug = slugify(this.title, { lower: true, strict: true, trim: true });
     this.slug = `${baseSlug}-${Date.now().toString().slice(-4)}`;
   }
   next();
 });
 
-// Index for search functionality
-blogSchema.index({ 
-  title: 'text', 
-  content: 'text',
-  excerpt: 'text'
+blogSchema.index({
+  title: 'text',
+  description: 'text',
+  shortDescription: 'text'
 });
 
 const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
-
 export default Blog;

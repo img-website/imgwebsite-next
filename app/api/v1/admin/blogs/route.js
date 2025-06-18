@@ -51,22 +51,54 @@ export async function POST(req) {
 
     await connectDB();
     const formData = await req.formData();
-    const imageFile = formData.get('featured_image');
-    const img = await uploadBlogImage(imageFile);
-    if (!img.success) {
-      return NextResponse.json({ success: false, error: img.error }, { status: 400 });
+    const bannerFile = formData.get('banner');
+    const banner = await uploadBlogImage(bannerFile);
+    if (!banner.success) {
+      return NextResponse.json({ success: false, error: banner.error }, { status: 400 });
+    }
+    const thumbFile = formData.get('thumbnail');
+    const thumb = thumbFile ? await uploadBlogImage(thumbFile) : { success: true };
+    if (thumb && !thumb.success) {
+      return NextResponse.json({ success: false, error: thumb.error }, { status: 400 });
+    }
+    const ogFile = formData.get('ogImage');
+    const ogImg = ogFile ? await uploadBlogImage(ogFile, 1200, 630) : { success: true };
+    if (ogImg && !ogImg.success) {
+      return NextResponse.json({ success: false, error: ogImg.error }, { status: 400 });
+    }
+    const xFile = formData.get('xImage');
+    const xImg = xFile ? await uploadBlogImage(xFile) : { success: true };
+    if (xImg && !xImg.success) {
+      return NextResponse.json({ success: false, error: xImg.error }, { status: 400 });
     }
 
     const blog = await Blog.create({
+      category: formData.get('category'),
       title: formData.get('title'),
-      excerpt: formData.get('excerpt'),
-      content: formData.get('content'),
-      author: formData.get('author'),
-      categories: formData.get('categories')?.split(',').filter(Boolean) || [],
-      featured_image: img.filename,
+      authorId: formData.get('authorId'),
+      blogWrittenDate: formData.get('blogWrittenDate') || new Date(),
+      shortDescription: formData.get('shortDescription'),
+      description: formData.get('description'),
+      banner: banner.filename,
+      thumbnail: thumb.filename,
+      imageAlt: formData.get('imageAlt') || '',
+      xImage: xImg.filename,
+      xImageAlt: formData.get('xImageAlt') || '',
+      ogImage: ogImg.filename,
+      ogImageAlt: formData.get('ogImageAlt') || '',
+      metaTitle: formData.get('metaTitle'),
+      metaKeyword: formData.get('metaKeyword'),
+      metaDescription: formData.get('metaDescription'),
+      metaOgDescription: formData.get('metaOgDescription'),
+      metaOgTitle: formData.get('metaOgTitle'),
+      metaXTitle: formData.get('metaXTitle'),
+      metaXDescription: formData.get('metaXDescription'),
+      commentShowStatus: formData.get('commentShowStatus') === 'true',
       status: formData.get('status') || 'draft',
-      meta_title: formData.get('meta_title'),
-      meta_description: formData.get('meta_description')
+      publishedDateTime: formData.get('publishedDateTime'),
+      faq: formData.get('faq'),
+      bgColor: formData.get('bgColor'),
+      bgColorStatus: formData.get('bgColorStatus') === 'true'
     });
 
     return NextResponse.json({ success: true, data: { ...blog.toObject(), id: blog._id.toString() } }, { status: 201 });
