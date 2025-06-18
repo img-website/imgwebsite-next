@@ -24,6 +24,15 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -42,6 +51,7 @@ import TokenFromCookie from "@/helpers/tokenFromCookie";
 
 function BlogActions({ blog }) {
   const router = useRouter();
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleStatusChange = async (status) => {
     try {
@@ -132,11 +142,14 @@ function BlogActions({ blog }) {
       }
     } catch (error) {
       toast.error("Failed to delete blog");
+    } finally {
+      setOpenDelete(false);
     }
   };
 
   return (
-    <DropdownMenu>
+    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+      <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>
@@ -180,13 +193,30 @@ function BlogActions({ blog }) {
         {blog.status === "draft" && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} variant="destructive">
-              Delete
-            </DropdownMenuItem>
+            <DialogTrigger asChild>
+              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            </DialogTrigger>
           </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Delete Blog</DialogTitle>
+        <DialogDescription>
+          This will permanently delete the blog. Continue?
+        </DialogDescription>
+      </DialogHeader>
+      <DialogFooter>
+        <Button variant="outline" onClick={() => setOpenDelete(false)}>
+          Cancel
+        </Button>
+        <Button variant="destructive" onClick={handleDelete}>
+          Delete
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
   );
 }
 
