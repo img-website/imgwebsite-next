@@ -75,6 +75,12 @@ export async function PUT(request, context) {
 
     const statusValue = Number(formData.get('status'));
     if ([1, 2, 3].includes(statusValue)) {
+      if (statusValue === 1 && blog.status !== 1) {
+        return NextResponse.json(
+          { success: false, error: 'Cannot revert to draft once published or archived' },
+          { status: 400 }
+        );
+      }
       blog.status = statusValue;
     }
 

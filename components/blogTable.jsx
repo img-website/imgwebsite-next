@@ -158,9 +158,11 @@ function BlogActions({ blog }) {
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuItem onClick={() => handleStatusChange(1)}>
-              Draft
-            </DropdownMenuItem>
+            {blog.status === "draft" && (
+              <DropdownMenuItem onClick={() => handleStatusChange(1)}>
+                Draft
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem onClick={() => handleStatusChange(2)}>
               Published
             </DropdownMenuItem>
