@@ -60,7 +60,7 @@ export async function GET(req) {
     const categories = allCategories.slice(skip, skip + limit);
 
     const categoriesWithCounts = await Promise.all(categories.map(async (cat) => {
-      const blogCount = await Blog.countDocuments({ categories: cat._id, status: 'published' });
+      const blogCount = await Blog.countDocuments({ categories: cat._id, status: 2 });
       return { ...cat, blog_count: blogCount };
     }));
 

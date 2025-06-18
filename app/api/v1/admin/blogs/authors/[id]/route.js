@@ -39,7 +39,7 @@ export async function GET(request, context) {
     }
 
     // Get blog count
-    const blogCount = await Blog.countDocuments({ author: id, status: 'published' });
+    const blogCount = await Blog.countDocuments({ author: id, status: 2 });
     author.blog_count = blogCount;
     await author.save();
 
@@ -153,7 +153,7 @@ export async function PUT(request, context) {
     );
 
     // Get current blog count
-    const blogCount = await Blog.countDocuments({ author: id, status: 'published' });
+    const blogCount = await Blog.countDocuments({ author: id, status: 2 });
     updatedAuthor.blog_count = blogCount;
     await updatedAuthor.save();
 

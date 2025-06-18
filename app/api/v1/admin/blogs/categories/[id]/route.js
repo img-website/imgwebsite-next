@@ -26,7 +26,7 @@ export async function GET(request, context) {
       return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 });
     }
 
-    const blogCount = await Blog.countDocuments({ categories: id, status: 'published' });
+    const blogCount = await Blog.countDocuments({ categories: id, status: 2 });
     category.blog_count = blogCount;
     await category.save();
 
@@ -87,7 +87,7 @@ export async function PUT(request, context) {
     category.modified_date = new Date();
     await category.save();
 
-    const blogCount = await Blog.countDocuments({ categories: id, status: 'published' });
+    const blogCount = await Blog.countDocuments({ categories: id, status: 2 });
     category.blog_count = blogCount;
     await category.save();
 

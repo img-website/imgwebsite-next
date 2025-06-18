@@ -81,7 +81,7 @@ export async function GET(req) {
 
     // Update blog counts for all authors
     const authorsWithCounts = await Promise.all(authors.map(async (author) => {
-      const blogCount = await Blog.countDocuments({ author: author._id, status: 'published' });
+      const blogCount = await Blog.countDocuments({ author: author._id, status: 2 });
       return {
         ...author,
         blog_count: blogCount
