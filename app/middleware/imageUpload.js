@@ -114,7 +114,7 @@ export async function uploadAuthorImage(file) {
 initializeUploadDirs();
 
 // Upload and process blog image
-export async function uploadBlogImage(file) {
+export async function uploadBlogImage(file, width = 1080, height = 617) {
   try {
     if (!file) {
       return {
@@ -134,7 +134,7 @@ export async function uploadBlogImage(file) {
     const filepath = path.join(UPLOAD_DIRS.blogs, filename);
 
     await sharp(Buffer.from(buffer))
-      .resize(1080, 617, {
+      .resize(width, height, {
         fit: 'cover',
         position: 'center'
       })
