@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
@@ -10,12 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createBlog } from "@/app/actions/blogs";
 import RichTextEditor from "@/components/rich-text-editor";
 import ImageCropperInput from "@/components/image-cropper-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import FaqForm from "@/components/faq-form";
 
 const blogSchema = z.object({
   title: z.string().min(2).max(200),
@@ -41,7 +45,7 @@ const blogSchema = z.object({
   commentShowStatus: z.boolean().optional().default(true),
   status: z.enum(["draft", "published", "archived"]).default("draft"),
   publishedDateTime: z.string().optional(),
-  faq: z.string().optional(),
+  faqItems: z.array(z.object({ question: z.string(), answer: z.string() })).optional(),
   bgColor: z.string().optional(),
   bgColorStatus: z.boolean().optional(),
 });
@@ -49,7 +53,7 @@ const blogSchema = z.object({
 export default function Page() {
   const form = useForm({
     resolver: zodResolver(blogSchema),
-    defaultValues: { status: "draft", commentShowStatus: true, bgColorStatus: false }
+    defaultValues: { status: "draft", commentShowStatus: true, bgColorStatus: false, faqItems: [] }
   });
   const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -87,7 +91,8 @@ export default function Page() {
     if (data.metaXDescription) formData.append('metaXDescription', data.metaXDescription.trim());
     formData.append('commentShowStatus', data.commentShowStatus);
     if (data.publishedDateTime) formData.append('publishedDateTime', data.publishedDateTime);
-    if (data.faq) formData.append('faq', data.faq);
+    if (data.faqItems && data.faqItems.length)
+      formData.append('faq', JSON.stringify(data.faqItems));
     if (data.bgColor) formData.append('bgColor', data.bgColor);
     formData.append('bgColorStatus', data.bgColorStatus);
     const result = await createBlog(formData);
@@ -116,7 +121,7 @@ export default function Page() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
                   name="title"
@@ -181,7 +186,11 @@ export default function Page() {
                     <FormItem>
                       <FormLabel>Written Date</FormLabel>
                       <FormControl>
-                        <Input type="date" {...field} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value ? new Date(field.value) : undefined}
+                          onSelect={date => field.onChange(date ? date.toISOString().slice(0,10) : '')}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -191,7 +200,7 @@ export default function Page() {
                   control={form.control}
                   name="shortDescription"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Short Description</FormLabel>
                       <FormControl>
                         <Textarea {...field} />
@@ -204,7 +213,7 @@ export default function Page() {
                   control={form.control}
                   name="description"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <RichTextEditor value={field.value} onChange={field.onChange} />
@@ -217,7 +226,7 @@ export default function Page() {
                   control={form.control}
                   name="banner"
                   render={({ field: { onChange, value } }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Banner</FormLabel>
                       <FormControl>
                         <ImageCropperInput aspectRatio={1080/617} value={value} onChange={onChange} />
@@ -230,7 +239,7 @@ export default function Page() {
                   control={form.control}
                   name="thumbnail"
                   render={({ field: { onChange, value } }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Thumbnail</FormLabel>
                       <FormControl>
                         <ImageCropperInput aspectRatio={1080/617} value={value} onChange={onChange} />
@@ -243,7 +252,7 @@ export default function Page() {
                   control={form.control}
                   name="imageAlt"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Image Alt</FormLabel>
                       <FormControl>
                         <Input {...field} />
@@ -256,8 +265,8 @@ export default function Page() {
                   control={form.control}
                   name="xImage"
                   render={({ field: { onChange, value } }) => (
-                    <FormItem>
-                      <FormLabel>Extra Image</FormLabel>
+                    <FormItem className="md:col-span-2">
+                      <FormLabel>Twitter Image</FormLabel>
                       <FormControl>
                         <ImageCropperInput aspectRatio={1080/617} value={value} onChange={onChange} />
                       </FormControl>
@@ -269,8 +278,8 @@ export default function Page() {
                   control={form.control}
                   name="xImageAlt"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Extra Image Alt</FormLabel>
+                    <FormItem className="md:col-span-2">
+                      <FormLabel>Twitter Image Alt</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -282,7 +291,7 @@ export default function Page() {
                   control={form.control}
                   name="ogImage"
                   render={({ field: { onChange, value } }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>OG Image</FormLabel>
                       <FormControl>
                         <ImageCropperInput aspectRatio={1200/630} value={value} onChange={onChange} />
@@ -295,7 +304,7 @@ export default function Page() {
                   control={form.control}
                   name="ogImageAlt"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>OG Image Alt</FormLabel>
                       <FormControl>
                         <Input {...field} />
@@ -401,7 +410,7 @@ export default function Page() {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
-                        <input type="checkbox" checked={field.value} onChange={e => field.onChange(e.target.checked)} />
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
                       <FormLabel>Show Comments</FormLabel>
                     </FormItem>
@@ -436,7 +445,11 @@ export default function Page() {
                     <FormItem>
                       <FormLabel>Publish Date</FormLabel>
                       <FormControl>
-                        <Input type="datetime-local" {...field} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value ? new Date(field.value) : undefined}
+                          onSelect={date => field.onChange(date ? date.toISOString().slice(0,10) : '')}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -444,12 +457,12 @@ export default function Page() {
                 />
                 <FormField
                   control={form.control}
-                  name="faq"
-                  render={({ field }) => (
-                    <FormItem>
+                  name="faqItems"
+                  render={() => (
+                    <FormItem className="md:col-span-2">
                       <FormLabel>FAQ</FormLabel>
                       <FormControl>
-                        <Textarea {...field} />
+                        <FaqForm />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -474,7 +487,7 @@ export default function Page() {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
-                        <input type="checkbox" checked={field.value} onChange={e => field.onChange(e.target.checked)} />
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
                       <FormLabel>Enable Background Color</FormLabel>
                     </FormItem>
