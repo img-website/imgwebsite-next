@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@/components/ui/date-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -255,7 +256,11 @@ export default function Page() {
                       <FormItem>
                         <FormLabel>Written Date</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <DatePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            placeholder="Select date"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -520,15 +525,41 @@ export default function Page() {
                   <FormField
                     control={form.control}
                     name="publishedDateTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Published Date &amp; Time</FormLabel>
-                        <FormControl>
-                          <Input type="datetime-local" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const datePart = field.value ? field.value.split("T")[0] : "";
+                      const timePart = field.value ? field.value.split("T")[1] || "" : "";
+                      return (
+                        <FormItem>
+                          <FormLabel>Published Date &amp; Time</FormLabel>
+                          <FormControl>
+                            <div className="flex gap-2">
+                              <DatePicker
+                                value={datePart}
+                                onChange={(d) => {
+                                  field.onChange(d ? `${d}T${timePart || "00:00"}` : "");
+                                }}
+                                placeholder="Select date"
+                                className="w-[12rem]"
+                              />
+                              <Input
+                                type="time"
+                                value={timePart}
+                                onChange={(e) => {
+                                  const t = e.target.value;
+                                  if (datePart) {
+                                    field.onChange(`${datePart}T${t}`);
+                                  } else {
+                                    field.onChange(`T${t}`);
+                                  }
+                                }}
+                                className="w-[6rem]"
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   <FormField
                     control={form.control}
