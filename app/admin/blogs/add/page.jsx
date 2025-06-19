@@ -86,6 +86,8 @@ export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
+  const [draftId, setDraftId] = useState(null);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -115,9 +117,14 @@ export default function Page() {
       status: "1",
       publishedDateTime: "",
       bgColorStatus: false,
-      bgColor: "",
-    },
+    bgColor: "",
+  },
   });
+
+  const watchAll = form.watch();
+  useEffect(() => {
+    setHasChanges(true);
+  }, [watchAll]);
 
   useEffect(() => {
     async function fetchOptions() {
@@ -137,51 +144,72 @@ export default function Page() {
     fetchOptions();
   }, []);
 
+  useEffect(() => {
+    const token = TokenFromCookie();
+    const interval = setInterval(async () => {
+      if (!hasChanges) return;
+      const values = form.getValues();
+      try {
+        const res = await fetch(`/api/v1/admin/blogs/draft`, {
+          method: draftId ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ _id: draftId, ...values }),
+        });
+        const json = await res.json();
+        if (json.success && json.data?._id) {
+          setDraftId(json.data._id);
+          setHasChanges(false);
+        }
+      } catch (err) {
+        console.error("Auto save failed", err);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [draftId, hasChanges]);
+
   async function onSubmit(data) {
     try {
-      const formData = new FormData();
-      formData.append("category", data.category);
-      formData.append("title", data.title.trim());
-      formData.append("authorId", data.authorId);
-      formData.append("blogWrittenDate", data.blogWrittenDate);
-      formData.append("slug", data.slug.trim());
-      formData.append("shortDescription", data.shortDescription.trim());
-      formData.append("description", data.description.trim());
-      if (data.banner?.[0]) formData.append("banner", data.banner[0]);
-      if (data.thumbnail?.[0]) formData.append("thumbnail", data.thumbnail[0]);
-      if (data.imageAlt) formData.append("imageAlt", data.imageAlt.trim());
-      if (data.xImage?.[0]) formData.append("xImage", data.xImage[0]);
-      if (data.xImageAlt) formData.append("xImageAlt", data.xImageAlt.trim());
-      if (data.ogImage?.[0]) formData.append("ogImage", data.ogImage[0]);
-      if (data.ogImageAlt) formData.append("ogImageAlt", data.ogImageAlt.trim());
-      if (data.metaTitle) formData.append("metaTitle", data.metaTitle.trim());
-      if (data.metaKeyword?.length) formData.append("metaKeyword", data.metaKeyword.join(","));
-      if (data.metaDescription) formData.append("metaDescription", data.metaDescription.trim());
-      if (data.metaOgTitle) formData.append("metaOgTitle", data.metaOgTitle.trim());
-      if (data.metaOgDescription) formData.append("metaOgDescription", data.metaOgDescription.trim());
-      if (data.metaXTitle) formData.append("metaXTitle", data.metaXTitle.trim());
-      if (data.metaXDescription) formData.append("metaXDescription", data.metaXDescription.trim());
-      formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
-      formData.append("status", data.status);
-      if (data.publishedDateTime) formData.append("publishedDateTime", data.publishedDateTime);
-      formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
-      if (data.bgColor) formData.append("bgColor", data.bgColor);
-
       const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs`, {
-        method: "POST",
+      const draftRes = await fetch(`/api/v1/admin/blogs/draft`, {
+        method: draftId ? "PUT" : "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: JSON.stringify({ _id: draftId, ...data }),
       });
-      const result = await res.json();
-      if (result.success) {
-        toast.success("Blog created successfully!");
-        form.reset();
-        setImageResetKey((k) => k + 1); // Increment reset key to clear images
+      const draftJson = await draftRes.json();
+      if (draftJson.success && draftJson.data?._id) {
+        setDraftId(draftJson.data._id);
       } else {
-        toast.error(result.error || "Failed to create blog");
+        toast.error(draftJson.error || "Failed to save draft");
+        return;
+      }
+
+      if (data.status === "2") {
+        const res = await fetch(`/api/v1/admin/blogs/publish`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ draftId: draftJson.data._id }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          toast.success("Blog published successfully!");
+          form.reset();
+          setDraftId(null);
+          setImageResetKey((k) => k + 1);
+        } else {
+          toast.error(result.error || "Failed to publish blog");
+        }
+      } else {
+        toast.success("Draft saved");
+        setHasChanges(false);
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
