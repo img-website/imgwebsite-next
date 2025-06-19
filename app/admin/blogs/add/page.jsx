@@ -36,6 +36,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
+import ImageCropperInput from "@/components/image-cropper-input";
 
 const blogFormSchema = z.object({
   category: z.string().min(1, { message: "Category is required" }),
@@ -309,11 +310,15 @@ export default function Page() {
                   <FormField
                     control={form.control}
                     name="banner"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                       <FormItem>
                         <FormLabel>Banner Image</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" onChange={(e) => onChange(e.target.files)} />
+                          <ImageCropperInput
+                            aspectRatio={1.75} // 1080x617
+                            value={value}
+                            onChange={onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -322,11 +327,15 @@ export default function Page() {
                   <FormField
                     control={form.control}
                     name="thumbnail"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                       <FormItem>
                         <FormLabel>Thumbnail Image</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" onChange={(e) => onChange(e.target.files)} />
+                          <ImageCropperInput
+                            aspectRatio={1.75} // 1080x617
+                            value={value}
+                            onChange={onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -348,11 +357,15 @@ export default function Page() {
                   <FormField
                     control={form.control}
                     name="xImage"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                       <FormItem>
                         <FormLabel>X Image</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" onChange={(e) => onChange(e.target.files)} />
+                          <ImageCropperInput
+                            aspectRatio={1.90} // 1200x630
+                            value={value}
+                            onChange={onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -374,11 +387,15 @@ export default function Page() {
                   <FormField
                     control={form.control}
                     name="ogImage"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                       <FormItem>
                         <FormLabel>OG Image</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" onChange={(e) => onChange(e.target.files)} />
+                          <ImageCropperInput
+                            aspectRatio={1.90} // 1200x630
+                            value={value}
+                            onChange={onChange}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
