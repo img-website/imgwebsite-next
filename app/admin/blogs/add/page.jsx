@@ -318,6 +318,7 @@ export default function Page() {
                             aspectRatio={1.75} // 1080x617
                             value={value}
                             onChange={onChange}
+                            format="webp"
                           />
                         </FormControl>
                         <FormMessage />
@@ -335,6 +336,7 @@ export default function Page() {
                             aspectRatio={1.75} // 1080x617
                             value={value}
                             onChange={onChange}
+                            format="webp"
                           />
                         </FormControl>
                         <FormMessage />
@@ -365,6 +367,7 @@ export default function Page() {
                             aspectRatio={1.90} // 1200x630
                             value={value}
                             onChange={onChange}
+                            format="jpg"
                           />
                         </FormControl>
                         <FormMessage />
@@ -395,6 +398,7 @@ export default function Page() {
                             aspectRatio={1.90} // 1200x630
                             value={value}
                             onChange={onChange}
+                            format="jpg"
                           />
                         </FormControl>
                         <FormMessage />

@@ -15,11 +15,48 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 
-function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
+function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any' }) {
   const inputRef = useRef(null);
   const cropperRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [imageSrc, setImageSrc] = useState(null);  const [preview, setPreview] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [error, setError] = useState(null);
+
+  const getAcceptedTypes = () => {
+    switch (format) {
+      case 'webp':
+        return 'image/webp';
+      case 'jpg':
+        return 'image/jpeg';
+      default:
+        return 'image/*';
+    }
+  };
+
+  const validateFileFormat = (file) => {
+    if (!file) return false;
+    
+    switch (format) {
+      case 'webp':
+        return file.type === 'image/webp';
+      case 'jpg':
+        return file.type === 'image/jpeg';
+      default:
+        return file.type.startsWith('image/');
+    }
+  };
+
+  const getFormatErrorMessage = () => {
+    switch (format) {
+      case 'webp':
+        return 'Only WebP images are allowed';
+      case 'jpg':
+        return 'Only JPG/JPEG images are allowed';
+      default:
+        return 'Invalid image format';
+    }
+  };
 
   // Set initial preview if value exists
   useEffect(() => {
@@ -31,6 +68,11 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!validateFileFormat(file)) {
+        setError(getFormatErrorMessage());
+        return;
+      }
+      setError(null);
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result);
@@ -57,12 +99,16 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
     e.preventDefault();
     e.stopPropagation();
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file) {
+      if (!validateFileFormat(file)) {
+        setError(getFormatErrorMessage());
+        return;
+      }
+      setError(null);
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result);
@@ -86,7 +132,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className }) {
     <div className={cn("flex flex-col gap-2 w-full", className)}>
       <Input 
         type="file" 
-        accept="image/*" 
+        accept={getAcceptedTypes()} 
         ref={inputRef} 
         onChange={handleFileChange}
         className="hidden" 
