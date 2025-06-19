@@ -52,6 +52,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
 import ImageCropperInput from "@/components/image-cropper-input";
+import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 
 const blogFormSchema = z.object({
   category: z.string().min(1, { message: "Category is required" }),
@@ -448,108 +449,21 @@ export default function Page() {
                     <FormField
                       control={form.control}
                       name="metaKeyword"
-                      render={({ field }) => {
-                        // Local state for CommandInput value
-                        const [inputValue, setInputValue] = useState("");
-                        return (
-                          <FormItem>
-                            <FormLabel>Meta Keywords</FormLabel>
-                            <FormControl>
-                              <Popover>
-                                <PopoverTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                      "w-full justify-between flex-wrap min-h-[40px] h-auto !bg-transparent cursor-pointer",
-                                      !field.value?.length && "text-muted-foreground"
-                                    )}
-                                  >
-                                    {field.value?.length === 0 && "Select keywords..."}
-                                    {field.value?.length > 0 && (
-                                      <div className="flex flex-wrap items-center gap-2">
-                                        {field.value.map((keyword) => (
-                                          <Badge
-                                            variant="secondary"
-                                            key={keyword}
-                                            className="flex items-center cursor-auto"
-                                          >
-                                            {keyword}
-                                            <span
-                                              tabIndex={-1}
-                                              className="ml-1 rounded-full hover:bg-muted-foreground/20 transition-colors p-0.5 group cursor-pointer"
-                                              onClick={e => {
-                                                e.stopPropagation();
-                                                const newValue = field.value.filter((k) => k !== keyword);
-                                                field.onChange(newValue);
-                                              }}
-                                            >
-                                              <X className="h-3 w-3 group-hover:text-destructive" />
-                                            </span>
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    )}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-full p-0">
-                                  <Command>
-                                    <CommandInput
-                                      value={inputValue}
-                                      onValueChange={setInputValue}
-                                      placeholder="Type keyword and press enter"
-                                      onKeyDown={e => {
-                                        if (e.key === "Enter") {
-                                          e.preventDefault();
-                                          const newKeyword = inputValue.trim();
-                                          if (newKeyword && !field.value.includes(newKeyword)) {
-                                            field.onChange([...field.value, newKeyword]);
-                                          }
-                                          setInputValue("");
-                                        }
-                                      }}
-                                    />
-                                    <CommandList>
-                                      <CommandEmpty>
-                                        <div className="px-4">Type a keyword and press enter to add</div>
-                                      </CommandEmpty>
-                                      {field.value?.length > 0 && (
-                                        <CommandGroup heading="Current Keywords">
-                                          {field.value.map((keyword) => (
-                                            <CommandItem
-                                              key={keyword}
-                                              onSelect={() => {}}
-                                              className="flex items-center"
-                                            >
-                                              {keyword}
-                                              <span
-                                                tabIndex={-1}
-                                                className="ml-auto rounded-full hover:bg-muted-foreground/20 transition-colors p-0.5 group cursor-pointer"
-                                                onClick={e => {
-                                                  e.stopPropagation();
-                                                  const newValue = field.value.filter((k) => k !== keyword);
-                                                  field.onChange(newValue);
-                                                }}
-                                              >
-                                                <X className="h-4 w-4 group-hover:text-destructive" />
-                                              </span>
-                                            </CommandItem>
-                                          ))}
-                                        </CommandGroup>
-                                      )}
-                                    </CommandList>
-                                  </Command>
-                                </PopoverContent>
-                              </Popover>
-                            </FormControl>
-                            <FormDescription>
-                              Type a keyword and press enter to add it
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        );
-                      }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta Keywords</FormLabel>
+                          <FormControl>
+                            <MultiKeywordCombobox
+                              value={field.value}
+                              onChange={field.onChange}
+                              placeholder="Select keywords..."
+                              description="Type a keyword and press enter to add it"
+                              label={null}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
                   <div className="w-full px-3">
