@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -82,12 +82,48 @@ const blogFormSchema = z.object({
   bgColor: z.string().optional(),
 });
 
+function isFormEmpty(values) {
+  const keys = [
+    'category',
+    'title',
+    'authorId',
+    'blogWrittenDate',
+    'slug',
+    'shortDescription',
+    'description',
+    'banner',
+    'thumbnail',
+    'imageAlt',
+    'xImage',
+    'xImageAlt',
+    'ogImage',
+    'ogImageAlt',
+    'metaTitle',
+    'metaDescription',
+    'metaOgTitle',
+    'metaOgDescription',
+    'metaXTitle',
+    'metaXDescription',
+    'metaKeyword',
+    'publishedDateTime',
+    'bgColor',
+  ];
+  return keys.every((k) => {
+    const v = values[k];
+    if (!v) return true;
+    if (Array.isArray(v)) return v.length === 0;
+    if (typeof v === 'string') return v.trim() === '';
+    return !(v && v.length);
+  });
+}
+
 export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
   const [draftId, setDraftId] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const isInitial = useRef(true);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -123,6 +159,10 @@ export default function Page() {
 
   const watchAll = form.watch();
   useEffect(() => {
+    if (isInitial.current) {
+      isInitial.current = false;
+      return;
+    }
     setHasChanges(true);
   }, [watchAll]);
 
@@ -149,6 +189,25 @@ export default function Page() {
     const interval = setInterval(async () => {
       if (!hasChanges) return;
       const values = form.getValues();
+      if (isFormEmpty(values)) {
+        if (draftId) {
+          try {
+            await fetch(`/api/v1/admin/blogs/draft`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ _id: draftId }),
+            });
+          } catch (err) {
+            console.error("Failed to delete draft", err);
+          }
+          setDraftId(null);
+        }
+        setHasChanges(false);
+        return;
+      }
       try {
         const payload = { _id: draftId, ...values };
         if (!payload.slug) delete payload.slug;
@@ -210,6 +269,7 @@ export default function Page() {
           form.reset();
           setDraftId(null);
           setImageResetKey((k) => k + 1);
+          isInitial.current = true;
         } else {
           toast.error(result.error || "Failed to publish blog");
         }

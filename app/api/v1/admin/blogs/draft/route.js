@@ -65,3 +65,20 @@ export async function PUT(req) {
     return NextResponse.json({ success: false, error: 'Error updating draft' }, { status: 500 });
   }
 }
+
+export async function DELETE(req) {
+  const a = await auth(req.headers);
+  if (a.error) return a.error;
+  try {
+    await connectDB();
+    const { _id } = await req.json();
+    if (!_id) {
+      return NextResponse.json({ success: false, error: 'Draft ID required' }, { status: 400 });
+    }
+    await BlogDraft.findByIdAndDelete(_id);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error('Error deleting draft:', err);
+    return NextResponse.json({ success: false, error: 'Error deleting draft' }, { status: 500 });
+  }
+}
