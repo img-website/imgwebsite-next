@@ -228,7 +228,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         className={cn(
-          "border-2 border-dashed rounded-lg p-4 min-h-[200px]",
+          "border-2 border-dashed rounded-lg p-4 h-[200px]",
           "flex flex-col items-center justify-center gap-2",
           "cursor-pointer hover:border-primary transition-colors",
           "relative",
@@ -253,7 +253,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
             </div>
           </>
         ) : (
-          <div className="relative w-full h-full min-h-[200px]">
+          <div className="relative w-full h-full">
             <Image 
               src={preview} 
               alt="Preview" 

@@ -207,7 +207,8 @@ export default function Page() {
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8">                  <div className="md:w-1/3 w-full px-3">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8 -mx-3">                  
+                  <div className="md:w-1/3 w-full px-3">
                     <FormField
                       control={form.control}
                       name="category"
