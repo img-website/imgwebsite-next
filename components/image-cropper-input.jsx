@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { Images, X } from "lucide-react";
 
 function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any' }) {
   const inputRef = useRef(null);
@@ -31,6 +32,17 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'image/jpeg';
       default:
         return 'image/*';
+    }
+  };
+
+  const getSupportedFormatsText = () => {
+    switch (format) {
+      case 'webp':
+        return 'Supported format: WebP only';
+      case 'jpg':
+        return 'Supported format: JPG/JPEG only';
+      default:
+        return 'Supported formats: JPEG, PNG, GIF';
     }
   };
 
@@ -152,25 +164,12 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       >
         {!preview ? (
           <>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-10 w-10 text-muted-foreground/50"
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
-              />
-            </svg>
+            <Images className="h-10 w-10 text-muted-foreground/50" />
             <p className="text-sm text-muted-foreground text-center">
               Drag and drop an image, or click to select
             </p>
             <p className="text-xs text-muted-foreground/75">
-              Supported formats: JPEG, PNG, GIF
+              {getSupportedFormatsText()}
             </p>
           </>
         ) : (
@@ -181,29 +180,17 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
               className="rounded-md object-contain" 
               fill
               sizes="100%"
-            />            <button
+            />            
+            <button
               type="button"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 handleRemoveImage(e);
               }}
-              className="absolute -top-2 -right-2 p-1 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors"
+              className="absolute -top-2 -right-2 p-1 rounded-full bg-black text-white cursor-pointer transition-colors"
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4"
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M6 18L18 6M6 6l12 12" 
-                />
-              </svg>
+              <X className="h-4 w-4" />
             </button>
           </div>
         )}
