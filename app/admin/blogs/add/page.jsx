@@ -192,400 +192,440 @@ export default function Page() {
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories.map((cat) => (
-                              <SelectItem key={cat._id} value={cat._id}>{cat.category_name}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Blog title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="authorId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Author</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select author" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {authors.map((a) => (
-                              <SelectItem key={a._id} value={a._id}>{a.author_name}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="blogWrittenDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Written Date</FormLabel>
-                        <FormControl>
-                          <DatePicker
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder="Select date"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="slug"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Slug</FormLabel>
-                        <FormControl>
-                          <Input placeholder="blog-title" {...field} />
-                        </FormControl>
-                        <FormDescription>Unique URL-friendly identifier.</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="shortDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Short Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[120px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="banner"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>Banner Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.75} // 1080x617
-                            value={value}
-                            size="1080x617"
-                            onChange={onChange}
-                            format="webp"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="thumbnail"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>Thumbnail Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.75} // 1080x617
-                            value={value}
-                            size="1080x617"
-                            onChange={onChange}
-                            format="webp"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="imageAlt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Image Alt Text</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Describe banner image" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="xImage"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>X Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.90} // 1200x630
-                            value={value}
-                            size="1200x630"
-                            onChange={onChange}
-                            format="jpg"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="xImageAlt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>X Image Alt</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Alt text for X image" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ogImage"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>OG Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.90} // 1200x630
-                            value={value}
-                            size="1200x630"
-                            onChange={onChange}
-                            format="jpg"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ogImageAlt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>OG Image Alt</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Alt text for OG image" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Meta title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaKeyword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta Keyword</FormLabel>
-                        <FormControl>
-                          <Input placeholder="comma,separated,keywords" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaOgTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta OG Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Open Graph title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaOgDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta OG Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaXTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta X Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="X title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaXDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta X Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="commentShowStatus"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                        <FormLabel>Show Comments</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select status" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="1">Draft</SelectItem>
-                            <SelectItem value="2">Published</SelectItem>
-                            <SelectItem value="3">Archived</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="publishedDateTime"
-                    render={({ field }) => {
-                      const datePart = field.value ? field.value.split("T")[0] : "";
-                      const timePart = field.value ? field.value.split("T")[1] || "" : "";
-                      return (
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8">
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="category"
+                      render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Published Date &amp; Time</FormLabel>
+                          <FormLabel>Category</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {categories.map((cat) => (
+                                <SelectItem key={cat._id} value={cat._id}>{cat.category_name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="authorId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Author</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select author" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {authors.map((a) => (
+                                <SelectItem key={a._id} value={a._id}>{a.author_name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="blogWrittenDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Written Date</FormLabel>
                           <FormControl>
-                            <div className="flex gap-2">
-                              <DatePicker
-                                value={datePart}
-                                onChange={(d) => {
-                                  field.onChange(d ? `${d}T${timePart || "00:00"}` : "");
-                                }}
-                                placeholder="Select date"
-                                className="w-[12rem]"
-                              />
-                              <Input
-                                type="time"
-                                value={timePart}
-                                onChange={(e) => {
-                                  const t = e.target.value;
-                                  if (datePart) {
-                                    field.onChange(`${datePart}T${t}`);
-                                  } else {
-                                    field.onChange(`T${t}`);
-                                  }
-                                }}
-                                className="w-[6rem]"
-                              />
-                            </div>
+                            <DatePicker
+                              value={field.value}
+                              onChange={field.onChange}
+                              placeholder="Select date"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
-                      );
-                    }}
-                  />
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Blog title" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="slug"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Slug</FormLabel>
+                          <FormControl>
+                            <Input placeholder="blog-title" {...field} />
+                          </FormControl>
+                          <FormDescription>Unique URL-friendly identifier.</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="shortDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Short Description</FormLabel>
+                          <FormControl>
+                            <Textarea className="min-h-[80px]" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea className="min-h-[120px]" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="banner"
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormLabel>Banner Image</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              aspectRatio={1.75} // 1080x617
+                              value={value}
+                              size="1080x617"
+                              onChange={onChange}
+                              format="webp"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="thumbnail"
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormLabel>Thumbnail Image</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              aspectRatio={1.75} // 1080x617
+                              value={value}
+                              size="1080x617"
+                              onChange={onChange}
+                              format="webp"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="imageAlt"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Image Alt Text</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Describe banner image" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="metaTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Meta title" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="metaKeyword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta Keyword</FormLabel>
+                          <FormControl>
+                            <Input placeholder="comma,separated,keywords" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="metaDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta Description</FormLabel>
+                          <FormControl>
+                            <Textarea className="min-h-[80px]" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
+                    <FormField
+                      control={form.control}
+                      name="xImage"
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormLabel>X Image</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              aspectRatio={1.90} // 1200x630
+                              value={value}
+                              size="1200x630"
+                              onChange={onChange}
+                              format="jpg"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="xImageAlt"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>X Image Alt</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Alt text for X image" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
+                    <FormField
+                      control={form.control}
+                      name="ogImage"
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormLabel>OG Image</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              aspectRatio={1.90} // 1200x630
+                              value={value}
+                              size="1200x630"
+                              onChange={onChange}
+                              format="jpg"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="ogImageAlt"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>OG Image Alt</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Alt text for OG image" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
+                    <FormField
+                      control={form.control}
+                      name="metaOgTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta OG Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Open Graph title" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="metaOgDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta OG Description</FormLabel>
+                          <FormControl>
+                            <Textarea className="min-h-[80px]" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
+                    <FormField
+                      control={form.control}
+                      name="metaXTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta X Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="X title" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="metaXDescription"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meta X Description</FormLabel>
+                          <FormControl>
+                            <Textarea className="min-h-[80px]" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="commentShowStatus"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center gap-2">
+                          <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                          <FormLabel>Show Comments</FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="status"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Status</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="1">Draft</SelectItem>
+                              <SelectItem value="2">Published</SelectItem>
+                              <SelectItem value="3">Archived</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="publishedDateTime"
+                      render={({ field }) => {
+                        const datePart = field.value ? field.value.split("T")[0] : "";
+                        const timePart = field.value ? field.value.split("T")[1] || "" : "";
+                        return (
+                          <FormItem>
+                            <FormLabel>Published Date &amp; Time</FormLabel>
+                            <FormControl className="w-full">
+                              <div className="flex gap-2 w-full">
+                                <DatePicker
+                                  value={datePart}
+                                  onChange={(d) => {
+                                    field.onChange(d ? `${d}T${timePart || "00:00"}` : "");
+                                  }}
+                                  placeholder="Select date"
+                                  className="grow w-auto"
+                                />
+                                <Input
+                                  type="time"
+                                  value={timePart}
+                                  onChange={(e) => {
+                                    const t = e.target.value;
+                                    if (datePart) {
+                                      field.onChange(`${datePart}T${t}`);
+                                    } else {
+                                      field.onChange(`T${t}`);
+                                    }
+                                  }}
+                                  className="shrink-0 w-auto"
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  </div>
                   <FormField
                     control={form.control}
                     name="bgColorStatus"
