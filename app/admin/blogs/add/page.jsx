@@ -4,6 +4,7 @@ import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -24,7 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
@@ -68,7 +69,7 @@ const blogFormSchema = z.object({
   ogImage: z.any().refine((file) => file?.length === 1, "OG image is required"),
   ogImageAlt: z.string().min(2, { message: "OG image alt text must be at least 2 characters" }).max(200),
   metaTitle: z.string().min(2, { message: "Meta title must be at least 2 characters" }).max(200),
-  metaKeyword: z.string(),
+  metaKeyword: z.array(z.string()).default([]),
   metaDescription: z.string().min(10, { message: "Meta description must be at least 10 characters" }).max(500),
   metaOgTitle: z.string().min(2, { message: "Meta OG title must be at least 2 characters" }).max(200),
   metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
@@ -103,7 +104,7 @@ export default function Page() {
       ogImage: undefined,
       ogImageAlt: "",
       metaTitle: "",
-      metaKeyword: "",
+      metaKeyword: [],
       metaDescription: "",
       metaOgTitle: "",
       metaOgDescription: "",
@@ -153,7 +154,7 @@ export default function Page() {
       if (data.ogImage?.[0]) formData.append("ogImage", data.ogImage[0]);
       if (data.ogImageAlt) formData.append("ogImageAlt", data.ogImageAlt.trim());
       if (data.metaTitle) formData.append("metaTitle", data.metaTitle.trim());
-      if (data.metaKeyword) formData.append("metaKeyword", data.metaKeyword.trim());
+      if (data.metaKeyword?.length) formData.append("metaKeyword", data.metaKeyword.join(","));
       if (data.metaDescription) formData.append("metaDescription", data.metaDescription.trim());
       if (data.metaOgTitle) formData.append("metaOgTitle", data.metaOgTitle.trim());
       if (data.metaOgDescription) formData.append("metaOgDescription", data.metaOgDescription.trim());
@@ -443,20 +444,112 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
-                  </div>
-                  <div className="w-full px-3">
+                  </div>                  <div className="w-full px-3">
                     <FormField
                       control={form.control}
                       name="metaKeyword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Meta Keyword</FormLabel>
-                          <FormControl>
-                            <Input placeholder="comma,separated,keywords" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      render={({ field }) => {
+                        // Local state for CommandInput value
+                        const [inputValue, setInputValue] = useState("");
+                        return (
+                          <FormItem>
+                            <FormLabel>Meta Keywords</FormLabel>
+                            <FormControl>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className={cn(
+                                      "w-full justify-between flex-wrap min-h-[40px] h-auto !bg-transparent cursor-pointer",
+                                      !field.value?.length && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value?.length === 0 && "Select keywords..."}
+                                    {field.value?.length > 0 && (
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        {field.value.map((keyword) => (
+                                          <Badge
+                                            variant="secondary"
+                                            key={keyword}
+                                            className="flex items-center cursor-auto"
+                                          >
+                                            {keyword}
+                                            <span
+                                              tabIndex={-1}
+                                              className="ml-1 rounded-full hover:bg-muted-foreground/20 transition-colors p-0.5 group cursor-pointer"
+                                              onClick={e => {
+                                                e.stopPropagation();
+                                                const newValue = field.value.filter((k) => k !== keyword);
+                                                field.onChange(newValue);
+                                              }}
+                                            >
+                                              <X className="h-3 w-3 group-hover:text-destructive" />
+                                            </span>
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    )}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                  <Command>
+                                    <CommandInput
+                                      value={inputValue}
+                                      onValueChange={setInputValue}
+                                      placeholder="Type keyword and press enter"
+                                      onKeyDown={e => {
+                                        if (e.key === "Enter") {
+                                          e.preventDefault();
+                                          const newKeyword = inputValue.trim();
+                                          if (newKeyword && !field.value.includes(newKeyword)) {
+                                            field.onChange([...field.value, newKeyword]);
+                                          }
+                                          setInputValue("");
+                                        }
+                                      }}
+                                    />
+                                    <CommandList>
+                                      <CommandEmpty>
+                                        <div className="px-4">Type a keyword and press enter to add</div>
+                                      </CommandEmpty>
+                                      {field.value?.length > 0 && (
+                                        <CommandGroup heading="Current Keywords">
+                                          {field.value.map((keyword) => (
+                                            <CommandItem
+                                              key={keyword}
+                                              onSelect={() => {}}
+                                              className="flex items-center"
+                                            >
+                                              {keyword}
+                                              <span
+                                                tabIndex={-1}
+                                                className="ml-auto rounded-full hover:bg-muted-foreground/20 transition-colors p-0.5 group cursor-pointer"
+                                                onClick={e => {
+                                                  e.stopPropagation();
+                                                  const newValue = field.value.filter((k) => k !== keyword);
+                                                  field.onChange(newValue);
+                                                }}
+                                              >
+                                                <X className="h-4 w-4 group-hover:text-destructive" />
+                                              </span>
+                                            </CommandItem>
+                                          ))}
+                                        </CommandGroup>
+                                      )}
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                            </FormControl>
+                            <FormDescription>
+                              Type a keyword and press enter to add it
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
                     />
                   </div>
                   <div className="w-full px-3">
