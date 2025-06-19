@@ -11,6 +11,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -191,26 +206,62 @@ export default function Page() {
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8">
-                  <div className="md:w-1/3 w-full px-3">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8">                  <div className="md:w-1/3 w-full px-3">
                     <FormField
                       control={form.control}
                       name="category"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Category</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl className="w-full">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select category" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {categories.map((cat) => (
-                                <SelectItem key={cat._id} value={cat._id}>{cat.category_name}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl className="w-full">
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  className={cn(
+                                    "w-full justify-between",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value
+                                    ? categories.find((cat) => cat._id === field.value)?.category_name
+                                    : "Select category..."}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-full p-0">
+                              <Command>
+                                <CommandInput 
+                                  placeholder="Search category..." 
+                                  className="h-9"
+                                />
+                                <CommandList>
+                                  <CommandEmpty>No category found.</CommandEmpty>
+                                  <CommandGroup>
+                                    {categories.map((cat) => (
+                                      <CommandItem
+                                        key={cat._id}
+                                        value={cat.category_name}
+                                        onSelect={() => {
+                                          form.setValue("category", cat._id);
+                                        }}
+                                      >
+                                        {cat.category_name}
+                                        <Check
+                                          className={cn(
+                                            "ml-auto h-4 w-4",
+                                            field.value === cat._id ? "opacity-100" : "opacity-0"
+                                          )}
+                                        />
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}

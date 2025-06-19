@@ -77,7 +77,7 @@ const blogSchema = new mongoose.Schema(
       required: [true, 'Meta title is required'],
     },
     meta_keyword: {
-      type: String,
+      type: [String],
       required: [true, 'Meta keyword is required'],
     },
     meta_description: {
