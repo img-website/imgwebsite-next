@@ -96,24 +96,87 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       };
       reader.readAsDataURL(file);
     }
+  };  const getMimeType = () => {
+    switch (format) {
+      case 'webp':
+        return 'image/webp';
+      case 'jpg':
+        return 'image/jpeg';
+      default:
+        return 'image/png'; // Default fallback
+    }
+  };
+
+  const getFileExtension = () => {
+    switch (format) {
+      case 'webp':
+        return 'webp';
+      case 'jpg':
+        return 'jpg';
+      default:
+        return 'png';
+    }
   };
 
   const handleCrop = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
-      const width = size ? parseInt(size.split('x')[0]) : null;
-      const height = size ? parseInt(size.split('x')[1]) : null;
+      let width = null;
+      let height = null;
+      
+      if (size) {
+        const dimensions = size.split('x');
+        width = parseInt(dimensions[0]);
+        height = parseInt(dimensions[1]);
+      }
 
-      cropper.getCroppedCanvas({
-        width: width,
-        height: height
-      }).toBlob((blob) => {
-        if (blob) {
-          const file = new File([blob], `cropped-${Date.now()}.png`, { type: blob.type });
-          setPreview(URL.createObjectURL(blob));
-          onChange([file]);
-        }
-      });
+      // First get the cropped canvas
+      const croppedCanvas = cropper.getCroppedCanvas();
+      
+      if (width && height) {
+        // Create a new canvas with the desired dimensions
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = width;
+        finalCanvas.height = height;
+        const ctx = finalCanvas.getContext('2d');
+        
+        // Draw the cropped image onto the new canvas with desired dimensions
+        ctx.drawImage(croppedCanvas, 0, 0, width, height);
+        
+        // Convert the final canvas to blob with specified format
+        const mimeType = getMimeType();
+        const quality = format === 'jpg' ? 0.95 : undefined; // High quality for JPEG
+
+        finalCanvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const fileName = `cropped-${Date.now()}.${getFileExtension()}`;
+              const file = new File([blob], fileName, { type: mimeType });
+              setPreview(URL.createObjectURL(blob));
+              onChange([file]);
+            }
+          },
+          mimeType,
+          quality
+        );
+      } else {
+        // If no size specified, use original cropped canvas
+        const mimeType = getMimeType();
+        const quality = format === 'jpg' ? 0.95 : undefined;
+
+        croppedCanvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const fileName = `cropped-${Date.now()}.${getFileExtension()}`;
+              const file = new File([blob], fileName, { type: mimeType });
+              setPreview(URL.createObjectURL(blob));
+              onChange([file]);
+            }
+          },
+          mimeType,
+          quality
+        );
+      }
     }
     setOpen(false);
   };

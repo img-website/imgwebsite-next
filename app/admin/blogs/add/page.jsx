@@ -317,6 +317,7 @@ export default function Page() {
                           <ImageCropperInput
                             aspectRatio={1.75} // 1080x617
                             value={value}
+                            size="1080x617"
                             onChange={onChange}
                             format="webp"
                           />
@@ -335,6 +336,7 @@ export default function Page() {
                           <ImageCropperInput
                             aspectRatio={1.75} // 1080x617
                             value={value}
+                            size="1080x617"
                             onChange={onChange}
                             format="webp"
                           />
@@ -366,6 +368,7 @@ export default function Page() {
                           <ImageCropperInput
                             aspectRatio={1.90} // 1200x630
                             value={value}
+                            size="1200x630"
                             onChange={onChange}
                             format="jpg"
                           />
