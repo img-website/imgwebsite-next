@@ -53,31 +53,53 @@ const blogSchema = new mongoose.Schema(
       required: [true, 'Thumbnail image is required']
     },
     image_alt: {
-      type: String
+      type: String,
+      required: [true, 'Image alt is required']
     },
     x_image: {
-      type: String
+      type: String,
+      required: [true, 'X image is required']
     },
     x_image_alt: {
-      type: String
+      type: String,
+      required: [true, 'X image alt is required']
     },
     og_image: {
-      type: String
+      type: String,
+      required: [true, 'OG image is required']
     },
     og_image_alt: {
-      type: String
+      type: String,
+      required: [true, 'OG image alt is required']
     },
     meta_title: {
-      type: String
+      type: String,
+      required: [true, 'Meta title is required'],
     },
-    meta_keyword: [String],
+    meta_keyword: {
+      type: String,
+      required: [true, 'Meta keyword is required'],
+    },
     meta_description: {
-      type: String
+      type: String,
+      required: [true, 'Meta description is required'],
     },
-    meta_og_title: String,
-    meta_og_description: String,
-    meta_x_title: String,
-    meta_x_description: String,
+    meta_og_title: {
+      type: String,
+      required: [true, 'Meta OG title is required'],
+    },
+    meta_og_description: {
+      type: String,
+      required: [true, 'Meta OG description is required'],
+    },
+    meta_x_title:  {
+      type: String,
+      required: [true, 'Meta X title is required'],
+    },
+    meta_x_description: {
+      type: String,
+      required: [true, 'Meta X description is required'],
+    },
     comment_show_status: {
       type: Boolean,
       default: true

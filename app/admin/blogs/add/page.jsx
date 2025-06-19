@@ -29,7 +29,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DatePicker } from "@/components/ui/date-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -48,18 +47,18 @@ const blogFormSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   banner: z.any().refine((file) => file?.length === 1, "Banner image is required"),
   thumbnail: z.any().refine((file) => file?.length === 1, "Thumbnail image is required"),
-  imageAlt: z.string().optional(),
-  xImage: z.any().optional(),
-  xImageAlt: z.string().optional(),
-  ogImage: z.any().optional(),
-  ogImageAlt: z.string().optional(),
-  metaTitle: z.string().optional(),
-  metaKeyword: z.string().optional(),
-  metaDescription: z.string().optional(),
-  metaOgTitle: z.string().optional(),
-  metaOgDescription: z.string().optional(),
-  metaXTitle: z.string().optional(),
-  metaXDescription: z.string().optional(),
+  imageAlt: z.string().min(2, { message: "Image alt text must be at least 2 characters" }).max(200),
+  xImage: z.any().refine((file) => file?.length === 1, "X image is required"),
+  xImageAlt: z.string().min(2, { message: "X image alt text must be at least 2 characters" }).max(200),
+  ogImage: z.any().refine((file) => file?.length === 1, "OG image is required"),
+  ogImageAlt: z.string().min(2, { message: "OG image alt text must be at least 2 characters" }).max(200),
+  metaTitle: z.string().min(2, { message: "Meta title must be at least 2 characters" }).max(200),
+  metaKeyword: z.string(),
+  metaDescription: z.string().min(10, { message: "Meta description must be at least 10 characters" }).max(500),
+  metaOgTitle: z.string().min(2, { message: "Meta OG title must be at least 2 characters" }).max(200),
+  metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
+  metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
+  metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
   commentShowStatus: z.boolean().default(true),
   status: z.string().default("1"),
   publishedDateTime: z.string().optional(),
@@ -378,6 +377,7 @@ export default function Page() {
                       )}
                     />
                   </div>
+                  <Separator className="my-6" />
                   <div className="w-full px-3">
                     <FormField
                       control={form.control}
@@ -423,40 +423,7 @@ export default function Page() {
                       )}
                     />
                   </div>
-                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
-                    <FormField
-                      control={form.control}
-                      name="xImage"
-                      render={({ field: { onChange, value } }) => (
-                        <FormItem>
-                          <FormLabel>X Image</FormLabel>
-                          <FormControl>
-                            <ImageCropperInput
-                              aspectRatio={1.90} // 1200x630
-                              value={value}
-                              size="1200x630"
-                              onChange={onChange}
-                              format="jpg"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="xImageAlt"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>X Image Alt</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Alt text for X image" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <Separator className="my-6" />
                   <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
                     <FormField
                       control={form.control}
@@ -485,6 +452,40 @@ export default function Page() {
                           <FormLabel>OG Image Alt</FormLabel>
                           <FormControl>
                             <Input placeholder="Alt text for OG image" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
+                    <FormField
+                      control={form.control}
+                      name="xImage"
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormLabel>X Image</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              aspectRatio={1.90} // 1200x630
+                              value={value}
+                              size="1200x630"
+                              onChange={onChange}
+                              format="jpg"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="xImageAlt"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>X Image Alt</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Alt text for X image" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -546,17 +547,30 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
-                  </div>
+                  </div> 
+                  <Separator className="my-6" />                 
                   <div className="md:w-1/3 w-full px-3">
                     <FormField
                       control={form.control}
                       name="commentShowStatus"
                       render={({ field }) => (
-                        <FormItem className="flex items-center gap-2">
-                          <FormControl>
-                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                          </FormControl>
-                          <FormLabel>Show Comments</FormLabel>
+                        <FormItem>
+                          <FormLabel>Comments Status</FormLabel>
+                          <Select
+                            onValueChange={(value) => field.onChange(value === "true")} 
+                            value={field.value.toString()}
+                          >
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select comments status" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="true">Show Comments</SelectItem>
+                              <SelectItem value="false">Hide Comments</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -625,33 +639,49 @@ export default function Page() {
                         );
                       }}
                     />
+                  </div>                  
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="bgColorStatus"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>BG Color Status</FormLabel>
+                          <Select 
+                            onValueChange={(value) => field.onChange(value === "true")} 
+                            value={field.value.toString()}
+                          >
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select background color status" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="true">Enable BG</SelectItem>
+                              <SelectItem value="false">Disable BG</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <FormField
-                    control={form.control}
-                    name="bgColorStatus"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                        <FormLabel>Enable Background Color</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="bgColor"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Background Color</FormLabel>
-                        <FormControl>
-                          <Input type="color" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="flex justify-end gap-4">
+                  <div className="md:w-1/3 w-full px-3">
+                    <FormField
+                      control={form.control}
+                      name="bgColor"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Background Color</FormLabel>
+                          <FormControl>
+                            <Input type="color" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full flex justify-end gap-4">
                     <Button type="submit" disabled={form.formState.isSubmitting}>
                       {form.formState.isSubmitting ? "Creating..." : "Create Blog"}
                     </Button>
