@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 import { Images, X } from "lucide-react";
 
-function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any' }) {
+function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any', size }) {
   const inputRef = useRef(null);
   const cropperRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -44,6 +44,10 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       default:
         return 'Supported formats: JPEG, PNG, GIF';
     }
+  };
+
+  const getSizeText = () => {
+    return size ? `Required size: ${size} pixels` : '';
   };
 
   const validateFileFormat = (file) => {
@@ -97,7 +101,13 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
   const handleCrop = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
-      cropper.getCroppedCanvas().toBlob((blob) => {
+      const width = size ? parseInt(size.split('x')[0]) : null;
+      const height = size ? parseInt(size.split('x')[1]) : null;
+
+      cropper.getCroppedCanvas({
+        width: width,
+        height: height
+      }).toBlob((blob) => {
         if (blob) {
           const file = new File([blob], `cropped-${Date.now()}.png`, { type: blob.type });
           setPreview(URL.createObjectURL(blob));
@@ -168,9 +178,16 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
             <p className="text-sm text-muted-foreground text-center">
               Drag and drop an image, or click to select
             </p>
-            <p className="text-xs text-muted-foreground/75">
-              {getSupportedFormatsText()}
-            </p>
+            <div className="flex flex-col items-center gap-1">
+              <p className="text-xs text-muted-foreground/75">
+                {getSupportedFormatsText()}
+              </p>
+              {size && (
+                <p className="text-xs text-muted-foreground/75">
+                  {getSizeText()}
+                </p>
+              )}
+            </div>
           </>
         ) : (
           <div className="relative w-full h-full min-h-[200px]">

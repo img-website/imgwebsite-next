@@ -397,6 +397,7 @@ export default function Page() {
                           <ImageCropperInput
                             aspectRatio={1.90} // 1200x630
                             value={value}
+                            size="1200x630"
                             onChange={onChange}
                             format="jpg"
                           />
