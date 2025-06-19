@@ -4,7 +4,6 @@ import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -445,7 +444,8 @@ export default function Page() {
                         </FormItem>
                       )}
                     />
-                  </div>                  <div className="w-full px-3">
+                  </div>                  
+                  <div className="w-full px-3">
                     <FormField
                       control={form.control}
                       name="metaKeyword"
