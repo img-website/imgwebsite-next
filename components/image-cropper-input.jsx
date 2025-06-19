@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 import { Images, X } from "lucide-react";
 
-function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any', size }) {
+function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any', size, resetKey }) {
   const inputRef = useRef(null);
   const cropperRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -80,6 +80,20 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       setPreview(URL.createObjectURL(value[0]));
     }
   }, [value]);
+
+  // Clear preview and input when resetKey changes
+  useEffect(() => {
+    setPreview(null);
+    setImageSrc(null);
+    setError(null);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+    // Also clear the form value
+    if (onChange) {
+      onChange([]);
+    }
+  }, [resetKey]);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];

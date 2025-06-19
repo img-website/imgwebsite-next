@@ -85,6 +85,7 @@ const blogFormSchema = z.object({
 export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
+  const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -178,6 +179,7 @@ export default function Page() {
       if (result.success) {
         toast.success("Blog created successfully!");
         form.reset();
+        setImageResetKey((k) => k + 1); // Increment reset key to clear images
       } else {
         toast.error(result.error || "Failed to create blog");
       }
@@ -185,6 +187,8 @@ export default function Page() {
       toast.error("An unexpected error occurred");
     }
   }
+
+  // If you have a manual reset button, also call setImageResetKey((k) => k + 1) there.
 
   return (
     <>
@@ -387,6 +391,7 @@ export default function Page() {
                               size="1080x617"
                               onChange={onChange}
                               format="webp"
+                              resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
                           <FormMessage />
@@ -408,6 +413,7 @@ export default function Page() {
                               size="1080x617"
                               onChange={onChange}
                               format="webp"
+                              resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
                           <FormMessage />
@@ -497,6 +503,7 @@ export default function Page() {
                               size="1200x630"
                               onChange={onChange}
                               format="jpg"
+                              resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
                           <FormMessage />
@@ -531,6 +538,7 @@ export default function Page() {
                               size="1200x630"
                               onChange={onChange}
                               format="jpg"
+                              resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
                           <FormMessage />
