@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import BlogDraft from '@/app/models/BlogDraft';
+import Blog from '@/app/models/Blog';
+import slugify from 'slugify';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 async function auth(headers) {
@@ -19,6 +21,16 @@ export async function POST(req) {
   try {
     await connectDB();
     const data = await req.json();
+    if (data.slug) {
+      data.slug = slugify(data.slug, { lower: true, strict: true, trim: true });
+      const existingBlog = await Blog.findOne({ slug: data.slug });
+      const existingDraft = await BlogDraft.findOne({ slug: data.slug });
+      if (existingBlog || existingDraft) {
+        return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+      }
+    } else {
+      delete data.slug;
+    }
     const draft = await BlogDraft.create(data);
     return NextResponse.json({ success: true, data: draft }, { status: 201 });
   } catch (err) {
@@ -35,6 +47,16 @@ export async function PUT(req) {
     const data = await req.json();
     if (!data._id) {
       return NextResponse.json({ success: false, error: 'Draft ID required' }, { status: 400 });
+    }
+    if (data.slug) {
+      data.slug = slugify(data.slug, { lower: true, strict: true, trim: true });
+      const existingBlog = await Blog.findOne({ slug: data.slug });
+      const existingDraft = await BlogDraft.findOne({ slug: data.slug, _id: { $ne: data._id } });
+      if (existingBlog || existingDraft) {
+        return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+      }
+    } else {
+      delete data.slug;
     }
     const draft = await BlogDraft.findByIdAndUpdate(data._id, data, { new: true, upsert: true });
     return NextResponse.json({ success: true, data: draft });

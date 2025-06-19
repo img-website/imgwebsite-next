@@ -58,7 +58,7 @@ const blogFormSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
   authorId: z.string().min(1, { message: "Author is required" }),
   blogWrittenDate: z.string().min(1, { message: "Written date is required" }),
-  slug: z.string().min(2, { message: "Slug is required" }),
+  slug: z.string().optional(),
   shortDescription: z.string().min(10, { message: "Short description must be at least 10 characters" }).max(500),
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   banner: z.any().refine((file) => file?.length === 1, "Banner image is required"),
@@ -150,18 +150,22 @@ export default function Page() {
       if (!hasChanges) return;
       const values = form.getValues();
       try {
+        const payload = { _id: draftId, ...values };
+        if (!payload.slug) delete payload.slug;
         const res = await fetch(`/api/v1/admin/blogs/draft`, {
           method: draftId ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ _id: draftId, ...values }),
+          body: JSON.stringify(payload),
         });
         const json = await res.json();
         if (json.success && json.data?._id) {
           setDraftId(json.data._id);
           setHasChanges(false);
+        } else if (!json.success) {
+          toast.error(json.error || "Auto save failed");
         }
       } catch (err) {
         console.error("Auto save failed", err);
@@ -173,13 +177,15 @@ export default function Page() {
   async function onSubmit(data) {
     try {
       const token = TokenFromCookie();
+      const payload = { _id: draftId, ...data };
+      if (!payload.slug) delete payload.slug;
       const draftRes = await fetch(`/api/v1/admin/blogs/draft`, {
         method: draftId ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ _id: draftId, ...data }),
+        body: JSON.stringify(payload),
       });
       const draftJson = await draftRes.json();
       if (draftJson.success && draftJson.data?._id) {

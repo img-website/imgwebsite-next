@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
+import BlogDraft from './BlogDraft';
 
 const blogSchema = new mongoose.Schema(
   {
@@ -32,8 +33,7 @@ const blogSchema = new mongoose.Schema(
     slug: {
       type: String,
       unique: true,
-      index: true,
-      required: true
+      index: true
     },
     short_description: {
       type: String,
@@ -128,15 +128,20 @@ const blogSchema = new mongoose.Schema(
 );
 
 blogSchema.pre('validate', async function (next) {
-  if (this.isModified('slug')) {
+  if (this.isModified('slug') && this.slug) {
     this.slug = slugify(this.slug, { lower: true, strict: true, trim: true });
 
-    const existing = await mongoose.models.Blog.findOne({
+    const existingBlog = await mongoose.models.Blog.findOne({
       slug: this.slug,
       _id: { $ne: this._id }
     });
 
-    if (existing) {
+    const existingDraft = await BlogDraft.findOne({
+      slug: this.slug,
+      ...(this._id ? { blogId: { $ne: this._id } } : {})
+    });
+
+    if (existingBlog || existingDraft) {
       this.invalidate('slug', 'Slug must be unique');
     }
   }

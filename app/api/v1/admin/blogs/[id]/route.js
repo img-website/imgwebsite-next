@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
+import BlogDraft from '@/app/models/BlogDraft';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
@@ -66,7 +67,8 @@ export async function PUT(request, context) {
       const slugified = slugify(newSlug, { lower: true, strict: true, trim: true });
       if (slugified !== blog.slug) {
         const existingSlug = await Blog.findOne({ slug: slugified, _id: { $ne: id } });
-        if (existingSlug) {
+        const existingDraft = await BlogDraft.findOne({ slug: slugified });
+        if (existingSlug || existingDraft) {
           return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
         }
         blog.slug = slugified;

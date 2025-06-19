@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
+import BlogDraft from '@/app/models/BlogDraft';
 import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
@@ -92,11 +93,15 @@ export async function POST(req) {
 
     const formData = await req.formData();
 
-    const slug = slugify(formData.get('slug') || '', { lower: true, strict: true, trim: true });
-
-    const existingSlug = await Blog.findOne({ slug });
-    if (existingSlug) {
-      return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+    const rawSlug = formData.get('slug');
+    let slug;
+    if (rawSlug) {
+      slug = slugify(rawSlug, { lower: true, strict: true, trim: true });
+      const existingSlug = await Blog.findOne({ slug });
+      const existingDraftSlug = await BlogDraft.findOne({ slug });
+      if (existingSlug || existingDraftSlug) {
+        return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+      }
     }
 
     const statusValue = Number(formData.get('status')) || 1;
@@ -142,7 +147,7 @@ export async function POST(req) {
       title: formData.get('title'),
       author: formData.get('authorId'),
       blog_written_date: formData.get('blogWrittenDate') ? new Date(formData.get('blogWrittenDate')) : null,
-      slug,
+      ...(slug ? { slug } : {}),
       short_description: formData.get('shortDescription'),
       description: formData.get('description'),
       banner: banner?.filename,

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
 import BlogDraft from '@/app/models/BlogDraft';
+import slugify from 'slugify';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 async function auth(headers) {
@@ -26,6 +27,16 @@ export async function POST(req) {
     const draft = await BlogDraft.findById(draftId).lean();
     if (!draft) {
       return NextResponse.json({ success: false, error: 'Draft not found' }, { status: 404 });
+    }
+    if (draft.slug) {
+      draft.slug = slugify(draft.slug, { lower: true, strict: true, trim: true });
+      const existingBlog = await Blog.findOne({ slug: draft.slug, _id: { $ne: draft.blogId } });
+      const existingDraft = await BlogDraft.findOne({ slug: draft.slug, _id: { $ne: draftId } });
+      if (existingBlog || existingDraft) {
+        return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+      }
+    } else {
+      delete draft.slug;
     }
     const data = { ...draft };
     delete data._id;

@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const blogDraftSchema = new mongoose.Schema(
   {
-    blogId: { type: mongoose.Schema.Types.ObjectId, ref: 'Blog', default: null }
+    blogId: { type: mongoose.Schema.Types.ObjectId, ref: 'Blog', default: null },
+    slug: { type: String, index: true, unique: true }
   },
   {
     strict: false,
