@@ -11,11 +11,11 @@ const blogSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
-      required: [true, 'Blog category is required']
+      required: [function() { return this.status !== 1; }, 'Blog category is required']
     },
     title: {
       type: String,
-      required: [true, 'Blog title is required'],
+      required: [function() { return this.status !== 1; }, 'Blog title is required'],
       trim: true,
       maxlength: [200, 'Title cannot be more than 200 characters'],
       unique: true
@@ -23,82 +23,82 @@ const blogSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Author',
-      required: [true, 'Blog author is required']
+      required: [function() { return this.status !== 1; }, 'Blog author is required']
     },
     blog_written_date: {
       type: Date,
-      required: [true, 'Blog written date is required']
+      required: [function() { return this.status !== 1; }, 'Blog written date is required']
     },
     slug: {
       type: String,
       unique: true,
       index: true,
-      required: true
+      required: [function() { return this.status !== 1; }, 'Slug is required']
     },
     short_description: {
       type: String,
-      required: [true, 'Blog short description is required'],
+      required: [function() { return this.status !== 1; }, 'Blog short description is required'],
       maxlength: [500, 'Short description cannot be more than 500 characters']
     },
     description: {
       type: String,
-      required: [true, 'Blog description is required']
+      required: [function() { return this.status !== 1; }, 'Blog description is required']
     },
     banner: {
       type: String,
-      required: [true, 'Banner image is required']
+      required: [function() { return this.status !== 1; }, 'Banner image is required']
     },
     thumbnail: {
       type: String,
-      required: [true, 'Thumbnail image is required']
+      required: [function() { return this.status !== 1; }, 'Thumbnail image is required']
     },
     image_alt: {
       type: String,
-      required: [true, 'Image alt is required']
+      required: [function() { return this.status !== 1; }, 'Image alt is required']
     },
     x_image: {
       type: String,
-      required: [true, 'X image is required']
+      required: [function() { return this.status !== 1; }, 'X image is required']
     },
     x_image_alt: {
       type: String,
-      required: [true, 'X image alt is required']
+      required: [function() { return this.status !== 1; }, 'X image alt is required']
     },
     og_image: {
       type: String,
-      required: [true, 'OG image is required']
+      required: [function() { return this.status !== 1; }, 'OG image is required']
     },
     og_image_alt: {
       type: String,
-      required: [true, 'OG image alt is required']
+      required: [function() { return this.status !== 1; }, 'OG image alt is required']
     },
     meta_title: {
       type: String,
-      required: [true, 'Meta title is required'],
+      required: [function() { return this.status !== 1; }, 'Meta title is required'],
     },
     meta_keyword: {
       type: [String],
-      required: [true, 'Meta keyword is required'],
+      required: [function() { return this.status !== 1; }, 'Meta keyword is required'],
     },
     meta_description: {
       type: String,
-      required: [true, 'Meta description is required'],
+      required: [function() { return this.status !== 1; }, 'Meta description is required'],
     },
     meta_og_title: {
       type: String,
-      required: [true, 'Meta OG title is required'],
+      required: [function() { return this.status !== 1; }, 'Meta OG title is required'],
     },
     meta_og_description: {
       type: String,
-      required: [true, 'Meta OG description is required'],
+      required: [function() { return this.status !== 1; }, 'Meta OG description is required'],
     },
     meta_x_title:  {
       type: String,
-      required: [true, 'Meta X title is required'],
+      required: [function() { return this.status !== 1; }, 'Meta X title is required'],
     },
     meta_x_description: {
       type: String,
-      required: [true, 'Meta X description is required'],
+      required: [function() { return this.status !== 1; }, 'Meta X description is required'],
     },
     comment_show_status: {
       type: Boolean,

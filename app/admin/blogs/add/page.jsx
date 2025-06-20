@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -86,6 +86,8 @@ export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
+  const [draftId, setDraftId] = useState(null);
+  const debounceRef = useRef(null);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -137,6 +139,119 @@ export default function Page() {
     fetchOptions();
   }, []);
 
+  // Load existing draft if available
+  useEffect(() => {
+    fetch('/api/v1/admin/blogs/drafts/latest')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) {
+          const d = json.data;
+          setDraftId(d._id);
+            const map = {
+              category: 'category',
+              title: 'title',
+              author: 'authorId',
+              blog_written_date: 'blogWrittenDate',
+              slug: 'slug',
+              short_description: 'shortDescription',
+              description: 'description',
+              image_alt: 'imageAlt',
+              x_image_alt: 'xImageAlt',
+              og_image_alt: 'ogImageAlt',
+              meta_title: 'metaTitle',
+              meta_keyword: 'metaKeyword',
+              meta_description: 'metaDescription',
+              meta_og_title: 'metaOgTitle',
+              meta_og_description: 'metaOgDescription',
+              meta_x_title: 'metaXTitle',
+              meta_x_description: 'metaXDescription',
+              comment_show_status: 'commentShowStatus',
+              status: 'status',
+              published_date_time: 'publishedDateTime',
+              bg_color_status: 'bgColorStatus',
+              bg_color: 'bgColor'
+            };
+          Object.entries(map).forEach(([serverKey, formKey]) => {
+            if (d[serverKey] !== undefined && d[serverKey] !== null) {
+              if (formKey === 'metaKeyword' && Array.isArray(d[serverKey])) {
+                form.setValue(formKey, d[serverKey]);
+              } else if (d[serverKey] instanceof Date) {
+                form.setValue(formKey, d[serverKey].toISOString().slice(0,10));
+              } else {
+                form.setValue(formKey, d[serverKey].toString());
+              }
+            }
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Auto save draft with debounce
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      const hasData = Object.values(values).some((v) => {
+        if (Array.isArray(v)) return v.length > 0;
+        return v !== '' && v !== undefined && v !== false;
+      });
+      if (!hasData) return;
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        saveDraft(values);
+      }, 1000);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, draftId]);
+
+  async function saveDraft(values) {
+    try {
+      const token = TokenFromCookie();
+      if (!draftId) {
+        const res = await fetch('/api/v1/admin/blogs/drafts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(values),
+        });
+        const json = await res.json();
+        if (json.success) {
+          setDraftId(json.data._id);
+        }
+      } else {
+        await fetch(`/api/v1/admin/blogs/drafts/${draftId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(values),
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (!draftId) return;
+      const values = form.getValues();
+      const empty = Object.values(values).every((v) => {
+        if (Array.isArray(v)) return v.length === 0;
+        return v === '' || v === undefined || v === false;
+      });
+      if (empty) {
+        const token = TokenFromCookie();
+        fetch(`/api/v1/admin/blogs/drafts/${draftId}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+    };
+  }, [draftId]);
+
   async function onSubmit(data) {
     try {
       const formData = new FormData();
@@ -180,6 +295,13 @@ export default function Page() {
         toast.success("Blog created successfully!");
         form.reset();
         setImageResetKey((k) => k + 1); // Increment reset key to clear images
+        if (draftId) {
+          fetch(`/api/v1/admin/blogs/drafts/${draftId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setDraftId(null);
+        }
       } else {
         toast.error(result.error || "Failed to create blog");
       }
