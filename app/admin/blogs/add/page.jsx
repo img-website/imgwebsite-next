@@ -933,7 +933,7 @@ export default function Page() {
                               <SelectContent>
                                 <SelectItem value="1">Draft</SelectItem>
                                 <SelectItem value="2">Published</SelectItem>
-                                <SelectItem value="3">Archived</SelectItem>
+                                {/* <SelectItem value="3">Archived</SelectItem> */}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -1025,7 +1025,9 @@ export default function Page() {
                     </div>
                     <div className="w-full flex justify-end gap-4">
                       <Button type="submit" disabled={form.formState.isSubmitting}>
-                        {form.formState.isSubmitting ? "Creating..." : "Create Blog"}
+                        {status === "1"
+                          ? (form.formState.isSubmitting ? "Saving..." : "Save Draft")
+                          : (form.formState.isSubmitting ? "Publishing..." : "Publish Now")}
                       </Button>
                     </div>
                   </form>
