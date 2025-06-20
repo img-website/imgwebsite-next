@@ -74,10 +74,16 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
     }
   };
 
-  // Set initial preview if value exists
+  // Set initial preview if value exists (File or URL)
   useEffect(() => {
-    if (value?.[0]) {
+    if (value?.[0] instanceof File) {
       setPreview(URL.createObjectURL(value[0]));
+    } else if (typeof value === "string" && value) {
+      setPreview(value);
+    } else if (Array.isArray(value) && typeof value[0] === "string" && value[0]) {
+      setPreview(value[0]);
+    } else {
+      setPreview(null);
     }
   }, [value]);
 
@@ -274,6 +280,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
               className="rounded-md object-contain" 
               fill
               sizes="100%"
+              unoptimized={typeof preview === "string" && preview.startsWith("blob:") ? false : true}
             />            
             <button
               type="button"

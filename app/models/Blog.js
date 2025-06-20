@@ -11,11 +11,11 @@ const blogSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
-      required: [true, 'Blog category is required']
+      required: function() { return this.status !== 1; }
     },
     title: {
       type: String,
-      required: [true, 'Blog title is required'],
+      required: function() { return this.status !== 1; },
       trim: true,
       maxlength: [200, 'Title cannot be more than 200 characters'],
       unique: true
@@ -23,82 +23,82 @@ const blogSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Author',
-      required: [true, 'Blog author is required']
+      required: function() { return this.status !== 1; }
     },
     blog_written_date: {
       type: Date,
-      required: [true, 'Blog written date is required']
+      required: function() { return this.status !== 1; }
     },
     slug: {
       type: String,
       unique: true,
       index: true,
-      required: true
+      required: function() { return this.status !== 1; }
     },
     short_description: {
       type: String,
-      required: [true, 'Blog short description is required'],
+      required: function() { return this.status !== 1; },
       maxlength: [500, 'Short description cannot be more than 500 characters']
     },
     description: {
       type: String,
-      required: [true, 'Blog description is required']
+      required: function() { return this.status !== 1; }
     },
     banner: {
       type: String,
-      required: [true, 'Banner image is required']
+      required: function() { return this.status !== 1; }
     },
     thumbnail: {
       type: String,
-      required: [true, 'Thumbnail image is required']
+      required: function() { return this.status !== 1; }
     },
     image_alt: {
       type: String,
-      required: [true, 'Image alt is required']
+      required: function() { return this.status !== 1; }
     },
     x_image: {
       type: String,
-      required: [true, 'X image is required']
+      required: function() { return this.status !== 1; }
     },
     x_image_alt: {
       type: String,
-      required: [true, 'X image alt is required']
+      required: function() { return this.status !== 1; }
     },
     og_image: {
       type: String,
-      required: [true, 'OG image is required']
+      required: function() { return this.status !== 1; }
     },
     og_image_alt: {
       type: String,
-      required: [true, 'OG image alt is required']
+      required: function() { return this.status !== 1; }
     },
     meta_title: {
       type: String,
-      required: [true, 'Meta title is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_keyword: {
       type: [String],
-      required: [true, 'Meta keyword is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_description: {
       type: String,
-      required: [true, 'Meta description is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_og_title: {
       type: String,
-      required: [true, 'Meta OG title is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_og_description: {
       type: String,
-      required: [true, 'Meta OG description is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_x_title:  {
       type: String,
-      required: [true, 'Meta X title is required'],
+      required: function() { return this.status !== 1; },
     },
     meta_x_description: {
       type: String,
-      required: [true, 'Meta X description is required'],
+      required: function() { return this.status !== 1; },
     },
     comment_show_status: {
       type: Boolean,

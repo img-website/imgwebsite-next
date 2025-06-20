@@ -249,7 +249,7 @@ export const columns = [
     cell: ({ row }) => (
       <Image
         src={row.getValue("banner")}
-        alt={row.original.title}
+        alt={row.original.title || "Blog Banner"}
         width={80}
         height={45}
         className="rounded-md object-cover"
