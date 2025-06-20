@@ -6,11 +6,11 @@ import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
 
-export async function GET(request, context) {
+export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }
@@ -32,7 +32,7 @@ export async function GET(request, context) {
   }
 }
 
-export async function PUT(request, context) {
+export async function PUT(request, { params }) {
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -46,7 +46,7 @@ export async function PUT(request, context) {
 
     await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }
@@ -192,7 +192,7 @@ export async function PUT(request, context) {
   }
 }
 
-export async function DELETE(request, context) {
+export async function DELETE(request, { params }) {
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -205,7 +205,7 @@ export async function DELETE(request, context) {
     }
 
     await connectDB();
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }

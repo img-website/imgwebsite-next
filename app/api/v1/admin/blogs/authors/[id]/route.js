@@ -11,17 +11,19 @@ import { uploadAuthorImage } from '@/app/middleware/imageUpload';
  * @desc Get author details with blog count
  * @access Public
  */
-export async function GET(request, context) {
+export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({
         success: false,
         error: 'Invalid author ID'
       }, { status: 400 });
-    }    const { searchParams } = new URL(request.url);
+    }    
+    
+    const searchParams = request.nextUrl.searchParams
     const showDeleted = searchParams.get('deleted') === 'true';
 
     // Find author, optionally including soft-deleted ones
@@ -63,7 +65,7 @@ export async function GET(request, context) {
  * @desc Update author
  * @access Private (Admin only)
  */
-export async function PUT(request, context) {
+export async function PUT(request, { params }) {
   try {
     // Verify admin token
     const token = extractToken(request.headers);
@@ -82,7 +84,7 @@ export async function PUT(request, context) {
       }, { status: 403 });
     }    await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !id.match(/^[0-9a-fA-F]{24}$/)) {
       return NextResponse.json({
         success: false,
@@ -192,7 +194,7 @@ export async function PUT(request, context) {
  * @desc Delete author (soft or hard delete)
  * @access Private (Admin only)
  */
-export async function DELETE(request, context) {
+export async function DELETE(request, { params }) {
   try {
     // Verify admin token
     const token = extractToken(request.headers);
@@ -212,7 +214,7 @@ export async function DELETE(request, context) {
     }
 
     await connectDB();    // Get ID from context params and validate
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({
         success: false,

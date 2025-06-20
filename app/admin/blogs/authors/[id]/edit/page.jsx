@@ -4,7 +4,8 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default async function Page({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/${params.id}`, { cache: 'no-store' });
+  const { id } = await params;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/${id}`, { cache: 'no-store' });
   const json = await res.json();
   const author = json?.data;
 

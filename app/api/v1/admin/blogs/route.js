@@ -6,10 +6,10 @@ import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
 
-export async function GET(req) {
+export async function GET(request) {
   try {
     await connectDB();
-    const { searchParams } = new URL(req.url);
+    const searchParams = request.nextUrl.searchParams
 
     const search = searchParams.get('search');
     const status = searchParams.get('status');
@@ -76,9 +76,9 @@ export async function GET(req) {
   }
 }
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const token = extractToken(req.headers);
+    const token = extractToken(request.headers);
     if (!token) {
       return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
@@ -90,7 +90,7 @@ export async function POST(req) {
 
     await connectDB();
 
-    const formData = await req.formData();
+    const formData = await request.formData();
 
     const slug = slugify(formData.get('slug') || '', { lower: true, strict: true, trim: true });
 

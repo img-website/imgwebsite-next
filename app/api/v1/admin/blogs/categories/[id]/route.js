@@ -5,15 +5,15 @@ import Category from '@/app/models/Category';
 import Blog from '@/app/models/Blog';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
-export async function GET(request, context) {
+export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid category ID' }, { status: 400 });
     }
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams
     const showDeleted = searchParams.get('deleted') === 'true';
 
     const query = { _id: id };
@@ -39,7 +39,7 @@ export async function GET(request, context) {
   }
 }
 
-export async function PUT(request, context) {
+export async function PUT(request, { params }) {
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -51,7 +51,7 @@ export async function PUT(request, context) {
     }
     await connectDB();
 
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !id.match(/^[0-9a-fA-F]{24}$/)) {
       return NextResponse.json({ success: false, error: 'Invalid category ID format' }, { status: 400 });
     }
@@ -107,7 +107,7 @@ export async function PUT(request, context) {
   }
 }
 
-export async function DELETE(request, context) {
+export async function DELETE(request, { params }) {
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -119,11 +119,11 @@ export async function DELETE(request, context) {
     }
 
     await connectDB();
-    const id = context.params.id;
+    const { id } = await params;
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid category ID' }, { status: 400 });
     }
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams
     const force = searchParams.get('force') === 'true';
 
     const category = await Category.findOne({ _id: id }, null, { showDeleted: true });

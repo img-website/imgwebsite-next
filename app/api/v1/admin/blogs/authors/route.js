@@ -11,10 +11,10 @@ import { uploadAuthorImage } from '@/app/middleware/imageUpload';
  * @desc Get all authors with filters, sorting, and pagination
  * @access Public
  */
-export async function GET(req) {
+export async function GET(request) {
   try {
     await connectDB();
-    const { searchParams } = new URL(req.url);
+    const searchParams = request.nextUrl.searchParams
     
     // Get all query parameters
     const search = searchParams.get('search');

@@ -119,9 +119,9 @@ export async function POST(req) {
   }
 }
 
-export async function DELETE(req) {
+export async function DELETE(request) {
   try {
-    const { searchParams } = new URL(req.url);
+    const searchParams = request.nextUrl.searchParams
     const imageName = searchParams.get('name');
 
     if (!imageName) {

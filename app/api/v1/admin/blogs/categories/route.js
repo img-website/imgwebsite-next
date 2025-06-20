@@ -5,10 +5,10 @@ import Blog from '@/app/models/Blog';
 import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
-export async function GET(req) {
+export async function GET(request) {
   try {
     await connectDB();
-    const { searchParams } = new URL(req.url);
+    const searchParams = request.nextUrl.searchParams
 
     const search = searchParams.get('search');
     const showDeleted = searchParams.get('deleted') === 'true';
