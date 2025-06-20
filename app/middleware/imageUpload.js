@@ -65,10 +65,10 @@ async function validateImageType(buffer) {
 // Upload and process author image
 export async function uploadAuthorImage(file) {
   try {
-    if (!file) {
+    if (!file || typeof file !== 'object' || typeof file.arrayBuffer !== 'function') {
       return {
         success: false,
-        error: 'Please provide an image file'
+        error: 'Please provide a valid image file'
       };
     }
 
@@ -113,10 +113,10 @@ export async function uploadAuthorImage(file) {
 // Upload and process blog image
 export async function uploadBlogImage(file, type = 'generic') {
   try {
-    if (!file) {
+    if (!file || typeof file !== 'object' || typeof file.arrayBuffer !== 'function') {
       return {
         success: false,
-        error: 'Please provide an image file'
+        error: 'Please provide a valid image file'
       };
     }
 

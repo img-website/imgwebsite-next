@@ -212,12 +212,28 @@ export default function Page() {
             slug: blog.slug || "",
             shortDescription: blog.short_description || "",
             description: blog.description || "",
-            banner: blog.banner ? `/uploads/blogs/${blog.banner}` : undefined,
-            thumbnail: blog.thumbnail ? `/uploads/blogs/${blog.thumbnail}` : undefined,
+            banner: blog.banner?.startsWith('http')
+              ? blog.banner
+              : blog.banner
+                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`
+                : undefined,
+            thumbnail: blog.thumbnail?.startsWith('http')
+              ? blog.thumbnail
+              : blog.thumbnail
+                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`
+                : undefined,
             imageAlt: blog.image_alt || "",
-            xImage: blog.x_image ? `/uploads/blogs/${blog.x_image}` : undefined,
+            xImage: blog.x_image?.startsWith('http')
+              ? blog.x_image
+              : blog.x_image
+                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.x_image}`
+                : undefined,
             xImageAlt: blog.x_image_alt || "",
-            ogImage: blog.og_image ? `/uploads/blogs/${blog.og_image}` : undefined,
+            ogImage: blog.og_image?.startsWith('http')
+              ? blog.og_image
+              : blog.og_image
+                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.og_image}`
+                : undefined,
             ogImageAlt: blog.og_image_alt || "",
             metaTitle: blog.meta_title || "",
             metaKeyword: blog.meta_keyword || [],
@@ -244,8 +260,13 @@ export default function Page() {
   async function onSubmit(data) {
     try {
       const formData = new FormData();
-      // Only append fields if they are filled, or if status is not draft
       const isDraft = data.status === "1";
+      // Only append image fields if File, skip if empty/removed
+      if (data.banner && data.banner[0] instanceof File) formData.append("banner", data.banner[0]);
+      if (data.thumbnail && data.thumbnail[0] instanceof File) formData.append("thumbnail", data.thumbnail[0]);
+      if (data.xImage && data.xImage[0] instanceof File) formData.append("xImage", data.xImage[0]);
+      if (data.ogImage && data.ogImage[0] instanceof File) formData.append("ogImage", data.ogImage[0]);
+      // For all other fields, send as empty string/array if empty
       if (!isDraft || data.category) formData.append("category", data.category || "");
       if (!isDraft || data.title) formData.append("title", data.title?.trim() || "");
       if (!isDraft || data.authorId) formData.append("authorId", data.authorId || "");
@@ -253,26 +274,21 @@ export default function Page() {
       if (!isDraft || data.slug) formData.append("slug", data.slug?.trim() || "");
       if (!isDraft || data.shortDescription) formData.append("shortDescription", data.shortDescription?.trim() || "");
       if (!isDraft || data.description) formData.append("description", data.description?.trim() || "");
-      // Only append images if they are File objects (not URLs)
-      if (data.banner && data.banner[0] instanceof File) formData.append("banner", data.banner[0]);
-      if (data.thumbnail && data.thumbnail[0] instanceof File) formData.append("thumbnail", data.thumbnail[0]);
-      if (data.xImage && data.xImage[0] instanceof File) formData.append("xImage", data.xImage[0]);
-      if (data.ogImage && data.ogImage[0] instanceof File) formData.append("ogImage", data.ogImage[0]);
-      if (!isDraft || data.imageAlt) formData.append("imageAlt", data.imageAlt?.trim() || "");
-      if (!isDraft || data.xImageAlt) formData.append("xImageAlt", data.xImageAlt?.trim() || "");
-      if (!isDraft || data.ogImageAlt) formData.append("ogImageAlt", data.ogImageAlt?.trim() || "");
-      if (!isDraft || data.metaTitle) formData.append("metaTitle", data.metaTitle?.trim() || "");
+      if (!isDraft || data.imageAlt !== undefined) formData.append("imageAlt", data.imageAlt || "");
+      if (!isDraft || data.xImageAlt !== undefined) formData.append("xImageAlt", data.xImageAlt || "");
+      if (!isDraft || data.ogImageAlt !== undefined) formData.append("ogImageAlt", data.ogImageAlt || "");
+      if (!isDraft || data.metaTitle !== undefined) formData.append("metaTitle", data.metaTitle || "");
       if (!isDraft || (data.metaKeyword && data.metaKeyword.length)) formData.append("metaKeyword", data.metaKeyword?.join(",") || "");
-      if (!isDraft || data.metaDescription) formData.append("metaDescription", data.metaDescription?.trim() || "");
-      if (!isDraft || data.metaOgTitle) formData.append("metaOgTitle", data.metaOgTitle?.trim() || "");
-      if (!isDraft || data.metaOgDescription) formData.append("metaOgDescription", data.metaOgDescription?.trim() || "");
-      if (!isDraft || data.metaXTitle) formData.append("metaXTitle", data.metaXTitle?.trim() || "");
-      if (!isDraft || data.metaXDescription) formData.append("metaXDescription", data.metaXDescription?.trim() || "");
+      if (!isDraft || data.metaDescription !== undefined) formData.append("metaDescription", data.metaDescription || "");
+      if (!isDraft || data.metaOgTitle !== undefined) formData.append("metaOgTitle", data.metaOgTitle || "");
+      if (!isDraft || data.metaOgDescription !== undefined) formData.append("metaOgDescription", data.metaOgDescription || "");
+      if (!isDraft || data.metaXTitle !== undefined) formData.append("metaXTitle", data.metaXTitle || "");
+      if (!isDraft || data.metaXDescription !== undefined) formData.append("metaXDescription", data.metaXDescription || "");
       formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
       formData.append("status", data.status);
-      if (data.publishedDateTime) formData.append("publishedDateTime", data.publishedDateTime);
+      if (data.publishedDateTime !== undefined) formData.append("publishedDateTime", data.publishedDateTime || "");
       formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
-      if (data.bgColor) formData.append("bgColor", data.bgColor);
+      if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
 
       const token = TokenFromCookie();
       const res = await fetch(`/api/v1/admin/blogs`, {
@@ -331,20 +347,25 @@ export default function Page() {
 
   async function autoSaveDraft(data) {
     if (isSaving) return;
-    // Avoid saving if nothing changed
     if (lastSavedData && JSON.stringify(lastSavedData) === JSON.stringify(data)) return;
     setIsSaving(true);
     try {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
-        if (value !== undefined && value !== "") {
-          if (Array.isArray(value)) {
-            formData.append(key, value.join(","));
-          } else if (key === "banner" || key === "thumbnail" || key === "xImage" || key === "ogImage") {
-            if (value?.[0]) formData.append(key, value[0]);
-          } else {
-            formData.append(key, value);
+        // Handle image fields: only append if File, skip if empty/removed
+        if (["banner", "thumbnail", "xImage", "ogImage"].includes(key)) {
+          if (Array.isArray(value) && value[0] instanceof File) {
+            formData.append(key, value[0]);
           }
+          // else: skip if empty or not a File
+        } else if (Array.isArray(value)) {
+          // For array fields (like metaKeyword), send as comma string if not empty
+          if (value.length > 0) formData.append(key, value.join(","));
+        } else if (typeof value === "string") {
+          // For string fields, always send (even if empty)
+          formData.append(key, value);
+        } else if (typeof value === "boolean") {
+          formData.append(key, value ? "true" : "false");
         }
       });
       formData.append("status", "1");
@@ -359,7 +380,6 @@ export default function Page() {
         result = await res.json();
         if (result.success && result.data?._id) {
           setBlogId(result.data._id);
-          // Update URL with ?id=...
           const url = new URL(window.location.href);
           url.searchParams.set("id", result.data._id);
           window.history.replaceState({}, "", url.toString());
@@ -374,7 +394,6 @@ export default function Page() {
       }
       if (result.success) {
         setLastSavedData(data);
-        // No toast here for auto-save
       } else {
         toast.error(result.error || "Auto-save failed");
       }
