@@ -361,6 +361,11 @@ export default function Page() {
             formData.append(key, value[0]);
           } 
           // If value is string (preview from DB), do not send key (keep old image)
+        } else if (["category", "authorId"].includes(key)) {
+          // Only append if not empty string/null/undefined
+          if (value && value !== "") {
+            formData.append(key, value);
+          }
         } else if (Array.isArray(value)) {
           // For array fields (like metaKeyword), send as comma string if not empty
           if (value.length > 0) formData.append(key, value.join(","));

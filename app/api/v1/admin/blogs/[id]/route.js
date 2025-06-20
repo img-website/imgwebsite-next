@@ -62,7 +62,9 @@ export async function PUT(request, context) {
     }
 
     const newSlug = formData.get('slug');
-    if (newSlug) {
+    // Slug unique check only for published/archived
+    const statusValue = Number(formData.get('status'));
+    if (newSlug && (statusValue === 2 || statusValue === 3)) {
       const slugified = slugify(newSlug, { lower: true, strict: true, trim: true });
       if (slugified !== blog.slug) {
         const existingSlug = await Blog.findOne({ slug: slugified, _id: { $ne: id } });
@@ -71,9 +73,11 @@ export async function PUT(request, context) {
         }
         blog.slug = slugified;
       }
+    } else if (newSlug) {
+      // For draft, just update slug without unique check
+      blog.slug = slugify(newSlug, { lower: true, strict: true, trim: true });
     }
 
-    const statusValue = Number(formData.get('status'));
     if ([1, 2, 3].includes(statusValue)) {
       if (statusValue === 1 && blog.status !== 1) {
         return NextResponse.json(

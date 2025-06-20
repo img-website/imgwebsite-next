@@ -94,17 +94,20 @@ export async function POST(req) {
 
     const slug = slugify(formData.get('slug') || '', { lower: true, strict: true, trim: true });
 
-    const existingSlug = await Blog.findOne({ slug });
-    if (existingSlug) {
-      return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
-    }
-
     const statusValue = Number(formData.get('status')) || 1;
     if (![1, 2, 3].includes(statusValue)) {
       return NextResponse.json(
         { success: false, error: 'Status must be 1 (Draft), 2 (Published), or 3 (Archived)' },
         { status: 400 }
       );
+    }
+
+    // Slug unique check only for published/archived
+    if (slug && (statusValue === 2 || statusValue === 3)) {
+      const existingSlug = await Blog.findOne({ slug });
+      if (existingSlug) {
+        return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
+      }
     }
 
     const bannerFile = formData.get('banner');
