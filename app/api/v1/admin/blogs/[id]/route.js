@@ -84,36 +84,48 @@ export async function PUT(request, context) {
       blog.status = statusValue;
     }
 
-    const bannerFile = formData.get('banner');
-    if (bannerFile) {
-      const res = await uploadBlogImage(bannerFile, 'banner');
+    // Banner image update logic
+    const bannerField = formData.get('banner');
+    if (bannerField === '') {
+      blog.banner = '';
+    } else if (bannerField) {
+      const res = await uploadBlogImage(bannerField, 'banner');
       if (!res.success) {
         return NextResponse.json({ success: false, error: res.error }, { status: 400 });
       }
       blog.banner = res.filename;
     }
 
-    const thumbnailFile = formData.get('thumbnail');
-    if (thumbnailFile) {
-      const res = await uploadBlogImage(thumbnailFile, 'thumbnail');
+    // Thumbnail image update logic
+    const thumbnailField = formData.get('thumbnail');
+    if (thumbnailField === '') {
+      blog.thumbnail = '';
+    } else if (thumbnailField) {
+      const res = await uploadBlogImage(thumbnailField, 'thumbnail');
       if (!res.success) {
         return NextResponse.json({ success: false, error: res.error }, { status: 400 });
       }
       blog.thumbnail = res.filename;
     }
 
-    const xImgFile = formData.get('xImage');
-    if (xImgFile) {
-      const res = await uploadBlogImage(xImgFile, 'xImage');
+    // xImage update logic
+    const xImgField = formData.get('xImage');
+    if (xImgField === '') {
+      blog.x_image = '';
+    } else if (xImgField) {
+      const res = await uploadBlogImage(xImgField, 'xImage');
       if (!res.success) {
         return NextResponse.json({ success: false, error: res.error }, { status: 400 });
       }
       blog.x_image = res.filename;
     }
 
-    const ogImgFile = formData.get('ogImage');
-    if (ogImgFile) {
-      const res = await uploadBlogImage(ogImgFile, 'ogImage');
+    // ogImage update logic
+    const ogImgField = formData.get('ogImage');
+    if (ogImgField === '') {
+      blog.og_image = '';
+    } else if (ogImgField) {
+      const res = await uploadBlogImage(ogImgField, 'ogImage');
       if (!res.success) {
         return NextResponse.json({ success: false, error: res.error }, { status: 400 });
       }

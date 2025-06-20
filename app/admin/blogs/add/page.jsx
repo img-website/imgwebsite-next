@@ -131,6 +131,7 @@ export default function Page() {
   const [blogId, setBlogId] = useState(initialBlogId);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSavedData, setLastSavedData] = useState(null);
+  const [bannerRemoved, setBannerRemoved] = useState(false); // Track if banner preview is removed
 
   const blogFormSchema = useMemo(() => getBlogFormSchema(status), [status]);
 
@@ -352,12 +353,14 @@ export default function Page() {
     try {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
-        // Handle image fields: only append if File, skip if empty/removed
+        // Handle image fields: always send key; if File, send file; if empty, send empty string
         if (["banner", "thumbnail", "xImage", "ogImage"].includes(key)) {
-          if (Array.isArray(value) && value[0] instanceof File) {
+          if (key === "banner" && bannerRemoved) {
+            formData.append(key, ""); // Only if user removed
+          } else if (Array.isArray(value) && value[0] instanceof File) {
             formData.append(key, value[0]);
-          }
-          // else: skip if empty or not a File
+          } 
+          // If value is string (preview from DB), do not send key (keep old image)
         } else if (Array.isArray(value)) {
           // For array fields (like metaKeyword), send as comma string if not empty
           if (value.length > 0) formData.append(key, value.join(","));
@@ -640,7 +643,7 @@ export default function Page() {
                       <FormField
                         control={form.control}
                         name="banner"
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, value, ...fieldProps } }) => (
                           <FormItem>
                             <FormLabel>Banner Image</FormLabel>
                             <FormControl>
@@ -648,7 +651,15 @@ export default function Page() {
                                 aspectRatio={1.75} // 1080x617
                                 value={value}
                                 size="1080x617"
-                                onChange={onChange}
+                                onChange={(val) => {
+                                  if (!val || (Array.isArray(val) && val.length === 0)) {
+                                    setBannerRemoved(true); // User removed preview
+                                    onChange("");
+                                  } else {
+                                    setBannerRemoved(false); // User uploaded or kept image
+                                    onChange(val);
+                                  }
+                                }}
                                 format="webp"
                                 resetKey={imageResetKey} // Pass resetKey
                               />
