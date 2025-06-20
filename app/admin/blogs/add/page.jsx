@@ -56,9 +56,12 @@ import { useSearchParams } from "next/navigation";
 import Loader from "@/components/ui/loader";
 
 // Function to get schema based on status
-function getBlogFormSchema(status) {
+function getBlogFormSchema(status, bgColorStatus) {
+  const bgColorField = bgColorStatus
+    ? z.string().min(1, { message: "Background color is required" })
+    : z.string().optional();
   if (status === "1") {
-    // Draft: all fields optional
+    // Draft: all fields optional, but bgColor required if bgColorStatus true
     return z.object({
       category: z.string().optional(),
       title: z.string().optional(),
@@ -81,14 +84,14 @@ function getBlogFormSchema(status) {
       metaOgDescription: z.string().optional(),
       metaXTitle: z.string().optional(),
       metaXDescription: z.string().optional(),
-      commentShowStatus: z.boolean().default(true),
+      commentShowStatus: z.boolean().default(false),
       status: z.string().default("1"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
-      bgColor: z.string().optional(),
+      bgColor: bgColorField,
     });
   } else {
-    // Not draft: all required as before
+    // Not draft: all required as before, but bgColor required if bgColorStatus true
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -111,11 +114,11 @@ function getBlogFormSchema(status) {
       metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
-      commentShowStatus: z.boolean().default(true),
+      commentShowStatus: z.boolean().default(false),
       status: z.string().default("1"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
-      bgColor: z.string().optional(),
+      bgColor: bgColorField,
     });
   }
 }
@@ -126,6 +129,7 @@ export default function Page() {
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
   const [status, setStatus] = useState("1");
+  const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
   const searchParams = useSearchParams();
   const initialBlogId = searchParams.get("id") || null;
   const [blogId, setBlogId] = useState(initialBlogId);
@@ -133,7 +137,7 @@ export default function Page() {
   const [lastSavedData, setLastSavedData] = useState(null);
   const [bannerRemoved, setBannerRemoved] = useState(false); // Track if banner preview is removed
 
-  const blogFormSchema = useMemo(() => getBlogFormSchema(status), [status]);
+  const blogFormSchema = useMemo(() => getBlogFormSchema(status, bgColorStatusValue), [status, bgColorStatusValue]);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -159,7 +163,7 @@ export default function Page() {
       metaOgDescription: "",
       metaXTitle: "",
       metaXDescription: "",
-      commentShowStatus: true,
+      commentShowStatus: false,
       status: "1",
       publishedDateTime: "",
       bgColorStatus: false,
@@ -167,9 +171,12 @@ export default function Page() {
     },
   });
 
-  // Watch status and update state
+  // Watch bgColorStatus and update state
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
+      if (name === "bgColorStatus") {
+        setBgColorStatusValue(value.bgColorStatus);
+      }
       if (name === "status") {
         setStatus(value.status);
       }
@@ -1008,21 +1015,23 @@ export default function Page() {
                         )}
                       />
                     </div>
-                    <div className="md:w-1/3 w-full px-3">
-                      <FormField
-                        control={form.control}
-                        name="bgColor"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Background Color</FormLabel>
-                            <FormControl>
-                              <Input type="color" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    {bgColorStatusValue && (
+                      <div className="md:w-1/3 w-full px-3">
+                        <FormField
+                          control={form.control}
+                          name="bgColor"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Background Color</FormLabel>
+                              <FormControl>
+                                <Input type="color" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
                     <div className="w-full flex justify-end gap-4">
                       <Button type="submit" disabled={form.formState.isSubmitting}>
                         {status === "1"

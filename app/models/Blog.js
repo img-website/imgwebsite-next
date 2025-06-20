@@ -102,7 +102,7 @@ const blogSchema = new mongoose.Schema(
     },
     comment_show_status: {
       type: Boolean,
-      default: true
+      default: false
     },
     published_date_time: Date,
     bg_color_status: {
