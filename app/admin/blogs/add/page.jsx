@@ -50,6 +50,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
+import useAutoSaveDraft from "@/hooks/useAutoSaveDraft";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 
@@ -86,6 +87,7 @@ export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
+  const [draftId, setDraftId] = useState(null);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -137,35 +139,70 @@ export default function Page() {
     fetchOptions();
   }, []);
 
+  const watchAll = form.watch();
+  useAutoSaveDraft(watchAll, saveDraft, 5000);
+
+  function buildFormData(data) {
+    const formData = new FormData();
+    if (data.category) formData.append("category", data.category);
+    if (data.title) formData.append("title", data.title.trim());
+    if (data.authorId) formData.append("authorId", data.authorId);
+    if (data.blogWrittenDate) formData.append("blogWrittenDate", data.blogWrittenDate);
+    if (data.slug) formData.append("slug", data.slug.trim());
+    if (data.shortDescription) formData.append("shortDescription", data.shortDescription.trim());
+    if (data.description) formData.append("description", data.description.trim());
+    if (data.banner?.[0]) formData.append("banner", data.banner[0]);
+    if (data.thumbnail?.[0]) formData.append("thumbnail", data.thumbnail[0]);
+    if (data.imageAlt) formData.append("imageAlt", data.imageAlt.trim());
+    if (data.xImage?.[0]) formData.append("xImage", data.xImage[0]);
+    if (data.xImageAlt) formData.append("xImageAlt", data.xImageAlt.trim());
+    if (data.ogImage?.[0]) formData.append("ogImage", data.ogImage[0]);
+    if (data.ogImageAlt) formData.append("ogImageAlt", data.ogImageAlt.trim());
+    if (data.metaTitle) formData.append("metaTitle", data.metaTitle.trim());
+    if (data.metaKeyword?.length) formData.append("metaKeyword", data.metaKeyword.join(","));
+    if (data.metaDescription) formData.append("metaDescription", data.metaDescription.trim());
+    if (data.metaOgTitle) formData.append("metaOgTitle", data.metaOgTitle.trim());
+    if (data.metaOgDescription) formData.append("metaOgDescription", data.metaOgDescription.trim());
+    if (data.metaXTitle) formData.append("metaXTitle", data.metaXTitle.trim());
+    if (data.metaXDescription) formData.append("metaXDescription", data.metaXDescription.trim());
+    formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
+    formData.append("status", data.status || "1");
+    if (data.publishedDateTime) formData.append("publishedDateTime", data.publishedDateTime);
+    formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
+    if (data.bgColor) formData.append("bgColor", data.bgColor);
+    return formData;
+  }
+
+  async function saveDraft() {
+    const values = form.getValues();
+    if (values.status !== "1") return; // only auto-save for draft status
+    const formData = buildFormData({ ...values, status: "1" });
+    const token = TokenFromCookie();
+    const url = draftId ? `/api/v1/admin/blogs/${draftId}` : `/api/v1/admin/blogs`;
+    const method = draftId ? "PUT" : "POST";
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const result = await res.json();
+      if (result.success && !draftId) {
+        setDraftId(result.data._id);
+        toast.success("Draft saved");
+      } else if (result.success) {
+        toast.success("Draft updated");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function onSubmit(data) {
     try {
-      const formData = new FormData();
-      formData.append("category", data.category);
-      formData.append("title", data.title.trim());
-      formData.append("authorId", data.authorId);
-      formData.append("blogWrittenDate", data.blogWrittenDate);
-      formData.append("slug", data.slug.trim());
-      formData.append("shortDescription", data.shortDescription.trim());
-      formData.append("description", data.description.trim());
-      if (data.banner?.[0]) formData.append("banner", data.banner[0]);
-      if (data.thumbnail?.[0]) formData.append("thumbnail", data.thumbnail[0]);
-      if (data.imageAlt) formData.append("imageAlt", data.imageAlt.trim());
-      if (data.xImage?.[0]) formData.append("xImage", data.xImage[0]);
-      if (data.xImageAlt) formData.append("xImageAlt", data.xImageAlt.trim());
-      if (data.ogImage?.[0]) formData.append("ogImage", data.ogImage[0]);
-      if (data.ogImageAlt) formData.append("ogImageAlt", data.ogImageAlt.trim());
-      if (data.metaTitle) formData.append("metaTitle", data.metaTitle.trim());
-      if (data.metaKeyword?.length) formData.append("metaKeyword", data.metaKeyword.join(","));
-      if (data.metaDescription) formData.append("metaDescription", data.metaDescription.trim());
-      if (data.metaOgTitle) formData.append("metaOgTitle", data.metaOgTitle.trim());
-      if (data.metaOgDescription) formData.append("metaOgDescription", data.metaOgDescription.trim());
-      if (data.metaXTitle) formData.append("metaXTitle", data.metaXTitle.trim());
-      if (data.metaXDescription) formData.append("metaXDescription", data.metaXDescription.trim());
-      formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
-      formData.append("status", data.status);
-      if (data.publishedDateTime) formData.append("publishedDateTime", data.publishedDateTime);
-      formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
-      if (data.bgColor) formData.append("bgColor", data.bgColor);
+      const formData = buildFormData(data);
 
       const token = TokenFromCookie();
       const res = await fetch(`/api/v1/admin/blogs`, {
