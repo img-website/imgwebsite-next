@@ -17,8 +17,8 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: function() { return this.status !== 1; },
       trim: true,
-      maxlength: [200, 'Title cannot be more than 200 characters'],
-      unique: true
+      maxlength: [200, 'Title cannot be more than 200 characters']
+      // unique: true // removed, handled by custom logic if needed
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ const blogSchema = new mongoose.Schema(
     slug: {
       type: String,
       unique: false, // Unique check handled in pre-validate hook for status 2/3 only
-      index: true,
+      index: function() { return this.status !== 1; },
       required: function() { return this.status !== 1; }
     },
     short_description: {
