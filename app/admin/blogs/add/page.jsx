@@ -908,8 +908,8 @@ export default function Page() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="true">Show Comments</SelectItem>
                                 <SelectItem value="false">Hide Comments</SelectItem>
+                                <SelectItem value="true">Show Comments</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -999,8 +999,8 @@ export default function Page() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="true">Enable BG</SelectItem>
                                 <SelectItem value="false">Disable BG</SelectItem>
+                                <SelectItem value="true">Enable BG</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage />
