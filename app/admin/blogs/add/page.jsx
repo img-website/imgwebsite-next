@@ -53,6 +53,8 @@ import TokenFromCookie from "@/helpers/tokenFromCookie";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 
+const BLOG_DRAFT_KEY = "newBlogDraft";
+
 const blogFormSchema = z.object({
   category: z.string().min(1, { message: "Category is required" }),
   title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -86,6 +88,7 @@ export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
+  const [autoSaveDisabled, setAutoSaveDisabled] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -120,6 +123,18 @@ export default function Page() {
   });
 
   useEffect(() => {
+    const saved = localStorage.getItem(BLOG_DRAFT_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        form.reset({ ...form.getValues(), ...parsed });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     async function fetchOptions() {
       try {
         const [catRes, authRes] = await Promise.all([
@@ -136,6 +151,32 @@ export default function Page() {
     }
     fetchOptions();
   }, []);
+
+  const watchAll = form.watch();
+
+  useEffect(() => {
+    if (autoSaveDisabled) return;
+    if (watchAll.status !== "1") return;
+
+    const timer = setTimeout(() => {
+      const dataToSave = { ...watchAll };
+      delete dataToSave.banner;
+      delete dataToSave.thumbnail;
+      delete dataToSave.xImage;
+      delete dataToSave.ogImage;
+      localStorage.setItem(BLOG_DRAFT_KEY, JSON.stringify(dataToSave));
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [watchAll, autoSaveDisabled]);
+
+  const status = form.watch("status");
+
+  useEffect(() => {
+    if (status !== "1") {
+      form.trigger();
+    }
+  }, [status]);
 
   async function onSubmit(data) {
     try {
@@ -180,6 +221,10 @@ export default function Page() {
         toast.success("Blog created successfully!");
         form.reset();
         setImageResetKey((k) => k + 1); // Increment reset key to clear images
+        if (result.data?.status && result.data.status !== 1) {
+          localStorage.removeItem(BLOG_DRAFT_KEY);
+          setAutoSaveDisabled(true);
+        }
       } else {
         toast.error(result.error || "Failed to create blog");
       }
