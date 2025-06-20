@@ -537,7 +537,7 @@ export default function Page() {
                                           key={aut._id}
                                           value={aut.author_name}
                                           onSelect={() => {
-                                            form.setValue("author", aut._id);
+                                            form.setValue("authorId", aut._id);
                                           }}
                                         >
                                           {aut.author_name}
