@@ -8,7 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/${params.id}`, { cache: 'no-store' });
+  const { id } = await params;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/${id}`, { cache: 'no-store' });
   const json = await res.json();
   const blog = json?.data;
 

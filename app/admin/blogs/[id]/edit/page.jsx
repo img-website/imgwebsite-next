@@ -24,7 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown, X } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
@@ -52,8 +52,7 @@ import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
-import { useSearchParams, useRouter } from "next/navigation";
-import Loader from "@/components/ui/loader";
+import { useParams, useRouter } from "next/navigation";
 
 // Helper to check if image is present (File or preview URL)
 function isImagePresent(val) {
@@ -71,37 +70,7 @@ function getBlogFormSchema(status, bgColorStatus) {
   const bgColorField = bgColorStatus
     ? z.string().min(1, { message: "Background color is required" })
     : z.string().optional();
-  if (status === "1") {
-    // Draft: all fields optional, but bgColor required if bgColorStatus true
-    return z.object({
-      category: z.string().optional(),
-      title: z.string().optional(),
-      authorId: z.string().optional(),
-      blogWrittenDate: z.string().optional(),
-      slug: z.string().optional(),
-      shortDescription: z.string().optional(),
-      description: z.string().optional(),
-      banner: z.any().optional(),
-      thumbnail: z.any().optional(),
-      imageAlt: z.string().optional(),
-      xImage: z.any().optional(),
-      xImageAlt: z.string().optional(),
-      ogImage: z.any().optional(),
-      ogImageAlt: z.string().optional(),
-      metaTitle: z.string().optional(),
-      metaKeyword: z.array(z.string()).optional(),
-      metaDescription: z.string().optional(),
-      metaOgTitle: z.string().optional(),
-      metaOgDescription: z.string().optional(),
-      metaXTitle: z.string().optional(),
-      metaXDescription: z.string().optional(),
-      commentShowStatus: z.boolean().default(false),
-      status: z.string().default("1"),
-      publishedDateTime: z.string().optional(),
-      bgColorStatus: z.boolean().default(false),
-      bgColor: bgColorField,
-    });
-  } else if (status === "4") {
+  if (status === "4") {
     // Schedule: all required as published, plus publishedDateTime required
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
@@ -126,13 +95,13 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
       commentShowStatus: z.boolean().default(false),
-      status: z.string().default("1"),
+      status: z.string().default("4"),
       publishedDateTime: z.string().min(1, { message: "Published date & time is required" }),
       bgColorStatus: z.boolean().default(false),
       bgColor: bgColorField,
     });
   } else {
-    // Published: all required as before, but image fields allow preview string or File
+    // Published/Archived: all required as before, but image fields allow preview string or File
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -156,7 +125,7 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
       commentShowStatus: z.boolean().default(false),
-      status: z.string().default("1"),
+      status: z.string().default("2"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
       bgColor: bgColorField,
@@ -168,15 +137,9 @@ function getBlogFormSchema(status, bgColorStatus) {
 export default function Page() {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
-  const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
-  const searchParams = useSearchParams();
-  const initialBlogId = searchParams.get("id") || null;
-  const [blogId, setBlogId] = useState(initialBlogId);
-  const [isSaving, setIsSaving] = useState(false);
-  const [lastSavedData, setLastSavedData] = useState(null);
-  const [bannerRemoved, setBannerRemoved] = useState(false); // Track if banner preview is removed
+  const { id: blogId } = useParams();
   const router = useRouter();
 
   const blogFormSchema = useMemo(() => getBlogFormSchema(status, bgColorStatusValue), [status, bgColorStatusValue]);
@@ -251,7 +214,7 @@ export default function Page() {
       try {
         const res = await fetch(`/api/v1/admin/blogs/${blogId}`);
         const result = await res.json();
-        if (!result.success || !result.data || String(result.data.status) !== "1") {
+        if (!result.success || !result.data) {
           router.replace("/admin/blogs");
           return;
         }
@@ -344,135 +307,23 @@ export default function Page() {
       if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
 
       const token = TokenFromCookie();
-      let res, result;
-      if (blogId) {
-        // Update existing blog (draft or publish)
-        res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-      } else {
-        // Create new blog
-        res = await fetch(`/api/v1/admin/blogs`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-      }
-      result = await res.json();
+      const res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const result = await res.json();
       if (result.success) {
-        toast.success("Blog created successfully!");
-        router.push("/admin/blogs");
+        toast.success("Blog updated successfully!");
+        router.push(`/admin/blogs/${blogId}`);
+        router.refresh();
       } else {
-        toast.error(result.error || "Failed to create blog");
+        toast.error(result.error || "Failed to update blog");
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
     }
   }
-
-  // Debounced auto-save logic
-  useEffect(() => {
-    if (status !== "1") return;
-    let debounceTimer = null;
-    let lastData = null;
-    const subscription = form.watch((data) => {
-      if (status !== "1") return;
-      if (isSaving) return;
-      if (debounceTimer) clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        // Only save if data changed
-        if (!lastSavedData || JSON.stringify(lastSavedData) !== JSON.stringify(data)) {
-          autoSaveDraft(data);
-          lastData = data;
-        }
-      }, 5000);
-    });
-    // Save on window/tab change
-    const handleVisibility = () => {
-      if (document.visibilityState === "hidden" && status === "1") {
-        const data = form.getValues();
-        if (!lastSavedData || JSON.stringify(lastSavedData) !== JSON.stringify(data)) {
-          autoSaveDraft(data);
-        }
-      }
-    };
-    window.addEventListener("visibilitychange", handleVisibility);
-    return () => {
-      subscription.unsubscribe();
-      if (debounceTimer) clearTimeout(debounceTimer);
-      window.removeEventListener("visibilitychange", handleVisibility);
-    };
-  }, [form, status, blogId, isSaving, lastSavedData]);
-
-  async function autoSaveDraft(data) {
-    if (isSaving) return;
-    if (lastSavedData && JSON.stringify(lastSavedData) === JSON.stringify(data)) return;
-    setIsSaving(true);
-    try {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        // Handle image fields: always send key; if File, send file; if empty, send empty string
-        if (["banner", "thumbnail", "xImage", "ogImage"].includes(key)) {
-          if (key === "banner" && bannerRemoved) {
-            formData.append(key, ""); // Only if user removed
-          } else if (Array.isArray(value) && value[0] instanceof File) {
-            formData.append(key, value[0]);
-          } 
-          // If value is string (preview from DB), do not send key (keep old image)
-        } else if (["category", "authorId"].includes(key)) {
-          // Only append if not empty string/null/undefined
-          if (value && value !== "") {
-            formData.append(key, value);
-          }
-        } else if (Array.isArray(value)) {
-          // For array fields (like metaKeyword), send as comma string if not empty
-          if (value.length > 0) formData.append(key, value.join(","));
-        } else if (typeof value === "string") {
-          // For string fields, always send (even if empty)
-          formData.append(key, value);
-        } else if (typeof value === "boolean") {
-          formData.append(key, value ? "true" : "false");
-        }
-      });
-      formData.append("status", Number(1)); // Always save as draft (status 1)
-      const token = TokenFromCookie();
-      let res, result;
-      if (!blogId) {
-        res = await fetch(`/api/v1/admin/blogs`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-        result = await res.json();
-        if (result.success && result.data?._id) {
-          setBlogId(result.data._id);
-          const url = new URL(window.location.href);
-          url.searchParams.set("id", result.data._id);
-          window.history.replaceState({}, "", url.toString());
-        }
-      } else {
-        res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-        result = await res.json();
-      }
-      if (result.success) {
-        setLastSavedData(data);
-      } else {
-        toast.error(result.error || "Auto-save failed");
-      }
-    } catch (e) {
-      toast.error("Auto-save error");
-    } finally {
-      setIsSaving(false);
-    }
-  }
-
-  // If you have a manual reset button, also call setImageResetKey((k) => k + 1) there.
 
   return (
     <>
@@ -487,18 +338,12 @@ export default function Page() {
       <div className="w-full p-4">
         <div className="flex flex-col gap-6">
           <Card>
-            <div style={{position:'relative'}}>
-              {isSaving && (
-                <div style={{position:'absolute',top:12,right:16,zIndex:10}}>
-                  <Loader />
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle>Add New Blog</CardTitle>
-                <CardDescription>
-                  Create a new blog post. Fill in the required information below.
-                </CardDescription>
-              </CardHeader>
+            <CardHeader>
+              <CardTitle>Edit Blog</CardTitle>
+              <CardDescription>
+                Update the blog post details below.
+              </CardDescription>
+            </CardHeader>
               <CardContent className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8 -mx-3">                  
@@ -718,15 +563,12 @@ export default function Page() {
                                 size="1080x617"
                                 onChange={(val) => {
                                   if (!val || (Array.isArray(val) && val.length === 0)) {
-                                    setBannerRemoved(true); // User removed preview
                                     onChange("");
                                   } else {
-                                    setBannerRemoved(false); // User uploaded or kept image
                                     onChange(val);
                                   }
                                 }}
                                 format="webp"
-                                resetKey={imageResetKey} // Pass resetKey
                               />
                             </FormControl>
                             <FormMessage />
@@ -748,7 +590,6 @@ export default function Page() {
                                 size="1080x617"
                                 onChange={onChange}
                                 format="webp"
-                                resetKey={imageResetKey} // Pass resetKey
                               />
                             </FormControl>
                             <FormMessage />
@@ -838,7 +679,6 @@ export default function Page() {
                                 size="1200x630"
                                 onChange={onChange}
                                 format="jpg"
-                                resetKey={imageResetKey} // Pass resetKey
                               />
                             </FormControl>
                             <FormMessage />
@@ -873,7 +713,6 @@ export default function Page() {
                                 size="1200x630"
                                 onChange={onChange}
                                 format="jpg"
-                                resetKey={imageResetKey} // Pass resetKey
                               />
                             </FormControl>
                             <FormMessage />
@@ -991,10 +830,9 @@ export default function Page() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="1">Draft</SelectItem>
                                 <SelectItem value="2">Published</SelectItem>
+                                <SelectItem value="3">Archived</SelectItem>
                                 <SelectItem value="4">Schedule</SelectItem>
-                                {/* <SelectItem value="3">Archived</SelectItem> */}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -1091,15 +929,12 @@ export default function Page() {
                     )}
                     <div className="w-full flex justify-end gap-4">
                       <Button type="submit" disabled={form.formState.isSubmitting}>
-                        {status === "1"
-                          ? (form.formState.isSubmitting ? "Saving..." : "Save Draft")
-                          : (form.formState.isSubmitting ? "Publishing..." : "Publish Now")}
+                        {form.formState.isSubmitting ? "Saving..." : "Save"}
                       </Button>
                     </div>
                   </form>
                 </Form>
               </CardContent>
-            </div>
           </Card>
         </div>
       </div>
