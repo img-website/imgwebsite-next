@@ -229,43 +229,6 @@ function BlogActions({ blog }) {
   );
 }
 
-function getStatusLabel(status) {
-  switch (status) {
-    case 1:
-    case "1":
-      return "Draft";
-    case 2:
-    case "2":
-      return "Published";
-    case 3:
-    case "3":
-      return "Archived";
-    case 4:
-    case "4":
-      return "Scheduled";
-    default:
-      return String(status);
-  }
-}
-
-function getStatusVariant(status) {
-  switch (status) {
-    case 1:
-    case "1":
-      return "secondary";
-    case 2:
-    case "2":
-      return "default";
-    case 3:
-    case "3":
-      return "destructive";
-    case 4:
-    case "4":
-      return "outline";
-    default:
-      return "secondary";
-  }
-}
 
 export const columns = [
   {
@@ -329,10 +292,10 @@ export const columns = [
       const status = row.getValue("status");
       return (
         <Badge
-          variant={getStatusVariant(status)}
+          variant={status === "published" ? "default" : "secondary"}
           className="capitalize"
         >
-          {getStatusLabel(status)}
+          {status}
         </Badge>
       );
     },
