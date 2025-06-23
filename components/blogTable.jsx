@@ -163,7 +163,11 @@ function BlogActions({ blog }) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+          {blog.status === "draft" ? (
+            <Link href={`/admin/blogs/add?id=${blog.id}`}>Edit</Link>
+          ) : (
+            <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSendNotification}>
           Send Notification
