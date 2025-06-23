@@ -7,7 +7,7 @@ export default async function Page() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs`, { cache: 'no-store' });
   const json = await res.json();
   const blogs = Array.isArray(json?.data) ? json.data : [];
-  const statusMap = { 1: 'draft', 2: 'published', 3: 'archived' };
+  const statusMap = { 1: 'draft', 2: 'published', 3: 'archived', 4: 'scheduled' };
   const data = blogs.map(blog => ({
     id: blog._id,
     title: blog.title,

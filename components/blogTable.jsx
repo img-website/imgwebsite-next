@@ -171,17 +171,26 @@ function BlogActions({ blog }) {
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            {blog.status === "draft" && (
+            {/* {((blog.status === "published") || (blog.status === "archived")) && (
               <DropdownMenuItem onClick={() => handleStatusChange(1)}>
                 Draft
               </DropdownMenuItem>
-            )}
+            )} */}
+            {blog.status === "published" ? "" : (
             <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-              Published
+              Publish
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-              Archived
+            )}
+            {blog.status === "published" && (
+              <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+                Archived
+              </DropdownMenuItem>
+            )}
+            {blog.status === "published" ? "" : (
+            <DropdownMenuItem onClick={() => handleStatusChange(4)}>
+              {blog.status === "scheduled" ? "Reschedule" : "Schedule"}
             </DropdownMenuItem>
+            )}
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuCheckboxItem
@@ -218,6 +227,44 @@ function BlogActions({ blog }) {
     </DialogContent>
   </Dialog>
   );
+}
+
+function getStatusLabel(status) {
+  switch (status) {
+    case 1:
+    case "1":
+      return "Draft";
+    case 2:
+    case "2":
+      return "Published";
+    case 3:
+    case "3":
+      return "Archived";
+    case 4:
+    case "4":
+      return "Scheduled";
+    default:
+      return String(status);
+  }
+}
+
+function getStatusVariant(status) {
+  switch (status) {
+    case 1:
+    case "1":
+      return "secondary";
+    case 2:
+    case "2":
+      return "default";
+    case 3:
+    case "3":
+      return "destructive";
+    case 4:
+    case "4":
+      return "outline";
+    default:
+      return "secondary";
+  }
 }
 
 export const columns = [
@@ -282,10 +329,10 @@ export const columns = [
       const status = row.getValue("status");
       return (
         <Badge
-          variant={status === "published" ? "default" : "secondary"}
+          variant={getStatusVariant(status)}
           className="capitalize"
         >
-          {status}
+          {getStatusLabel(status)}
         </Badge>
       );
     },
