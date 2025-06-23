@@ -52,8 +52,19 @@ import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
+
+// Helper to check if image is present (File or preview URL)
+function isImagePresent(val) {
+  if (!val) return false;
+  if (Array.isArray(val)) {
+    if (val[0] instanceof File) return true;
+    if (typeof val[0] === "string" && val[0].length > 0) return true;
+  }
+  if (typeof val === "string" && val.length > 0) return true;
+  return false;
+}
 
 // Function to get schema based on status
 function getBlogFormSchema(status, bgColorStatus) {
@@ -91,7 +102,7 @@ function getBlogFormSchema(status, bgColorStatus) {
       bgColor: bgColorField,
     });
   } else {
-    // Not draft: all required as before, but bgColor required if bgColorStatus true
+    // Not draft: all required as before, but image fields allow preview string or File
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -100,12 +111,12 @@ function getBlogFormSchema(status, bgColorStatus) {
       slug: z.string().min(2, { message: "Slug is required" }),
       shortDescription: z.string().min(10, { message: "Short description must be at least 10 characters" }).max(500),
       description: z.string().min(10, { message: "Description must be at least 10 characters" }),
-      banner: z.any().refine((file) => file?.length === 1, "Banner image is required"),
-      thumbnail: z.any().refine((file) => file?.length === 1, "Thumbnail image is required"),
+      banner: z.any().refine(isImagePresent, "Banner image is required"),
+      thumbnail: z.any().refine(isImagePresent, "Thumbnail image is required"),
       imageAlt: z.string().min(2, { message: "Image alt text must be at least 2 characters" }).max(200),
-      xImage: z.any().refine((file) => file?.length === 1, "X image is required"),
+      xImage: z.any().refine(isImagePresent, "X image is required"),
       xImageAlt: z.string().min(2, { message: "X image alt text must be at least 2 characters" }).max(200),
-      ogImage: z.any().refine((file) => file?.length === 1, "OG image is required"),
+      ogImage: z.any().refine(isImagePresent, "OG image is required"),
       ogImageAlt: z.string().min(2, { message: "OG image alt text must be at least 2 characters" }).max(200),
       metaTitle: z.string().min(2, { message: "Meta title must be at least 2 characters" }).max(200),
       metaKeyword: z.array(z.string()).default([]),
@@ -136,6 +147,7 @@ export default function Page() {
   const [isSaving, setIsSaving] = useState(false);
   const [lastSavedData, setLastSavedData] = useState(null);
   const [bannerRemoved, setBannerRemoved] = useState(false); // Track if banner preview is removed
+  const router = useRouter();
 
   const blogFormSchema = useMemo(() => getBlogFormSchema(status, bgColorStatusValue), [status, bgColorStatusValue]);
 
@@ -209,56 +221,58 @@ export default function Page() {
       try {
         const res = await fetch(`/api/v1/admin/blogs/${blogId}`);
         const result = await res.json();
-        if (result.success && result.data) {
-          // Map API fields to form fields
-          const blog = result.data;
-          form.reset({
-            category: blog.category?._id || "",
-            title: blog.title || "",
-            authorId: blog.author?._id || "",
-            blogWrittenDate: blog.blog_written_date ? blog.blog_written_date.slice(0, 10) : "",
-            slug: blog.slug || "",
-            shortDescription: blog.short_description || "",
-            description: blog.description || "",
-            banner: blog.banner?.startsWith('http')
-              ? blog.banner
-              : blog.banner
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`
-                : undefined,
-            thumbnail: blog.thumbnail?.startsWith('http')
-              ? blog.thumbnail
-              : blog.thumbnail
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`
-                : undefined,
-            imageAlt: blog.image_alt || "",
-            xImage: blog.x_image?.startsWith('http')
-              ? blog.x_image
-              : blog.x_image
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.x_image}`
-                : undefined,
-            xImageAlt: blog.x_image_alt || "",
-            ogImage: blog.og_image?.startsWith('http')
-              ? blog.og_image
-              : blog.og_image
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.og_image}`
-                : undefined,
-            ogImageAlt: blog.og_image_alt || "",
-            metaTitle: blog.meta_title || "",
-            metaKeyword: blog.meta_keyword || [],
-            metaDescription: blog.meta_description || "",
-            metaOgTitle: blog.meta_og_title || "",
-            metaOgDescription: blog.meta_og_description || "",
-            metaXTitle: blog.meta_x_title || "",
-            metaXDescription: blog.meta_x_description || "",
-            commentShowStatus: blog.comment_show_status ?? true,
-            status: String(blog.status ?? 1),
-            publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
-            bgColorStatus: blog.bg_color_status ?? false,
-            bgColor: blog.bg_color || "",
-          });
+        if (!result.success || !result.data || String(result.data.status) !== "1") {
+          router.replace("/admin/blogs");
+          return;
         }
+        // Map API fields to form fields
+        const blog = result.data;
+        form.reset({
+          category: blog.category?._id || "",
+          title: blog.title || "",
+          authorId: blog.author?._id || "",
+          blogWrittenDate: blog.blog_written_date ? blog.blog_written_date.slice(0, 10) : "",
+          slug: blog.slug || "",
+          shortDescription: blog.short_description || "",
+          description: blog.description || "",
+          banner: blog.banner?.startsWith('http')
+            ? blog.banner
+            : blog.banner
+              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`
+              : undefined,
+          thumbnail: blog.thumbnail?.startsWith('http')
+            ? blog.thumbnail
+            : blog.thumbnail
+              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`
+              : undefined,
+          imageAlt: blog.image_alt || "",
+          xImage: blog.x_image?.startsWith('http')
+            ? blog.x_image
+            : blog.x_image
+              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.x_image}`
+              : undefined,
+          xImageAlt: blog.x_image_alt || "",
+          ogImage: blog.og_image?.startsWith('http')
+            ? blog.og_image
+            : blog.og_image
+              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.og_image}`
+              : undefined,
+          ogImageAlt: blog.og_image_alt || "",
+          metaTitle: blog.meta_title || "",
+          metaKeyword: blog.meta_keyword || [],
+          metaDescription: blog.meta_description || "",
+          metaOgTitle: blog.meta_og_title || "",
+          metaOgDescription: blog.meta_og_description || "",
+          metaXTitle: blog.meta_x_title || "",
+          metaXDescription: blog.meta_x_description || "",
+          commentShowStatus: blog.comment_show_status ?? true,
+          status: String(blog.status ?? 1),
+          publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
+          bgColorStatus: blog.bg_color_status ?? false,
+          bgColor: blog.bg_color || "",
+        });
       } catch (err) {
-        // Optionally handle error
+        router.replace("/admin/blogs");
       }
     }
     fetchBlog();
@@ -299,18 +313,26 @@ export default function Page() {
       if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
 
       const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      const result = await res.json();
+      let res, result;
+      if (blogId) {
+        // Update existing blog (draft or publish)
+        res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+      } else {
+        // Create new blog
+        res = await fetch(`/api/v1/admin/blogs`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+      }
+      result = await res.json();
       if (result.success) {
         toast.success("Blog created successfully!");
-        form.reset();
-        setImageResetKey((k) => k + 1); // Increment reset key to clear images
+        router.push("/admin/blogs");
       } else {
         toast.error(result.error || "Failed to create blog");
       }
@@ -983,6 +1005,9 @@ export default function Page() {
                                   />
                                 </div>
                               </FormControl>
+                              <FormDescription>
+                                If you select a future date and time and publish, the blog will be scheduled and published automatically at that time.
+                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           );

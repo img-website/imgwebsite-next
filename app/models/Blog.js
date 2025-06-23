@@ -46,11 +46,11 @@ const blogSchema = new mongoose.Schema(
     },
     banner: {
       type: String,
-      required: function() { return this.status !== 1; }
+      // required: function() { return this.status !== 1; }
     },
     thumbnail: {
       type: String,
-      required: function() { return this.status !== 1; }
+      // required: function() { return this.status !== 1; }
     },
     image_alt: {
       type: String,
@@ -58,7 +58,7 @@ const blogSchema = new mongoose.Schema(
     },
     x_image: {
       type: String,
-      required: function() { return this.status !== 1; }
+      // required: function() { return this.status !== 1; }
     },
     x_image_alt: {
       type: String,
@@ -66,7 +66,7 @@ const blogSchema = new mongoose.Schema(
     },
     og_image: {
       type: String,
-      required: function() { return this.status !== 1; }
+      // required: function() { return this.status !== 1; }
     },
     og_image_alt: {
       type: String,
@@ -117,6 +117,11 @@ const blogSchema = new mongoose.Schema(
     modified_date: {
       type: Date,
       default: Date.now
+    },
+    is_published: {
+      type: Boolean,
+      default: false,
+      index: true
     }
   },
   {
