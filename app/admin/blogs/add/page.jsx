@@ -337,7 +337,7 @@ export default function Page() {
       if (!isDraft || data.metaXTitle !== undefined) formData.append("metaXTitle", data.metaXTitle || "");
       if (!isDraft || data.metaXDescription !== undefined) formData.append("metaXDescription", data.metaXDescription || "");
       formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
-      formData.append("status", data.status);
+      formData.append("status", Number(data.status));
       if (data.publishedDateTime !== undefined) formData.append("publishedDateTime", data.publishedDateTime || "");
       formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
       if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
@@ -435,7 +435,7 @@ export default function Page() {
           formData.append(key, value ? "true" : "false");
         }
       });
-      formData.append("status", "1");
+      formData.append("status", Number(1));
       const token = TokenFromCookie();
       let res, result;
       if (!blogId) {
