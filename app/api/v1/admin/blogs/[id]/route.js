@@ -62,9 +62,9 @@ export async function PUT(request, { params }) {
     }
 
     const newSlug = formData.get('slug');
-    // Slug unique check only for published/archived
+    // Slug unique check only for published/archived/scheduled
     const statusValue = Number(formData.get('status'));
-    if (newSlug && (statusValue === 2 || statusValue === 3)) {
+    if (newSlug && (statusValue === 2 || statusValue === 3 || statusValue === 4)) {
       const slugified = slugify(newSlug, { lower: true, strict: true, trim: true });
       if (slugified !== blog.slug) {
         const existingSlug = await Blog.findOne({ slug: slugified, _id: { $ne: id } });
@@ -78,7 +78,7 @@ export async function PUT(request, { params }) {
       blog.slug = slugify(newSlug, { lower: true, strict: true, trim: true });
     }
 
-    if ([1, 2, 3].includes(statusValue)) {
+    if ([1, 2, 3, 4].includes(statusValue)) {
       if (statusValue === 1 && blog.status !== 1) {
         return NextResponse.json(
           { success: false, error: 'Cannot revert to draft once published or archived' },

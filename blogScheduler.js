@@ -21,15 +21,15 @@ async function connectDB() {
 async function publishScheduledBlogs() {
   await connectDB();
   const now = new Date();
-  // status: 2 (published), published_date_time <= now, not yet published
+  // Find blogs scheduled to be published
   const blogs = await Blog.find({
-    status: 1,
+    status: 4,
     published_date_time: { $lte: now }
   });
   for (const blog of blogs) {
     blog.status = 2; // Change status to published
     await blog.save();
-    console.log(`Published blog: ${blog.title} (${blog._id}) (${blog.status})`);
+    console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
 }
 

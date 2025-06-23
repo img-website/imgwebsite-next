@@ -118,11 +118,6 @@ const blogSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
-    is_published: {
-      type: Boolean,
-      default: false,
-      index: true
-    }
   },
   {
     timestamps: {
