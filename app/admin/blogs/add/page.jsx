@@ -101,8 +101,38 @@ function getBlogFormSchema(status, bgColorStatus) {
       bgColorStatus: z.boolean().default(false),
       bgColor: bgColorField,
     });
+  } else if (status === "4") {
+    // Schedule: all required as published, plus publishedDateTime required
+    return z.object({
+      category: z.string().min(1, { message: "Category is required" }),
+      title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
+      authorId: z.string().min(1, { message: "Author is required" }),
+      blogWrittenDate: z.string().min(1, { message: "Written date is required" }),
+      slug: z.string().min(2, { message: "Slug is required" }),
+      shortDescription: z.string().min(10, { message: "Short description must be at least 10 characters" }).max(500),
+      description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+      banner: z.any().refine(isImagePresent, "Banner image is required"),
+      thumbnail: z.any().refine(isImagePresent, "Thumbnail image is required"),
+      imageAlt: z.string().min(2, { message: "Image alt text must be at least 2 characters" }).max(200),
+      xImage: z.any().refine(isImagePresent, "X image is required"),
+      xImageAlt: z.string().min(2, { message: "X image alt text must be at least 2 characters" }).max(200),
+      ogImage: z.any().refine(isImagePresent, "OG image is required"),
+      ogImageAlt: z.string().min(2, { message: "OG image alt text must be at least 2 characters" }).max(200),
+      metaTitle: z.string().min(2, { message: "Meta title must be at least 2 characters" }).max(200),
+      metaKeyword: z.array(z.string()).default([]),
+      metaDescription: z.string().min(10, { message: "Meta description must be at least 10 characters" }).max(500),
+      metaOgTitle: z.string().min(2, { message: "Meta OG title must be at least 2 characters" }).max(200),
+      metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
+      metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
+      metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
+      commentShowStatus: z.boolean().default(false),
+      status: z.string().default("1"),
+      publishedDateTime: z.string().min(1, { message: "Published date & time is required" }),
+      bgColorStatus: z.boolean().default(false),
+      bgColor: bgColorField,
+    });
   } else {
-    // Not draft: all required as before, but image fields allow preview string or File
+    // Published: all required as before, but image fields allow preview string or File
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -962,6 +992,7 @@ export default function Page() {
                               <SelectContent>
                                 <SelectItem value="1">Draft</SelectItem>
                                 <SelectItem value="2">Published</SelectItem>
+                                <SelectItem value="4">Schedule</SelectItem>
                                 {/* <SelectItem value="3">Archived</SelectItem> */}
                               </SelectContent>
                             </Select>
@@ -970,50 +1001,50 @@ export default function Page() {
                         )}
                       />
                     </div>
-                    <div className="md:w-1/3 w-full px-3">
-                      <FormField
-                        control={form.control}
-                        name="publishedDateTime"
-                        render={({ field }) => {
-                          const datePart = field.value ? field.value.split("T")[0] : "";
-                          const timePart = field.value ? field.value.split("T")[1] || "" : "";
-                          return (
-                            <FormItem>
-                              <FormLabel>Published Date &amp; Time</FormLabel>
-                              <FormControl className="w-full">
-                                <div className="flex gap-2 w-full">
-                                  <DatePicker
-                                    value={datePart}
-                                    onChange={(d) => {
-                                      field.onChange(d ? `${d}T${timePart || "00:00"}` : "");
-                                    }}
-                                    placeholder="Select date"
-                                    className="grow w-auto"
-                                  />
-                                  <Input
-                                    type="time"
-                                    value={timePart}
-                                    onChange={(e) => {
-                                      const t = e.target.value;
-                                      if (datePart) {
-                                        field.onChange(`${datePart}T${t}`);
-                                      } else {
-                                        field.onChange(`T${t}`);
-                                      }
-                                    }}
-                                    className="shrink-0 w-auto"
-                                  />
-                                </div>
-                              </FormControl>
-                              <FormDescription>
-                                If you select a future date and time and publish, the blog will be scheduled and published automatically at that time.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    </div>                  
+                    {/* Published Date & Time: only show if status is Schedule (4) */}
+                    {status === "4" && (
+                      <div className="md:w-1/3 w-full px-3">
+                        <FormField
+                          control={form.control}
+                          name="publishedDateTime"
+                          render={({ field }) => {
+                            const datePart = field.value ? field.value.split("T")[0] : "";
+                            const timePart = field.value ? field.value.split("T")[1] || "" : "";
+                            return (
+                              <FormItem>
+                                <FormLabel>Published Date & Time</FormLabel>
+                                <FormControl className="w-full">
+                                  <div className="flex gap-2 w-full">
+                                    <DatePicker
+                                      value={datePart}
+                                      onChange={(d) => {
+                                        field.onChange(d ? `${d}T${timePart || "00:00"}` : "");
+                                      }}
+                                      placeholder="Select date"
+                                      className="grow w-auto"
+                                    />
+                                    <Input
+                                      type="time"
+                                      value={timePart}
+                                      onChange={(e) => {
+                                        const t = e.target.value;
+                                        if (datePart) {
+                                          field.onChange(`${datePart}T${t}`);
+                                        } else {
+                                          field.onChange(`T${t}`);
+                                        }
+                                      }}
+                                      className="shrink-0 w-auto"
+                                    />
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      </div>
+                    )}
                     <div className="md:w-1/3 w-full px-3">
                       <FormField
                         control={form.control}

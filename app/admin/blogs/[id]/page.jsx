@@ -16,7 +16,7 @@ export default async function Page({ params }) {
     return <div className="p-4">Blog not found</div>;
   }
 
-  const statusMap = { 1: 'draft', 2: 'published', 3: 'archived' };
+  const statusMap = { 1: 'Draft', 2: 'Published', 3: 'Archived', 4: 'Scheduled' };
   const bannerSrc = blog.banner?.startsWith('http') ? blog.banner : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`;
   const thumbnailSrc = blog.thumbnail?.startsWith('http') ? blog.thumbnail : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`;
 
@@ -46,7 +46,12 @@ export default async function Page({ params }) {
               <p><strong>Status:</strong> {statusMap[blog.status]}</p>
               <p><strong>Comments:</strong> {blog.comment_show_status ? 'Shown' : 'Hidden'}</p>
               <p><strong>Created:</strong> {new Date(blog.created_date).toLocaleString()}</p>
-              {blog.published_date_time && (
+              {/* Show scheduled publish date/time if status is Scheduled */}
+              {blog.status === 4 && blog.published_date_time && (
+                <p><strong>Scheduled Publish:</strong> {new Date(blog.published_date_time).toLocaleString()}</p>
+              )}
+              {/* Show published date/time if status is Published */}
+              {blog.status === 2 && blog.published_date_time && (
                 <p><strong>Published:</strong> {new Date(blog.published_date_time).toLocaleString()}</p>
               )}
             </div>

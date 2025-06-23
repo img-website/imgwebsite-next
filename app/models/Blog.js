@@ -5,7 +5,7 @@ const blogSchema = new mongoose.Schema(
   {
     status: {
       type: Number,
-      enum: [1, 2, 3], // 1=draft, 2=published, 3=archived
+      enum: [1, 2, 3, 4], // 1=draft, 2=published, 3=archived
       default: 1
     },
     category: {
@@ -31,7 +31,7 @@ const blogSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      unique: false, // Unique check handled in pre-validate hook for status 2/3 only
+      unique: false, // Unique check handled in pre-validate hook for status 2/3/4 only
       index: function() { return this.status !== 1; },
       required: function() { return this.status !== 1; }
     },
@@ -135,8 +135,8 @@ const blogSchema = new mongoose.Schema(
 blogSchema.pre('validate', async function (next) {
   if (this.isModified('slug')) {
     this.slug = slugify(this.slug, { lower: true, strict: true, trim: true });
-    // Only check uniqueness for published/archived
-    if (this.status === 2 || this.status === 3) {
+    // Only check uniqueness for published/archived/archived
+    if (this.status === 2 || this.status === 3 || this.status === 4) {
       const existing = await mongoose.models.Blog.findOne({
         slug: this.slug,
         _id: { $ne: this._id }

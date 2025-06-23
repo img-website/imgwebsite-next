@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
+import Author from '@/app/models/Author';
+import Category from '@/app/models/Category';
 import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
@@ -22,9 +24,9 @@ export async function GET(request) {
     const baseQuery = {};
     if (status) {
       const numericStatus = parseInt(status, 10);
-      if (![1, 2, 3].includes(numericStatus)) {
+      if (![1, 2, 3, 4].includes(numericStatus)) {
         return NextResponse.json(
-          { success: false, error: 'Invalid status value. Must be 1 (Draft), 2 (Published), or 3 (Archived)' },
+          { success: false, error: 'Invalid status value. Must be 1 (Draft), 2 (Published), 3 (Archived), or 4 (Scheduled)' },
           { status: 400 }
         );
       }
@@ -95,15 +97,15 @@ export async function POST(request) {
     const slug = slugify(formData.get('slug') || '', { lower: true, strict: true, trim: true });
 
     const statusValue = Number(formData.get('status')) || 1;
-    if (![1, 2, 3].includes(statusValue)) {
+    if (![1, 2, 3, 4].includes(statusValue)) {
       return NextResponse.json(
-        { success: false, error: 'Status must be 1 (Draft), 2 (Published), or 3 (Archived)' },
+        { success: false, error: 'Status must be 1 (Draft), 2 (Published), 3 (Archived), or 4 (Scheduled)' },
         { status: 400 }
       );
     }
 
-    // Slug unique check only for published/archived
-    if (slug && (statusValue === 2 || statusValue === 3)) {
+    // Slug unique check only for published/archived/scheduled
+    if (slug && (statusValue === 2 || statusValue === 3 || statusValue === 4)) {
       const existingSlug = await Blog.findOne({ slug });
       if (existingSlug) {
         return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
