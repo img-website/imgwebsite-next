@@ -161,6 +161,13 @@ function BlogActions({ blog }) {
     }
   }, [openSchedule]);
 
+  // Auto-select time when date is picked and time is empty
+  React.useEffect(() => {
+    if (scheduleDate && !scheduleTime) {
+      setScheduleTime("00:00");
+    }
+  }, [scheduleDate]);
+
   return (
     <>
       <Dialog open={openDelete} onOpenChange={setOpenDelete}>
