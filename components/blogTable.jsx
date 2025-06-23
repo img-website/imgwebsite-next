@@ -34,6 +34,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Table,
   TableBody,
@@ -52,11 +53,16 @@ import TokenFromCookie from "@/helpers/tokenFromCookie";
 function BlogActions({ blog }) {
   const router = useRouter();
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [openSchedule, setOpenSchedule] = React.useState(false);
+  const [scheduleDate, setScheduleDate] = React.useState("");
+  const [scheduleTime, setScheduleTime] = React.useState("");
+  const [loadingSchedule, setLoadingSchedule] = React.useState(false);
 
-  const handleStatusChange = async (status) => {
+  const handleStatusChange = async (status, publishedDateTime) => {
     try {
       const formData = new FormData();
       formData.append("status", status);
+      if (publishedDateTime) formData.append("publishedDateTime", publishedDateTime);
       const token = TokenFromCookie();
       const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
         method: "PUT",
@@ -147,89 +153,154 @@ function BlogActions({ blog }) {
     }
   };
 
+  // Reset date/time when dialog opens
+  React.useEffect(() => {
+    if (openSchedule) {
+      setScheduleDate("");
+      setScheduleTime("");
+    }
+  }, [openSchedule]);
+
   return (
-    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+    <>
+      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Blog</DialogTitle>
+            <DialogDescription>
+              This will permanently delete the blog. Continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpenDelete(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(blog.id)}>
-          Copy blog ID
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          {blog.status === "draft" ? (
-            <Link href={`/admin/blogs/add?id=${blog.id}`}>Edit</Link>
-          ) : (
-            <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(blog.id)}>
+            Copy blog ID
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            {blog.status === "draft" ? (
+              <Link href={`/admin/blogs/add?id=${blog.id}`}>Edit</Link>
+            ) : (
+              <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSendNotification}>
+            Send Notification
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              {/* Only show Archive for published blogs */}
+              {blog.status === "published" && (
+                <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+                  Archive
+                </DropdownMenuItem>
+              )}
+              {/* Only show Republish and Schedule for archived blogs */}
+              {blog.status === "archived" && (
+                <>
+                  <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+                    Republish
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
+                    Schedule
+                  </DropdownMenuItem>
+                </>
+              )}
+              {/* Only show Publish and Reschedule for scheduled blogs */}
+              {blog.status === "scheduled" && (
+                <>
+                  <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+                    Publish
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
+                    Reschedule
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+          <DropdownMenuCheckboxItem
+            checked={blog.comment_show_status}
+            onCheckedChange={handleToggleComments}
+          >
+            Show Comments
+          </DropdownMenuCheckboxItem>
+          {blog.status === "draft" && (
+            <>
+              <DropdownMenuSeparator />
+              <DialogTrigger asChild>
+                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+              </DialogTrigger>
+            </>
           )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSendNotification}>
-          Send Notification
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            {/* {((blog.status === "published") || (blog.status === "archived")) && (
-              <DropdownMenuItem onClick={() => handleStatusChange(1)}>
-                Draft
-              </DropdownMenuItem>
-            )} */}
-            {blog.status === "published" ? "" : (
-            <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-              Publish
-            </DropdownMenuItem>
-            )}
-            {blog.status === "published" && (
-              <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-                Archived
-              </DropdownMenuItem>
-            )}
-            {blog.status === "published" ? "" : (
-            <DropdownMenuItem onClick={() => handleStatusChange(4)}>
-              {blog.status === "scheduled" ? "Reschedule" : "Schedule"}
-            </DropdownMenuItem>
-            )}
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuCheckboxItem
-          checked={blog.comment_show_status}
-          onCheckedChange={handleToggleComments}
-        >
-          Show Comments
-        </DropdownMenuCheckboxItem>
-        {blog.status === "draft" && (
-          <>
-            <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-            </DialogTrigger>
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Delete Blog</DialogTitle>
-        <DialogDescription>
-          This will permanently delete the blog. Continue?
-        </DialogDescription>
-      </DialogHeader>
-      <DialogFooter>
-        <Button variant="outline" onClick={() => setOpenDelete(false)}>
-          Cancel
-        </Button>
-        <Button variant="destructive" onClick={handleDelete}>
-          Delete
-        </Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {/* Schedule/Reschedule Dialog */}
+      <Dialog open={openSchedule} onOpenChange={setOpenSchedule}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{blog.status === "archived" ? "Schedule Blog" : "Reschedule Blog"}</DialogTitle>
+            <DialogDescription>
+              Select publish date and time for scheduling this blog.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-2 w-full mb-4">
+            <div className="grow">
+              <DatePicker
+                value={scheduleDate}
+                onChange={setScheduleDate}
+                placeholder="Select date"
+                className="w-full"
+              />
+            </div>
+            <Input
+              type="time"
+              value={scheduleTime}
+              onChange={e => setScheduleTime(e.target.value)}
+              className="shrink-0 w-auto"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpenSchedule(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={async () => {
+                if (!scheduleDate || !scheduleTime) {
+                  toast.error("Please select both date and time");
+                  return;
+                }
+                setLoadingSchedule(true);
+                await handleStatusChange(4, `${scheduleDate}T${scheduleTime}`);
+                setLoadingSchedule(false);
+                setOpenSchedule(false);
+              }}
+              disabled={loadingSchedule}
+            >
+              {loadingSchedule ? "Scheduling..." : "Schedule"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
