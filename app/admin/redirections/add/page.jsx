@@ -11,7 +11,8 @@ import { toast } from "sonner";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import TokenFromCookie from "@/helpers/tokenFromCookie";
 
 const urlOrPath = z.string().refine(val => {
   try {
@@ -32,6 +33,8 @@ const redirectionSchema = z.object({
 
 export default function AddRedirectionPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const blogId = searchParams.get("blogId");
   const form = useForm({
     resolver: zodResolver(redirectionSchema),
     defaultValues: {
@@ -52,8 +55,30 @@ export default function AddRedirectionPage() {
       const data = await res.json();
       if (data.success) {
         toast.success("Redirection added successfully");
-        form.reset();
-        router.push("/admin/redirections");
+        if (blogId) {
+          const formData = new FormData();
+          formData.append("status", "3");
+          try {
+            const token = TokenFromCookie();
+            const resArchive = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+              method: "PUT",
+              headers: { Authorization: `Bearer ${token}` },
+              body: formData,
+            });
+            const archData = await resArchive.json();
+            if (archData.success) {
+              toast.success("Blog archived");
+            } else {
+              toast.error(archData.error || "Failed to archive blog");
+            }
+          } catch {
+            toast.error("Failed to archive blog");
+          }
+          router.push("/admin/blogs");
+        } else {
+          form.reset();
+          router.push("/admin/redirections");
+        }
       } else {
         toast.error(data.error || "Failed to add redirection");
       }

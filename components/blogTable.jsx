@@ -217,8 +217,13 @@ function BlogActions({ blog }) {
               <DropdownMenuSubContent>
                 {/* Only show Archive for published blogs */}
                 {blog.status === "published" && (
-                  <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-                    Archive
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/admin/redirections/add?blogId=${blog.id}`}
+                      scroll={false}
+                    >
+                      Archive
+                    </Link>
                   </DropdownMenuItem>
                 )}
                 {/* Only show Republish and Schedule for archived blogs */}

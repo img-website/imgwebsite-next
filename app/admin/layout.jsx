@@ -5,13 +5,14 @@ import {
 } from "@/components/ui/sidebar"
 
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout({ children, modal }) {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         {children}
       </SidebarInset>
+      {modal}
     </SidebarProvider>
   );
 }
