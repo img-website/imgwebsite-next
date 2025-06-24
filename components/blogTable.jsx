@@ -211,39 +211,41 @@ function BlogActions({ blog }) {
           <DropdownMenuItem onClick={handleSendNotification}>
             Send Notification
           </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              {/* Only show Archive for published blogs */}
-              {blog.status === "published" && (
-                <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-                  Archive
-                </DropdownMenuItem>
-              )}
-              {/* Only show Republish and Schedule for archived blogs */}
-              {blog.status === "archived" && (
-                <>
-                  <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-                    Republish
+          {blog.status !== "draft" && (
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                {/* Only show Archive for published blogs */}
+                {blog.status === "published" && (
+                  <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+                    Archive
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
-                    Schedule
-                  </DropdownMenuItem>
-                </>
-              )}
-              {/* Only show Publish and Reschedule for scheduled blogs */}
-              {blog.status === "scheduled" && (
-                <>
-                  <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-                    Publish
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
-                    Reschedule
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
+                )}
+                {/* Only show Republish and Schedule for archived blogs */}
+                {blog.status === "archived" && (
+                  <>
+                    <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+                      Republish
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
+                      Schedule
+                    </DropdownMenuItem>
+                  </>
+                )}
+                {/* Only show Publish and Reschedule for scheduled blogs */}
+                {blog.status === "scheduled" && (
+                  <>
+                    <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+                      Publish
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setOpenSchedule(true)}>
+                      Reschedule
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          )}
           <DropdownMenuCheckboxItem
             checked={blog.comment_show_status}
             onCheckedChange={handleToggleComments}
@@ -253,9 +255,9 @@ function BlogActions({ blog }) {
           {blog.status === "draft" && (
             <>
               <DropdownMenuSeparator />
-              <DialogTrigger asChild>
-                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-              </DialogTrigger>
+              <DropdownMenuItem variant="destructive" onClick={() => setOpenDelete(true)}>
+                Delete
+              </DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>

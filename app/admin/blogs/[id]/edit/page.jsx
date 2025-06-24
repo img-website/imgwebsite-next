@@ -928,8 +928,15 @@ export default function Page() {
                       </div>
                     )}
                     <div className="w-full flex justify-end gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => router.push(`/admin/blogs/${blogId}`)}
+                        >
+                        Cancel
+                      </Button>
                       <Button type="submit" disabled={form.formState.isSubmitting}>
-                        {form.formState.isSubmitting ? "Saving..." : "Save"}
+                        {form.formState.isSubmitting ? "Updating..." : "Update"}
                       </Button>
                     </div>
                   </form>
