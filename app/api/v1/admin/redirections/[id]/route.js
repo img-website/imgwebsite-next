@@ -4,6 +4,21 @@ import Redirection from '@/app/models/Redirection';
 import { redirectionSchema } from '@/app/lib/validations/redirection';
 import { clearRedirectionsCache } from '@/app/lib/redirections';
 
+// GET: Get a single redirection
+export async function GET(request, { params }) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    const redirection = await Redirection.findById(id).lean();
+    if (!redirection) {
+      return NextResponse.json({ success: false, error: 'Redirection not found' }, { status: 404 });
+    }
+    return NextResponse.json({ success: true, data: redirection });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: 'Error fetching redirection' }, { status: 500 });
+  }
+}
+
 // DELETE: Delete a redirection
 export async function DELETE(request, { params }) {
   try {
