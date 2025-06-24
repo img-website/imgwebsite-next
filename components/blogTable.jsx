@@ -49,6 +49,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import TokenFromCookie from "@/helpers/tokenFromCookie";
+import RedirectionForm from "@/components/RedirectionForm";
+import { deleteRedirection } from "@/actions/redirections";
 
 function BlogActions({ blog }) {
   const router = useRouter();
@@ -57,8 +59,17 @@ function BlogActions({ blog }) {
   const [scheduleDate, setScheduleDate] = React.useState("");
   const [scheduleTime, setScheduleTime] = React.useState("");
   const [loadingSchedule, setLoadingSchedule] = React.useState(false);
-
+  const [openRedirection, setOpenRedirection] = React.useState(false);
+  // Use slug for blog url
+  const fromUrl = blog.slug ? `/blogs/${blog.slug}` : "";
+console.log("Hellooooooooooooooo", fromUrl)
   const handleStatusChange = async (status, publishedDateTime) => {
+    // If blog is archived and status is being set to republish(2) or schedule(4), delete redirection
+    if (blog.status === "archived" && (status === 2 || status === 4)) {
+      if (fromUrl) {
+        await deleteRedirection(fromUrl);
+      }
+    }
     try {
       const formData = new FormData();
       formData.append("status", status);
@@ -170,6 +181,24 @@ function BlogActions({ blog }) {
 
   return (
     <>
+      {/* Redirection Dialog */}
+      <Dialog open={openRedirection} onOpenChange={setOpenRedirection}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Redirection</DialogTitle>
+            <DialogDescription>
+              Create a redirection for this blog. "From URL" is prefilled.
+            </DialogDescription>
+          </DialogHeader>
+          <RedirectionForm 
+            fromDefault={fromUrl} 
+            onSuccess={async () => {
+              setOpenRedirection(false);
+              await handleStatusChange(3); // 3 = archived
+            }} 
+          />
+        </DialogContent>
+      </Dialog>
       <Dialog open={openDelete} onOpenChange={setOpenDelete}>
         <DialogContent>
           <DialogHeader>
@@ -217,7 +246,7 @@ function BlogActions({ blog }) {
               <DropdownMenuSubContent>
                 {/* Only show Archive for published blogs */}
                 {blog.status === "published" && (
-                  <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+                  <DropdownMenuItem onClick={() => setOpenRedirection(true)}>
                     Archive
                   </DropdownMenuItem>
                 )}

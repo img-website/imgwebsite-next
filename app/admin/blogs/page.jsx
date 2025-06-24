@@ -15,6 +15,7 @@ export default async function Page() {
     status: statusMap[blog.status] || 'draft',
     comment_show_status: blog.comment_show_status,
     created_date: blog.created_date,
+    slug: blog.slug,
   }));
 
   return (

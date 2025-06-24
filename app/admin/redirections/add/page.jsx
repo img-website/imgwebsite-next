@@ -1,5 +1,4 @@
 "use client";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,8 @@ import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
+import RedirectionForm from "@/components/RedirectionForm";
+import { useForm } from "react-hook-form";
 
 const urlOrPath = z.string().refine(val => {
   try {
@@ -82,66 +83,7 @@ export default function AddRedirectionPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="from"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>From URL</FormLabel>
-                        <FormControl>
-                          <Input placeholder="/old-url" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="to"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>To URL</FormLabel>
-                        <FormControl>
-                          <Input placeholder="/new-url" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="methodCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Redirect Type</FormLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="301">301 (Permanent)</SelectItem>
-                            <SelectItem value="302">302 (Temporary)</SelectItem>
-                            <SelectItem value="307">307 (Temporary, method preserved)</SelectItem>
-                            <SelectItem value="308">308 (Permanent, method preserved)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={form.formState.isSubmitting}
-                    className="w-full"
-                  >
-                    {form.formState.isSubmitting ? "Adding..." : "Add Redirection"}
-                  </Button>
-                </form>
-              </Form>
+              <RedirectionForm />
             </CardContent>
           </Card>
         </div>
