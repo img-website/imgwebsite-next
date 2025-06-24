@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { DynamicBreadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useRouter } from "next/navigation";
 
 const redirectionSchema = z.object({
   from: z.string().min(2, { message: "From URL is required" }),
@@ -19,6 +20,7 @@ const redirectionSchema = z.object({
 });
 
 export default function AddRedirectionPage() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(redirectionSchema),
     defaultValues: {
@@ -40,6 +42,7 @@ export default function AddRedirectionPage() {
       if (data.success) {
         toast.success("Redirection added successfully");
         form.reset();
+        router.push("/admin/redirections");
       } else {
         toast.error(data.error || "Failed to add redirection");
       }
@@ -121,7 +124,6 @@ export default function AddRedirectionPage() {
                   />
                   <Button
                     type="submit"
-                    loading={form.formState.isSubmitting ? true : undefined}
                     disabled={form.formState.isSubmitting}
                     className="w-full"
                   >
