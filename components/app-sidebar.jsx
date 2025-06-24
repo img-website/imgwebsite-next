@@ -8,7 +8,6 @@ import {
   Split,
   ChartBarStacked,
   Images,
-  Tags,
   UserRoundPen,
   Mail,
   BellRing,
@@ -141,22 +140,6 @@ const data = {
         {
           title: "View Images",
           url: "/admin/blogs/images",
-        },
-      ],
-    },
-    {
-      title: "Tags",
-      url: "#",
-      icon: Tags,
-      team: "Blogs",
-      items: [
-        {
-          title: "Add Tag",
-          url: "/admin/blogs/tags/add",
-        },
-        {
-          title: "View Tags",
-          url: "/admin/blogs/tags",
         },
       ],
     },
