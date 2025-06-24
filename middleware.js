@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { getRedirections } from './app/lib/redirections';
 
 async function verifyToken(token) {
     try {
@@ -13,14 +14,7 @@ async function verifyToken(token) {
 }
 
 export const config = {
-    matcher: [
-        "/admin/:path*",
-        "/blog/:path*",
-        "/login",
-        "/register",
-        "/forgot-password",
-        "/reset-password"
-    ]
+  matcher: '/:path*'
 };
 
 export async function middleware(request) {
@@ -41,9 +35,20 @@ export async function middleware(request) {
   response.headers.set('Content-Security-Policy', "default-src 'self'; img-src 'self' blob: data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';");
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
+  const { pathname, search, origin } = request.nextUrl;
 
-  
-    const { pathname } = request.nextUrl;
+  if (pathname.startsWith('/api') || pathname.startsWith('/_next')) {
+    return response;
+  }
+
+  const redirects = await getRedirections(origin);
+  const pathWithQuery = pathname + search;
+  const match = redirects.find(r => r.from === pathWithQuery || r.from === pathname);
+  if (match) {
+    const url = match.to.startsWith('http') ? match.to : `${origin}${match.to}`;
+    return NextResponse.redirect(url, match.methodCode);
+  }
+
     const token = request.cookies.get('token')?.value;
     let decodedToken = null;
 

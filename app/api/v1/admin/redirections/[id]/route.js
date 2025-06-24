@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Redirection from '@/app/models/Redirection';
 import { redirectionSchema } from '@/app/lib/validations/redirection';
+import { clearRedirectionsCache } from '@/app/lib/redirections';
 
 // DELETE: Delete a redirection
 export async function DELETE(request, { params }) {
@@ -12,6 +13,7 @@ export async function DELETE(request, { params }) {
     if (!deleted) {
       return NextResponse.json({ success: false, error: 'Redirection not found' }, { status: 404 });
     }
+    clearRedirectionsCache();
     return NextResponse.json({ success: true, message: 'Redirection deleted successfully', data: deleted });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error deleting redirection' }, { status: 500 });
@@ -48,6 +50,7 @@ export async function PATCH(request, { params }) {
     if (!updated) {
       return NextResponse.json({ success: false, error: 'Redirection not found' }, { status: 404 });
     }
+    clearRedirectionsCache();
     return NextResponse.json({ success: true, message: 'Redirection updated successfully', data: updated });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error updating redirection' }, { status: 500 });
