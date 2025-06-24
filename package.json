@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "node fetch-redirections.js",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -43,6 +44,7 @@
     "moment": "^2.30.1",
     "mongoose": "^8.16.0",
     "next": "^15.3.3",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.3",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
