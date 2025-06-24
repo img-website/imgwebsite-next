@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "node fetch-redirections.js",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
