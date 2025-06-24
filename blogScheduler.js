@@ -33,8 +33,8 @@ async function publishScheduledBlogs() {
   }
 }
 
-// Run every minute
-setInterval(publishScheduledBlogs, 60 * 1000);
+// Run every hour
+setInterval(publishScheduledBlogs, 60 * 60 * 1000);
 
 // Run once on start
 publishScheduledBlogs();
