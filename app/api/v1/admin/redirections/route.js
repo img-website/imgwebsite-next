@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Redirection from '@/app/models/Redirection';
 import { redirectionSchema } from '@/app/lib/validations/redirection';
+import { clearRedirectionsCache } from '@/app/lib/redirections';
 
 // GET: Get all redirections
 export async function GET() {
@@ -39,6 +40,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Redirection from this URL already exists' }, { status: 400 });
     }
     const redirection = await Redirection.create(parsed.data);
+    clearRedirectionsCache();
     return NextResponse.json({ success: true, message: 'Redirection created successfully', data: redirection }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error creating redirection' }, { status: 500 });

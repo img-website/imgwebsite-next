@@ -1,6 +1,8 @@
 let cache = [];
 let lastFetch = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = process.env.REDIRECTS_CACHE_DURATION
+  ? Number(process.env.REDIRECTS_CACHE_DURATION)
+  : 0; // 0 = no cache by default
 
 export async function getRedirections(origin) {
   if (Date.now() - lastFetch > CACHE_DURATION) {
@@ -16,4 +18,9 @@ export async function getRedirections(origin) {
     }
   }
   return cache;
+}
+
+export function clearRedirectionsCache() {
+  cache = [];
+  lastFetch = 0;
 }
