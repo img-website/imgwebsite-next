@@ -13,9 +13,20 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
 
+const urlOrPath = z.string().refine(val => {
+  try {
+    // Accept absolute URLs
+    new URL(val);
+    return true;
+  } catch {
+    // Accept relative paths starting with '/'
+    return val.startsWith('/');
+  }
+}, { message: 'Enter a valid absolute or relative URL (must start with / for relative)' });
+
 const redirectionSchema = z.object({
-  from: z.string().min(2, { message: "From URL is required" }),
-  to: z.string().min(2, { message: "To URL is required" }),
+  from: urlOrPath,
+  to: urlOrPath,
   methodCode: z.enum(["301", "302", "307", "308"]),
 });
 

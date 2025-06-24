@@ -10,9 +10,18 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+const urlOrPath = z.string().refine(val => {
+  try {
+    new URL(val);
+    return true;
+  } catch {
+    return val.startsWith('/');
+  }
+}, { message: 'Enter a valid absolute or relative URL (must start with / for relative)' });
+
 const redirectionSchema = z.object({
-  from: z.string().min(2, { message: "From URL is required" }),
-  to: z.string().min(2, { message: "To URL is required" }),
+  from: urlOrPath,
+  to: urlOrPath,
   methodCode: z.enum(["301", "302", "307", "308"]),
 });
 
