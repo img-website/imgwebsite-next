@@ -160,7 +160,6 @@ export async function PUT(request, { params }) {
       metaOgDescription: 'meta_og_description',
       metaXTitle: 'meta_x_title',
       metaXDescription: 'meta_x_description',
-      commentShowStatus: 'comment_show_status',
       publishedDateTime: 'published_date_time',
       bgColorStatus: 'bg_color_status',
       bgColor: 'bg_color'
@@ -171,7 +170,7 @@ export async function PUT(request, { params }) {
       if (val !== null) {
         if (modelField.endsWith('_date') || modelField.endsWith('_time')) {
           blog[modelField] = val ? new Date(val) : null;
-        } else if (modelField === 'comment_show_status' || modelField === 'bg_color_status') {
+        } else if (modelField === 'bg_color_status') {
           blog[modelField] = val === 'true';
         } else {
           blog[modelField] = val;

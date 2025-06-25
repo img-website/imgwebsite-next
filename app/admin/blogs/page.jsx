@@ -13,7 +13,6 @@ export default async function Page() {
     title: blog.title,
     banner: blog.banner?.startsWith('http') ? blog.banner : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`,
     status: statusMap[blog.status] || 'draft',
-    comment_show_status: blog.comment_show_status,
     created_date: blog.created_date,
     slug: blog.slug,
   }));

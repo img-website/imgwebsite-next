@@ -164,7 +164,6 @@ export async function POST(request) {
       meta_og_description: formData.get('metaOgDescription'),
       meta_x_title: formData.get('metaXTitle'),
       meta_x_description: formData.get('metaXDescription'),
-      comment_show_status: formData.get('commentShowStatus') === 'true',
       status: statusValue,
       published_date_time: formData.get('publishedDateTime') ? new Date(formData.get('publishedDateTime')) : null,
       bg_color_status: formData.get('bgColorStatus') === 'true',

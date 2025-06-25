@@ -94,33 +94,6 @@ console.log("Hellooooooooooooooo", fromUrl)
     }
   };
 
-  const handleToggleComments = async () => {
-    try {
-      const formData = new FormData();
-      formData.append(
-        "commentShowStatus",
-        blog.comment_show_status ? "false" : "true"
-      );
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Comment setting updated");
-        router.refresh();
-      } else {
-        toast.error(data.error || "Failed to update comment setting");
-      }
-    } catch (error) {
-      toast.error("Failed to update comment setting");
-    }
-  };
-
   const handleSendNotification = async () => {
     try {
       const token = TokenFromCookie();
@@ -275,12 +248,6 @@ console.log("Hellooooooooooooooo", fromUrl)
               </DropdownMenuSubContent>
             </DropdownMenuSub>
           )}
-          <DropdownMenuCheckboxItem
-            checked={blog.comment_show_status}
-            onCheckedChange={handleToggleComments}
-          >
-            Show Comments
-          </DropdownMenuCheckboxItem>
           {blog.status === "draft" && (
             <>
               <DropdownMenuSeparator />
@@ -414,11 +381,6 @@ export const columns = [
     },
   },
   {
-    accessorKey: "comment_show_status",
-    header: "Comments",
-    cell: ({ row }) => (row.getValue("comment_show_status") ? "Shown" : "Hidden"),
-  },
-  {
     accessorKey: "created_date",
     header: ({ column }) => (
       <Button
@@ -447,9 +409,7 @@ export const columns = [
 export function BlogTable({ data }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({
-    comment_show_status: false,
-  });
+  const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({

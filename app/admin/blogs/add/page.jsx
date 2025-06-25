@@ -73,7 +73,6 @@ function getBlogFormSchema(status, bgColorStatus) {
     ? z.string().min(1, { message: "Background color is required" })
     : z.string().optional();
   if (status === "1") {
-    // Draft: all fields optional, but bgColor required if bgColorStatus true
     return z.object({
       category: z.string().optional(),
       title: z.string().optional(),
@@ -96,14 +95,12 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaOgDescription: z.string().optional(),
       metaXTitle: z.string().optional(),
       metaXDescription: z.string().optional(),
-      commentShowStatus: z.boolean().default(false),
       status: z.string().default("1"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
       bgColor: bgColorField,
     });
   } else if (status === "4") {
-    // Schedule: all required as published, plus publishedDateTime required
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -126,14 +123,12 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
-      commentShowStatus: z.boolean().default(false),
       status: z.string().default("1"),
       publishedDateTime: z.string().min(1, { message: "Published date & time is required" }),
       bgColorStatus: z.boolean().default(false),
       bgColor: bgColorField,
     });
   } else {
-    // Published: all required as before, but image fields allow preview string or File
     return z.object({
       category: z.string().min(1, { message: "Category is required" }),
       title: z.string().min(2, { message: "Title must be at least 2 characters" }).max(200),
@@ -156,7 +151,6 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
-      commentShowStatus: z.boolean().default(false),
       status: z.string().default("1"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
@@ -206,7 +200,6 @@ export default function Page() {
       metaOgDescription: "",
       metaXTitle: "",
       metaXDescription: "",
-      commentShowStatus: false,
       status: "1",
       publishedDateTime: "",
       bgColorStatus: false,
@@ -296,7 +289,6 @@ export default function Page() {
           metaOgDescription: blog.meta_og_description || "",
           metaXTitle: blog.meta_x_title || "",
           metaXDescription: blog.meta_x_description || "",
-          commentShowStatus: blog.comment_show_status ?? true,
           status: String(blog.status ?? 1),
           publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
           bgColorStatus: blog.bg_color_status ?? false,
@@ -337,7 +329,6 @@ export default function Page() {
       if (!isDraft || data.metaOgDescription !== undefined) formData.append("metaOgDescription", data.metaOgDescription || "");
       if (!isDraft || data.metaXTitle !== undefined) formData.append("metaXTitle", data.metaXTitle || "");
       if (!isDraft || data.metaXDescription !== undefined) formData.append("metaXDescription", data.metaXDescription || "");
-      formData.append("commentShowStatus", data.commentShowStatus ? "true" : "false");
       // Always send status as number
       formData.append("status", Number(data.status));
       if (data.publishedDateTime !== undefined) formData.append("publishedDateTime", data.publishedDateTime || "");
@@ -972,32 +963,6 @@ export default function Page() {
                       />
                     </div> 
                     <Separator className="my-6" />                 
-                    <div className="md:w-1/3 w-full px-3">
-                      <FormField
-                        control={form.control}
-                        name="commentShowStatus"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Comments Status</FormLabel>
-                            <Select
-                              onValueChange={(value) => field.onChange(value === "true")} 
-                              value={field.value.toString()}
-                            >
-                              <FormControl className="w-full">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select comments status" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="false">Hide Comments</SelectItem>
-                                <SelectItem value="true">Show Comments</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
                     <div className="md:w-1/3 w-full px-3">
                       <FormField
                         control={form.control}

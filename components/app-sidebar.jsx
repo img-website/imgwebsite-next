@@ -160,13 +160,6 @@ const data = {
       ],
     },
     {
-      title: "Comments",
-      url: "/admin/blogs/comments",
-      icon: Mail,
-      team: "Blogs",
-      type: "link"
-    },
-    {
       title: "Notifications",
       url: "/admin/blogs/notifications",
       icon: BellRing,

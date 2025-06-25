@@ -44,8 +44,6 @@ export default async function Page({ params }) {
               <p><strong>Slug:</strong> {blog.slug}</p>
               <p><strong>Category:</strong> {blog.category?.category_name}</p>
               <p><strong>Author:</strong> {blog.author?.author_name}</p>
-              <p><strong>Status:</strong> {statusMap[blog.status]}</p>
-              <p><strong>Comments:</strong> {blog.comment_show_status ? 'Shown' : 'Hidden'}</p>
               <p><strong>Created:</strong> {new Date(blog.created_date).toLocaleString()}</p>
               {/* Show scheduled publish date/time if status is Scheduled */}
               {blog.status === 4 && blog.published_date_time && (

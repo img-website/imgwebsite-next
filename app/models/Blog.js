@@ -100,10 +100,6 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: function() { return this.status !== 1; },
     },
-    comment_show_status: {
-      type: Boolean,
-      default: false
-    },
     published_date_time: Date,
     bg_color_status: {
       type: Boolean,
