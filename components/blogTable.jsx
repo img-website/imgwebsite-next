@@ -62,7 +62,6 @@ function BlogActions({ blog }) {
   const [openRedirection, setOpenRedirection] = React.useState(false);
   // Use slug for blog url
   const fromUrl = blog.slug ? `/blogs/${blog.slug}` : "";
-console.log("Hellooooooooooooooo", fromUrl)
   const handleStatusChange = async (status, publishedDateTime) => {
     // If blog is archived and status is being set to republish(2) or schedule(4), delete redirection
     if (blog.status === "archived" && (status === 2 || status === 4)) {
