@@ -39,7 +39,7 @@ export default function EditImagePage({ params }) {
         });
         const result = await res.json();
         if (!result.success || !result.data) {
-          router.replace("/admin/images");
+          router.replace("/admin/blogs/images");
           return;
         }
         // Map API fields to form fields
@@ -52,7 +52,7 @@ export default function EditImagePage({ params }) {
               : undefined,
         });
       } catch (err) {
-        router.replace("/admin/images");
+        router.replace("/admin/blogs/images");
       }
     }
     fetchImage();
@@ -75,7 +75,7 @@ export default function EditImagePage({ params }) {
       const json = await res.json();
       if (json.success) {
         toast.success("Image updated successfully");
-        router.push("/admin/images");
+        router.push("/admin/blogs/images");
       } else {
         toast.error(json.error || "Failed to update image");
       }
