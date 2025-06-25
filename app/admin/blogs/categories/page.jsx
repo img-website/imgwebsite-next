@@ -12,6 +12,7 @@ export default async function Page() {
     status: statusMap[cat.status] || 'inactive',
     created_date: cat.created_date,
     modified_date: cat.modified_date,
+    blog_count: cat.blog_count,
   }));
 
   return (

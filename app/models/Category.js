@@ -36,6 +36,10 @@ const categorySchema = new mongoose.Schema({
   modified_date: {
     type: Date,
     default: Date.now
+  },
+  blog_count: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: {

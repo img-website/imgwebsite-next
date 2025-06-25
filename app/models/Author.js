@@ -62,7 +62,8 @@ const authorSchema = new mongoose.Schema({
   image: {
     type: String,
     required: [true, 'Please provide author image']
-  },  blog_count: {
+  },  
+  blog_count: {
     type: Number,
     default: 0
   },

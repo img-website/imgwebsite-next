@@ -27,11 +27,12 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 });
     }
 
-    const blogCount = await Blog.countDocuments({ categories: id, status: 2 });
+    // Always return up-to-date blog_count in GET and save to DB
+    const blogCount = await Blog.countDocuments({ category: id, status: 2 });
     category.blog_count = blogCount;
     await category.save();
-
-    return NextResponse.json({ success: true, data: category });
+    const categoryObj = category.toObject();
+    return NextResponse.json({ success: true, data: categoryObj });
 
   } catch (error) {
     console.error('Error fetching category:', error);
@@ -88,7 +89,7 @@ export async function PUT(request, { params }) {
     category.modified_date = new Date();
     await category.save();
 
-    const blogCount = await Blog.countDocuments({ categories: id, status: 2 });
+    const blogCount = await Blog.countDocuments({ category: id, status: 2 });
     category.blog_count = blogCount;
     await category.save();
 
@@ -125,6 +126,15 @@ export async function DELETE(request, { params }) {
     }
     const searchParams = request.nextUrl.searchParams
     const force = searchParams.get('force') === 'true';
+
+    // Prevent deletion if category has published blogs
+    const blogCount = await Blog.countDocuments({ categories: id, status: 2 });
+    if (blogCount > 0) {
+      return NextResponse.json({
+        success: false,
+        error: 'Cannot delete category with published blogs.'
+      }, { status: 400 });
+    }
 
     const category = await Category.findOne({ _id: id }, null, { showDeleted: true });
     if (!category) {
