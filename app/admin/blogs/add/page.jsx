@@ -55,6 +55,7 @@ import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import TinyMCEEditor from "@/components/TinyMCEEditor";
 
 // Helper to check if image is present (File or preview URL)
 function isImagePresent(val) {
@@ -706,10 +707,13 @@ export default function Page() {
                         control={form.control}
                         name="description"
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className="[&_.tox-statusbar\_\_branding]:!hidden">
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                              <Textarea className="min-h-[120px]" {...field} />
+                              <TinyMCEEditor
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
