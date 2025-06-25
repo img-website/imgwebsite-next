@@ -207,6 +207,11 @@ export const columns = [
     },
   },
   {
+    accessorKey: "blog_count",
+    header: "Published Blogs",
+    cell: ({ row }) => row.getValue("blog_count"),
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => <AuthorActions author={row.original} />,

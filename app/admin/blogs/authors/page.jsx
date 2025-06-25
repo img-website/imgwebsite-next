@@ -16,6 +16,7 @@ export default async function Page() {
     image: author.image?.startsWith('http') ? author.image : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}`,
     created_date: author.created_date,
     modified_date: author.modified_date,
+    blog_count: author.blog_count || 0,
   }));
 
   return (

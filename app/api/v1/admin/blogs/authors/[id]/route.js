@@ -213,15 +213,25 @@ export async function DELETE(request, { params }) {
       }, { status: 403 });
     }
 
-    await connectDB();    // Get ID from context params and validate
+    await connectDB();
     const { id } = await params;
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({
         success: false,
         error: 'Invalid author ID'
       }, { status: 400 });
-    }    const { searchParams } = new URL(request.url);
+    }
+    const { searchParams } = new URL(request.url);
     const force = searchParams.get('force') === 'true';
+
+    // Check for published blogs before deleting
+    const publishedBlogCount = await Blog.countDocuments({ author: id, status: 2 });
+    if (publishedBlogCount > 0) {
+      return NextResponse.json({
+        success: false,
+        error: 'Cannot delete author with published blogs.'
+      }, { status: 400 });
+    }
 
     // Find author (including soft-deleted ones)
     const author = await Author.findOne(
