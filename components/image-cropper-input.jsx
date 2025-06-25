@@ -27,7 +27,6 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
 
   // Track the last selected file's real/original name
   const [realFileName, setRealFileName] = useState("");
-console.log("ImageCropperInput rendered with format:", realFileName);
   const getAcceptedTypes = () => {
     switch (format) {
       case 'webp':

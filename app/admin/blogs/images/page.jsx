@@ -13,7 +13,7 @@ export default async function Page() {
     uploadedBy: img.uploadedBy,
     url: img.storedName?.startsWith('http')
       ? img.storedName
-      : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/images/${img.storedName}`,
+      : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/images/${img.storedName}?t=${Date.now()}`,
     createdAt: img.createdAt,
     // add more fields if needed
   }));
