@@ -37,6 +37,13 @@ export async function POST(request) {
     const ext = file.name.split('.').pop();
     const base = file.name.replace(/\.[^/.]+$/, '');
     const storedName = slugify(base, { lower: true, strict: true }) + (ext ? `.${ext}` : '');
+
+    // Check for duplicate before saving file
+    const exists = await Image.findOne({ storedName });
+    if (exists) {
+      return NextResponse.json({ success: false, error: 'Image already exists' }, { status: 409 });
+    }
+
     // Use uploadBlogImage but save in /uploads/images
     const uploadRes = await uploadBlogImage(file, 'images', ext, storedName);
     if (!uploadRes.success) {

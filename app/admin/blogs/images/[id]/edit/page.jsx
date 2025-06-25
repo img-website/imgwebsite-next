@@ -1,0 +1,141 @@
+"use client";
+import { DynamicBreadcrumb } from "@/components/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import ImageCropperInput from "@/components/image-cropper-input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import TokenFromCookie from "@/helpers/tokenFromCookie";
+
+const imageFormSchema = z.object({
+  image: z.any().refine((file) => !file || file.length === 1, "Only one image allowed"),
+});
+
+export default function EditImagePage({ params }) {
+  const { id } = React.use(params);
+  const router = useRouter();
+
+  const form = useForm({
+    resolver: zodResolver(imageFormSchema),
+    defaultValues: { image: undefined },
+  });
+
+  // Fetch image data if id is present in URL
+  useEffect(() => {
+    async function fetchImage() {
+      try {
+        const token = TokenFromCookie();
+        const res = await fetch(`/api/v1/admin/images/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await res.json();
+        if (!result.success || !result.data) {
+          router.replace("/admin/images");
+          return;
+        }
+        // Map API fields to form fields
+        const data = result.data;
+        form.reset({
+          image: data.storedName?.startsWith('http')
+            ? data.storedName
+            : data.storedName
+              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/images/${data.storedName}`
+              : undefined,
+        });
+      } catch (err) {
+        router.replace("/admin/images");
+      }
+    }
+    fetchImage();
+  }, [id]);
+
+  async function onSubmit(data) {
+    try {
+      const formData = new FormData();
+      if (data.image?.[0]) {
+        formData.append('file', data.image[0]);
+      }
+      const token = TokenFromCookie();
+      const res = await fetch(`/api/v1/admin/images/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const json = await res.json();
+      if (json.success) {
+        toast.success("Image updated successfully");
+        router.push("/admin/images");
+      } else {
+        toast.error(json.error || "Failed to update image");
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  }
+
+  return (
+    <>
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+          <DynamicBreadcrumb />
+        </div>
+      </header>
+      <Separator />
+      <div className="w-full p-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Edit Image</CardTitle>
+            <CardDescription>Replace the image. The name will remain the same.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field: { onChange, value, ...fieldProps } }) => (
+                    <FormItem>
+                      <FormLabel>New Image</FormLabel>
+                      <FormControl>
+                        <ImageCropperInput
+                          aspectRatio={null}
+                          value={value}
+                          onChange={(val) => {
+                            if (!val || (Array.isArray(val) && val.length === 0)) {
+                              onChange("");
+                            } else {
+                              onChange(val);
+                            }
+                          }}
+                          format="webp"
+                          originalName={true}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? "Updating..." : "Update Image"}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+}

@@ -10,7 +10,8 @@ const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 const UPLOAD_DIRS = {
   authors: path.join(UPLOAD_DIR, 'authors'),
   blogs: path.join(UPLOAD_DIR, 'blogs'),
-  categories: path.join(UPLOAD_DIR, 'categories')
+  categories: path.join(UPLOAD_DIR, 'categories'),
+  images: path.join(UPLOAD_DIR, 'images')
 };
 
 // Initialize upload directories
@@ -111,7 +112,7 @@ export async function uploadAuthorImage(file) {
 }
 
 // Upload and process blog image
-export async function uploadBlogImage(file, type = 'generic') {
+export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
   try {
     if (!file || typeof file !== 'object' || typeof file.arrayBuffer !== 'function') {
       return {
@@ -127,22 +128,31 @@ export async function uploadBlogImage(file, type = 'generic') {
       return fileType;
     }
 
-    await fs.mkdir(UPLOAD_DIRS.blogs, { recursive: true });
-
-    const filename = `blog-${type}-${Date.now()}.webp`;
-    const filepath = path.join(UPLOAD_DIRS.blogs, filename);
-
+    let dir = UPLOAD_DIRS.blogs;
+    let filename = storedName || `blog-${type}-${Date.now()}.webp`;
+    let filepath;
     let width = 1080;
     let height = 617;
     if (type === 'xImage' || type === 'ogImage') {
       width = 1200;
       height = 630;
     }
-
-    await sharp(Buffer.from(buffer))
-      .resize(width, height, { fit: 'cover', position: 'center' })
-      .webp({ quality: 80 })
-      .toFile(filepath);
+    if (type === 'images') {
+      dir = UPLOAD_DIRS.images;
+      await fs.mkdir(dir, { recursive: true });
+      filename = storedName || `image-${Date.now()}.${ext || 'webp'}`;
+      filepath = path.join(dir, filename);
+      // Save as original format (not forced webp)
+      await sharp(Buffer.from(buffer))
+        .toFile(filepath);
+    } else {
+      await fs.mkdir(dir, { recursive: true });
+      filepath = path.join(dir, filename);
+      await sharp(Buffer.from(buffer))
+        .resize(width, height, { fit: 'cover', position: 'center' })
+        .webp({ quality: 80 })
+        .toFile(filepath);
+    }
 
     return {
       success: true,

@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { Images, X } from "lucide-react";
+import slugify from "slugify";
 
-function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any', size, resetKey }) {
+function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format = 'any', size, resetKey, originalName }) {
   const inputRef = useRef(null);
   const cropperRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -24,6 +25,9 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
 
+  // Track the last selected file's real/original name
+  const [realFileName, setRealFileName] = useState("");
+console.log("ImageCropperInput rendered with format:", realFileName);
   const getAcceptedTypes = () => {
     switch (format) {
       case 'webp':
@@ -104,6 +108,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      setRealFileName(file.name); // Save the real/original name
       if (!validateFileFormat(file)) {
         setError(getFormatErrorMessage());
         return;
@@ -135,6 +140,15 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'jpg';
       default:
         return 'png';
+    }
+  };
+
+  // Helper to get slugified filename
+  const getSlugifiedName = () => {
+    if (originalName) {
+      // If originalName prop is true, use the real file name from input
+      const base = realFileName.replace(/\.[^/.]+$/, '');
+      return slugify(base, { lower: true, strict: true });
     }
   };
 
@@ -170,7 +184,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         finalCanvas.toBlob(
           (blob) => {
             if (blob) {
-              const fileName = `cropped-${Date.now()}.${getFileExtension()}`;
+              const fileName = `${getSlugifiedName()}.${getFileExtension()}`;
               const file = new File([blob], fileName, { type: mimeType });
               setPreview(URL.createObjectURL(blob));
               onChange([file]);
@@ -187,7 +201,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         croppedCanvas.toBlob(
           (blob) => {
             if (blob) {
-              const fileName = `cropped-${Date.now()}.${getFileExtension()}`;
+              const fileName = `${getSlugifiedName()}.${getFileExtension()}`;
               const file = new File([blob], fileName, { type: mimeType });
               setPreview(URL.createObjectURL(blob));
               onChange([file]);
