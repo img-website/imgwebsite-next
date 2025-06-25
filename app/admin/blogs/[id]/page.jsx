@@ -6,6 +6,8 @@ import DeleteBlogButtons from "@/components/delete-blog-buttons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import 'tinymce/skins/ui/oxide/content.min.css';
+import 'tinymce/skins/content/default/content.min.css';
 
 export default async function Page({ params }) {
   const { id } = await params;
@@ -53,6 +55,16 @@ export default async function Page({ params }) {
               {blog.status === 2 && blog.published_date_time && (
                 <p><strong>Published:</strong> {new Date(blog.published_date_time).toLocaleString()}</p>
               )}
+
+              <div><strong>Status:</strong> {statusMap[blog.status]}</div>
+              
+              <div
+                className="mce-content-body [&_*]:[all:revert]"
+                dangerouslySetInnerHTML={{ __html: blog.description }}  // Render HTML content
+              />
+
+
+
             </div>
             <div className="mt-4 flex gap-2">
               <Link href={`/admin/blogs/${blog._id}/edit`}>
