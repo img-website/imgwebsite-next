@@ -35,7 +35,7 @@ export default async function Page({ params }) {
                 <p><strong>Deleted:</strong> {new Date(category.deleted_at).toLocaleString()}</p>
               )}
             </div>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex gap-2 justify-end">
               <Link href={`/admin/blogs/categories/${category._id}/edit`}>
                 <Button type="button">Edit</Button>
               </Link>
