@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogFooter,
@@ -44,7 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -335,15 +334,16 @@ export const columns = [
   {
     accessorKey: "banner",
     header: "Banner",
-    cell: ({ row }) => (
-      <Image
-        src={row.getValue("banner")}
-        alt={row.original.title || "Blog Banner"}
-        width={80}
-        height={45}
-        className="rounded-md object-cover"
-      />
-    ),
+    cell: ({ row }) => {
+      const src = row.getValue("banner");
+      const title = row.original.title || "Blog Banner";
+      return (
+        <Avatar className="w-10 h-10 rounded-md">
+          <AvatarImage src={src} alt={title} className="object-cover" />
+          <AvatarFallback>{title?.[0] || "B"}</AvatarFallback>
+        </Avatar>
+      );
+    },
   },
   {
     accessorKey: "title",

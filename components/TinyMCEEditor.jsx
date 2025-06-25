@@ -26,6 +26,8 @@ export default function TinyMCEEditor({ value, onChange, ...props }) {
         menubar: 'file edit view insert format tools table',
         onboarding: false,
         toolbar_mode: 'sliding',
+        toolbar_sticky: true,
+        sticky_toolbar: true,
         contextmenu: '*[*]',
         quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
         extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]'
