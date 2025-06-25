@@ -27,6 +27,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateAuthor } from "@/app/actions/authors";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -68,6 +69,24 @@ export default function EditAuthorForm({ author }) {
     },
   });
 
+  useEffect(() => {
+    if (author) {
+      form.reset({
+        author_name: author.author_name || "",
+        description: author.description || "",
+        linkedin_link: author.linkedin_link || "",
+        facebook_link: author.facebook_link || "",
+        twitter_link: author.twitter_link || "",
+        status: author.status || 1,
+        image: author.image?.startsWith("http")
+          ? author.image
+          : author.image
+            ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}?t=${Date.now()}`
+            : undefined,
+      });
+    }
+  }, [author]);
+
   async function onSubmit(data) {
     try {
       const formData = new FormData();
@@ -98,22 +117,8 @@ export default function EditAuthorForm({ author }) {
     }
   }
 
-  const imageSrc = author.image?.startsWith("http")
-    ? author.image
-    : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}`;
-
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        <Image
-          src={imageSrc}
-          alt={author.author_name}
-          width={80}
-          height={80}
-          className="rounded-md object-cover"
-        />
-        <span className="text-sm text-muted-foreground">Current image</span>
-      </div>
       <Card>
         <CardHeader>
           <CardTitle>Edit Author</CardTitle>
@@ -122,7 +127,6 @@ export default function EditAuthorForm({ author }) {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
                   name="author_name"
@@ -154,7 +158,6 @@ export default function EditAuthorForm({ author }) {
                     </FormItem>
                   )}
                 />
-              </div>
               <FormField
                 control={form.control}
                 name="description"

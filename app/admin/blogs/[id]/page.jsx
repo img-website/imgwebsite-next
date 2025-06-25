@@ -29,8 +29,8 @@ export default async function Page({ params }) {
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">
-              <Image src={bannerSrc} alt={blog.title} width={160} height={90} className="rounded" />
-              <Image src={thumbnailSrc} alt={blog.title} width={120} height={80} className="rounded" />
+              <Image src={bannerSrc} alt={blog.title} width={160} height={90} className="rounded" unoptimized={true} />
+              <Image src={thumbnailSrc} alt={blog.title} width={120} height={80} className="rounded" unoptimized={true} />
               <p><strong>Title:</strong> {blog.title}</p>
               <p><strong>Slug:</strong> {blog.slug}</p>
               <p><strong>Category:</strong> {blog.category?.category_name}</p>
