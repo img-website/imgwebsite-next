@@ -338,7 +338,7 @@ export const columns = [
       const src = row.getValue("banner");
       const title = row.original.title || "Blog Banner";
       return (
-        <Avatar className="w-10 h-10 rounded-md">
+        <Avatar className="w-10 h-10 rounded-lg">
           <AvatarImage src={src} alt={title} className="object-cover" />
           <AvatarFallback>{title?.[0] || "B"}</AvatarFallback>
         </Avatar>
