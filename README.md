@@ -20,6 +20,10 @@ You can start editing the page by modifying `app/(pages)/page.jsx`. The page aut
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Configuration
+
+The middleware fetches redirect rules from `/api/v1/admin/redirections`. If this request takes too long it can lead to a timeout. You can control how long the middleware waits by setting `REDIRECTS_FETCH_TIMEOUT` (milliseconds) in your environment. It defaults to `3000`. The cache duration of these rules can be configured with `REDIRECTS_CACHE_DURATION`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
