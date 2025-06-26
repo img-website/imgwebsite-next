@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,8 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
+import { getPublicUrl } from "@/lib/s3";
+import { Download } from "lucide-react";
 
 const leadSchema = z.object({
   contact_name: z.string().optional(),
@@ -25,6 +27,7 @@ const leadSchema = z.object({
 export default function Page({ params }) {
   const router = useRouter();
   const { id } = use(params);
+  const [existingAttachments, setExistingAttachments] = useState([]);
   const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "", attachments: null } });
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export default function Page({ params }) {
           requirements: data.data.requirements || "",
           description: data.data.description || "",
         });
+        setExistingAttachments(data.data.attachments || []);
       }
     }
     fetchLead();
@@ -128,6 +132,32 @@ export default function Page({ params }) {
                   </FormControl>
                 </FormItem>
               )} />
+              {existingAttachments.length > 0 && (
+                <div className="space-y-2">
+                  {existingAttachments.map((file, idx) => (
+                    <div key={idx} className="flex items-center justify-between">
+                      <a
+                        href={getPublicUrl(`uploads/leads/${file}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {file}
+                      </a>
+                      <Button variant="outline" size="icon" asChild>
+                        <a
+                          href={getPublicUrl(`uploads/leads/${file}`)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                        >
+                          <Download className="size-4" />
+                        </a>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="flex justify-end">
                 <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting ? 'Saving...' : 'Save'}</Button>
               </div>
