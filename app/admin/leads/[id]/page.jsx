@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { getPublicUrl } from "@/lib/s3";
 import Link from "next/link";
 
 export default async function Page({ params }) {
@@ -32,6 +33,25 @@ export default async function Page({ params }) {
             {lead.assign_to && <p><strong>Assigned To:</strong> {lead.assign_to}</p>}
             {lead.assigned_date && <p><strong>Assigned Date:</strong> {new Date(lead.assigned_date).toLocaleString()}</p>}
             <p><strong>Created:</strong> {new Date(lead.created_date).toLocaleString()}</p>
+            {lead.attachments && lead.attachments.length > 0 && (
+              <div>
+                <strong>Attachments:</strong>
+                <ul className="list-disc list-inside space-y-1">
+                  {lead.attachments.map((file, idx) => (
+                    <li key={idx}>
+                      <a
+                        href={getPublicUrl(`uploads/leads/${file}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {file}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <div className="mt-4">
             <Link href={`/admin/leads/${lead._id}/edit`}>

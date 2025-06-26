@@ -14,6 +14,7 @@ export default async function Page() {
     status: 'upcoming',
     created_date: lead.created_date,
     assign_to: lead.assign_to,
+    attachments: lead.attachments,
   }));
 
   return (
