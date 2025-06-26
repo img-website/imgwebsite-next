@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Lead, { LEAD_STATUS } from '@/app/models/Lead';
 import { uploadLeadAttachment } from '@/app/middleware/attachmentUpload';
+import { sendLeadEmail } from '@/app/lib/mail';
 
 // GET all leads
 export async function GET() {
@@ -47,6 +48,8 @@ export async function POST(request) {
       attachments,
       status: formData.get('status') && [1,2,3].includes(Number(formData.get('status'))) ? Number(formData.get('status')) : LEAD_STATUS.UPCOMING
     });
+
+    await sendLeadEmail(lead);
     return NextResponse.json({ success: true, message: 'Lead created successfully', data: lead }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error creating lead' }, { status: 500 });

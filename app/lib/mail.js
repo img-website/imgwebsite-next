@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { getObjectBuffer } from '@/lib/s3';
 
 // Create reusable transporter
 const transporter = nodemailer.createTransport({
@@ -435,4 +436,49 @@ export async function sendPasswordResetConfirmationEmail(admin) {
       error: 'Error sending password reset confirmation email'
     };
   }
-} 
+}
+
+export async function sendLeadEmail(lead) {
+  try {
+    const attachments = [];
+    if (lead.attachments && Array.isArray(lead.attachments)) {
+      for (const filename of lead.attachments) {
+        try {
+          const buffer = await getObjectBuffer(`uploads/leads/${filename}`);
+          if (buffer) {
+            attachments.push({ filename, content: buffer });
+          }
+        } catch (err) {
+          console.error('Error fetching attachment', filename, err);
+        }
+      }
+    }
+
+    const mailOptions = {
+      from: `"IMG Leads" <${process.env.SMTP_FROM}>`,
+      to: process.env.LEADS_NOTIFICATION_EMAIL,
+      subject: `New Lead: ${lead.contact_name || lead.email || 'Unknown'}`,
+      html: `
+        <p>You have received a new lead via the admin panel.</p>
+        <ul>
+          <li><strong>Name:</strong> ${lead.contact_name || 'N/A'}</li>
+          <li><strong>Email:</strong> ${lead.email || 'N/A'}</li>
+          <li><strong>Mobile:</strong> ${lead.mobile_number || 'N/A'}</li>
+          <li><strong>Organization:</strong> ${lead.organization || 'N/A'}</li>
+          <li><strong>Requirements:</strong> ${lead.requirements || 'N/A'}</li>
+          <li><strong>Description:</strong> ${lead.description || 'N/A'}</li>
+        </ul>
+      `,
+      attachments
+    };
+
+    queueEmail(mailOptions);
+    return { success: true };
+
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Error sending lead email'
+    };
+  }
+}
