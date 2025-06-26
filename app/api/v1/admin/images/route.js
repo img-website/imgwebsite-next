@@ -36,7 +36,10 @@ export async function POST(request) {
     // Slugify original name (keep extension)
     const ext = file.name.split('.').pop();
     const base = file.name.replace(/\.[^/.]+$/, '');
-    const slug = slugify(base, { lower: true, strict: true });
+    let slug = slugify(base, { lower: true, strict: true });
+    if (!slug || slug === 'undefined') {
+      slug = `image-${Date.now()}`;
+    }
     let storedName = ext ? `${slug}.${ext}` : slug;
     let counter = 1;
     // Ensure storedName is unique

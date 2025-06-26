@@ -152,7 +152,15 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("appleWebApp.startupImage.mainImageUrl", files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue("appleWebApp.startupImage.mainImageUrl", "", {
+          shouldValidate: true,
+        });
+      } else {
+        setValue("appleWebApp.startupImage.mainImageUrl", files, {
+          shouldValidate: true,
+        });
+      }
     }
   }
 
@@ -169,7 +177,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("appleWebApp.startupImage.url", files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue("appleWebApp.startupImage.url", "", { shouldValidate: true });
+      } else {
+        setValue("appleWebApp.startupImage.url", files, { shouldValidate: true });
+      }
     }
   }
 
@@ -186,7 +198,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`icons.icon.${index}.url`, files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue(`icons.icon.${index}.url`, "", { shouldValidate: true });
+      } else {
+        setValue(`icons.icon.${index}.url`, files, { shouldValidate: true });
+      }
     }
   }
 
@@ -203,7 +219,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("icons.shortcut", files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue("icons.shortcut", "", { shouldValidate: true });
+      } else {
+        setValue("icons.shortcut", files, { shouldValidate: true });
+      }
     }
   }
 
@@ -220,7 +240,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("icons.apple", files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue("icons.apple", "", { shouldValidate: true });
+      } else {
+        setValue("icons.apple", files, { shouldValidate: true });
+      }
     }
   }
 
@@ -237,7 +261,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`icons.other.${index}.url`, files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue(`icons.other.${index}.url`, "", { shouldValidate: true });
+      } else {
+        setValue(`icons.other.${index}.url`, files, { shouldValidate: true });
+      }
     }
   }
 
@@ -254,7 +282,11 @@ export default function EditStaticMetaForm({ meta }) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`openGraph.images.${index}.url`, files, { shouldValidate: true });
+      if (Array.isArray(files) && files.length === 0) {
+        setValue(`openGraph.images.${index}.url`, "", { shouldValidate: true });
+      } else {
+        setValue(`openGraph.images.${index}.url`, files, { shouldValidate: true });
+      }
     }
   }
 
@@ -397,6 +429,7 @@ export default function EditStaticMetaForm({ meta }) {
                       <ImageCropperInput
                         value={watch("appleWebApp.startupImage.mainImageUrl")}
                         onChange={handleStartupMainImageChange}
+                        originalName={true}
                       />
                     </FormControl>
                     <FormMessage />
@@ -413,6 +446,7 @@ export default function EditStaticMetaForm({ meta }) {
                       <ImageCropperInput
                         value={watch("appleWebApp.startupImage.url")}
                         onChange={handleStartupImageChange}
+                        originalName={true}
                       />
                     </FormControl>
                     <FormMessage />
@@ -445,6 +479,7 @@ export default function EditStaticMetaForm({ meta }) {
                             aspectRatio={1}
                             value={watch(`icons.icon.${index}.url`)}
                             onChange={(val) => handleIconImageChange(val, index)}
+                            originalName={true}
                           />
                         </FormControl>
                         <FormMessage />
@@ -486,6 +521,7 @@ export default function EditStaticMetaForm({ meta }) {
                       aspectRatio={1}
                       value={watch("icons.shortcut")}
                       onChange={handleShortcutIconChange}
+                      originalName={true}
                     />
                   </FormControl>
                   <FormMessage />
@@ -503,6 +539,7 @@ export default function EditStaticMetaForm({ meta }) {
                       aspectRatio={1}
                       value={watch("icons.apple")}
                       onChange={handleAppleIconChange}
+                      originalName={true}
                     />
                   </FormControl>
                   <FormMessage />
@@ -547,6 +584,7 @@ export default function EditStaticMetaForm({ meta }) {
                             aspectRatio={1}
                             value={watch(`icons.other.${index}.url`)}
                             onChange={(val) => handleOtherIconImageChange(val, index)}
+                            originalName={true}
                           />
                         </FormControl>
                         <FormMessage />
@@ -699,6 +737,7 @@ export default function EditStaticMetaForm({ meta }) {
                       format="jpg"
                       value={watch(`twitter.images.${index}`)}
                       onChange={(val) => handleTwitterImageChange(val, index)}
+                      originalName={true}
                     />
                     <Button
                       type="button"
@@ -791,6 +830,7 @@ export default function EditStaticMetaForm({ meta }) {
                               format="jpg"
                               value={watch(`openGraph.images.${index}.url`)}
                               onChange={(val) => handleOgImageChange(val, index)}
+                              originalName={true}
                             />
                           </FormControl>
                           <FormMessage />
