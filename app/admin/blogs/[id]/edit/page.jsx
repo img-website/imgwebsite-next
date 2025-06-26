@@ -52,6 +52,7 @@ import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useParams, useRouter } from "next/navigation";
 import TinyMCEEditor from "@/components/TinyMCEEditor";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Helper to check if image is present (File or preview URL)
 function isImagePresent(val) {
@@ -410,9 +411,25 @@ export default function Page() {
                                       !field.value && "text-muted-foreground"
                                     )}
                                   >
-                                    {field.value
-                                      ? authors.find((aut) => aut._id === field.value)?.author_name
-                                      : "Select author..."}
+                                    {field.value ? (
+                                      <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        {(() => {
+                                          const selected = authors.find((aut) => aut._id === field.value);
+                                          if (selected) {
+                                            return (
+                                              <Avatar className="w-7 h-7 mr-2">
+                                                <AvatarImage src={selected.image && (selected.image.startsWith('http') ? selected.image : `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/uploads/authors/${selected.image}`)} alt={selected.author_name} />
+                                                <AvatarFallback>{selected.author_name?.[0] || "A"}</AvatarFallback>
+                                              </Avatar>
+                                            );
+                                          }
+                                          return null;
+                                        })()}
+                                        {authors.find((aut) => aut._id === field.value)?.author_name}
+                                      </span>
+                                    ) : (
+                                      "Select author..."
+                                    )}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                   </Button>
                                 </FormControl>
@@ -434,6 +451,10 @@ export default function Page() {
                                             form.setValue("authorId", aut._id);
                                           }}
                                         >
+                                          <Avatar className="w-7 h-7 mr-2">
+                                            <AvatarImage src={aut.image && (aut.image.startsWith('http') ? aut.image : `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/uploads/authors/${aut.image}`)} alt={aut.author_name} />
+                                            <AvatarFallback>{aut.author_name?.[0] || "A"}</AvatarFallback>
+                                          </Avatar>
                                           {aut.author_name}
                                           <Check
                                             className={cn(
