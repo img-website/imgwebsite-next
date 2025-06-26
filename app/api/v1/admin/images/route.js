@@ -36,12 +36,13 @@ export async function POST(request) {
     // Slugify original name (keep extension)
     const ext = file.name.split('.').pop();
     const base = file.name.replace(/\.[^/.]+$/, '');
-    const storedName = slugify(base, { lower: true, strict: true }) + (ext ? `.${ext}` : '');
-
-    // Check for duplicate before saving file
-    const exists = await Image.findOne({ storedName });
-    if (exists) {
-      return NextResponse.json({ success: false, error: 'Image already exists' }, { status: 409 });
+    const slug = slugify(base, { lower: true, strict: true });
+    let storedName = ext ? `${slug}.${ext}` : slug;
+    let counter = 1;
+    // Ensure storedName is unique
+    while (await Image.findOne({ storedName })) {
+      storedName = ext ? `${slug}-${counter}.${ext}` : `${slug}-${counter}`;
+      counter += 1;
     }
 
     // Use uploadBlogImage but save in /uploads/images

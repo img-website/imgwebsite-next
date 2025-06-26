@@ -338,7 +338,6 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -556,7 +555,6 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -569,7 +567,6 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -582,7 +579,6 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -596,7 +592,6 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
