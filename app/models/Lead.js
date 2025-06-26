@@ -1,0 +1,28 @@
+import mongoose from 'mongoose';
+
+export const LEAD_STATUS = {
+  UPCOMING: 1,
+  APPROVED: 2,
+  REJECTED: 3
+};
+
+const leadSchema = new mongoose.Schema(
+  {
+    contact_name: { type: String, default: null },
+    mobile_number: { type: String, default: null },
+    email: { type: String, default: null },
+    organization: { type: String, default: null },
+    requirements: { type: String, default: null },
+    description: { type: String, default: null },
+    status: { type: Number, enum: [1, 2, 3], default: LEAD_STATUS.UPCOMING },
+    created_date: { type: Date, default: Date.now },
+    modified_date: { type: Date, default: Date.now }
+  },
+  {
+    timestamps: { createdAt: 'created_date', updatedAt: 'modified_date' }
+  }
+);
+
+const Lead = mongoose.models.Lead || mongoose.model('Lead', leadSchema);
+
+export default Lead;
