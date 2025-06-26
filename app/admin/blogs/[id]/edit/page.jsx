@@ -47,7 +47,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useParams, useRouter } from "next/navigation";
@@ -299,10 +299,8 @@ export default function Page() {
       formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
       if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
 
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/${blogId}`, {
         method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const result = await res.json();

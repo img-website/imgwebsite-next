@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 import { Copy } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -27,13 +27,9 @@ export default function DeleteCategoryButtons({ id }) {
 
   const handleDelete = async () => {
     try {
-      const token = TokenFromCookie();
       const url = `/api/v1/admin/blogs/categories/${id}`;
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       const data = await res.json();
       if (data.success) {

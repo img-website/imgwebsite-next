@@ -33,7 +33,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 import {
   Dialog,
   DialogTrigger,
@@ -52,12 +52,8 @@ function RedirectionActions({ redirection }) {
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/redirections/${redirection.id}`, {
+      const res = await apiFetch(`/api/v1/admin/redirections/${redirection.id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       const data = await res.json();
       if (data.success) {

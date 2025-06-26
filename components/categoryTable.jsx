@@ -37,7 +37,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 
 function CategoryActions({ category }) {
   const router = useRouter();
@@ -46,12 +46,8 @@ function CategoryActions({ category }) {
     try {
       const formData = new FormData();
       formData.append('status', status);
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/categories/${category.id}`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/categories/${category.id}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       const data = await res.json();

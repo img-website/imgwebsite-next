@@ -47,7 +47,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -333,20 +333,17 @@ function BlogAdd() {
       formData.append("bgColorStatus", data.bgColorStatus ? "true" : "false");
       if (data.bgColor !== undefined) formData.append("bgColor", data.bgColor || "");
 
-      const token = TokenFromCookie();
       let res, result;
       if (blogId) {
         // Update existing blog (draft or publish)
-        res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+        res = await apiFetch(`/api/v1/admin/blogs/${blogId}`, {
           method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
           body: formData,
         });
       } else {
         // Create new blog
-        res = await fetch(`/api/v1/admin/blogs`, {
+        res = await apiFetch(`/api/v1/admin/blogs`, {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
           body: formData,
         });
       }
@@ -427,12 +424,10 @@ function BlogAdd() {
         }
       });
       formData.append("status", Number(1)); // Always save as draft (status 1)
-      const token = TokenFromCookie();
       let res, result;
       if (!blogId) {
-        res = await fetch(`/api/v1/admin/blogs`, {
+        res = await apiFetch(`/api/v1/admin/blogs`, {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
           body: formData,
         });
         result = await res.json();
@@ -443,9 +438,8 @@ function BlogAdd() {
           window.history.replaceState({}, "", url.toString());
         }
       } else {
-        res = await fetch(`/api/v1/admin/blogs/${blogId}`, {
+        res = await apiFetch(`/api/v1/admin/blogs/${blogId}`, {
           method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
           body: formData,
         });
         result = await res.json();

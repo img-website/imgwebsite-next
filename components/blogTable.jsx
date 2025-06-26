@@ -47,7 +47,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 import RedirectionForm from "@/components/RedirectionForm";
 import { deleteRedirection } from "@/actions/redirections";
 
@@ -72,12 +72,8 @@ function BlogActions({ blog }) {
       const formData = new FormData();
       formData.append("status", status);
       if (publishedDateTime) formData.append("publishedDateTime", publishedDateTime);
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/${blog.id}`, {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       const data = await res.json();
@@ -94,12 +90,8 @@ function BlogActions({ blog }) {
 
   const handleSendNotification = async () => {
     try {
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/${blog.id}/notify`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/${blog.id}/notify`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       const data = await res.json();
       if (data.success) {
@@ -114,12 +106,8 @@ function BlogActions({ blog }) {
 
   const handleDelete = async () => {
     try {
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/blogs/${blog.id}`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/${blog.id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       const data = await res.json();
       if (data.success) {

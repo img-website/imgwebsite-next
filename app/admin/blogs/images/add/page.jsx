@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 
 const imageFormSchema = z.object({
   image: z.any().refine((file) => file?.length === 1, "Image is required"),
@@ -27,12 +27,8 @@ export default function AddImagePage() {
       if (data.image?.[0]) {
         formData.append('file', data.image[0]);
       }
-      const token = TokenFromCookie();
-      const res = await fetch("/api/v1/admin/images", {
+      const res = await apiFetch("/api/v1/admin/images", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       const json = await res.json();

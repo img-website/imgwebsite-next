@@ -40,7 +40,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import TokenFromCookie from "@/helpers/tokenFromCookie"
+import apiFetch from "@/helpers/apiFetch"
 
 function AuthorActions({ author }) {
   const router = useRouter()
@@ -49,12 +49,8 @@ function AuthorActions({ author }) {
     try {
       const formData = new FormData()
       formData.append('status', status)
-      const token = TokenFromCookie()
-      const res = await fetch(`/api/v1/admin/blogs/authors/${author.id}`, {
+      const res = await apiFetch(`/api/v1/admin/blogs/authors/${author.id}`, {
         method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       })
       const data = await res.json()

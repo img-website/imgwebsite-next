@@ -9,7 +9,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import TokenFromCookie from "@/helpers/tokenFromCookie";
+import apiFetch from "@/helpers/apiFetch";
 
 const imageFormSchema = z.object({
   image: z.any().refine((file) => !file || file.length === 1, "Only one image allowed"),
@@ -28,12 +28,7 @@ export default function EditImagePage({ params }) {
   useEffect(() => {
     async function fetchImage() {
       try {
-        const token = TokenFromCookie();
-        const res = await fetch(`/api/v1/admin/images/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await apiFetch(`/api/v1/admin/images/${id}`);
         const result = await res.json();
         if (!result.success || !result.data) {
           router.replace("/admin/blogs/images");
@@ -61,12 +56,8 @@ export default function EditImagePage({ params }) {
       if (data.image?.[0]) {
         formData.append('file', data.image[0]);
       }
-      const token = TokenFromCookie();
-      const res = await fetch(`/api/v1/admin/images/${id}`, {
+      const res = await apiFetch(`/api/v1/admin/images/${id}`, {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
       const json = await res.json();
