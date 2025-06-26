@@ -118,177 +118,41 @@ export default function EditStaticMetaForm({ meta }) {
     }
   }
 
-  async function handleTwitterImageChange(files, index) {
+  async function handleImageChange(files, onChange) {
     if (files?.[0] instanceof File) {
       try {
         const name = await uploadFile(files[0]);
-        setValue(
-          `twitter.images.${index}`,
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
+        onChange(`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`);
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
+    } else if (Array.isArray(files) && files.length === 0) {
+      onChange("");
     } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue(`twitter.images.${index}`, "", { shouldValidate: true });
-      } else {
-        setValue(`twitter.images.${index}`, files, { shouldValidate: true });
-      }
+      onChange(files);
     }
   }
 
-  async function handleStartupMainImageChange(files) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          "appleWebApp.startupImage.mainImageUrl",
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue("appleWebApp.startupImage.mainImageUrl", "", {
-          shouldValidate: true,
-        });
-      } else {
-        setValue("appleWebApp.startupImage.mainImageUrl", files, {
-          shouldValidate: true,
-        });
-      }
-    }
-  }
+  const handleStartupMainImageChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleStartupImageChange(files) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          "appleWebApp.startupImage.url",
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue("appleWebApp.startupImage.url", "", { shouldValidate: true });
-      } else {
-        setValue("appleWebApp.startupImage.url", files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleStartupImageChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleIconImageChange(files, index) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          `icons.icon.${index}.url`,
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue(`icons.icon.${index}.url`, "", { shouldValidate: true });
-      } else {
-        setValue(`icons.icon.${index}.url`, files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleIconImageChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleShortcutIconChange(files) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          "icons.shortcut",
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue("icons.shortcut", "", { shouldValidate: true });
-      } else {
-        setValue("icons.shortcut", files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleShortcutIconChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleAppleIconChange(files) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          "icons.apple",
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue("icons.apple", "", { shouldValidate: true });
-      } else {
-        setValue("icons.apple", files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleAppleIconChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleOtherIconImageChange(files, index) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          `icons.other.${index}.url`,
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue(`icons.other.${index}.url`, "", { shouldValidate: true });
-      } else {
-        setValue(`icons.other.${index}.url`, files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleOtherIconImageChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
-  async function handleOgImageChange(files, index) {
-    if (files?.[0] instanceof File) {
-      try {
-        const name = await uploadFile(files[0]);
-        setValue(
-          `openGraph.images.${index}.url`,
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
-          { shouldValidate: true }
-        );
-      } catch (err) {
-        toast.error(err.message || "Image upload failed");
-      }
-    } else {
-      if (Array.isArray(files) && files.length === 0) {
-        setValue(`openGraph.images.${index}.url`, "", { shouldValidate: true });
-      } else {
-        setValue(`openGraph.images.${index}.url`, files, { shouldValidate: true });
-      }
-    }
-  }
+  const handleOgImageChange = (files, onChange) =>
+    handleImageChange(files, onChange);
 
   return (
     <Card>
@@ -422,13 +286,13 @@ export default function EditStaticMetaForm({ meta }) {
               <FormField
                 control={control}
                 name="appleWebApp.startupImage.mainImageUrl"
-                render={() => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Main Startup Image</FormLabel>
                     <FormControl>
                       <ImageCropperInput
-                        value={watch("appleWebApp.startupImage.mainImageUrl")}
-                        onChange={handleStartupMainImageChange}
+                        value={field.value}
+                        onChange={(val) => handleStartupMainImageChange(val, field.onChange)}
                         originalName={true}
                       />
                     </FormControl>
@@ -439,13 +303,13 @@ export default function EditStaticMetaForm({ meta }) {
               <FormField
                 control={control}
                 name="appleWebApp.startupImage.url"
-                render={() => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Startup Image</FormLabel>
                     <FormControl>
                       <ImageCropperInput
-                        value={watch("appleWebApp.startupImage.url")}
-                        onChange={handleStartupImageChange}
+                        value={field.value}
+                        onChange={(val) => handleStartupImageChange(val, field.onChange)}
                         originalName={true}
                       />
                     </FormControl>
@@ -471,14 +335,14 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormField
                     control={control}
                     name={`icons.icon.${index}.url`}
-                    render={() => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>URL</FormLabel>
                         <FormControl>
                           <ImageCropperInput
                             aspectRatio={1}
-                            value={watch(`icons.icon.${index}.url`)}
-                            onChange={(val) => handleIconImageChange(val, index)}
+                            value={field.value}
+                            onChange={(val) => handleIconImageChange(val, field.onChange)}
                             originalName={true}
                           />
                         </FormControl>
@@ -513,14 +377,14 @@ export default function EditStaticMetaForm({ meta }) {
             <FormField
               control={control}
               name="icons.shortcut"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Shortcut Icon</FormLabel>
                   <FormControl>
                     <ImageCropperInput
                       aspectRatio={1}
-                      value={watch("icons.shortcut")}
-                      onChange={handleShortcutIconChange}
+                      value={field.value}
+                      onChange={(val) => handleShortcutIconChange(val, field.onChange)}
                       originalName={true}
                     />
                   </FormControl>
@@ -531,14 +395,14 @@ export default function EditStaticMetaForm({ meta }) {
             <FormField
               control={control}
               name="icons.apple"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Apple Icon</FormLabel>
                   <FormControl>
                     <ImageCropperInput
                       aspectRatio={1}
-                      value={watch("icons.apple")}
-                      onChange={handleAppleIconChange}
+                      value={field.value}
+                      onChange={(val) => handleAppleIconChange(val, field.onChange)}
                       originalName={true}
                     />
                   </FormControl>
@@ -576,14 +440,14 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormField
                     control={control}
                     name={`icons.other.${index}.url`}
-                    render={() => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>URL</FormLabel>
                         <FormControl>
                           <ImageCropperInput
                             aspectRatio={1}
-                            value={watch(`icons.other.${index}.url`)}
-                            onChange={(val) => handleOtherIconImageChange(val, index)}
+                            value={field.value}
+                            onChange={(val) => handleOtherIconImageChange(val, field.onChange)}
                             originalName={true}
                           />
                         </FormControl>
@@ -732,12 +596,18 @@ export default function EditStaticMetaForm({ meta }) {
                 </div>
                 {twitterImageFields.fields.map((field, index) => (
                   <div key={field.id} className="flex items-center gap-4">
-                    <ImageCropperInput
-                      aspectRatio={1.9}
-                      format="jpg"
-                      value={watch(`twitter.images.${index}`)}
-                      onChange={(val) => handleTwitterImageChange(val, index)}
-                      originalName={true}
+                    <FormField
+                      control={control}
+                      name={`twitter.images.${index}`}
+                      render={({ field }) => (
+                        <ImageCropperInput
+                          aspectRatio={1.9}
+                          format="jpg"
+                          value={field.value}
+                          onChange={(val) => handleImageChange(val, field.onChange)}
+                          originalName={true}
+                        />
+                      )}
                     />
                     <Button
                       type="button"
@@ -821,15 +691,15 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormField
                       control={control}
                       name={`openGraph.images.${index}.url`}
-                      render={() => (
+                      render={({ field }) => (
                         <FormItem>
                           <FormLabel>URL</FormLabel>
                           <FormControl>
                             <ImageCropperInput
                               aspectRatio={1.9}
                               format="jpg"
-                              value={watch(`openGraph.images.${index}.url`)}
-                              onChange={(val) => handleOgImageChange(val, index)}
+                              value={field.value}
+                              onChange={(val) => handleOgImageChange(val, field.onChange)}
                               originalName={true}
                             />
                           </FormControl>
