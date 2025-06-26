@@ -14,6 +14,10 @@ const leadSchema = new mongoose.Schema(
     organization: { type: String, default: null },
     requirements: { type: String, default: null },
     description: { type: String, default: null },
+    attachments: { type: [String], default: [] },
+    path: { type: String, default: null },
+    assign_to: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
+    assigned_date: { type: Date, default: null },
     status: { type: Number, enum: [1, 2, 3], default: LEAD_STATUS.UPCOMING },
     created_date: { type: Date, default: Date.now },
     modified_date: { type: Date, default: Date.now }

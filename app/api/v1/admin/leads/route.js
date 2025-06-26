@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Lead, { LEAD_STATUS } from '@/app/models/Lead';
+import { uploadLeadAttachment } from '@/app/middleware/attachmentUpload';
 
 // GET all leads
 export async function GET() {
@@ -17,15 +18,34 @@ export async function GET() {
 export async function POST(request) {
   try {
     await connectDB();
-    const body = await request.json();
+    const formData = await request.formData();
+
+    const attachmentsFiles = formData.getAll('attachments');
+    const attachments = [];
+    if (attachmentsFiles && attachmentsFiles.length > 0) {
+      for (const file of attachmentsFiles) {
+        if (file && typeof file !== 'string') {
+          const res = await uploadLeadAttachment(file);
+          if (!res.success) {
+            return NextResponse.json({ success: false, error: res.error }, { status: 400 });
+          }
+          attachments.push(res.filename);
+        }
+      }
+    }
+
     const lead = await Lead.create({
-      contact_name: body.contact_name || null,
-      mobile_number: body.mobile_number || null,
-      email: body.email || null,
-      organization: body.organization || null,
-      requirements: body.requirements || null,
-      description: body.description || null,
-      status: body.status && [1,2,3].includes(Number(body.status)) ? Number(body.status) : LEAD_STATUS.UPCOMING
+      contact_name: formData.get('contact_name') || null,
+      mobile_number: formData.get('mobile_number') || null,
+      email: formData.get('email') || null,
+      organization: formData.get('organization') || null,
+      requirements: formData.get('requirements') || null,
+      description: formData.get('description') || null,
+      path: formData.get('path') || null,
+      assign_to: formData.get('assign_to') || null,
+      assigned_date: formData.get('assigned_date') ? new Date(formData.get('assigned_date')) : null,
+      attachments,
+      status: formData.get('status') && [1,2,3].includes(Number(formData.get('status'))) ? Number(formData.get('status')) : LEAD_STATUS.UPCOMING
     });
     return NextResponse.json({ success: true, data: lead }, { status: 201 });
   } catch (error) {
