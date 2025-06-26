@@ -1,4 +1,5 @@
 "use client";
+// Admin form to manage sitewide metadata with validation
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { staticMetaSchema } from "@/app/lib/validations/staticMeta";
