@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -105,13 +105,88 @@ export default function Page() {
     }
   }, [selected]);
 
+  const defaultValues = useMemo(() => {
+    switch (selected) {
+      case "Corporation":
+        return {
+          type: "Corporation",
+          name: "",
+          url: "",
+          logo: "",
+          contactEmail: "",
+          contactPhone: "",
+          foundingDate: "",
+          address: "",
+          sameAs: "",
+        };
+      case "WebPage":
+        return {
+          type: "WebPage",
+          pageTitle: "",
+          pageDescription: "",
+          pageUrl,
+          datePublished: "",
+          dateModified: "",
+          authorName: "",
+        };
+      case "LocalBusiness":
+        return {
+          type: "LocalBusiness",
+          businessName: "",
+          address: "",
+          openingHours: "",
+          latitude: "",
+          longitude: "",
+          phoneNumber: "",
+          services: "",
+          priceRange: "",
+        };
+      case "BreadcrumbList":
+        return { type: "BreadcrumbList", items: "" };
+      case "Product":
+        return {
+          type: "Product",
+          productName: "",
+          description: "",
+          brandName: "",
+          sku: "",
+          imageUrl: "",
+          price: "",
+          currency: "",
+          availability: "",
+        };
+      case "Service":
+        return {
+          type: "Service",
+          serviceName: "",
+          description: "",
+          areaServed: "",
+          serviceType: "",
+          providerName: "",
+        };
+      case "NewsArticle":
+        return {
+          type: "NewsArticle",
+          headline: "",
+          description: "",
+          authorName: "",
+          datePublished: "",
+          dateModified: "",
+          mainImageUrl: "",
+        };
+      default:
+        return { type: selected };
+    }
+  }, [selected, pageUrl]);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      type: selected,
-      pageUrl
-    }
+    defaultValues,
   });
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   async function onSubmit(values) {
     const res = await apiFetch(`/api/v1/admin/schema`, {
