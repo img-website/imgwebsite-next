@@ -110,15 +110,15 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue(`twitter.images.${index}`, url);
+        setValue(`twitter.images.${index}`, url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
       if (Array.isArray(files) && files.length === 0) {
-        setValue(`twitter.images.${index}`, "");
+        setValue(`twitter.images.${index}`, "", { shouldValidate: true });
       } else {
-        setValue(`twitter.images.${index}`, files);
+        setValue(`twitter.images.${index}`, files, { shouldValidate: true });
       }
     }
   }
@@ -127,12 +127,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue("appleWebApp.startupImage.mainImageUrl", url);
+        setValue("appleWebApp.startupImage.mainImageUrl", url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("appleWebApp.startupImage.mainImageUrl", files);
+      setValue("appleWebApp.startupImage.mainImageUrl", files, { shouldValidate: true });
     }
   }
 
@@ -140,12 +140,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue("appleWebApp.startupImage.url", url);
+        setValue("appleWebApp.startupImage.url", url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("appleWebApp.startupImage.url", files);
+      setValue("appleWebApp.startupImage.url", files, { shouldValidate: true });
     }
   }
 
@@ -153,12 +153,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue(`icons.icon.${index}.url`, url);
+        setValue(`icons.icon.${index}.url`, url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`icons.icon.${index}.url`, files);
+      setValue(`icons.icon.${index}.url`, files, { shouldValidate: true });
     }
   }
 
@@ -166,12 +166,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue("icons.shortcut", url);
+        setValue("icons.shortcut", url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("icons.shortcut", files);
+      setValue("icons.shortcut", files, { shouldValidate: true });
     }
   }
 
@@ -179,12 +179,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue("icons.apple", url);
+        setValue("icons.apple", url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue("icons.apple", files);
+      setValue("icons.apple", files, { shouldValidate: true });
     }
   }
 
@@ -192,12 +192,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue(`icons.other.${index}.url`, url);
+        setValue(`icons.other.${index}.url`, url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`icons.other.${index}.url`, files);
+      setValue(`icons.other.${index}.url`, files, { shouldValidate: true });
     }
   }
 
@@ -205,12 +205,12 @@ export default function EditStaticMetaForm({ meta }) {
     if (files?.[0] instanceof File) {
       try {
         const url = await uploadFile(files[0]);
-        setValue(`openGraph.images.${index}.url`, url);
+        setValue(`openGraph.images.${index}.url`, url, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else {
-      setValue(`openGraph.images.${index}.url`, files);
+      setValue(`openGraph.images.${index}.url`, files, { shouldValidate: true });
     }
   }
 
@@ -871,7 +871,7 @@ export default function EditStaticMetaForm({ meta }) {
             <MultiKeywordCombobox
               label="Keywords"
               value={watch("keywords")}
-              onChange={(val) => setValue("keywords", val)}
+              onChange={(val) => setValue("keywords", val, { shouldValidate: true })}
             />
             <FormField
               control={control}
