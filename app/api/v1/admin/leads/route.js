@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await connectDB();
     const leads = await Lead.find().sort({ created_date: -1 }).lean();
-    return NextResponse.json({ success: true, data: leads });
+    return NextResponse.json({ success: true, message: 'Leads fetched successfully', data: leads }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error fetching leads' }, { status: 500 });
   }
@@ -47,7 +47,7 @@ export async function POST(request) {
       attachments,
       status: formData.get('status') && [1,2,3].includes(Number(formData.get('status'))) ? Number(formData.get('status')) : LEAD_STATUS.UPCOMING
     });
-    return NextResponse.json({ success: true, data: lead }, { status: 201 });
+    return NextResponse.json({ success: true, message: 'Lead created successfully', data: lead }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error creating lead' }, { status: 500 });
   }

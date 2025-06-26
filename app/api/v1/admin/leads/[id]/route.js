@@ -8,7 +8,7 @@ import { uploadLeadAttachment } from '@/app/middleware/attachmentUpload';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid lead ID' }, { status: 400 });
     }
@@ -16,7 +16,7 @@ export async function GET(request, { params }) {
     if (!lead) {
       return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, data: lead });
+    return NextResponse.json({ success: true, message: 'Lead fetched successfully', data: lead }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error fetching lead' }, { status: 500 });
   }
@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ success: false, error: 'Invalid lead ID' }, { status: 400 });
     }
@@ -67,7 +67,7 @@ export async function PUT(request, { params }) {
     lead.modified_date = new Date();
     await lead.save();
 
-    return NextResponse.json({ success: true, data: lead });
+    return NextResponse.json({ success: true, message: 'Lead updated successfully', data: lead }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error updating lead' }, { status: 500 });
   }
