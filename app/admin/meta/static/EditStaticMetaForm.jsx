@@ -1,6 +1,7 @@
 "use client";
 // Admin form to manage sitewide metadata with validation
 import { useForm, useFieldArray } from "react-hook-form";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { staticMetaSchema } from "@/app/lib/validations/staticMeta";
 import {
@@ -65,9 +66,16 @@ function mergeDeep(target, source) {
 export default function EditStaticMetaForm({ meta }) {
   const form = useForm({
     resolver: zodResolver(staticMetaSchema),
-    defaultValues: mergeDeep(structuredClone(defaultMeta), meta || {}),
+    defaultValues: structuredClone(defaultMeta),
   });
-  const { control, handleSubmit, watch, setValue } = form;
+  const { control, handleSubmit, watch, setValue, reset } = form;
+
+  // When meta is loaded from the server reset the form so previews show
+  useEffect(() => {
+    if (meta) {
+      reset(mergeDeep(structuredClone(defaultMeta), meta));
+    }
+  }, [meta, reset]);
 
   const iconFields = useFieldArray({ control, name: "icons.icon" });
   const iconOtherFields = useFieldArray({ control, name: "icons.other" });
@@ -118,41 +126,25 @@ export default function EditStaticMetaForm({ meta }) {
     }
   }
 
-  async function handleImageChange(files, onChange) {
+  // Upload an image and update the field with validation so errors disappear
+  async function handleImageChange(name, files) {
     if (files?.[0] instanceof File) {
       try {
-        const name = await uploadFile(files[0]);
-        onChange(`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`);
+        const nameOnly = await uploadFile(files[0]);
+        setValue(
+          name,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
     } else if (Array.isArray(files) && files.length === 0) {
-      onChange("");
+      setValue(name, "", { shouldValidate: true });
     } else {
-      onChange(files);
+      setValue(name, files, { shouldValidate: true });
     }
   }
-
-  const handleStartupMainImageChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleStartupImageChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleIconImageChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleShortcutIconChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleAppleIconChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleOtherIconImageChange = (files, onChange) =>
-    handleImageChange(files, onChange);
-
-  const handleOgImageChange = (files, onChange) =>
-    handleImageChange(files, onChange);
 
   return (
     <Card>
@@ -292,7 +284,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormControl>
                       <ImageCropperInput
                         value={field.value}
-                        onChange={(val) => handleStartupMainImageChange(val, field.onChange)}
+                        onChange={(val) => handleImageChange(field.name, val)}
                         originalName={true}
                       />
                     </FormControl>
@@ -309,7 +301,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormControl>
                       <ImageCropperInput
                         value={field.value}
-                        onChange={(val) => handleStartupImageChange(val, field.onChange)}
+                        onChange={(val) => handleImageChange(field.name, val)}
                         originalName={true}
                       />
                     </FormControl>
@@ -342,7 +334,7 @@ export default function EditStaticMetaForm({ meta }) {
                           <ImageCropperInput
                             aspectRatio={1}
                             value={field.value}
-                            onChange={(val) => handleIconImageChange(val, field.onChange)}
+                            onChange={(val) => handleImageChange(field.name, val)}
                             originalName={true}
                           />
                         </FormControl>
@@ -384,7 +376,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <ImageCropperInput
                       aspectRatio={1}
                       value={field.value}
-                      onChange={(val) => handleShortcutIconChange(val, field.onChange)}
+                      onChange={(val) => handleImageChange(field.name, val)}
                       originalName={true}
                     />
                   </FormControl>
@@ -402,7 +394,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <ImageCropperInput
                       aspectRatio={1}
                       value={field.value}
-                      onChange={(val) => handleAppleIconChange(val, field.onChange)}
+                      onChange={(val) => handleImageChange(field.name, val)}
                       originalName={true}
                     />
                   </FormControl>
@@ -447,7 +439,7 @@ export default function EditStaticMetaForm({ meta }) {
                           <ImageCropperInput
                             aspectRatio={1}
                             value={field.value}
-                            onChange={(val) => handleOtherIconImageChange(val, field.onChange)}
+                            onChange={(val) => handleImageChange(field.name, val)}
                             originalName={true}
                           />
                         </FormControl>
@@ -604,7 +596,7 @@ export default function EditStaticMetaForm({ meta }) {
                           aspectRatio={1.9}
                           format="jpg"
                           value={field.value}
-                          onChange={(val) => handleImageChange(val, field.onChange)}
+                          onChange={(val) => handleImageChange(field.name, val)}
                           originalName={true}
                         />
                       )}
@@ -699,7 +691,7 @@ export default function EditStaticMetaForm({ meta }) {
                               aspectRatio={1.9}
                               format="jpg"
                               value={field.value}
-                              onChange={(val) => handleOgImageChange(val, field.onChange)}
+                              onChange={(val) => handleImageChange(field.name, val)}
                               originalName={true}
                             />
                           </FormControl>
