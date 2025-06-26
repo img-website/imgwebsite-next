@@ -5,6 +5,7 @@ import Author, { AUTHOR_STATUS } from '@/app/models/Author';
 import Blog from '@/app/models/Blog';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadAuthorImage } from '@/app/middleware/imageUpload';
+import { deleteObject } from '@/lib/s3';
 
 /**
  * @route GET /api/v1/admin/blogs/authors/:id
@@ -248,6 +249,9 @@ export async function DELETE(request, { params }) {
     }    // If force=true, always perform hard delete
     if (force) {
       await Author.findByIdAndDelete(id, { showDeleted: true }); // Include soft-deleted for hard delete
+      if (author.image) {
+        await deleteObject(`authors/${author.image}`);
+      }
       return NextResponse.json({
         success: true,
         message: 'Author has been permanently deleted'

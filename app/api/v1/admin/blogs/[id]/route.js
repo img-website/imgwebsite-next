@@ -4,6 +4,7 @@ import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
+import { deleteObject } from '@/lib/s3';
 import slugify from 'slugify';
 
 export async function GET(request, { params }) {
@@ -221,6 +222,14 @@ export async function DELETE(request, { params }) {
     }
 
     await Blog.findByIdAndDelete(id);
+
+    const deletionPromises = [];
+    if (blog.banner) deletionPromises.push(deleteObject(`blogs/${blog.banner}`));
+    if (blog.thumbnail) deletionPromises.push(deleteObject(`blogs/${blog.thumbnail}`));
+    if (blog.x_image) deletionPromises.push(deleteObject(`blogs/${blog.x_image}`));
+    if (blog.og_image) deletionPromises.push(deleteObject(`blogs/${blog.og_image}`));
+    await Promise.allSettled(deletionPromises);
+
     return NextResponse.json({ success: true, message: 'Blog has been permanently deleted' });
   } catch (error) {
     console.error('Error deleting blog:', error);
