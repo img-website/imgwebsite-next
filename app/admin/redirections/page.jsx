@@ -5,7 +5,7 @@ export default async function Page() {
   const json = await res.json();
   const redirections = Array.isArray(json?.data) ? json.data : [];
   const data = redirections.map(r => ({
-    id: r._id,
+    id: r.id,
     from: r.from,
     to: r.to,
     methodCode: r.methodCode,
