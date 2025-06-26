@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateAuthor } from "@/app/actions/authors";
-import Image from "next/image";
 import { useEffect } from "react";
 
 const authorFormSchema = z.object({

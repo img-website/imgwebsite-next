@@ -224,10 +224,10 @@ export async function DELETE(request, { params }) {
     await Blog.findByIdAndDelete(id);
 
     const deletionPromises = [];
-    if (blog.banner) deletionPromises.push(deleteObject(`blogs/${blog.banner}`));
-    if (blog.thumbnail) deletionPromises.push(deleteObject(`blogs/${blog.thumbnail}`));
-    if (blog.x_image) deletionPromises.push(deleteObject(`blogs/${blog.x_image}`));
-    if (blog.og_image) deletionPromises.push(deleteObject(`blogs/${blog.og_image}`));
+    if (blog.banner) deletionPromises.push(deleteObject(`uploads/blogs/${blog.banner}`));
+    if (blog.thumbnail) deletionPromises.push(deleteObject(`uploads/blogs/${blog.thumbnail}`));
+    if (blog.x_image) deletionPromises.push(deleteObject(`uploads/blogs/${blog.x_image}`));
+    if (blog.og_image) deletionPromises.push(deleteObject(`uploads/blogs/${blog.og_image}`));
     await Promise.allSettled(deletionPromises);
 
     return NextResponse.json({ success: true, message: 'Blog has been permanently deleted' });

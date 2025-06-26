@@ -108,7 +108,7 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
       return fileType;
     }
 
-    let prefix = UPLOAD_DIRS.blogs;
+    let prefix = `uploads/${UPLOAD_DIRS.blogs}`;
     let filename = storedName || `blog-${type}-${Date.now()}.webp`;
     let key;
     let width = 1080;
@@ -118,7 +118,7 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
       height = 630;
     }
     if (type === 'images') {
-      prefix = UPLOAD_DIRS.images;
+      prefix = `uploads/${UPLOAD_DIRS.images}`;
       filename = storedName || `image-${Date.now()}.${ext || 'webp'}`;
       key = `${prefix}/${filename}`;
       const processed = await sharp(Buffer.from(buffer)).toBuffer();

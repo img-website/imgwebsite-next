@@ -250,7 +250,7 @@ export async function DELETE(request, { params }) {
     if (force) {
       await Author.findByIdAndDelete(id, { showDeleted: true }); // Include soft-deleted for hard delete
       if (author.image) {
-        await deleteObject(`authors/${author.image}`);
+        await deleteObject(`uploads/authors/${author.image}`);
       }
       return NextResponse.json({
         success: true,

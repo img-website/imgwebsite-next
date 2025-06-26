@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { createAuthor } from "@/app/actions/authors";
+import { useRouter } from "next/navigation";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -52,6 +53,7 @@ const authorFormSchema = z.object({
 });
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(authorFormSchema),
     defaultValues: {
@@ -86,6 +88,8 @@ export default function Page() {
       if (result.success) {
         toast.success("Author created successfully!");
         form.reset();
+        router.push(`/admin/blogs/authors`);
+        router.refresh();
       } else {
         toast.error(result.error || "Failed to create author");
       }
