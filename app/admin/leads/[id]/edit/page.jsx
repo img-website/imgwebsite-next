@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,7 @@ const leadSchema = z.object({
 
 export default function Page({ params }) {
   const router = useRouter();
-  const { id } = params;
+  const { id } = use(params);
   const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "" } });
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Page({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/leads/${id}`, { cache: 'no-store' });
   const json = await res.json();
   const lead = json?.data;
