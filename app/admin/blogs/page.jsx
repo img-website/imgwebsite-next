@@ -16,7 +16,7 @@ export default async function Page() {
     if (blog.banner) {
       obj.banner = blog.banner?.startsWith('http')
         ? blog.banner
-        : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`;
+        : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`;
     }
     return obj;
   });

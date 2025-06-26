@@ -17,8 +17,8 @@ export default async function Page({ params }) {
   }
 
   const statusMap = { 1: 'Draft', 2: 'Published', 3: 'Archived', 4: 'Scheduled' };
-  const bannerSrc = blog.banner?.startsWith('http') ? blog.banner : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`;
-  const thumbnailSrc = blog.thumbnail?.startsWith('http') ? blog.thumbnail : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`;
+  const bannerSrc = blog.banner?.startsWith('http') ? blog.banner : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`;
+  const thumbnailSrc = blog.thumbnail?.startsWith('http') ? blog.thumbnail : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.thumbnail}`;
 
   return (
     <>

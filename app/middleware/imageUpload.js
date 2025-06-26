@@ -1,35 +1,16 @@
 "use strict";
 
 import sharp from 'sharp';
-import path from 'path';
-import fs from 'fs/promises';
+import { uploadBuffer } from '@/lib/s3';
 import { fileTypeFromBuffer } from 'file-type';
 
-// Base upload paths
-const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
+// S3 key prefixes
 const UPLOAD_DIRS = {
-  authors: path.join(UPLOAD_DIR, 'authors'),
-  blogs: path.join(UPLOAD_DIR, 'blogs'),
-  categories: path.join(UPLOAD_DIR, 'categories'),
-  images: path.join(UPLOAD_DIR, 'images')
+  authors: 'authors',
+  blogs: 'blogs',
+  categories: 'categories',
+  images: 'images'
 };
-
-// Initialize upload directories
-export async function initializeUploadDirs() {
-  try {
-    // Create base upload directory
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-    
-    // Create subdirectories
-    await Promise.all(
-      Object.values(UPLOAD_DIRS).map(dir => 
-        fs.mkdir(dir, { recursive: true })
-      )
-    );
-  } catch (error) {
-    console.error('Error creating upload directories:', error);
-  }
-}
 
 // Validate image file type
 async function validateImageType(buffer) {
@@ -82,21 +63,20 @@ export async function uploadAuthorImage(file) {
       return fileType;
     }
 
-    // Ensure the authors directory exists in case it was deleted at runtime
-    await fs.mkdir(UPLOAD_DIRS.authors, { recursive: true });
-
     // Generate unique filename
     const filename = `author-${Date.now()}.webp`;
-    const filepath = path.join(UPLOAD_DIRS.authors, filename);
+    const key = `${UPLOAD_DIRS.authors}/${filename}`;
 
-    // Process and save image
-    await sharp(Buffer.from(buffer))
-      .resize(400, 400, { 
+    // Process image and upload to S3
+    const processed = await sharp(Buffer.from(buffer))
+      .resize(400, 400, {
         fit: 'cover',
         position: 'center'
       })
       .webp({ quality: 80 })
-      .toFile(filepath);
+      .toBuffer();
+
+    await uploadBuffer(processed, key, 'image/webp');
 
     return {
       success: true,
@@ -128,9 +108,9 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
       return fileType;
     }
 
-    let dir = UPLOAD_DIRS.blogs;
+    let prefix = UPLOAD_DIRS.blogs;
     let filename = storedName || `blog-${type}-${Date.now()}.webp`;
-    let filepath;
+    let key;
     let width = 1080;
     let height = 617;
     if (type === 'xImage' || type === 'ogImage') {
@@ -138,20 +118,18 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
       height = 630;
     }
     if (type === 'images') {
-      dir = UPLOAD_DIRS.images;
-      await fs.mkdir(dir, { recursive: true });
+      prefix = UPLOAD_DIRS.images;
       filename = storedName || `image-${Date.now()}.${ext || 'webp'}`;
-      filepath = path.join(dir, filename);
-      // Save as original format (not forced webp)
-      await sharp(Buffer.from(buffer))
-        .toFile(filepath);
+      key = `${prefix}/${filename}`;
+      const processed = await sharp(Buffer.from(buffer)).toBuffer();
+      await uploadBuffer(processed, key, fileType.mime);
     } else {
-      await fs.mkdir(dir, { recursive: true });
-      filepath = path.join(dir, filename);
-      await sharp(Buffer.from(buffer))
+      key = `${prefix}/${filename}`;
+      const processed = await sharp(Buffer.from(buffer))
         .resize(width, height, { fit: 'cover', position: 'center' })
         .webp({ quality: 80 })
-        .toFile(filepath);
+        .toBuffer();
+      await uploadBuffer(processed, key, 'image/webp');
     }
 
     return {
@@ -166,6 +144,3 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
     };
   }
 }
-
-// Call initializeUploadDirs when the module loads
-initializeUploadDirs();

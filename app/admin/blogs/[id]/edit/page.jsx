@@ -226,24 +226,24 @@ export default function Page() {
           banner: blog.banner?.startsWith('http')
             ? blog.banner
             : blog.banner
-              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.banner}`
+              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`
               : undefined,
           thumbnail: blog.thumbnail?.startsWith('http')
             ? blog.thumbnail
             : blog.thumbnail
-              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.thumbnail}`
+              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.thumbnail}`
               : undefined,
           imageAlt: blog.image_alt || "",
           xImage: blog.x_image?.startsWith('http')
             ? blog.x_image
             : blog.x_image
-              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.x_image}`
+              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.x_image}`
               : undefined,
           xImageAlt: blog.x_image_alt || "",
           ogImage: blog.og_image?.startsWith('http')
             ? blog.og_image
             : blog.og_image
-              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/blogs/${blog.og_image}`
+              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.og_image}`
               : undefined,
           ogImageAlt: blog.og_image_alt || "",
           metaTitle: blog.meta_title || "",
@@ -418,7 +418,7 @@ export default function Page() {
                                           if (selected) {
                                             return (
                                               <Avatar className="w-7 h-7 mr-2">
-                                                <AvatarImage src={selected.image && (selected.image.startsWith('http') ? selected.image : `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/uploads/authors/${selected.image}`)} alt={selected.author_name} />
+                                                <AvatarImage src={selected.image && (selected.image.startsWith('http') ? selected.image : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${selected.image}`)} alt={selected.author_name} />
                                                 <AvatarFallback>{selected.author_name?.[0] || "A"}</AvatarFallback>
                                               </Avatar>
                                             );
@@ -452,7 +452,7 @@ export default function Page() {
                                           }}
                                         >
                                           <Avatar className="w-7 h-7 mr-2">
-                                            <AvatarImage src={aut.image && (aut.image.startsWith('http') ? aut.image : `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/uploads/authors/${aut.image}`)} alt={aut.author_name} />
+                                            <AvatarImage src={aut.image && (aut.image.startsWith('http') ? aut.image : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${aut.image}`)} alt={aut.author_name} />
                                             <AvatarFallback>{aut.author_name?.[0] || "A"}</AvatarFallback>
                                           </Avatar>
                                           {aut.author_name}

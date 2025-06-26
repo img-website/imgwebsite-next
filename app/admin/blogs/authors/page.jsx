@@ -13,7 +13,7 @@ export default async function Page() {
     facebook_link: author.facebook_link,
     twitter_link: author.twitter_link,
     status: statusMap[author.status] || 'inactive',
-    image: author.image?.startsWith('http') ? author.image : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}`,
+    image: author.image?.startsWith('http') ? author.image : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${author.image}`,
     created_date: author.created_date,
     modified_date: author.modified_date,
     blog_count: author.blog_count || 0,

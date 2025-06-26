@@ -19,7 +19,7 @@ export default async function Page({ params }) {
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
   const imageSrc = author.image?.startsWith('http')
     ? author.image
-    : `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}`;
+    : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${author.image}`;
 
   return (
     <>

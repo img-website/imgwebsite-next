@@ -45,7 +45,7 @@ export default function EditImagePage({ params }) {
           image: data.storedName?.startsWith('http')
             ? data.storedName
             : data.storedName
-              ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/images/${data.storedName}?t=${Date.now()}`
+              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${data.storedName}?t=${Date.now()}`
               : undefined,
         });
       } catch (err) {

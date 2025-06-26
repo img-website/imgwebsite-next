@@ -81,7 +81,7 @@ export default function EditAuthorForm({ author }) {
         image: author.image?.startsWith("http")
           ? author.image
           : author.image
-            ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/authors/${author.image}?t=${Date.now()}`
+            ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${author.image}?t=${Date.now()}`
             : undefined,
       });
     }
