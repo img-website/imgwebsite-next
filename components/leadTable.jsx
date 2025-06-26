@@ -172,9 +172,11 @@ function LeadActions({ lead }) {
               )}
           </DropdownMenuSubContent>
           </DropdownMenuSub>
-          <DropdownMenuItem onClick={() => setOpenAttachments(true)}>
-            Attachments
-          </DropdownMenuItem>
+          {lead.attachments && lead.attachments.length > 0 && (
+            <DropdownMenuItem onClick={() => setOpenAttachments(true)}>
+              Attachments
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenAssign(true)}>
             Assign To
