@@ -126,7 +126,7 @@ function LeadActions({ lead }) {
               {lead.attachments.map((file, idx) => (
                 <a
                   key={idx}
-                  href={getPublicUrl(`uploads/leads/${file}`)}
+                  href={getPublicUrl(`leads/${file}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline block"

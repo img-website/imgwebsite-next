@@ -40,7 +40,7 @@ export default async function Page({ params }) {
                   {lead.attachments.map((file, idx) => (
                     <li key={idx}>
                       <a
-                        href={getPublicUrl(`uploads/leads/${file}`)}
+                        href={getPublicUrl(`leads/${file}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary hover:underline"

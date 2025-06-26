@@ -13,6 +13,7 @@ import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
 import { getPublicUrl } from "@/lib/s3";
 import { Download } from "lucide-react";
+import Link from "next/link";
 
 const leadSchema = z.object({
   contact_name: z.string().optional(),
@@ -136,23 +137,23 @@ export default function Page({ params }) {
                 <div className="space-y-2">
                   {existingAttachments.map((file, idx) => (
                     <div key={idx} className="flex items-center justify-between">
-                      <a
-                        href={getPublicUrl(`uploads/leads/${file}`)}
+                      <Link
+                        href={getPublicUrl(`leads/${file}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary hover:underline"
                       >
                         {file}
-                      </a>
+                      </Link>
                       <Button variant="outline" size="icon" asChild>
-                        <a
-                          href={getPublicUrl(`uploads/leads/${file}`)}
-                          target="_blank"
+                        <Link
+                          href={getPublicUrl(`leads/${file}`)}
                           rel="noopener noreferrer"
                           download
+                          target="_blank"
                         >
                           <Download className="size-4" />
-                        </a>
+                        </Link>
                       </Button>
                     </div>
                   ))}
