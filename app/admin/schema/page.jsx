@@ -1,33 +1,17 @@
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { SchemaPageTable } from '@/components/schemaPageTable';
 
-async function getSchemaEntries() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/schema`);
+async function getPages() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/pages`, { cache: 'no-store' });
   const json = await res.json();
   return Array.isArray(json.data) ? json.data : [];
 }
 
 export default async function Page() {
-  const entries = await getSchemaEntries();
+  const pages = await getPages();
+  const data = pages.map(url => ({ url }));
   return (
-    <div className="w-full p-4 space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Schema Entries</h2>
-        <Link href="/admin/schema/add" className="flex items-center gap-2 text-sm font-medium">
-          Add New <ArrowRight size={16} />
-        </Link>
-      </div>
-      <div className="grid gap-4">
-        {entries.map((e) => (
-          <div key={e._id} className="border p-4 rounded-md">
-            <div className="font-semibold">{e.type}</div>
-            <pre className="whitespace-pre-wrap text-xs mt-2 bg-muted p-2 rounded">
-              {JSON.stringify(e.data, null, 2)}
-            </pre>
-          </div>
-        ))}
-        {entries.length === 0 && <p>No entries found.</p>}
-      </div>
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <SchemaPageTable data={data} />
     </div>
   );
 }

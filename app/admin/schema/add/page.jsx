@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 
 const schemaOptions = [
@@ -24,6 +24,8 @@ const schemaOptions = [
 
 export default function Page() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageUrl = searchParams.get("url") || "";
   const [selected, setSelected] = useState("Corporation");
 
   const formSchema = useMemo(() => {
@@ -106,14 +108,15 @@ export default function Page() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: selected
+      type: selected,
+      pageUrl
     }
   });
 
   async function onSubmit(values) {
     const res = await apiFetch(`/api/v1/admin/schema`, {
       method: "POST",
-      data: { type: values.type, data: values }
+      data: { pageUrl, type: values.type, data: values }
     });
     const result = await res.json();
     if (result.success) {

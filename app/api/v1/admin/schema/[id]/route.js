@@ -31,7 +31,7 @@ export async function PUT(request, { params }) {
     const body = await request.json();
     const entry = await SchemaEntry.findByIdAndUpdate(
       params.id,
-      { type: body.type, data: body.data },
+      { pageUrl: body.pageUrl, type: body.type, data: body.data },
       { new: true }
     );
     if (!entry) {

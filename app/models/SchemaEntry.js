@@ -15,6 +15,10 @@ const schemaEntrySchema = new mongoose.Schema(
         'NewsArticle'
       ]
     },
+    pageUrl: {
+      type: String,
+      required: true
+    },
     data: {
       type: mongoose.Schema.Types.Mixed,
       required: true

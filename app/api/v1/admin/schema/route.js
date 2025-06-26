@@ -27,10 +27,10 @@ export async function POST(request) {
 
     await connectDB();
     const body = await request.json();
-    if (!body.type || !body.data) {
-      return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
+    if (!body.type || !body.data || !body.pageUrl) {
+      return NextResponse.json({ success: false, error: 'Missing type, data or pageUrl' }, { status: 400 });
     }
-    const entry = await SchemaEntry.create({ type: body.type, data: body.data });
+    const entry = await SchemaEntry.create({ pageUrl: body.pageUrl, type: body.type, data: body.data });
     return NextResponse.json({ success: true, data: entry }, { status: 201 });
   } catch (error) {
     console.error('Error creating schema entry:', error);
