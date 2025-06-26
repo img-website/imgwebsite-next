@@ -18,7 +18,7 @@ function stripDomain(url) {
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const list = await readRedirections();
     const redirection = list.find((r) => r.id === id);
     if (!redirection) {
@@ -38,7 +38,7 @@ export async function GET(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const list = await readRedirections();
     const idx = list.findIndex((r) => r.id === id);
     if (idx === -1) {
