@@ -42,7 +42,7 @@ export async function PUT(request, { params }) {
     if (attachmentsFiles && attachmentsFiles.length > 0) {
       if (lead.attachments && lead.attachments.length > 0) {
         const deletePromises = lead.attachments.map((name) =>
-          deleteObject(`uploads/leads/${name}`)
+          deleteObject(`leads/${name}`)
         );
         await Promise.allSettled(deletePromises);
         lead.attachments = [];

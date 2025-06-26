@@ -45,11 +45,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { getPublicUrl } from "@/lib/s3";
 
 function LeadActions({ lead }) {
   const router = useRouter();
   const [openAssign, setOpenAssign] = React.useState(false);
   const [assignTo, setAssignTo] = React.useState(lead.assign_to || "");
+  const [openAttachments, setOpenAttachments] = React.useState(false);
 
   const handleStatusChange = async (status) => {
     try {
@@ -114,6 +116,30 @@ function LeadActions({ lead }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Dialog open={openAttachments} onOpenChange={setOpenAttachments}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Attachments</DialogTitle>
+          </DialogHeader>
+          {lead.attachments && lead.attachments.length > 0 ? (
+            <div className="space-y-2">
+              {lead.attachments.map((file, idx) => (
+                <a
+                  key={idx}
+                  href={getPublicUrl(`leads/${file}`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline block"
+                >
+                  {file}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p>No attachments</p>
+          )}
+        </DialogContent>
+      </Dialog>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -127,19 +153,30 @@ function LeadActions({ lead }) {
             <Link href={`/admin/leads/${lead.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem onClick={() => handleStatusChange(1)}>
-                Upcoming
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-                Approved
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-                Rejected
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
+          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+              {lead.status !== "upcoming" && (
+                <DropdownMenuItem onClick={() => handleStatusChange(1)}>
+                  Upcoming
+                </DropdownMenuItem>
+              )}
+              {lead.status !== "approved" && (
+                <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+                  Approved
+                </DropdownMenuItem>
+              )}
+              {lead.status !== "rejected" && (
+                <DropdownMenuItem onClick={() => handleStatusChange(3)}>
+                  Rejected
+                </DropdownMenuItem>
+              )}
+          </DropdownMenuSubContent>
           </DropdownMenuSub>
+          {lead.attachments && lead.attachments.length > 0 && (
+            <DropdownMenuItem onClick={() => setOpenAttachments(true)}>
+              Attachments
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenAssign(true)}>
             Assign To

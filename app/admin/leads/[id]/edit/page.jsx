@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,9 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
+import { getPublicUrl } from "@/lib/s3";
+import { Download } from "lucide-react";
+import Link from "next/link";
 
 const leadSchema = z.object({
   contact_name: z.string().optional(),
@@ -19,12 +22,14 @@ const leadSchema = z.object({
   organization: z.string().optional().or(z.literal("")),
   requirements: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
+  attachments: z.any().optional(),
 });
 
 export default function Page({ params }) {
   const router = useRouter();
   const { id } = use(params);
-  const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "" } });
+  const [existingAttachments, setExistingAttachments] = useState([]);
+  const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "", attachments: null } });
 
   useEffect(() => {
     async function fetchLead() {
@@ -39,6 +44,7 @@ export default function Page({ params }) {
           requirements: data.data.requirements || "",
           description: data.data.description || "",
         });
+        setExistingAttachments(data.data.attachments || []);
       }
     }
     fetchLead();
@@ -46,9 +52,17 @@ export default function Page({ params }) {
 
   async function onSubmit(values) {
     const formData = new FormData();
-    Object.entries(values).forEach(([key, val]) => {
-      if (val) formData.append(key, val);
-    });
+    if (values.contact_name) formData.append('contact_name', values.contact_name);
+    if (values.mobile_number) formData.append('mobile_number', values.mobile_number);
+    if (values.email) formData.append('email', values.email);
+    if (values.organization) formData.append('organization', values.organization);
+    if (values.requirements) formData.append('requirements', values.requirements);
+    if (values.description) formData.append('description', values.description);
+    if (values.attachments && values.attachments.length) {
+      for (const file of values.attachments) {
+        formData.append('attachments', file);
+      }
+    }
     const res = await apiFetch(`/api/v1/admin/leads/${id}`, { method: 'PUT', body: formData });
     const result = await res.json();
     if (result.success) {
@@ -111,6 +125,40 @@ export default function Page({ params }) {
                   <FormMessage />
                 </FormItem>
               )} />
+              <FormField name="attachments" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Attachments</FormLabel>
+                  <FormControl>
+                    <Input type="file" multiple onChange={e => field.onChange(e.target.files)} />
+                  </FormControl>
+                </FormItem>
+              )} />
+              {existingAttachments.length > 0 && (
+                <div className="space-y-2">
+                  {existingAttachments.map((file, idx) => (
+                    <div key={idx} className="flex items-center justify-between">
+                      <Link
+                        href={getPublicUrl(`leads/${file}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {file}
+                      </Link>
+                      <Button variant="outline" size="icon" asChild>
+                        <Link
+                          href={getPublicUrl(`leads/${file}`)}
+                          rel="noopener noreferrer"
+                          download
+                          target="_blank"
+                        >
+                          <Download className="size-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="flex justify-end">
                 <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting ? 'Saving...' : 'Save'}</Button>
               </div>
