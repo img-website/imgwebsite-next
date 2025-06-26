@@ -65,7 +65,7 @@ export async function DELETE(request, { params }) {
 
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const parsed = redirectionSchema.safeParse(body);
     if (!parsed.success) {

@@ -39,7 +39,7 @@ export default function EditRedirectionForm({ redirection }) {
   async function onSubmit(values) {
     form.clearErrors();
     try {
-      const res = await fetch(`/api/v1/admin/redirections/${redirection._id}`, {
+      const res = await fetch(`/api/v1/admin/redirections/${redirection.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values }),
