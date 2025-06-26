@@ -9,7 +9,7 @@ export async function deleteRedirection(fromUrl) {
   const found = listData.data.find((r) => r.from === fromUrl);
   if (!found) return { success: true };
   // 3. Delete by id
-  const res = await apiFetch(`/api/v1/admin/redirections/${found._id}`, {
+  const res = await apiFetch(`/api/v1/admin/redirections/${found.id}`, {
     method: "DELETE",
   });
   const text = await res.text();

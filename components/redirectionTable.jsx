@@ -58,10 +58,12 @@ function RedirectionActions({ redirection }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Redirection deleted");
+        if (data.notice) toast.info(data.notice);
         setOpen(false);
         router.refresh();
       } else {
         toast.error(data.error || "Failed to delete redirection");
+        if (data.notice) toast.info(data.notice);
       }
     } catch (error) {
       toast.error("Failed to delete redirection");

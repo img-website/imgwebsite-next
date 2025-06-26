@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
-import { readRedirections, addRedirection } from '@/app/lib/redirectionsFile';
+import {
+  readRedirectionsWithNotice,
+  syncRedirectionsFromDB,
+} from '@/app/lib/redirectionsFile';
+import connectDB from '@/app/lib/db';
+import Redirection from '@/app/models/Redirection';
 import { redirectionSchema } from '@/app/lib/validations/redirection';
 import { clearRedirectionsCache } from '@/app/lib/redirections';
 
 // GET: Get all redirections
 export async function GET() {
   try {
-    const redirections = await readRedirections();
+    const { redirections, wasCreated } = await readRedirectionsWithNotice();
     redirections.sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
@@ -14,6 +19,9 @@ export async function GET() {
       success: true,
       message: 'Redirections fetched successfully',
       data: redirections,
+      ...(wasCreated && {
+        notice: 'Redirections JSON file was missing and has been recreated.',
+      }),
     });
   } catch (error) {
     return NextResponse.json(
@@ -45,26 +53,33 @@ export async function POST(request) {
     }
     parsed.data.from = stripDomain(parsed.data.from);
     parsed.data.to = stripDomain(parsed.data.to);
-    const redirections = await readRedirections();
-    if (redirections.some((r) => r.from === parsed.data.from)) {
+    await connectDB();
+    const exists = await Redirection.findOne({ from: parsed.data.from });
+    if (exists) {
       return NextResponse.json(
         { success: false, error: 'Redirection from this URL already exists' },
         { status: 400 }
       );
     }
-    const newRedirection = {
-      id: Date.now().toString(36),
-      ...parsed.data,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    await addRedirection(newRedirection);
+    const doc = await Redirection.create(parsed.data);
+    const { wasCreated } = await syncRedirectionsFromDB();
     clearRedirectionsCache();
+    const newRedirection = {
+      id: doc._id.toString(),
+      from: doc.from,
+      to: doc.to,
+      methodCode: doc.methodCode,
+      createdAt: doc.createdAt.toISOString(),
+      updatedAt: doc.updatedAt.toISOString(),
+    };
     return NextResponse.json(
       {
         success: true,
         message: 'Redirection created successfully',
         data: newRedirection,
+        ...(wasCreated && {
+          notice: 'Redirections JSON file was missing and has been recreated.',
+        }),
       },
       { status: 201 }
     );
