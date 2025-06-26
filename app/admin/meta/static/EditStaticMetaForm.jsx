@@ -15,14 +15,56 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
+import ImageCropperInput from "@/components/image-cropper-input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import apiFetch from "@/helpers/apiFetch";
+
+const defaultMeta = {
+  creator: "",
+  publisher: "",
+  applicationName: "",
+  verification: { google: "", microsoft: "", other: { fb: "" } },
+  appleWebApp: {
+    title: "",
+    statusBarStyle: "",
+    capable: false,
+    startupImage: { mainImageUrl: "", url: "" },
+  },
+  icons: { icon: [], shortcut: "", apple: "", other: [] },
+  generator: "",
+  formatDetection: { email: false, address: false, telephone: false },
+  pinterest: { richPin: false },
+  category: "",
+  twitter: { site: "", creator: "", images: [] },
+  openGraph: { url: "", siteName: "", locale: "", type: "", images: [] },
+  authors: [],
+  keywords: [],
+  description: "",
+  title: { default: "" },
+};
+
+function mergeDeep(target, source) {
+  for (const key in source) {
+    if (
+      source[key] &&
+      typeof source[key] === "object" &&
+      !Array.isArray(source[key])
+    ) {
+      if (!target[key]) target[key] = {};
+      mergeDeep(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
 
 export default function EditStaticMetaForm({ meta }) {
   const form = useForm({
     resolver: zodResolver(staticMetaSchema),
-    defaultValues: meta,
+    defaultValues: mergeDeep(structuredClone(defaultMeta), meta || {}),
   });
   const { control, handleSubmit, watch, setValue } = form;
 
@@ -30,6 +72,7 @@ export default function EditStaticMetaForm({ meta }) {
   const iconOtherFields = useFieldArray({ control, name: "icons.other" });
   const ogImageFields = useFieldArray({ control, name: "openGraph.images" });
   const authorFields = useFieldArray({ control, name: "authors" });
+  const twitterImageFields = useFieldArray({ control, name: "twitter.images" });
 
   async function onSubmit(data) {
     try {
@@ -46,6 +89,34 @@ export default function EditStaticMetaForm({ meta }) {
       }
     } catch (err) {
       toast.error("Something went wrong");
+    }
+  }
+
+  async function handleTwitterImageChange(files, index) {
+    if (files?.[0] instanceof File) {
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      try {
+        const res = await apiFetch("/api/v1/admin/images", {
+          method: "POST",
+          body: formData,
+        });
+        const json = await res.json();
+        if (json.success && json.data?.storedName) {
+          const url = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${json.data.storedName}`;
+          setValue(`twitter.images.${index}`, url);
+        } else {
+          toast.error(json.error || "Failed to upload image");
+        }
+      } catch (err) {
+        toast.error("Image upload failed");
+      }
+    } else {
+      if (Array.isArray(files) && files.length === 0) {
+        setValue(`twitter.images.${index}`, "");
+      } else {
+        setValue(`twitter.images.${index}`, files);
+      }
     }
   }
 
@@ -454,11 +525,37 @@ export default function EditStaticMetaForm({ meta }) {
                   </FormItem>
                 )}
               />
-              <MultiKeywordCombobox
-                label="Twitter Images"
-                value={watch("twitter.images")}
-                onChange={(val) => setValue("twitter.images", val)}
-              />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium">Twitter Images</h4>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => twitterImageFields.append("")}
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Add Image
+                  </Button>
+                </div>
+                {twitterImageFields.fields.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-4">
+                    <ImageCropperInput
+                      aspectRatio={1.9}
+                      format="jpg"
+                      value={watch(`twitter.images.${index}`)}
+                      onChange={(val) => handleTwitterImageChange(val, index)}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => twitterImageFields.remove(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="space-y-4">
               <FormField
