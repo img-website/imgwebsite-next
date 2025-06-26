@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { getObjectBuffer } from '@/lib/s3';
 
 // Create reusable transporter
 const transporter = nodemailer.createTransport({
@@ -435,4 +436,110 @@ export async function sendPasswordResetConfirmationEmail(admin) {
       error: 'Error sending password reset confirmation email'
     };
   }
-} 
+}
+
+export async function sendLeadEmail(lead) {
+  try {
+    const attachments = [];
+    if (lead.attachments && Array.isArray(lead.attachments)) {
+      for (const filename of lead.attachments) {
+        try {
+          const file = await getObjectBuffer(`uploads/leads/${filename}`);
+          if (file && file.buffer) {
+            attachments.push({ filename, content: file.buffer, contentType: file.contentType });
+          }
+        } catch (err) {
+          console.error('Error fetching attachment', filename, err);
+        }
+      }
+    }
+
+    const mailOptions = {
+      from: `"IMG Leads" <${process.env.SMTP_FROM}>`,
+      to: process.env.LEADS_NOTIFICATION_EMAIL,
+      subject: `New Lead: ${lead.contact_name || lead.email || 'Unknown'}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>New Lead - IMG</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <tr>
+              <td style="padding: 40px 0; text-align: center; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); border-radius: 8px 8px 0 0;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 32px;">New Lead Received</h1>
+                <p style="color: #ffffff; margin: 10px 0 0; font-size: 18px;">IMG Admin Panel</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 40px;">
+                <h2 style="color: #1f2937; margin: 0 0 20px; font-size: 20px;">Lead Details</h2>
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Name:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.contact_name || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Email:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.email || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Mobile:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.mobile_number || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Organization:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.organization || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Requirements:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.requirements || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0;"><strong style="color: #1f2937;">Description:</strong></td>
+                      <td style="padding: 8px 0; color: #4b5563;">${lead.description || 'N/A'}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p style="color: #4b5563; margin: 20px 0; font-size: 16px;">Any attachments provided are included with this email.</p>
+
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+
+                <div style="text-align: center;">
+                  <p style="color: #6b7280; margin: 0 0 10px; font-size: 14px;">IMG Global Infotech Pvt Ltd</p>
+                  <p style="color: #6b7280; margin: 0; font-size: 12px;">This is an automated message, please do not reply.</p>
+                  <div style="margin-top: 20px;">
+                    <a href="${process.env.NEXT_PUBLIC_BASE_URL}" style="color: #2563eb; text-decoration: none; font-size: 14px;">Visit IMG</a>
+                    <span style="color: #6b7280; margin: 0 10px;">|</span>
+                    <a href="${process.env.NEXT_PUBLIC_BASE_URL}/contact" style="color: #2563eb; text-decoration: none; font-size: 14px;">Contact Support</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 20px; text-align: center; background: #1f2937; border-radius: 0 0 8px 8px;">
+                <p style="color: #ffffff; margin: 0; font-size: 12px;">&copy; ${new Date().getFullYear()} IMG. All rights reserved.</p>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
+      attachments
+    };
+
+    queueEmail(mailOptions);
+    return { success: true };
+
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Error sending lead email'
+    };
+  }
+}
