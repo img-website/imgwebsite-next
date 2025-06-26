@@ -74,12 +74,25 @@ export default function EditStaticMetaForm({ meta }) {
   const authorFields = useFieldArray({ control, name: "authors" });
   const twitterImageFields = useFieldArray({ control, name: "twitter.images" });
 
+  async function uploadFile(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await apiFetch("/api/v1/admin/images", {
+      method: "POST",
+      body: formData,
+    });
+    const json = await res.json();
+    if (json.success && json.data?.storedName) {
+      return `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${json.data.storedName}`;
+    }
+    throw new Error(json.error || "Failed to upload image");
+  }
+
   async function onSubmit(data) {
     try {
-      const res = await fetch("/api/v1/admin/meta/static", {
+      const res = await apiFetch("/api/v1/admin/meta/static", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        data,
       });
       const json = await res.json();
       if (json.success) {
@@ -94,22 +107,11 @@ export default function EditStaticMetaForm({ meta }) {
 
   async function handleTwitterImageChange(files, index) {
     if (files?.[0] instanceof File) {
-      const formData = new FormData();
-      formData.append("file", files[0]);
       try {
-        const res = await apiFetch("/api/v1/admin/images", {
-          method: "POST",
-          body: formData,
-        });
-        const json = await res.json();
-        if (json.success && json.data?.storedName) {
-          const url = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${json.data.storedName}`;
-          setValue(`twitter.images.${index}`, url);
-        } else {
-          toast.error(json.error || "Failed to upload image");
-        }
+        const url = await uploadFile(files[0]);
+        setValue(`twitter.images.${index}`, url);
       } catch (err) {
-        toast.error("Image upload failed");
+        toast.error(err.message || "Image upload failed");
       }
     } else {
       if (Array.isArray(files) && files.length === 0) {
@@ -117,6 +119,97 @@ export default function EditStaticMetaForm({ meta }) {
       } else {
         setValue(`twitter.images.${index}`, files);
       }
+    }
+  }
+
+  async function handleStartupMainImageChange(files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue("appleWebApp.startupImage.mainImageUrl", url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue("appleWebApp.startupImage.mainImageUrl", files);
+    }
+  }
+
+  async function handleStartupImageChange(files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue("appleWebApp.startupImage.url", url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue("appleWebApp.startupImage.url", files);
+    }
+  }
+
+  async function handleIconImageChange(files, index) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue(`icons.icon.${index}.url`, url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue(`icons.icon.${index}.url`, files);
+    }
+  }
+
+  async function handleShortcutIconChange(files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue("icons.shortcut", url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue("icons.shortcut", files);
+    }
+  }
+
+  async function handleAppleIconChange(files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue("icons.apple", url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue("icons.apple", files);
+    }
+  }
+
+  async function handleOtherIconImageChange(files, index) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue(`icons.other.${index}.url`, url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue(`icons.other.${index}.url`, files);
+    }
+  }
+
+  async function handleOgImageChange(files, index) {
+    if (files?.[0] instanceof File) {
+      try {
+        const url = await uploadFile(files[0]);
+        setValue(`openGraph.images.${index}.url`, url);
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else {
+      setValue(`openGraph.images.${index}.url`, files);
     }
   }
 
@@ -253,11 +346,14 @@ export default function EditStaticMetaForm({ meta }) {
               <FormField
                 control={control}
                 name="appleWebApp.startupImage.mainImageUrl"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
-                    <FormLabel>Main Startup Image URL</FormLabel>
+                    <FormLabel>Main Startup Image</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <ImageCropperInput
+                        value={watch("appleWebApp.startupImage.mainImageUrl")}
+                        onChange={handleStartupMainImageChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -266,11 +362,14 @@ export default function EditStaticMetaForm({ meta }) {
               <FormField
                 control={control}
                 name="appleWebApp.startupImage.url"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
-                    <FormLabel>Startup Image URL</FormLabel>
+                    <FormLabel>Startup Image</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <ImageCropperInput
+                        value={watch("appleWebApp.startupImage.url")}
+                        onChange={handleStartupImageChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -294,11 +393,15 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormField
                     control={control}
                     name={`icons.icon.${index}.url`}
-                    render={({ field }) => (
+                    render={() => (
                       <FormItem>
                         <FormLabel>URL</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <ImageCropperInput
+                            aspectRatio={1}
+                            value={watch(`icons.icon.${index}.url`)}
+                            onChange={(val) => handleIconImageChange(val, index)}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -331,11 +434,15 @@ export default function EditStaticMetaForm({ meta }) {
             <FormField
               control={control}
               name="icons.shortcut"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Shortcut Icon</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <ImageCropperInput
+                      aspectRatio={1}
+                      value={watch("icons.shortcut")}
+                      onChange={handleShortcutIconChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -344,11 +451,15 @@ export default function EditStaticMetaForm({ meta }) {
             <FormField
               control={control}
               name="icons.apple"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Apple Icon</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <ImageCropperInput
+                      aspectRatio={1}
+                      value={watch("icons.apple")}
+                      onChange={handleAppleIconChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -384,11 +495,15 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormField
                     control={control}
                     name={`icons.other.${index}.url`}
-                    render={({ field }) => (
+                    render={() => (
                       <FormItem>
                         <FormLabel>URL</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <ImageCropperInput
+                            aspectRatio={1}
+                            value={watch(`icons.other.${index}.url`)}
+                            onChange={(val) => handleOtherIconImageChange(val, index)}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -627,11 +742,16 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormField
                       control={control}
                       name={`openGraph.images.${index}.url`}
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem>
                           <FormLabel>URL</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <ImageCropperInput
+                              aspectRatio={1.9}
+                              format="jpg"
+                              value={watch(`openGraph.images.${index}.url`)}
+                              onChange={(val) => handleOgImageChange(val, index)}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
