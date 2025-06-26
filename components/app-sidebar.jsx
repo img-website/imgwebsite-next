@@ -204,13 +204,6 @@ const data = {
       type: "link"
     },
     {
-      title: "Careers",
-      url: "/admin/careers",
-      icon: UserSearch,
-      team: "Leads & Contacts",
-      type: "link"
-    },
-    {
       title: "Newsletter",
       url: "/admin/newsletter",
       icon: BellRing,
