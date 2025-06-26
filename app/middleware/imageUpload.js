@@ -65,7 +65,7 @@ export async function uploadAuthorImage(file) {
 
     // Generate unique filename
     const filename = `author-${Date.now()}.webp`;
-    const key = `${UPLOAD_DIRS.authors}/${filename}`;
+    const key = `uploads/${UPLOAD_DIRS.authors}/${filename}`;
 
     // Process image and upload to S3
     const processed = await sharp(Buffer.from(buffer))
