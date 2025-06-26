@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const image = z.object({
-  url: z.string().url().min(1),
+  url: z.string().min(1),
   width: z.coerce.number(),
   height: z.coerce.number(),
   alt: z.string().min(1),

@@ -35,12 +35,23 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
+    const data = parsed.data;
+    const strip = (val) => (typeof val === 'string' ? val.split('/').pop() : val);
+    data.appleWebApp.startupImage.mainImageUrl = strip(data.appleWebApp.startupImage.mainImageUrl);
+    data.appleWebApp.startupImage.url = strip(data.appleWebApp.startupImage.url);
+    data.icons.icon = data.icons.icon.map((i) => ({ ...i, url: strip(i.url) }));
+    data.icons.shortcut = strip(data.icons.shortcut);
+    data.icons.apple = strip(data.icons.apple);
+    data.icons.other = data.icons.other.map((i) => ({ ...i, url: strip(i.url) }));
+    data.twitter.images = data.twitter.images.map(strip);
+    data.openGraph.images = data.openGraph.images.map((img) => ({ ...img, url: strip(img.url) }));
+
     await connectDB();
     let meta = await StaticMeta.findOne();
     if (!meta) {
-      meta = await StaticMeta.create(parsed.data);
+      meta = await StaticMeta.create(data);
     } else {
-      Object.assign(meta, parsed.data);
+      Object.assign(meta, data);
       await meta.save();
     }
     return NextResponse.json({ success: true, data: meta });

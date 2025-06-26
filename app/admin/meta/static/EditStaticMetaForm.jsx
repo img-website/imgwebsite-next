@@ -84,13 +84,25 @@ export default function EditStaticMetaForm({ meta }) {
     });
     const json = await res.json();
     if (json.success && json.data?.storedName) {
-      return `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${json.data.storedName}`;
+      return json.data.storedName;
     }
     throw new Error(json.error || "Failed to upload image");
   }
 
   async function onSubmit(data) {
     try {
+      const strip = (val) =>
+        typeof val === "string" ? val.split("/").pop().split("?")[0] : val;
+      data.appleWebApp.startupImage.mainImageUrl = strip(
+        data.appleWebApp.startupImage.mainImageUrl
+      );
+      data.appleWebApp.startupImage.url = strip(data.appleWebApp.startupImage.url);
+      data.icons.icon = data.icons.icon.map((i) => ({ ...i, url: strip(i.url) }));
+      data.icons.shortcut = strip(data.icons.shortcut);
+      data.icons.apple = strip(data.icons.apple);
+      data.icons.other = data.icons.other.map((i) => ({ ...i, url: strip(i.url) }));
+      data.twitter.images = data.twitter.images.map(strip);
+      data.openGraph.images = data.openGraph.images.map((img) => ({ ...img, url: strip(img.url) }));
       const res = await apiFetch("/api/v1/admin/meta/static", {
         method: "PUT",
         data,
@@ -109,8 +121,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleTwitterImageChange(files, index) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue(`twitter.images.${index}`, url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          `twitter.images.${index}`,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -126,8 +142,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleStartupMainImageChange(files) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue("appleWebApp.startupImage.mainImageUrl", url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          "appleWebApp.startupImage.mainImageUrl",
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -139,8 +159,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleStartupImageChange(files) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue("appleWebApp.startupImage.url", url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          "appleWebApp.startupImage.url",
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -152,8 +176,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleIconImageChange(files, index) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue(`icons.icon.${index}.url`, url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          `icons.icon.${index}.url`,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -165,8 +193,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleShortcutIconChange(files) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue("icons.shortcut", url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          "icons.shortcut",
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -178,8 +210,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleAppleIconChange(files) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue("icons.apple", url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          "icons.apple",
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -191,8 +227,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleOtherIconImageChange(files, index) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue(`icons.other.${index}.url`, url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          `icons.other.${index}.url`,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -204,8 +244,12 @@ export default function EditStaticMetaForm({ meta }) {
   async function handleOgImageChange(files, index) {
     if (files?.[0] instanceof File) {
       try {
-        const url = await uploadFile(files[0]);
-        setValue(`openGraph.images.${index}.url`, url, { shouldValidate: true });
+        const name = await uploadFile(files[0]);
+        setValue(
+          `openGraph.images.${index}.url`,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
