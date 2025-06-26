@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import {
-  readRedirections,
-  writeRedirections,
+  readRedirectionsWithNotice,
+  syncRedirectionsFromDB,
 } from '@/app/lib/redirectionsFile';
+import connectDB from '@/app/lib/db';
+import Redirection from '@/app/models/Redirection';
 import { redirectionSchema } from '@/app/lib/validations/redirection';
 import { clearRedirectionsCache } from '@/app/lib/redirections';
 
@@ -19,15 +21,21 @@ function stripDomain(url) {
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
-    const list = await readRedirections();
-    const redirection = list.find((r) => r.id === id);
+    const { redirections, wasCreated } = await readRedirectionsWithNotice();
+    const redirection = redirections.find((r) => r.id === id);
     if (!redirection) {
       return NextResponse.json(
         { success: false, error: 'Redirection not found' },
         { status: 404 }
       );
     }
-    return NextResponse.json({ success: true, data: redirection });
+    return NextResponse.json({
+      success: true,
+      data: redirection,
+      ...(wasCreated && {
+        notice: 'Redirections JSON file was missing and has been recreated.',
+      }),
+    });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: 'Error fetching redirection' },
@@ -39,21 +47,30 @@ export async function GET(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
-    const list = await readRedirections();
-    const idx = list.findIndex((r) => r.id === id);
-    if (idx === -1) {
+    await connectDB();
+    const doc = await Redirection.findByIdAndDelete(id);
+    if (!doc) {
       return NextResponse.json(
         { success: false, error: 'Redirection not found' },
         { status: 404 }
       );
     }
-    const [deleted] = list.splice(idx, 1);
-    await writeRedirections(list);
+    const { wasCreated } = await syncRedirectionsFromDB();
     clearRedirectionsCache();
     return NextResponse.json({
       success: true,
       message: 'Redirection deleted successfully',
-      data: deleted,
+      data: {
+        id: doc._id.toString(),
+        from: doc.from,
+        to: doc.to,
+        methodCode: doc.methodCode,
+        createdAt: doc.createdAt,
+        updatedAt: doc.updatedAt,
+      },
+      ...(wasCreated && {
+        notice: 'Redirections JSON file was missing and has been recreated.',
+      }),
     });
   } catch (error) {
     return NextResponse.json(
@@ -76,32 +93,44 @@ export async function PATCH(request, { params }) {
     }
     parsed.data.from = stripDomain(parsed.data.from);
     parsed.data.to = stripDomain(parsed.data.to);
-    const list = await readRedirections();
-    const idx = list.findIndex((r) => r.id === id);
-    if (idx === -1) {
-      return NextResponse.json(
-        { success: false, error: 'Redirection not found' },
-        { status: 404 }
-      );
-    }
-    // Check for existing from URL on another item
-    if (list.some((r) => r.from === parsed.data.from && r.id !== id)) {
+    await connectDB();
+    const exists = await Redirection.findOne({
+      from: parsed.data.from,
+      _id: { $ne: id },
+    });
+    if (exists) {
       return NextResponse.json(
         { success: false, error: 'Redirection from this URL already exists' },
         { status: 400 }
       );
     }
-    list[idx] = {
-      ...list[idx],
-      ...parsed.data,
-      updatedAt: new Date().toISOString(),
-    };
-    await writeRedirections(list);
+    const doc = await Redirection.findByIdAndUpdate(
+      id,
+      { ...parsed.data, updatedAt: new Date() },
+      { new: true }
+    );
+    if (!doc) {
+      return NextResponse.json(
+        { success: false, error: 'Redirection not found' },
+        { status: 404 }
+      );
+    }
+    const { wasCreated } = await syncRedirectionsFromDB();
     clearRedirectionsCache();
     return NextResponse.json({
       success: true,
       message: 'Redirection updated successfully',
-      data: list[idx],
+      data: {
+        id: doc._id.toString(),
+        from: doc.from,
+        to: doc.to,
+        methodCode: doc.methodCode,
+        createdAt: doc.createdAt,
+        updatedAt: doc.updatedAt,
+      },
+      ...(wasCreated && {
+        notice: 'Redirections JSON file was missing and has been recreated.',
+      }),
     });
   } catch (error) {
     return NextResponse.json(

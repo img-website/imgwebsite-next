@@ -46,11 +46,13 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Redirection added successfully");
+        if (data.notice) toast.info(data.notice);
         form.reset();
         if (onSuccess) onSuccess();
         else router.push("/admin/redirections");
       } else {
         toast.error(data.error || "Failed to add redirection");
+        if (data.notice) toast.info(data.notice);
       }
     } catch (err) {
       toast.error("Something went wrong");

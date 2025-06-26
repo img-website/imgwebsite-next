@@ -47,10 +47,12 @@ export default function EditRedirectionForm({ redirection }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Redirection updated successfully");
+        if (data.notice) toast.info(data.notice);
         router.push("/admin/redirections");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to update redirection");
+        if (data.notice) toast.info(data.notice);
       }
     } catch (err) {
       toast.error("Something went wrong");

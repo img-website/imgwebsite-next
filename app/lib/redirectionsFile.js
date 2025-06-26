@@ -1,16 +1,34 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import connectDB from '@/app/lib/db';
+import Redirection from '@/app/models/Redirection';
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'redirections.json');
+export const DATA_FILE = path.join(process.cwd(), 'data', 'redirections.json');
 
-export async function readRedirections() {
+export async function ensureRedirectionsFile() {
   try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return JSON.parse(data);
+    await fs.access(DATA_FILE);
+    return false;
   } catch (err) {
-    if (err.code === 'ENOENT') return [];
+    if (err.code === 'ENOENT') {
+      await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
+      await fs.writeFile(DATA_FILE, '[]', 'utf8');
+      return true;
+    }
     throw err;
   }
+}
+
+export async function readRedirections() {
+  await ensureRedirectionsFile();
+  const data = await fs.readFile(DATA_FILE, 'utf8');
+  return JSON.parse(data);
+}
+
+export async function readRedirectionsWithNotice() {
+  const wasCreated = await ensureRedirectionsFile();
+  const data = await fs.readFile(DATA_FILE, 'utf8');
+  return { redirections: JSON.parse(data), wasCreated };
 }
 
 export async function writeRedirections(redirections) {
@@ -41,4 +59,20 @@ export async function deleteRedirection(id) {
   const [removed] = list.splice(idx, 1);
   await writeRedirections(list);
   return removed;
+}
+
+export async function syncRedirectionsFromDB() {
+  await connectDB();
+  const docs = await Redirection.find({}).sort({ createdAt: -1 }).lean();
+  const data = docs.map(doc => ({
+    id: doc._id.toString(),
+    from: doc.from,
+    to: doc.to,
+    methodCode: doc.methodCode,
+    createdAt: doc.createdAt.toISOString(),
+    updatedAt: doc.updatedAt.toISOString(),
+  }));
+  const wasCreated = await ensureRedirectionsFile();
+  await writeRedirections(data);
+  return { data, wasCreated };
 }
