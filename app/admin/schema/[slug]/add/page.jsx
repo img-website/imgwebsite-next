@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 
 const schemaOptions = [
@@ -24,8 +24,8 @@ const schemaOptions = [
 
 export default function Page() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pageUrl = searchParams.get("url") || "";
+  const { slug } = useParams();
+  const pageUrl = slug === "home" ? "/" : `/${slug}`;
   const [selected, setSelected] = useState("Corporation");
 
   const formSchema = useMemo(() => {

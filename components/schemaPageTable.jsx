@@ -41,7 +41,9 @@ function PageActions({ page }) {
           <Link href={`/admin/faqs/add?url=${encodeURIComponent(page.url)}`}>Add FAQ</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={`/admin/schema/add?url=${encodeURIComponent(page.url)}`}>Add Schema</Link>
+          <Link href={`/admin/schema/${page.url === '/' ? 'home' : page.url.substring(1)}/add`}>
+            Add Schema
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
