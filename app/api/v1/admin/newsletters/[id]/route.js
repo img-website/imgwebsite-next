@@ -23,7 +23,7 @@ export async function DELETE(request, { params }) {
     if (!deleted) {
       return NextResponse.json({ success: false, error: 'Newsletter not found' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, message: 'Newsletter deleted successfully', data: deleted });
+    return NextResponse.json({ success: true, message: 'Newsletter deleted successfully', data: deleted }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error deleting newsletter' }, { status: 500 });
   }

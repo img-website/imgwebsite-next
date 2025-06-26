@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Newsletter from '@/app/models/Newsletter';
-import { extractToken, verifyToken } from '@/app/lib/auth';
 
 // GET all newsletter emails
 export async function GET() {
   try {
     await connectDB();
     const emails = await Newsletter.find().sort({ createdAt: -1 }).lean();
-    return NextResponse.json({ success: true, data: emails });
+    return NextResponse.json({ success: true, message: 'Emails fetched successfully', data: emails }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error fetching newsletters' }, { status: 500 });
   }
@@ -27,7 +26,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Email already subscribed' }, { status: 409 });
     }
     const newsletter = await Newsletter.create({ email: body.email });
-    return NextResponse.json({ success: true, data: newsletter }, { status: 201 });
+    return NextResponse.json({ success: true, message: 'Email subscribed successfully', data: newsletter }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Error subscribing to newsletter' }, { status: 500 });
   }
