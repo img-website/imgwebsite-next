@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Lead, { LEAD_STATUS } from '@/app/models/Lead';
 import { uploadLeadAttachment } from '@/app/middleware/attachmentUpload';
+import { deleteObject } from '@/lib/s3';
 
 // GET single lead
 export async function GET(request, { params }) {
@@ -39,11 +40,21 @@ export async function PUT(request, { params }) {
     const formData = await request.formData();
     const attachmentsFiles = formData.getAll('attachments');
     if (attachmentsFiles && attachmentsFiles.length > 0) {
+      if (lead.attachments && lead.attachments.length > 0) {
+        const deletePromises = lead.attachments.map((name) =>
+          deleteObject(`uploads/leads/${name}`)
+        );
+        await Promise.allSettled(deletePromises);
+        lead.attachments = [];
+      }
       for (const file of attachmentsFiles) {
         if (file && typeof file !== 'string') {
           const res = await uploadLeadAttachment(file);
           if (!res.success) {
-            return NextResponse.json({ success: false, error: res.error }, { status: 400 });
+            return NextResponse.json(
+              { success: false, error: res.error },
+              { status: 400 }
+            );
           }
           lead.attachments.push(res.filename);
         }
