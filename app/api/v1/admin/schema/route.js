@@ -19,7 +19,9 @@ export async function GET(request) {
       return NextResponse.json({ success: true, data: entry || null });
     }
     if (pageUrl) {
-      const entry = await SchemaEntry.findOne({ pageUrl, isGlobal: false }).lean();
+      const query = { pageUrl, isGlobal: false };
+      if (type) query.type = type;
+      const entry = await SchemaEntry.findOne(query).lean();
       if (!entry) {
         return NextResponse.json({ success: true, data: null });
       }

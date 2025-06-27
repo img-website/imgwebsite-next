@@ -254,7 +254,7 @@ export default function Page() {
     async function load() {
       const url = globalTypes.includes(selected)
         ? `/api/v1/admin/schema?global=true&type=${selected}`
-        : `/api/v1/admin/schema?pageUrl=${encodeURIComponent(pageUrl)}`;
+        : `/api/v1/admin/schema?pageUrl=${encodeURIComponent(pageUrl)}&type=${selected}`;
       const res = await apiFetch(url);
       const json = await res.json();
       if (json.success && json.data) {
