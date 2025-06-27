@@ -6,6 +6,15 @@ import { verifyToken, extractToken } from '@/app/lib/auth';
 export async function GET(request) {
   try {
     await connectDB();
+    const { searchParams } = new URL(request.url);
+    const pageUrl = searchParams.get('pageUrl');
+    if (pageUrl) {
+      const entry = await SchemaEntry.findOne({ pageUrl }).lean();
+      if (!entry) {
+        return NextResponse.json({ success: true, data: null });
+      }
+      return NextResponse.json({ success: true, data: entry });
+    }
     const entries = await SchemaEntry.find().sort({ created_date: -1 }).lean();
     return NextResponse.json({ success: true, data: entries });
   } catch (error) {
@@ -35,5 +44,32 @@ export async function POST(request) {
   } catch (error) {
     console.error('Error creating schema entry:', error);
     return NextResponse.json({ success: false, error: 'Error creating schema entry' }, { status: 500 });
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const token = extractToken(request.headers);
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
+    }
+    const decoded = verifyToken(token);
+    if (!decoded || decoded.role !== 'admin') {
+      return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
+    }
+    await connectDB();
+    const body = await request.json();
+    if (!body.type || !body.data || !body.pageUrl) {
+      return NextResponse.json({ success: false, error: 'Missing type, data or pageUrl' }, { status: 400 });
+    }
+    const entry = await SchemaEntry.findOneAndUpdate(
+      { pageUrl: body.pageUrl },
+      { pageUrl: body.pageUrl, type: body.type, data: body.data },
+      { new: true, upsert: true }
+    );
+    return NextResponse.json({ success: true, data: entry });
+  } catch (error) {
+    console.error('Error updating schema entry:', error);
+    return NextResponse.json({ success: false, error: 'Error updating schema entry' }, { status: 500 });
   }
 }

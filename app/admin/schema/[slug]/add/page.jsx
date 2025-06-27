@@ -6,8 +6,26 @@ import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { DatePicker } from "@/components/ui/date-picker";
+import ImageCropperInput from "@/components/image-cropper-input";
+import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
@@ -33,10 +51,10 @@ export default function Page() {
       case "Corporation":
         return z.object({
           type: z.literal("Corporation"),
-          name: z.string(),
-          url: z.string().url(),
-          logo: z.string().url().optional(),
-          contactEmail: z.string().email().optional(),
+          name: z.string().min(1, "Name is required"),
+          url: z.string().url("Invalid URL"),
+          logo: z.string().optional(),
+          contactEmail: z.string().email("Invalid email").optional(),
           contactPhone: z.string().optional(),
           foundingDate: z.string().optional(),
           address: z.string().optional(),
@@ -45,9 +63,9 @@ export default function Page() {
       case "WebPage":
         return z.object({
           type: z.literal("WebPage"),
-          pageTitle: z.string(),
+          pageTitle: z.string().min(1, "Page title is required"),
           pageDescription: z.string().optional(),
-          pageUrl: z.string().url(),
+          pageUrl: z.string().url("Invalid URL"),
           datePublished: z.string().optional(),
           dateModified: z.string().optional(),
           authorName: z.string().optional()
@@ -55,7 +73,7 @@ export default function Page() {
       case "LocalBusiness":
         return z.object({
           type: z.literal("LocalBusiness"),
-          businessName: z.string(),
+          businessName: z.string().min(1, "Business name is required"),
           address: z.string().optional(),
           openingHours: z.string().optional(),
           latitude: z.number().optional(),
@@ -72,7 +90,7 @@ export default function Page() {
       case "Product":
         return z.object({
           type: z.literal("Product"),
-          productName: z.string(),
+          productName: z.string().min(1, "Product name is required"),
           description: z.string().optional(),
           brandName: z.string().optional(),
           sku: z.string().optional(),
@@ -84,7 +102,7 @@ export default function Page() {
       case "Service":
         return z.object({
           type: z.literal("Service"),
-          serviceName: z.string(),
+          serviceName: z.string().min(1, "Service name is required"),
           description: z.string().optional(),
           areaServed: z.string().optional(),
           serviceType: z.string().optional(),
@@ -93,7 +111,7 @@ export default function Page() {
       case "NewsArticle":
         return z.object({
           type: z.literal("NewsArticle"),
-          headline: z.string(),
+          headline: z.string().min(1, "Headline is required"),
           description: z.string().optional(),
           authorName: z.string().optional(),
           datePublished: z.string().optional(),
@@ -104,9 +122,8 @@ export default function Page() {
         return z.object({ type: z.string() });
     }
   }, [selected]);
-
-  const defaultValues = useMemo(() => {
-    switch (selected) {
+  const getDefaults = (type) => {
+    switch (type) {
       case "Corporation":
         return {
           type: "Corporation",
@@ -117,7 +134,7 @@ export default function Page() {
           contactPhone: "",
           foundingDate: "",
           address: "",
-          sameAs: "",
+          sameAs: [],
         };
       case "WebPage":
         return {
@@ -138,7 +155,7 @@ export default function Page() {
           latitude: "",
           longitude: "",
           phoneNumber: "",
-          services: "",
+          services: [],
           priceRange: "",
         };
       case "BreadcrumbList":
@@ -175,9 +192,11 @@ export default function Page() {
           mainImageUrl: "",
         };
       default:
-        return { type: selected };
+        return { type };
     }
-  }, [selected, pageUrl]);
+  };
+
+  const defaultValues = useMemo(() => getDefaults(selected), [selected, pageUrl]);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -185,17 +204,32 @@ export default function Page() {
   });
 
   useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
+    form.reset(getDefaults(selected));
+  }, [selected]);
+
+  const [entryId, setEntryId] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const res = await apiFetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(pageUrl)}`);
+      const json = await res.json();
+      if (json.success && json.data) {
+        setEntryId(json.data._id);
+        setSelected(json.data.type);
+        form.reset({ ...getDefaults(json.data.type), ...json.data.data, type: json.data.type });
+      }
+    }
+    load();
+  }, [pageUrl]);
 
   async function onSubmit(values) {
     const res = await apiFetch(`/api/v1/admin/schema`, {
-      method: "POST",
+      method: "PUT",
       data: { pageUrl, type: values.type, data: values }
     });
     const result = await res.json();
     if (result.success) {
-      toast.success("Created");
+      toast.success("Saved");
       router.push("/admin/schema");
       router.refresh();
     } else {
@@ -247,13 +281,19 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="logo" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Logo URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="logo"
+                control={form.control}
+                render={({ field: { onChange, value } }) => (
+                  <FormItem>
+                    <FormLabel>Logo</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput value={value} onChange={onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField name="contactEmail" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contact Email</FormLabel>
@@ -261,20 +301,32 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="contactPhone" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contact Phone</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="foundingDate" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Founding Date</FormLabel>
-                  <FormControl><Input type="date" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="contactPhone"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contact Phone</FormLabel>
+                    <FormControl>
+                      <PhoneInput defaultCountry="IN" value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="foundingDate"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Founding Date</FormLabel>
+                    <FormControl>
+                      <DatePicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField name="address" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Address</FormLabel>
@@ -282,13 +334,19 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="sameAs" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>SameAs Links (comma separated)</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="sameAs"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>SameAs Links</FormLabel>
+                    <FormControl>
+                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add links..." />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </>
           )}
           {selected === "WebPage" && (
@@ -314,20 +372,32 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="datePublished" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Published</FormLabel>
-                  <FormControl><Input type="date" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="dateModified" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Modified</FormLabel>
-                  <FormControl><Input type="date" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="datePublished"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Published</FormLabel>
+                    <FormControl>
+                      <DatePicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="dateModified"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Modified</FormLabel>
+                    <FormControl>
+                      <DatePicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField name="authorName" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Author Name</FormLabel>
@@ -374,20 +444,32 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="phoneNumber" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="services" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Services Offered (comma separated)</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="phoneNumber"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <PhoneInput defaultCountry="IN" value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="services"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Services Offered</FormLabel>
+                    <FormControl>
+                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add service" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField name="priceRange" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Price Range</FormLabel>
@@ -528,20 +610,32 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="datePublished" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Published</FormLabel>
-                  <FormControl><Input type="date" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="dateModified" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Modified</FormLabel>
-                  <FormControl><Input type="date" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                name="datePublished"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Published</FormLabel>
+                    <FormControl>
+                      <DatePicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="dateModified"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Modified</FormLabel>
+                    <FormControl>
+                      <DatePicker value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField name="mainImageUrl" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Main Image URL</FormLabel>
