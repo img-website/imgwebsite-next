@@ -126,14 +126,13 @@ export default function Page() {
       case "Product":
         return z.object({
           type: z.literal("Product"),
-          productName: z.string().min(1, "Product name is required"),
-          description: z.string().optional(),
-          brandName: z.string().optional(),
-          sku: z.string().optional(),
-          imageUrl: z.string().url().optional(),
-          price: z.number().optional(),
-          currency: z.string().optional(),
-          availability: z.string().optional()
+          name: z.string().min(1, "Name is required"),
+          image: z.string().min(1, "Image is required"),
+          description: z.string().min(1, "Description is required"),
+          brandName: z.string().min(1, "Brand name is required"),
+          brandUrl: z.string().url("Invalid URL").min(1, "Brand URL is required"),
+          ratingValue: z.string().min(1, "Rating value is required"),
+          ratingCount: z.string().min(1, "Rating count is required"),
         });
       case "Service":
         return z.object({
@@ -220,14 +219,13 @@ export default function Page() {
       case "Product":
         return {
           type: "Product",
-          productName: "",
+          name: "",
+          image: "",
           description: "",
           brandName: "",
-          sku: "",
-          imageUrl: "",
-          price: "",
-          currency: "",
-          availability: "",
+          brandUrl: "",
+          ratingValue: "",
+          ratingCount: "",
         };
       case "Service":
         return {
@@ -782,10 +780,19 @@ export default function Page() {
           )}
           {selected === "Product" && (
             <>
-              <FormField name="productName" control={form.control} render={({ field }) => (
+              <FormField name="name" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="image" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -803,41 +810,29 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="sku" control={form.control} render={({ field }) => (
+              <FormField name="brandUrl" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>SKU</FormLabel>
+                  <FormLabel>Brand URL</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="imageUrl" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="price" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="currency" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="availability" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Availability</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField name="ratingValue" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating Value</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField name="ratingCount" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating Count</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
             </>
           )}
           {selected === "Service" && (

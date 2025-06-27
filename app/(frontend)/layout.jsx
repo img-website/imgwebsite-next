@@ -93,6 +93,34 @@ export default async function RootLayout({ children }) {
       };
       return lb;
     }
+    if (type === "Product") {
+      const {
+        name,
+        image,
+        description,
+        brandName,
+        brandUrl,
+        ratingValue,
+        ratingCount,
+      } = data;
+      return {
+        "@context": "http://schema.org/",
+        "@type": "Product",
+        name,
+        image,
+        description,
+        brand: {
+          "@type": "Brand",
+          name: brandName,
+          url: brandUrl,
+        },
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue,
+          ratingCount,
+        },
+      };
+    }
     if (type === "BreadcrumbList") {
       const { items = [] } = data;
       return {
