@@ -22,6 +22,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { Separator } from "@/components/ui/separator";
 
 const defaultMeta = {
   creator: "",
@@ -156,10 +157,10 @@ export default function EditStaticMetaForm({ meta }) {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={control}
-              name="creator"
+              name="title.default"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Creator</FormLabel>
+                  <FormLabel>Default Title</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -169,177 +170,45 @@ export default function EditStaticMetaForm({ meta }) {
             />
             <FormField
               control={control}
-              name="publisher"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Publisher</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Textarea className="min-h-[120px]" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={control}
-              name="applicationName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Application Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <MultiKeywordCombobox
+              label="Keywords"
+              value={watch("keywords")}
+              onChange={(val) => setValue("keywords", val, { shouldValidate: true })}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={control}
-                name="verification.google"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Google Verification</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="verification.microsoft"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Microsoft Verification</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={control}
-              name="verification.other.fb"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Facebook App ID</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={control}
-                name="appleWebApp.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Apple WebApp Title</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="appleWebApp.statusBarStyle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status Bar Style</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={control}
-              name="appleWebApp.capable"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                  <FormLabel>Capable</FormLabel>
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={control}
-                name="appleWebApp.startupImage.mainImageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Main Startup Image</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="appleWebApp.startupImage.url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Startup Image</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <Separator className="my-10" />
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-medium">Icons</h4>
+                <h4 className="font-medium">Authors</h4>
                 <Button
                   type="button"
                   variant="secondary"
                   size="sm"
-                  onClick={() => iconFields.append({ url: "", sizes: "" })}
+                  onClick={() => authorFields.append({ name: "", url: "" })}
                 >
-                  <Plus className="h-4 w-4 mr-2" /> Add Icon
+                  <Plus className="h-4 w-4 mr-2" /> Add Author
                 </Button>
               </div>
-              {iconFields.fields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {authorFields.fields.map((field, index) => (
+                <div key={field.id} className="flex flex-wrap items-start gap-4">
                   <FormField
                     control={control}
-                    name={`icons.icon.${index}.url`}
+                    name={`authors.${index}.name`}
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>URL</FormLabel>
+                      <FormItem className="grow">
+                        <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <ImageCropperInput
-                            key={field.id}
-                            aspectRatio={1}
-                            value={field.value}
-                            onChange={(val) => handleImageChange(field.name, val)}
-                            originalName={true}
-                          />
+                          <Input {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -347,10 +216,10 @@ export default function EditStaticMetaForm({ meta }) {
                   />
                   <FormField
                     control={control}
-                    name={`icons.icon.${index}.sizes`}
+                    name={`authors.${index}.url`}
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sizes</FormLabel>
+                      <FormItem className="grow">
+                        <FormLabel>URL</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -362,140 +231,49 @@ export default function EditStaticMetaForm({ meta }) {
                     type="button"
                     variant="outline"
                     size="icon"
-                    onClick={() => iconFields.remove(index)}
+                    className="mt-[22px] cursor-pointer"
+                    onClick={() => authorFields.remove(index)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               ))}
             </div>
-            <FormField
-              control={control}
-              name="icons.shortcut"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shortcut Icon</FormLabel>
-                  <FormControl>
-                    <ImageCropperInput
-                      key={field.name}
-                      aspectRatio={1}
-                      value={field.value}
-                      onChange={(val) => handleImageChange(field.name, val)}
-                      originalName={true}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="icons.apple"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Apple Icon</FormLabel>
-                  <FormControl>
-                    <ImageCropperInput
-                      key={field.name}
-                      aspectRatio={1}
-                      value={field.value}
-                      onChange={(val) => handleImageChange(field.name, val)}
-                      originalName={true}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium">Other Icons</h4>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => iconOtherFields.append({ rel: "", url: "", color: "" })}
-                >
-                  <Plus className="h-4 w-4 mr-2" /> Add
-                </Button>
-              </div>
-              {iconOtherFields.fields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <FormField
-                    control={control}
-                    name={`icons.other.${index}.rel`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Rel</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={control}
-                    name={`icons.other.${index}.url`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>URL</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            key={field.id}
-                            aspectRatio={1}
-                            value={field.value}
-                            onChange={(val) => handleImageChange(field.name, val)}
-                            originalName={true}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={control}
-                    name={`icons.other.${index}.color`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Color</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => iconOtherFields.remove(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
+            <Separator className="my-10" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={control}
+                name="creator"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Creator</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="publisher"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Publisher</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <FormField
-              control={control}
-              name="generator"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Generator</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
                 control={control}
                 name="formatDetection.email"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
                     <FormLabel>Email Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
@@ -507,7 +285,7 @@ export default function EditStaticMetaForm({ meta }) {
                 control={control}
                 name="formatDetection.address"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
                     <FormLabel>Address Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
@@ -519,7 +297,7 @@ export default function EditStaticMetaForm({ meta }) {
                 control={control}
                 name="formatDetection.telephone"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
                     <FormLabel>Telephone Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
@@ -528,58 +306,220 @@ export default function EditStaticMetaForm({ meta }) {
                 )}
               />
             </div>
-            <FormField
-              control={control}
-              name="pinterest.richPin"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                  <FormLabel>Pinterest Rich Pin</FormLabel>
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <Separator className="my-10" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={control}
+                name="generator"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Generator</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="applicationName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Application Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Separator className="my-10" />
             <div className="space-y-4">
-              <FormField
-                control={control}
-                name="twitter.site"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Twitter Site</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="twitter.creator"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Twitter Creator</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={control}
+                  name="openGraph.url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>OpenGraph URL</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="openGraph.siteName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Site Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="openGraph.locale"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Locale</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="openGraph.type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium">OpenGraph Images</h4>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => ogImageFields.append({ url: "", width: 0, height: 0, alt: "", type: "" })}
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Add Image
+                  </Button>
+                </div>
+                {ogImageFields.fields.map((field, index) => (
+                  <div key={field.id} className="flex flex-wrap items-start gap-4 mb-20">
+                    <FormField
+                      control={control}
+                      name={`openGraph.images.${index}.url`}
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>URL</FormLabel>
+                          <FormControl>
+                            <ImageCropperInput
+                              key={field.id}
+                              aspectRatio={1.9}
+                              format="jpg"
+                              value={field.value}
+                              onChange={(val) => handleImageChange(field.name, val)}
+                              originalName={true}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={control}
+                      name={`openGraph.images.${index}.width`}
+                      render={({ field }) => (
+                        <FormItem className="grow">
+                          <FormLabel>Width</FormLabel>
+                          <FormControl>
+                            <Input type="number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={control}
+                      name={`openGraph.images.${index}.height`}
+                      render={({ field }) => (
+                        <FormItem className="grow">
+                          <FormLabel>Height</FormLabel>
+                          <FormControl>
+                            <Input type="number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={control}
+                      name={`openGraph.images.${index}.alt`}
+                      render={({ field }) => (
+                        <FormItem className="grow">
+                          <FormLabel>Alt</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={control}
+                      name={`openGraph.images.${index}.type`}
+                      render={({ field }) => (
+                        <FormItem className="grow">
+                          <FormLabel>Type</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="mt-[22px] cursor-pointer"
+                      onClick={() => ogImageFields.remove(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Separator className="my-10" />
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={control}
+                  name="twitter.site"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Twitter Site</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="twitter.creator"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Twitter Creator</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="font-medium">Twitter Images</h4>
@@ -620,84 +560,32 @@ export default function EditStaticMetaForm({ meta }) {
                 ))}
               </div>
             </div>
+            <Separator className="my-10" />
             <div className="space-y-4">
-              <FormField
-                control={control}
-                name="openGraph.url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>OpenGraph URL</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="openGraph.siteName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Site Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="openGraph.locale"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Locale</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="openGraph.type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-medium">OpenGraph Images</h4>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => ogImageFields.append({ url: "", width: 0, height: 0, alt: "", type: "" })}
-                  >
-                    <Plus className="h-4 w-4 mr-2" /> Add Image
-                  </Button>
-                </div>
-                {ogImageFields.fields.map((field, index) => (
-                  <div key={field.id} className="grid grid-cols-1 md:grid-cols-6 gap-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium">Icons</h4>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => iconFields.append({ url: "", sizes: "" })}
+                >
+                  <Plus className="h-4 w-4 mr-2" /> Add Icon
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {iconFields.fields.map((field, index) => (
+                  <div key={field.id} className="flex flex-col gap-4">
                     <FormField
                       control={control}
-                      name={`openGraph.images.${index}.url`}
+                      name={`icons.icon.${index}.url`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>URL</FormLabel>
                           <FormControl>
                             <ImageCropperInput
                               key={field.id}
-                              aspectRatio={1.9}
-                              format="jpg"
+                              aspectRatio={1}
                               value={field.value}
                               onChange={(val) => handleImageChange(field.name, val)}
                               originalName={true}
@@ -707,154 +595,304 @@ export default function EditStaticMetaForm({ meta }) {
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={control}
-                      name={`openGraph.images.${index}.width`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Width</FormLabel>
-                          <FormControl>
-                            <Input type="number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={control}
-                      name={`openGraph.images.${index}.height`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Height</FormLabel>
-                          <FormControl>
-                            <Input type="number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={control}
-                      name={`openGraph.images.${index}.alt`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Alt</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={control}
-                      name={`openGraph.images.${index}.type`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Type</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => ogImageFields.remove(index)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex flex-wrap gap-4">
+                      <FormField
+                        control={control}
+                        name={`icons.icon.${index}.sizes`}
+                        render={({ field }) => (
+                          <FormItem className="grow">
+                            <FormLabel>Sizes</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="mt-[22px] cursor-pointer"
+                        onClick={() => iconFields.remove(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
+            <Separator className="my-10" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={control}
+                name="icons.shortcut"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Shortcut Icon</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput
+                        key={field.name}
+                        aspectRatio={1}
+                        value={field.value}
+                        onChange={(val) => handleImageChange(field.name, val)}
+                        originalName={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="icons.apple"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Apple Icon</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput
+                        key={field.name}
+                        aspectRatio={1}
+                        value={field.value}
+                        onChange={(val) => handleImageChange(field.name, val)}
+                        originalName={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-medium">Authors</h4>
+                <h4 className="font-medium">Other Icons</h4>
                 <Button
                   type="button"
                   variant="secondary"
                   size="sm"
-                  onClick={() => authorFields.append({ name: "", url: "" })}
+                  onClick={() => iconOtherFields.append({ rel: "", url: "", color: "" })}
                 >
-                  <Plus className="h-4 w-4 mr-2" /> Add Author
+                  <Plus className="h-4 w-4 mr-2" /> Add
                 </Button>
               </div>
-              {authorFields.fields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={control}
-                    name={`authors.${index}.name`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={control}
-                    name={`authors.${index}.url`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => authorFields.remove(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+                {iconOtherFields.fields.map((field, index) => (
+                  <Card key={field.id}>
+                    <CardContent className="flex flex-col gap-4">
+                      <FormField
+                        control={control}
+                        name={`icons.other.${index}.rel`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Rel</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={control}
+                        name={`icons.other.${index}.url`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>URL</FormLabel>
+                            <FormControl>
+                              <ImageCropperInput
+                                key={field.id}
+                                aspectRatio={1}
+                                value={field.value}
+                                onChange={(val) => handleImageChange(field.name, val)}
+                                originalName={true}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="flex flex-wrap gap-4">
+                        <FormField
+                          control={control}
+                          name={`icons.other.${index}.color`}
+                          render={({ field }) => (
+                            <FormItem className="grow">
+                              <FormLabel>Color</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="mt-[22px] cursor-pointer"
+                          onClick={() => iconOtherFields.remove(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
-            <MultiKeywordCombobox
-              label="Keywords"
-              value={watch("keywords")}
-              onChange={(val) => setValue("keywords", val, { shouldValidate: true })}
-            />
-            <FormField
-              control={control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea className="min-h-[120px]" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="title.default"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Default Title</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end">
-              <Button type="submit">Update Meta</Button>
+            <Separator className="my-10" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FormField
+                control={control}
+                name="verification.google"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Google Verification</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="verification.microsoft"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Microsoft Verification</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="verification.other.fb"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Facebook App ID</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Separator className="my-10" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FormField
+                control={control}
+                name="appleWebApp.title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Apple WebApp Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="appleWebApp.statusBarStyle"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status Bar Style</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="appleWebApp.capable"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
+                    <FormLabel>Capable</FormLabel>
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={control}
+                name="appleWebApp.startupImage.mainImageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Main Startup Image</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput
+                        key={field.name}
+                        value={field.value}
+                        onChange={(val) => handleImageChange(field.name, val)}
+                        originalName={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="appleWebApp.startupImage.url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Startup Image</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput
+                        key={field.name}
+                        value={field.value}
+                        onChange={(val) => handleImageChange(field.name, val)}
+                        originalName={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={control}
+                name="pinterest.richPin"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
+                    <FormLabel>Pinterest Rich Pin</FormLabel>
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+              <Button type="submit" className="cursor-pointer" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Updating..." : "Update Meta"}
+              </Button>
             </div>
           </form>
         </Form>
