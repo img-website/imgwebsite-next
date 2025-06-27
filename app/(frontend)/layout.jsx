@@ -21,8 +21,38 @@ export default async function RootLayout({ children }) {
     getSchema("Organization"),
   ]);
 
-  const toLd = (type, data) =>
-    data ? { "@context": "https://schema.org", "@type": type === "LocalBusiness2" ? "LocalBusiness" : type, ...data } : null;
+  const toLd = (type, data) => {
+    if (!data) return null;
+    const base = {
+      "@context": "https://schema.org",
+      "@type": type === "LocalBusiness2" ? "LocalBusiness" : type,
+    };
+    if (type === "Organization") {
+      const {
+        streetAddress,
+        addressLocality,
+        addressRegion,
+        postalCode,
+        addressCountry,
+        founders = [],
+        ...rest
+      } = data;
+      return {
+        ...base,
+        ...rest,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress,
+          addressLocality,
+          addressRegion,
+          postalCode,
+          addressCountry,
+        },
+        founders: founders.map((name) => ({ "@type": "Person", name })),
+      };
+    }
+    return { ...base, ...data };
+  };
 
   const LocalBusiness = toLd("LocalBusiness", lb);
   const LocalBusiness2 = toLd("LocalBusiness2", lb2);
@@ -31,24 +61,30 @@ export default async function RootLayout({ children }) {
   const isProd = process.env.NODE_ENV === 'production'
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(LocalBusiness).replace(/</g, '\\u003c'),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(LocalBusiness2).replace(/</g, '\\u003c'),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(Organization).replace(/</g, '\\u003c'),
-        }}
-      />
+      {LocalBusiness && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(LocalBusiness).replace(/</g, '\\u003c'),
+          }}
+        />
+      )}
+      {LocalBusiness2 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(LocalBusiness2).replace(/</g, '\\u003c'),
+          }}
+        />
+      )}
+      {Organization && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(Organization).replace(/</g, '\\u003c'),
+          }}
+        />
+      )}
         <Navbar/>
         <main>
         {children}
