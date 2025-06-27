@@ -233,16 +233,12 @@ const data = {
       team: "Meta & Schema",
       items: [
         {
-          title: "Corporation",
-          url: "/admin/schemas/corporation",
+          title: "Organization",
+          url: "/admin/schemas/organization",
         },
         {
           title: "WebPage",
           url: "/admin/schemas/webpage",
-        },
-        {
-          title: "Organization",
-          url: "/admin/schemas/organization",
         },
         {
           title: "LocalBusiness",
