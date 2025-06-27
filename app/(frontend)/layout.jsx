@@ -61,6 +61,51 @@ export default async function RootLayout({ children }) {
       }
       return org;
     }
+    if (type === "LocalBusiness" || type === "LocalBusiness2") {
+      const {
+        businessName,
+        image,
+        phoneNumber,
+        priceRange,
+        streetAddress,
+        addressLocality,
+        addressRegion,
+        postalCode,
+        addressCountry,
+        openingHours,
+        latitude,
+        longitude,
+        services = [],
+      } = data;
+
+      const lb = {
+        ...base,
+        name: businessName,
+        image,
+        telephone: phoneNumber,
+        priceRange,
+        "@id": `${process.env.NEXT_PUBLIC_BASE_URL}#localbusiness`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress,
+          addressLocality,
+          addressRegion,
+          postalCode,
+          addressCountry,
+        },
+      };
+      if (openingHours) lb.openingHours = openingHours;
+      if (latitude && longitude) {
+        lb.geo = {
+          "@type": "GeoCoordinates",
+          latitude,
+          longitude,
+        };
+      }
+      if (services.length) lb.services = services;
+      return lb;
+    }
     return { ...base, ...data };
   };
 

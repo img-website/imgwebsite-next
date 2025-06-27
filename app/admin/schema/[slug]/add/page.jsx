@@ -88,25 +88,35 @@ export default function Page() {
         return z.object({
           type: z.literal("LocalBusiness"),
           businessName: z.string().min(1, "Business name is required"),
-          address: z.string().optional(),
+          image: z.string().min(1, "Image is required"),
+          phoneNumber: z.string().min(1, "Phone number is required"),
+          priceRange: z.string().min(1, "Price range is required"),
+          streetAddress: z.string().min(1, "Street address is required"),
+          addressLocality: z.string().min(1, "City is required"),
+          addressRegion: z.string().min(1, "Region is required"),
+          postalCode: z.string().min(1, "Postal code is required"),
+          addressCountry: z.string().min(1, "Country code is required"),
           openingHours: z.string().optional(),
           latitude: z.number().optional(),
           longitude: z.number().optional(),
-          phoneNumber: z.string().optional(),
-          services: z.array(z.string()).optional(),
-          priceRange: z.string().optional()
+          services: z.array(z.string()).optional()
         });
       case "LocalBusiness2":
         return z.object({
           type: z.literal("LocalBusiness2"),
           businessName: z.string().min(1, "Business name is required"),
-          address: z.string().optional(),
+          image: z.string().min(1, "Image is required"),
+          phoneNumber: z.string().min(1, "Phone number is required"),
+          priceRange: z.string().min(1, "Price range is required"),
+          streetAddress: z.string().min(1, "Street address is required"),
+          addressLocality: z.string().min(1, "City is required"),
+          addressRegion: z.string().min(1, "Region is required"),
+          postalCode: z.string().min(1, "Postal code is required"),
+          addressCountry: z.string().min(1, "Country code is required"),
           openingHours: z.string().optional(),
           latitude: z.number().optional(),
           longitude: z.number().optional(),
-          phoneNumber: z.string().optional(),
-          services: z.array(z.string()).optional(),
-          priceRange: z.string().optional()
+          services: z.array(z.string()).optional()
         });
       case "BreadcrumbList":
         return z.object({
@@ -183,25 +193,35 @@ export default function Page() {
         return {
           type: "LocalBusiness",
           businessName: "",
-          address: "",
+          image: "",
+          phoneNumber: "",
+          priceRange: "",
+          streetAddress: "",
+          addressLocality: "",
+          addressRegion: "",
+          postalCode: "",
+          addressCountry: "",
           openingHours: "",
           latitude: "",
           longitude: "",
-          phoneNumber: "",
           services: [],
-          priceRange: "",
         };
       case "LocalBusiness2":
         return {
           type: "LocalBusiness2",
           businessName: "",
-          address: "",
+          image: "",
+          phoneNumber: "",
+          priceRange: "",
+          streetAddress: "",
+          addressLocality: "",
+          addressRegion: "",
+          postalCode: "",
+          addressCountry: "",
           openingHours: "",
           latitude: "",
           longitude: "",
-          phoneNumber: "",
           services: [],
-          priceRange: "",
         };
       case "BreadcrumbList":
         return { type: "BreadcrumbList", items: "" };
@@ -573,13 +593,68 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="address" control={form.control} render={({ field }) => (
+              <FormField name="image" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
+              <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <PhoneInput value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="priceRange" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price Range</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="streetAddress" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Region</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField name="postalCode" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Postal Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
               <FormField name="openingHours" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Opening Hours</FormLabel>
@@ -602,19 +677,6 @@ export default function Page() {
                 </FormItem>
               )} />
               <FormField
-                name="phoneNumber"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                      <PhoneInput value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
                 name="services"
                 control={form.control}
                 render={({ field }) => (
@@ -627,13 +689,6 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <FormField name="priceRange" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price Range</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
             </>
           )}
           {selected === "LocalBusiness2" && (
@@ -645,13 +700,68 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="address" control={form.control} render={({ field }) => (
+              <FormField name="image" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
+              <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <PhoneInput value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="priceRange" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price Range</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="streetAddress" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Region</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField name="postalCode" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Postal Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
               <FormField name="openingHours" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Opening Hours</FormLabel>
@@ -674,19 +784,6 @@ export default function Page() {
                 </FormItem>
               )} />
               <FormField
-                name="phoneNumber"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                      <PhoneInput value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
                 name="services"
                 control={form.control}
                 render={({ field }) => (
@@ -699,13 +796,6 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <FormField name="priceRange" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price Range</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
             </>
           )}
           {selected === "BreadcrumbList" && (
