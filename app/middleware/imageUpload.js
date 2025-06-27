@@ -24,7 +24,14 @@ async function validateImageType(buffer) {
       };
     }
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const validTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+      'image/x-icon',
+      'image/vnd.microsoft.icon'
+    ];
     if (!validTypes.includes(fileType.mime)) {
       return {
         success: false,
@@ -121,8 +128,13 @@ export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
       prefix = `uploads/${UPLOAD_DIRS.images}`;
       filename = storedName || `image-${Date.now()}.${ext || 'webp'}`;
       key = `${prefix}/${filename}`;
-      const processed = await sharp(Buffer.from(buffer)).toBuffer();
-      await uploadBuffer(processed, key, fileType.mime);
+
+      if (fileType.mime === 'image/x-icon' || fileType.mime === 'image/vnd.microsoft.icon' || ext === 'ico') {
+        await uploadBuffer(Buffer.from(buffer), key, fileType.mime);
+      } else {
+        const processed = await sharp(Buffer.from(buffer)).toBuffer();
+        await uploadBuffer(processed, key, fileType.mime);
+      }
     } else {
       key = `${prefix}/${filename}`;
       const processed = await sharp(Buffer.from(buffer))

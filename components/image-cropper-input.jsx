@@ -34,7 +34,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       case 'jpg':
         return 'image/jpeg';
       case 'ico':
-        return 'image/x-icon';
+        return 'image/x-icon,image/vnd.microsoft.icon';
       default:
         return 'image/*';
     }
