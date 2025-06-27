@@ -20,12 +20,12 @@ export async function GET(request) {
     }
     if (pageUrl) {
       const query = { pageUrl, isGlobal: false };
-      if (type) query.type = type;
-      const entry = await SchemaEntry.findOne(query).lean();
-      if (!entry) {
-        return NextResponse.json({ success: true, data: null });
+      if (type) {
+        const entry = await SchemaEntry.findOne({ ...query, type }).lean();
+        return NextResponse.json({ success: true, data: entry || null });
       }
-      return NextResponse.json({ success: true, data: entry });
+      const entries = await SchemaEntry.find(query).lean();
+      return NextResponse.json({ success: true, data: entries });
     }
     const entries = await SchemaEntry.find().sort({ created_date: -1 }).lean();
     return NextResponse.json({ success: true, data: entries });

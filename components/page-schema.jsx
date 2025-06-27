@@ -5,7 +5,7 @@ import schemaToLd from "@/helpers/schemaToLd";
 
 export default function PageSchema() {
   const pathname = usePathname();
-  const [ld, setLd] = useState(null);
+  const [lds, setLds] = useState([]);
 
   useEffect(() => {
     async function load() {
@@ -13,23 +13,24 @@ export default function PageSchema() {
         const res = await fetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(pathname)}`);
         const json = await res.json();
         if (json.success && json.data) {
-          const { type, data } = json.data;
-          setLd(schemaToLd(type, data));
+          const entries = Array.isArray(json.data) ? json.data : [json.data];
+          setLds(entries.map((e) => schemaToLd(e.type, e.data)).filter(Boolean));
         } else {
-          setLd(null);
+          setLds([]);
         }
       } catch {
-        setLd(null);
+        setLds([]);
       }
     }
     load();
   }, [pathname]);
 
-  if (!ld) return null;
-  return (
+  if (!lds.length) return null;
+  return lds.map((ld, idx) => (
     <script
+      key={idx}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }}
     />
-  );
+  ));
 }
