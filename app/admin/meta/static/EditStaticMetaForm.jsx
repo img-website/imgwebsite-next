@@ -414,10 +414,11 @@ export default function EditStaticMetaForm({ meta }) {
                           <FormControl>
                             <ImageCropperInput
                               key={field.id}
-                              aspectRatio={1.9}
-                              format="jpg"
+                              aspectRatio={1.9} // 1200x630
                               value={field.value}
+                              size="1200x630"
                               onChange={(val) => handleImageChange(field.name, val)}
+                              format="jpg"
                               originalName={true}
                             />
                           </FormControl>
@@ -540,10 +541,11 @@ export default function EditStaticMetaForm({ meta }) {
                       render={({ field }) => (
                           <ImageCropperInput
                             key={field.id}
-                            aspectRatio={1.9}
-                            format="jpg"
+                            aspectRatio={1.9} // 1200x630
                             value={field.value}
+                            size="1200x630"
                             onChange={(val) => handleImageChange(field.name, val)}
+                            format="jpg"
                             originalName={true}
                           />
                       )}
@@ -575,94 +577,104 @@ export default function EditStaticMetaForm({ meta }) {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {iconFields.fields.map((field, index) => (
-                  <div key={field.id} className="flex flex-col gap-4">
-                    <FormField
-                      control={control}
-                      name={`icons.icon.${index}.url`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>URL</FormLabel>
-                          <FormControl>
-                            <ImageCropperInput
-                              key={field.id}
-                              aspectRatio={1}
-                              value={field.value}
-                              onChange={(val) => handleImageChange(field.name, val)}
-                              originalName={true}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div className="flex flex-wrap gap-4">
+                  <Card key={field.id}>
+                    <CardContent className="flex flex-col gap-4">
                       <FormField
                         control={control}
-                        name={`icons.icon.${index}.sizes`}
+                        name={`icons.icon.${index}.url`}
                         render={({ field }) => (
-                          <FormItem className="grow">
-                            <FormLabel>Sizes</FormLabel>
+                          <FormItem>
+                            <FormLabel>URL</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <ImageCropperInput
+                                key={field.id}
+                                aspectRatio={1}
+                                value={field.value}
+                                onChange={(val) => handleImageChange(field.name, val)}
+                                originalName={true}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="mt-[22px] cursor-pointer"
-                        onClick={() => iconFields.remove(index)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                      <div className="flex flex-wrap gap-4">
+                        <FormField
+                          control={control}
+                          name={`icons.icon.${index}.sizes`}
+                          render={({ field }) => (
+                            <FormItem className="grow">
+                              <FormLabel>Sizes</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="mt-[22px] cursor-pointer"
+                          onClick={() => iconFields.remove(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
             <Separator className="my-10" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={control}
-                name="icons.shortcut"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Shortcut Icon</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        aspectRatio={1}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="icons.apple"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Apple Icon</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        aspectRatio={1}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <Card>
+                <CardContent>
+                  <FormField
+                    control={control}
+                    name="icons.shortcut"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Shortcut Icon</FormLabel>
+                        <FormControl>
+                          <ImageCropperInput
+                            key={field.name}
+                            aspectRatio={1}
+                            value={field.value}
+                            onChange={(val) => handleImageChange(field.name, val)}
+                            originalName={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <FormField
+                    control={control}
+                    name="icons.apple"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Apple Icon</FormLabel>
+                        <FormControl>
+                          <ImageCropperInput
+                            key={field.name}
+                            aspectRatio={1}
+                            value={field.value}
+                            onChange={(val) => handleImageChange(field.name, val)}
+                            originalName={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
             </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -825,42 +837,54 @@ export default function EditStaticMetaForm({ meta }) {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={control}
-                name="appleWebApp.startupImage.mainImageUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Main Startup Image</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name="appleWebApp.startupImage.url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Startup Image</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        key={field.name}
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <Card>
+                <CardContent>
+                  <FormField
+                    control={control}
+                    name="appleWebApp.startupImage.mainImageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Main Startup Image</FormLabel>
+                        <FormControl>
+                          <ImageCropperInput
+                            key={field.name}
+                            value={field.value}
+                            aspectRatio={0.766} // 768x1004
+                            size="768x1004"
+                            onChange={(val) => handleImageChange(field.name, val)}
+                            originalName={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <FormField
+                    control={control}
+                    name="appleWebApp.startupImage.url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Startup Image</FormLabel>
+                        <FormControl>
+                          <ImageCropperInput
+                            key={field.name}
+                            value={field.value}
+                            aspectRatio={0.765} // 1536x2008
+                            size="1536x2008"
+                            onChange={(val) => handleImageChange(field.name, val)}
+                            originalName={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
