@@ -125,6 +125,47 @@ export default function schemaToLd(type, data) {
       sameAs,
     };
   }
+  if (type === "WebPage") {
+    const {
+      pageTitle,
+      pageDescription,
+      pageUrl,
+      datePublished,
+      dateModified,
+    } = data;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const siteName = "IMGGlobalInfotech";
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${baseUrl}/#organization`,
+          url: baseUrl,
+          name: siteName,
+          sameAs: [],
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${baseUrl}/#website`,
+          url: baseUrl,
+          name: siteName,
+          publisher: { "@id": `${baseUrl}/#organization` },
+        },
+        {
+          "@type": "WebPage",
+          "@id": `${pageUrl}#webpage`,
+          url: pageUrl,
+          inLanguage: "en-US",
+          name: pageTitle,
+          isPartOf: { "@id": `${baseUrl}/#website` },
+          datePublished,
+          dateModified,
+          description: pageDescription,
+        },
+      ],
+    };
+  }
   if (type === "BreadcrumbList") {
     const { items = [] } = data;
     return {
