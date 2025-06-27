@@ -93,6 +93,18 @@ export default async function RootLayout({ children }) {
       };
       return lb;
     }
+    if (type === "BreadcrumbList") {
+      const { items = [] } = data;
+      return {
+        ...base,
+        itemListElement: items.map((it, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          name: it.name,
+          item: it.item,
+        })),
+      };
+    }
     return { ...base, ...data };
   };
 

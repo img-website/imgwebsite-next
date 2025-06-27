@@ -1,9 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -113,7 +114,14 @@ export default function Page() {
       case "BreadcrumbList":
         return z.object({
           type: z.literal("BreadcrumbList"),
-          items: z.string()
+          items: z
+            .array(
+              z.object({
+                name: z.string().min(1, "Name is required"),
+                item: z.string().url("Invalid URL").min(1, "URL is required"),
+              })
+            )
+            .min(1, "At least one item is required"),
         });
       case "Product":
         return z.object({
@@ -208,7 +216,7 @@ export default function Page() {
           addressCountry: "",
         };
       case "BreadcrumbList":
-        return { type: "BreadcrumbList", items: "" };
+        return { type: "BreadcrumbList", items: [] };
       case "Product":
         return {
           type: "Product",
@@ -251,6 +259,8 @@ export default function Page() {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+
+  const breadcrumbFields = useFieldArray({ control: form.control, name: "items" });
 
 
   const [entryId, setEntryId] = useState(null);
@@ -717,13 +727,58 @@ export default function Page() {
             </>
           )}
           {selected === "BreadcrumbList" && (
-            <FormField name="items" control={form.control} render={({ field }) => (
-              <FormItem>
-                <FormLabel>Breadcrumb Items (JSON)</FormLabel>
-                <FormControl><Textarea {...field} /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <FormLabel>Breadcrumb Items</FormLabel>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => breadcrumbFields.append({ name: "", item: "" })}
+                >
+                  <Plus className="h-4 w-4 mr-2" /> Add Item
+                </Button>
+              </div>
+              {breadcrumbFields.fields.map((field, index) => (
+                <div key={field.id} className="flex flex-wrap items-start gap-4">
+                  <FormField
+                    control={form.control}
+                    name={`items.${index}.name`}
+                    render={({ field }) => (
+                      <FormItem className="grow">
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`items.${index}.item`}
+                    render={({ field }) => (
+                      <FormItem className="grow">
+                        <FormLabel>URL</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className="mt-[22px] cursor-pointer"
+                    onClick={() => breadcrumbFields.remove(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
           )}
           {selected === "Product" && (
             <>
