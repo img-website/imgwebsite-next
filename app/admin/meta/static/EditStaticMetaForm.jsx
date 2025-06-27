@@ -283,6 +283,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormLabel>Main Startup Image</FormLabel>
                     <FormControl>
                       <ImageCropperInput
+                        key={field.name}
                         value={field.value}
                         onChange={(val) => handleImageChange(field.name, val)}
                         originalName={true}
@@ -300,6 +301,7 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormLabel>Startup Image</FormLabel>
                     <FormControl>
                       <ImageCropperInput
+                        key={field.name}
                         value={field.value}
                         onChange={(val) => handleImageChange(field.name, val)}
                         originalName={true}
@@ -332,6 +334,7 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormLabel>URL</FormLabel>
                         <FormControl>
                           <ImageCropperInput
+                            key={field.id}
                             aspectRatio={1}
                             value={field.value}
                             onChange={(val) => handleImageChange(field.name, val)}
@@ -374,6 +377,7 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormLabel>Shortcut Icon</FormLabel>
                   <FormControl>
                     <ImageCropperInput
+                      key={field.name}
                       aspectRatio={1}
                       value={field.value}
                       onChange={(val) => handleImageChange(field.name, val)}
@@ -392,6 +396,7 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormLabel>Apple Icon</FormLabel>
                   <FormControl>
                     <ImageCropperInput
+                      key={field.name}
                       aspectRatio={1}
                       value={field.value}
                       onChange={(val) => handleImageChange(field.name, val)}
@@ -437,6 +442,7 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormLabel>URL</FormLabel>
                         <FormControl>
                           <ImageCropperInput
+                            key={field.id}
                             aspectRatio={1}
                             value={field.value}
                             onChange={(val) => handleImageChange(field.name, val)}
@@ -592,13 +598,14 @@ export default function EditStaticMetaForm({ meta }) {
                       control={control}
                       name={`twitter.images.${index}`}
                       render={({ field }) => (
-                        <ImageCropperInput
-                          aspectRatio={1.9}
-                          format="jpg"
-                          value={field.value}
-                          onChange={(val) => handleImageChange(field.name, val)}
-                          originalName={true}
-                        />
+                          <ImageCropperInput
+                            key={field.id}
+                            aspectRatio={1.9}
+                            format="jpg"
+                            value={field.value}
+                            onChange={(val) => handleImageChange(field.name, val)}
+                            originalName={true}
+                          />
                       )}
                     />
                     <Button
@@ -688,6 +695,7 @@ export default function EditStaticMetaForm({ meta }) {
                           <FormLabel>URL</FormLabel>
                           <FormControl>
                             <ImageCropperInput
+                              key={field.id}
                               aspectRatio={1.9}
                               format="jpg"
                               value={field.value}

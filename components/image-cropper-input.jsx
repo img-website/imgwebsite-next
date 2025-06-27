@@ -90,8 +90,9 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
     }
   }, [value]);
 
-  // Clear preview and input when resetKey changes
+  // Clear preview and input only when a resetKey is explicitly provided
   useEffect(() => {
+    if (resetKey === undefined) return;
     setPreview(null);
     setImageSrc(null);
     setError(null);
