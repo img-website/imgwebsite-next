@@ -33,6 +33,8 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'image/webp';
       case 'jpg':
         return 'image/jpeg';
+      case 'ico':
+        return 'image/x-icon';
       default:
         return 'image/*';
     }
@@ -44,6 +46,8 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'Supported format: WebP only';
       case 'jpg':
         return 'Supported format: JPG/JPEG only';
+      case 'ico':
+        return 'Supported format: ICO only';
       default:
         return 'Supported formats: JPEG, PNG, GIF';
     }
@@ -55,12 +59,18 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
 
   const validateFileFormat = (file) => {
     if (!file) return false;
-    
+
     switch (format) {
       case 'webp':
         return file.type === 'image/webp';
       case 'jpg':
         return file.type === 'image/jpeg';
+      case 'ico':
+        return (
+          file.type === 'image/x-icon' ||
+          file.type === 'image/vnd.microsoft.icon' ||
+          file.name.toLowerCase().endsWith('.ico')
+        );
       default:
         return file.type.startsWith('image/');
     }
@@ -72,6 +82,8 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'Only WebP images are allowed';
       case 'jpg':
         return 'Only JPG/JPEG images are allowed';
+      case 'ico':
+        return 'Only ICO images are allowed';
       default:
         return 'Invalid image format';
     }
@@ -114,6 +126,11 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return;
       }
       setError(null);
+      if (format === 'ico') {
+        setPreview(URL.createObjectURL(file));
+        onChange([file]);
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result);
@@ -121,12 +138,16 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       };
       reader.readAsDataURL(file);
     }
-  };  const getMimeType = () => {
+  };
+
+  const getMimeType = () => {
     switch (format) {
       case 'webp':
         return 'image/webp';
       case 'jpg':
         return 'image/jpeg';
+      case 'ico':
+        return 'image/x-icon';
       default:
         return 'image/png'; // Default fallback
     }
@@ -138,6 +159,8 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return 'webp';
       case 'jpg':
         return 'jpg';
+      case 'ico':
+        return 'ico';
       default:
         return 'png';
     }
@@ -228,6 +251,11 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         return;
       }
       setError(null);
+      if (format === 'ico') {
+        setPreview(URL.createObjectURL(file));
+        onChange([file]);
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         setImageSrc(reader.result);

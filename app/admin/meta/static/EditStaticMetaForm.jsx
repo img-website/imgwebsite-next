@@ -644,6 +644,7 @@ export default function EditStaticMetaForm({ meta }) {
                             value={field.value}
                             onChange={(val) => handleImageChange(field.name, val)}
                             originalName={true}
+                            format="ico"
                           />
                         </FormControl>
                         <FormMessage />
