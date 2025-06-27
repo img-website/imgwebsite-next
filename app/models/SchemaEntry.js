@@ -17,7 +17,14 @@ const schemaEntrySchema = new mongoose.Schema(
     },
     pageUrl: {
       type: String,
-      required: true
+      required: function () {
+        return !this.isGlobal;
+      },
+      default: 'global'
+    },
+    isGlobal: {
+      type: Boolean,
+      default: false
     },
     data: {
       type: mongoose.Schema.Types.Mixed,

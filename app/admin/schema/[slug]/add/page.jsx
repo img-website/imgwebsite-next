@@ -33,17 +33,22 @@ const schemaOptions = [
   "Organization",
   "WebPage",
   "LocalBusiness",
+  "LocalBusiness2",
   "BreadcrumbList",
   "Product",
   "Service",
-  "NewsArticle"
+  "NewsArticle",
 ];
+const globalTypes = ["Organization", "LocalBusiness", "LocalBusiness2"];
 
 export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
-  const pageUrl = slug === "home" ? "/" : `/${slug}`;
   const [selected, setSelected] = useState("Organization");
+  const pageUrl = useMemo(
+    () => (globalTypes.includes(selected) ? "global" : slug === "home" ? "/" : `/${slug}`),
+    [slug, selected]
+  );
 
   const formSchema = useMemo(() => {
     switch (selected) {
@@ -82,6 +87,18 @@ export default function Page() {
       case "LocalBusiness":
         return z.object({
           type: z.literal("LocalBusiness"),
+          businessName: z.string().min(1, "Business name is required"),
+          address: z.string().optional(),
+          openingHours: z.string().optional(),
+          latitude: z.number().optional(),
+          longitude: z.number().optional(),
+          phoneNumber: z.string().optional(),
+          services: z.array(z.string()).optional(),
+          priceRange: z.string().optional()
+        });
+      case "LocalBusiness2":
+        return z.object({
+          type: z.literal("LocalBusiness2"),
           businessName: z.string().min(1, "Business name is required"),
           address: z.string().optional(),
           openingHours: z.string().optional(),
@@ -174,6 +191,18 @@ export default function Page() {
           services: [],
           priceRange: "",
         };
+      case "LocalBusiness2":
+        return {
+          type: "LocalBusiness2",
+          businessName: "",
+          address: "",
+          openingHours: "",
+          latitude: "",
+          longitude: "",
+          phoneNumber: "",
+          services: [],
+          priceRange: "",
+        };
       case "BreadcrumbList":
         return { type: "BreadcrumbList", items: "" };
       case "Product":
@@ -224,16 +253,28 @@ export default function Page() {
 
   useEffect(() => {
     async function load() {
-      const res = await apiFetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(pageUrl)}`);
+      const url = globalTypes.includes(selected)
+        ? `/api/v1/admin/schema?global=true&type=${selected}`
+        : `/api/v1/admin/schema?pageUrl=${encodeURIComponent(pageUrl)}`;
+      const res = await apiFetch(url);
       const json = await res.json();
       if (json.success && json.data) {
         setEntryId(json.data._id);
-        setSelected(json.data.type);
-        form.reset({ ...getDefaults(json.data.type), ...json.data.data, type: json.data.type });
+        if (json.data.type && json.data.type !== selected) {
+          setSelected(json.data.type);
+        }
+        form.reset({
+          ...getDefaults(json.data.type || selected),
+          ...json.data.data,
+          type: json.data.type || selected,
+        });
+      } else {
+        setEntryId(null);
+        form.reset(getDefaults(selected));
       }
     }
     load();
-  }, [pageUrl]);
+  }, [pageUrl, selected]);
 
   async function uploadFile(file) {
     const formData = new FormData();
@@ -271,7 +312,12 @@ export default function Page() {
   async function onSubmit(values) {
     const res = await apiFetch(`/api/v1/admin/schema`, {
       method: "PUT",
-      data: { pageUrl, type: values.type, data: values }
+      data: {
+        pageUrl,
+        type: values.type,
+        data: values,
+        isGlobal: globalTypes.includes(values.type),
+      }
     });
     const result = await res.json();
     if (result.success) {
@@ -519,6 +565,78 @@ export default function Page() {
             </>
           )}
           {selected === "LocalBusiness" && (
+            <>
+              <FormField name="businessName" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Business Name</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="address" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl><Textarea {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="openingHours" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Opening Hours</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="latitude" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Latitude</FormLabel>
+                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="longitude" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Longitude</FormLabel>
+                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField
+                name="phoneNumber"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <PhoneInput value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="services"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Services Offered</FormLabel>
+                    <FormControl>
+                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add service" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField name="priceRange" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price Range</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+            </>
+          )}
+          {selected === "LocalBusiness2" && (
             <>
               <FormField name="businessName" control={form.control} render={({ field }) => (
                 <FormItem>

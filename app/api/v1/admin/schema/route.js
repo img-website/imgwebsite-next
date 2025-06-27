@@ -8,8 +8,18 @@ export async function GET(request) {
     await connectDB();
     const { searchParams } = new URL(request.url);
     const pageUrl = searchParams.get('pageUrl');
+    const type = searchParams.get('type');
+    const isGlobal = searchParams.get('global') === 'true';
+    if (isGlobal) {
+      if (!type) {
+        const entries = await SchemaEntry.find({ isGlobal: true }).lean();
+        return NextResponse.json({ success: true, data: entries });
+      }
+      const entry = await SchemaEntry.findOne({ type, isGlobal: true }).lean();
+      return NextResponse.json({ success: true, data: entry || null });
+    }
     if (pageUrl) {
-      const entry = await SchemaEntry.findOne({ pageUrl }).lean();
+      const entry = await SchemaEntry.findOne({ pageUrl, isGlobal: false }).lean();
       if (!entry) {
         return NextResponse.json({ success: true, data: null });
       }
@@ -36,10 +46,15 @@ export async function POST(request) {
 
     await connectDB();
     const body = await request.json();
-    if (!body.type || !body.data || !body.pageUrl) {
-      return NextResponse.json({ success: false, error: 'Missing type, data or pageUrl' }, { status: 400 });
+    if (!body.type || !body.data) {
+      return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
     }
-    const entry = await SchemaEntry.create({ pageUrl: body.pageUrl, type: body.type, data: body.data });
+    const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
+    const pageUrl = isGlobal ? 'global' : body.pageUrl;
+    if (!isGlobal && !pageUrl) {
+      return NextResponse.json({ success: false, error: 'Missing pageUrl' }, { status: 400 });
+    }
+    const entry = await SchemaEntry.create({ pageUrl, type: body.type, data: body.data, isGlobal });
     return NextResponse.json({ success: true, data: entry }, { status: 201 });
   } catch (error) {
     console.error('Error creating schema entry:', error);
@@ -59,12 +74,17 @@ export async function PUT(request) {
     }
     await connectDB();
     const body = await request.json();
-    if (!body.type || !body.data || !body.pageUrl) {
-      return NextResponse.json({ success: false, error: 'Missing type, data or pageUrl' }, { status: 400 });
+    if (!body.type || !body.data) {
+      return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
+    }
+    const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
+    const pageUrl = isGlobal ? 'global' : body.pageUrl;
+    if (!isGlobal && !pageUrl) {
+      return NextResponse.json({ success: false, error: 'Missing pageUrl' }, { status: 400 });
     }
     const entry = await SchemaEntry.findOneAndUpdate(
-      { pageUrl: body.pageUrl },
-      { pageUrl: body.pageUrl, type: body.type, data: body.data },
+      isGlobal ? { type: body.type, isGlobal: true } : { pageUrl },
+      { pageUrl, type: body.type, data: body.data, isGlobal },
       { new: true, upsert: true }
     );
     return NextResponse.json({ success: true, data: entry });
