@@ -79,7 +79,6 @@ export default function Page() {
           type: z.literal("WebPage"),
           pageTitle: z.string().min(1, "Page title is required"),
           pageDescription: z.string().optional(),
-          pageUrl: z.string().url("Invalid URL"),
           datePublished: z.string().optional(),
           dateModified: z.string().optional(),
           authorName: z.string().optional()
@@ -129,7 +128,6 @@ export default function Page() {
           image: z.string().min(1, "Image is required"),
           description: z.string().min(1, "Description is required"),
           brandName: z.string().min(1, "Brand name is required"),
-          brandUrl: z.string().url("Invalid URL").min(1, "Brand URL is required"),
           ratingValue: z.string().min(1, "Rating value is required"),
           ratingCount: z.string().min(1, "Rating count is required"),
         });
@@ -140,8 +138,6 @@ export default function Page() {
           providerName: z.string().min(1, "Provider name is required"),
           providerUrl: z.string().url("Invalid URL").min(1, "Provider URL is required"),
           description: z.string().min(1, "Description is required"),
-          url: z.string().url("Invalid URL").min(1, "URL is required"),
-          mainEntityOfPage: z.string().url("Invalid URL").min(1, "Main page URL is required"),
           areaServed: z.string().min(1, "Area served is required"),
           serviceType: z.array(z.string().min(1)).min(1, "Service type is required"),
           sameAs: z.array(z.string().min(1)).min(1, "SameAs links are required"),
@@ -176,7 +172,6 @@ export default function Page() {
           type: "WebPage",
           pageTitle: "",
           pageDescription: "",
-          pageUrl,
           datePublished: "",
           dateModified: "",
           authorName: "",
@@ -216,7 +211,6 @@ export default function Page() {
           image: "",
           description: "",
           brandName: "",
-          brandUrl: "",
           ratingValue: "",
           ratingCount: "",
         };
@@ -227,8 +221,6 @@ export default function Page() {
           providerName: "",
           providerUrl: "",
           description: "",
-          url: "",
-          mainEntityOfPage: "",
           areaServed: "",
           serviceType: [],
           sameAs: [],
@@ -521,13 +513,6 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="pageUrl" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Page URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
               <FormField
                 name="datePublished"
                 control={form.control}
@@ -797,13 +782,6 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="brandUrl" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
               <div className="grid md:grid-cols-2 gap-4">
                 <FormField name="ratingValue" control={form.control} render={({ field }) => (
                   <FormItem>
@@ -849,20 +827,6 @@ export default function Page() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="url" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="mainEntityOfPage" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Main Entity Of Page</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />

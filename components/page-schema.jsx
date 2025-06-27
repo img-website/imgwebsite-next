@@ -15,7 +15,7 @@ export default function PageSchema() {
         const json = await res.json();
         if (json.success && json.data) {
           const entries = Array.isArray(json.data) ? json.data : [json.data];
-          setLds(entries.map((e) => schemaToLd(e.type, e.data)).filter(Boolean));
+          setLds(entries.map((e) => schemaToLd(e.type, e.data, clean)).filter(Boolean));
         } else {
           setLds([]);
         }

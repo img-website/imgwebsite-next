@@ -1,4 +1,4 @@
-export default function schemaToLd(type, data) {
+export default function schemaToLd(type, data, pagePath = '') {
   if (!data) return null;
   const base = {
     "@context": "https://schema.org",
@@ -78,6 +78,7 @@ export default function schemaToLd(type, data) {
       ratingValue,
       ratingCount,
     } = data;
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}${pagePath}`;
     return {
       "@context": "http://schema.org/",
       "@type": "Product",
@@ -87,7 +88,7 @@ export default function schemaToLd(type, data) {
       brand: {
         "@type": "Brand",
         name: brandName,
-        url: brandUrl,
+        url: brandUrl || url,
       },
       aggregateRating: {
         "@type": "AggregateRating",
@@ -108,6 +109,7 @@ export default function schemaToLd(type, data) {
       serviceType = [],
       sameAs = [],
     } = data;
+    const finalUrl = url || `${process.env.NEXT_PUBLIC_BASE_URL}${pagePath}`;
     return {
       "@context": "https://schema.org",
       "@type": "Service",
@@ -118,8 +120,8 @@ export default function schemaToLd(type, data) {
         url: providerUrl,
       },
       description,
-      url,
-      mainEntityOfPage,
+      url: finalUrl,
+      mainEntityOfPage: mainEntityOfPage || finalUrl,
       areaServed,
       serviceType,
       sameAs,
@@ -129,10 +131,10 @@ export default function schemaToLd(type, data) {
     const {
       pageTitle,
       pageDescription,
-      pageUrl,
       datePublished,
       dateModified,
     } = data;
+    const pageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pagePath}`;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const siteName = "IMGGlobalInfotech";
     return {
