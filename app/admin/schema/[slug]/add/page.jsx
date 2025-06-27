@@ -202,9 +202,6 @@ export default function Page() {
     defaultValues,
   });
 
-  useEffect(() => {
-    form.reset(getDefaults(selected));
-  }, [selected]);
 
   const [entryId, setEntryId] = useState(null);
 
@@ -246,7 +243,14 @@ export default function Page() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Schema Type</FormLabel>
-                <Select value={selected} onValueChange={(val) => { setSelected(val); field.onChange(val); }}>
+                <Select
+                  value={selected}
+                  onValueChange={(val) => {
+                    setSelected(val);
+                    form.reset(getDefaults(val));
+                    field.onChange(val);
+                  }}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select type" />
