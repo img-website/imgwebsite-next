@@ -72,10 +72,6 @@ export default async function RootLayout({ children }) {
         addressRegion,
         postalCode,
         addressCountry,
-        openingHours,
-        latitude,
-        longitude,
-        services = [],
       } = data;
 
       const lb = {
@@ -95,15 +91,6 @@ export default async function RootLayout({ children }) {
           addressCountry,
         },
       };
-      if (openingHours) lb.openingHours = openingHours;
-      if (latitude && longitude) {
-        lb.geo = {
-          "@type": "GeoCoordinates",
-          latitude,
-          longitude,
-        };
-      }
-      if (services.length) lb.services = services;
       return lb;
     }
     return { ...base, ...data };

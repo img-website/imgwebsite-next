@@ -95,11 +95,7 @@ export default function Page() {
           addressLocality: z.string().min(1, "City is required"),
           addressRegion: z.string().min(1, "Region is required"),
           postalCode: z.string().min(1, "Postal code is required"),
-          addressCountry: z.string().min(1, "Country code is required"),
-          openingHours: z.string().optional(),
-          latitude: z.number().optional(),
-          longitude: z.number().optional(),
-          services: z.array(z.string()).optional()
+          addressCountry: z.string().min(1, "Country code is required")
         });
       case "LocalBusiness2":
         return z.object({
@@ -112,11 +108,7 @@ export default function Page() {
           addressLocality: z.string().min(1, "City is required"),
           addressRegion: z.string().min(1, "Region is required"),
           postalCode: z.string().min(1, "Postal code is required"),
-          addressCountry: z.string().min(1, "Country code is required"),
-          openingHours: z.string().optional(),
-          latitude: z.number().optional(),
-          longitude: z.number().optional(),
-          services: z.array(z.string()).optional()
+          addressCountry: z.string().min(1, "Country code is required")
         });
       case "BreadcrumbList":
         return z.object({
@@ -201,10 +193,6 @@ export default function Page() {
           addressRegion: "",
           postalCode: "",
           addressCountry: "",
-          openingHours: "",
-          latitude: "",
-          longitude: "",
-          services: [],
         };
       case "LocalBusiness2":
         return {
@@ -218,10 +206,6 @@ export default function Page() {
           addressRegion: "",
           postalCode: "",
           addressCountry: "",
-          openingHours: "",
-          latitude: "",
-          longitude: "",
-          services: [],
         };
       case "BreadcrumbList":
         return { type: "BreadcrumbList", items: "" };
@@ -655,40 +639,7 @@ export default function Page() {
                   </FormItem>
                 )} />
               </div>
-              <FormField name="openingHours" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Opening Hours</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="latitude" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Latitude</FormLabel>
-                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="longitude" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Longitude</FormLabel>
-                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="services"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Services Offered</FormLabel>
-                    <FormControl>
-                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add service" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
             </>
           )}
           {selected === "LocalBusiness2" && (
@@ -762,40 +713,7 @@ export default function Page() {
                   </FormItem>
                 )} />
               </div>
-              <FormField name="openingHours" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Opening Hours</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="latitude" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Latitude</FormLabel>
-                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="longitude" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Longitude</FormLabel>
-                  <FormControl><Input type="number" step="any" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="services"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Services Offered</FormLabel>
-                    <FormControl>
-                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add service" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
             </>
           )}
           {selected === "BreadcrumbList" && (

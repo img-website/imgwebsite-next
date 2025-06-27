@@ -9,6 +9,7 @@ const schemaEntrySchema = new mongoose.Schema(
         'Organization',
         'WebPage',
         'LocalBusiness',
+        'LocalBusiness2',
         'BreadcrumbList',
         'Product',
         'Service',
