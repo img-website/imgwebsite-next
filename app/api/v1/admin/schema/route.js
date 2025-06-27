@@ -85,7 +85,9 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: 'Missing pageUrl' }, { status: 400 });
     }
     const entry = await SchemaEntry.findOneAndUpdate(
-      isGlobal ? { type: body.type, isGlobal: true } : { pageUrl },
+      isGlobal
+        ? { type: body.type, isGlobal: true }
+        : { pageUrl, type: body.type },
       { pageUrl, type: body.type, data: body.data, isGlobal },
       { new: true, upsert: true }
     );
