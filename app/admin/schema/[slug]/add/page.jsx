@@ -332,7 +332,7 @@ export default function Page() {
                   <FormItem>
                     <FormLabel>Contact Phone</FormLabel>
                     <FormControl>
-                      <PhoneInput value={field.value} onChange={field.onChange} />
+                      <PhoneInput value={field.value} onChange={field.onChange} autoFocus />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
