@@ -9,8 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
+import PhoneInput from "@/components/ui/phone-input";
 import {
   Select,
   SelectTrigger,
@@ -308,7 +307,7 @@ export default function Page() {
                   <FormItem>
                     <FormLabel>Contact Phone</FormLabel>
                     <FormControl>
-                      <PhoneInput defaultCountry="IN" value={field.value} onChange={field.onChange} />
+                      <PhoneInput value={field.value} onChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -451,7 +450,7 @@ export default function Page() {
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <PhoneInput defaultCountry="IN" value={field.value} onChange={field.onChange} />
+                      <PhoneInput value={field.value} onChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
