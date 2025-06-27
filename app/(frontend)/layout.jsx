@@ -121,6 +121,35 @@ export default async function RootLayout({ children }) {
         },
       };
     }
+    if (type === "Service") {
+      const {
+        name,
+        providerName,
+        providerUrl,
+        description,
+        url,
+        mainEntityOfPage,
+        areaServed,
+        serviceType = [],
+        sameAs = [],
+      } = data;
+      return {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name,
+        provider: {
+          "@type": "Organization",
+          name: providerName,
+          url: providerUrl,
+        },
+        description,
+        url,
+        mainEntityOfPage,
+        areaServed,
+        serviceType,
+        sameAs,
+      };
+    }
     if (type === "BreadcrumbList") {
       const { items = [] } = data;
       return {

@@ -137,11 +137,15 @@ export default function Page() {
       case "Service":
         return z.object({
           type: z.literal("Service"),
-          serviceName: z.string().min(1, "Service name is required"),
-          description: z.string().optional(),
-          areaServed: z.string().optional(),
-          serviceType: z.string().optional(),
-          providerName: z.string().optional()
+          name: z.string().min(1, "Name is required"),
+          providerName: z.string().min(1, "Provider name is required"),
+          providerUrl: z.string().url("Invalid URL").min(1, "Provider URL is required"),
+          description: z.string().min(1, "Description is required"),
+          url: z.string().url("Invalid URL").min(1, "URL is required"),
+          mainEntityOfPage: z.string().url("Invalid URL").min(1, "Main page URL is required"),
+          areaServed: z.string().min(1, "Area served is required"),
+          serviceType: z.array(z.string().min(1)).min(1, "Service type is required"),
+          sameAs: z.array(z.string().min(1)).min(1, "SameAs links are required"),
         });
       case "NewsArticle":
         return z.object({
@@ -230,11 +234,15 @@ export default function Page() {
       case "Service":
         return {
           type: "Service",
-          serviceName: "",
-          description: "",
-          areaServed: "",
-          serviceType: "",
+          name: "",
           providerName: "",
+          providerUrl: "",
+          description: "",
+          url: "",
+          mainEntityOfPage: "",
+          areaServed: "",
+          serviceType: [],
+          sameAs: [],
         };
       case "NewsArticle":
         return {
@@ -837,9 +845,23 @@ export default function Page() {
           )}
           {selected === "Service" && (
             <>
-              <FormField name="serviceName" control={form.control} render={({ field }) => (
+              <FormField name="name" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Service Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="providerName" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Provider Name</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="providerUrl" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Provider URL</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
@@ -848,6 +870,20 @@ export default function Page() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl><Textarea {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="url" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="mainEntityOfPage" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Main Entity Of Page</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -861,14 +897,18 @@ export default function Page() {
               <FormField name="serviceType" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Service Type</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
+                  <FormControl>
+                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add type" />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField name="providerName" control={form.control} render={({ field }) => (
+              <FormField name="sameAs" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Provider Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
+                  <FormLabel>SameAs Links</FormLabel>
+                  <FormControl>
+                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add link" />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
