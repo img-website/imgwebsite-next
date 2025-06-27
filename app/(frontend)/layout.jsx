@@ -34,10 +34,12 @@ export default async function RootLayout({ children }) {
         addressRegion,
         postalCode,
         addressCountry,
+        contactEmail,
+        contactPhone,
         founders = [],
         ...rest
       } = data;
-      return {
+      const org = {
         ...base,
         ...rest,
         address: {
@@ -50,6 +52,14 @@ export default async function RootLayout({ children }) {
         },
         founders: founders.map((name) => ({ "@type": "Person", name })),
       };
+      if (contactEmail || contactPhone) {
+        org.contactPoint = {
+          "@type": "ContactPoint",
+          ...(contactPhone ? { telephone: contactPhone } : {}),
+          ...(contactEmail ? { email: contactEmail } : {}),
+        };
+      }
+      return org;
     }
     return { ...base, ...data };
   };
