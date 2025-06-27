@@ -30,7 +30,7 @@ import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 
 const schemaOptions = [
-  "Corporation",
+  "Organization",
   "WebPage",
   "LocalBusiness",
   "BreadcrumbList",
@@ -43,20 +43,27 @@ export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
   const pageUrl = slug === "home" ? "/" : `/${slug}`;
-  const [selected, setSelected] = useState("Corporation");
+  const [selected, setSelected] = useState("Organization");
 
   const formSchema = useMemo(() => {
     switch (selected) {
-      case "Corporation":
+      case "Organization":
         return z.object({
-          type: z.literal("Corporation"),
+          type: z.literal("Organization"),
           name: z.string().min(1, "Name is required"),
+          legalName: z.string().optional(),
           url: z.string().url("Invalid URL"),
           logo: z.string().optional(),
           contactEmail: z.string().email("Invalid email").optional(),
           contactPhone: z.string().optional(),
           foundingDate: z.string().optional(),
-          address: z.string().optional(),
+          streetAddress: z.string().optional(),
+          addressLocality: z.string().optional(),
+          addressRegion: z.string().optional(),
+          postalCode: z.string().optional(),
+          addressCountry: z.string().optional(),
+          founders: z.array(z.string()).optional(),
+          areaServed: z.array(z.string()).optional(),
           sameAs: z.array(z.string()).optional()
         });
       case "WebPage":
@@ -123,16 +130,23 @@ export default function Page() {
   }, [selected]);
   const getDefaults = (type) => {
     switch (type) {
-      case "Corporation":
+      case "Organization":
         return {
-          type: "Corporation",
+          type: "Organization",
           name: "",
+          legalName: "",
           url: "",
           logo: "",
           contactEmail: "",
           contactPhone: "",
           foundingDate: "",
-          address: "",
+          streetAddress: "",
+          addressLocality: "",
+          addressRegion: "",
+          postalCode: "",
+          addressCountry: "",
+          founders: [],
+          areaServed: [],
           sameAs: [],
         };
       case "WebPage":
@@ -268,11 +282,18 @@ export default function Page() {
           />
 
           {/* Render dynamic fields */}
-          {selected === "Corporation" && (
+          {selected === "Organization" && (
             <>
               <FormField name="name" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="legalName" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Legal Name</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
@@ -330,10 +351,58 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <FormField name="address" control={form.control} render={({ field }) => (
+              <FormField name="streetAddress" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Region</FormLabel>
+                  <FormControl><Input {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField name="postalCode" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Postal Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country Code</FormLabel>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
+              <FormField name="founders" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Founders</FormLabel>
+                  <FormControl>
+                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add founder" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField name="areaServed" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Area Served</FormLabel>
+                  <FormControl>
+                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add code" />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />

@@ -6,7 +6,7 @@ const schemaEntrySchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        'Corporation',
+        'Organization',
         'WebPage',
         'LocalBusiness',
         'BreadcrumbList',

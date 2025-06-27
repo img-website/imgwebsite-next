@@ -167,9 +167,9 @@ export const metadata = {
     ]
   }
 
-  const corporationSchema = {
+  const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": "Corporation",
+    "@type": "Organization",
     "name": "IMG Global Infotech Inc.",
     "url": process.env.NEXT_PUBLIC_BASE_URL,
     "logo": "https://d1y41eupgbwbb2.cloudfront.net/images/xl-logo.webp",
@@ -277,7 +277,7 @@ export default function Home() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(corporationSchema).replace(/</g, '\\u003c'),
+            __html: JSON.stringify(organizationSchema).replace(/</g, '\\u003c'),
           }}
         />
         <script
