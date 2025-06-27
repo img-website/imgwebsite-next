@@ -51,20 +51,23 @@ export default function Page() {
         return z.object({
           type: z.literal("Organization"),
           name: z.string().min(1, "Name is required"),
-          legalName: z.string().optional(),
-          url: z.string().url("Invalid URL"),
-          logo: z.string().optional(),
-          contactEmail: z.string().email("Invalid email").optional(),
-          contactPhone: z.string().optional(),
-          foundingDate: z.string().optional(),
-          streetAddress: z.string().optional(),
-          addressLocality: z.string().optional(),
-          addressRegion: z.string().optional(),
-          postalCode: z.string().optional(),
-          addressCountry: z.string().optional(),
-          founders: z.array(z.string()).optional(),
-          areaServed: z.array(z.string()).optional(),
-          sameAs: z.array(z.string()).optional()
+          legalName: z.string().min(1, "Legal name is required"),
+          url: z.string().url("Invalid URL").min(1, "URL is required"),
+          logo: z.string().min(1, "Logo is required"),
+          contactEmail: z
+            .string()
+            .email("Invalid email")
+            .min(1, "Contact email is required"),
+          contactPhone: z.string().min(1, "Contact phone is required"),
+          foundingDate: z.string().min(1, "Founding date is required"),
+          streetAddress: z.string().min(1, "Street address is required"),
+          addressLocality: z.string().min(1, "City is required"),
+          addressRegion: z.string().min(1, "Region is required"),
+          postalCode: z.string().min(1, "Postal code is required"),
+          addressCountry: z.string().min(1, "Country code is required"),
+          founders: z.array(z.string().min(1)).min(1, "Founders are required"),
+          areaServed: z.array(z.string().min(1)).min(1, "Area served is required"),
+          sameAs: z.array(z.string().min(1)).min(1, "SameAs links are required"),
         });
       case "WebPage":
         return z.object({
@@ -232,6 +235,39 @@ export default function Page() {
     load();
   }, [pageUrl]);
 
+  async function uploadFile(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await apiFetch("/api/v1/admin/images", {
+      method: "POST",
+      body: formData,
+    });
+    const json = await res.json();
+    if (json.success && json.data?.storedName) {
+      return json.data.storedName;
+    }
+    throw new Error(json.error || "Failed to upload image");
+  }
+
+  async function handleImageChange(name, files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const nameOnly = await uploadFile(files[0]);
+        form.setValue(
+          name,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`,
+          { shouldValidate: true }
+        );
+      } catch (err) {
+        toast.error(err.message || "Image upload failed");
+      }
+    } else if (Array.isArray(files) && files.length === 0) {
+      form.setValue(name, "", { shouldValidate: true });
+    } else {
+      form.setValue(name, files, { shouldValidate: true });
+    }
+  }
+
   async function onSubmit(values) {
     const res = await apiFetch(`/api/v1/admin/schema`, {
       method: "PUT",
@@ -308,11 +344,14 @@ export default function Page() {
               <FormField
                 name="logo"
                 control={form.control}
-                render={({ field: { onChange, value } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Logo</FormLabel>
                     <FormControl>
-                      <ImageCropperInput value={value} onChange={onChange} />
+                      <ImageCropperInput
+                        value={field.value}
+                        onChange={(val) => handleImageChange(field.name, val)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
