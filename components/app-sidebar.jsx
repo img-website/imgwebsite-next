@@ -260,10 +260,6 @@ const data = {
           title: "Product",
           url: "/admin/schemas/product",
         },
-        {
-          title: "NewsArticle",
-          url: "/admin/schemas/newsarticle",
-        },
       ],
     },
     {

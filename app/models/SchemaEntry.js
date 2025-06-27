@@ -12,8 +12,7 @@ const schemaEntrySchema = new mongoose.Schema(
         'LocalBusiness2',
         'BreadcrumbList',
         'Product',
-        'Service',
-        'NewsArticle'
+        'Service'
       ]
     },
     pageUrl: {

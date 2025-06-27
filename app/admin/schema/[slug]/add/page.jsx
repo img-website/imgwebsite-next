@@ -38,7 +38,6 @@ const schemaOptions = [
   "BreadcrumbList",
   "Product",
   "Service",
-  "NewsArticle",
 ];
 const globalTypes = ["Organization", "LocalBusiness", "LocalBusiness2"];
 
@@ -147,16 +146,6 @@ export default function Page() {
           serviceType: z.array(z.string().min(1)).min(1, "Service type is required"),
           sameAs: z.array(z.string().min(1)).min(1, "SameAs links are required"),
         });
-      case "NewsArticle":
-        return z.object({
-          type: z.literal("NewsArticle"),
-          headline: z.string().min(1, "Headline is required"),
-          description: z.string().optional(),
-          authorName: z.string().optional(),
-          datePublished: z.string().optional(),
-          dateModified: z.string().optional(),
-          mainImageUrl: z.string().url().optional()
-        });
       default:
         return z.object({ type: z.string() });
     }
@@ -243,16 +232,6 @@ export default function Page() {
           areaServed: "",
           serviceType: [],
           sameAs: [],
-        };
-      case "NewsArticle":
-        return {
-          type: "NewsArticle",
-          headline: "",
-          description: "",
-          authorName: "",
-          datePublished: "",
-          dateModified: "",
-          mainImageUrl: "",
         };
       default:
         return { type };
@@ -909,64 +888,6 @@ export default function Page() {
                   <FormControl>
                     <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add link" />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            </>
-          )}
-          {selected === "NewsArticle" && (
-            <>
-              <FormField name="headline" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Headline</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="description" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="authorName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Author Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="datePublished"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date Published</FormLabel>
-                    <FormControl>
-                      <DatePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="dateModified"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date Modified</FormLabel>
-                    <FormControl>
-                      <DatePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField name="mainImageUrl" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Main Image URL</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />

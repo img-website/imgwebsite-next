@@ -2,8 +2,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
 import TawkToWidget from "@/components/TawkToWidget";
+import PageSchema from "@/components/page-schema";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import schemaToLd from "@/helpers/schemaToLd";
 export default async function RootLayout({ children }) {
   async function getSchema(type) {
     try {
@@ -21,153 +23,9 @@ export default async function RootLayout({ children }) {
     getSchema("Organization"),
   ]);
 
-  const toLd = (type, data) => {
-    if (!data) return null;
-    const base = {
-      "@context": "https://schema.org",
-      "@type": type === "LocalBusiness2" ? "LocalBusiness" : type,
-    };
-    if (type === "Organization") {
-      const {
-        streetAddress,
-        addressLocality,
-        addressRegion,
-        postalCode,
-        addressCountry,
-        contactEmail,
-        contactPhone,
-        founders = [],
-        ...rest
-      } = data;
-      const org = {
-        ...base,
-        ...rest,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress,
-          addressLocality,
-          addressRegion,
-          postalCode,
-          addressCountry,
-        },
-        founders: founders.map((name) => ({ "@type": "Person", name })),
-      };
-      if (contactEmail || contactPhone) {
-        org.contactPoint = {
-          "@type": "ContactPoint",
-          ...(contactPhone ? { telephone: contactPhone } : {}),
-          ...(contactEmail ? { email: contactEmail } : {}),
-        };
-      }
-      return org;
-    }
-    if (type === "LocalBusiness" || type === "LocalBusiness2") {
-      const {
-        businessName,
-        image,
-        phoneNumber,
-        priceRange,
-        streetAddress,
-        addressLocality,
-        addressRegion,
-        postalCode,
-        addressCountry,
-      } = data;
-
-      const lb = {
-        ...base,
-        name: businessName,
-        image,
-        telephone: phoneNumber,
-        priceRange,
-        "@id": `${process.env.NEXT_PUBLIC_BASE_URL}#localbusiness`,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress,
-          addressLocality,
-          addressRegion,
-          postalCode,
-          addressCountry,
-        },
-      };
-      return lb;
-    }
-    if (type === "Product") {
-      const {
-        name,
-        image,
-        description,
-        brandName,
-        brandUrl,
-        ratingValue,
-        ratingCount,
-      } = data;
-      return {
-        "@context": "http://schema.org/",
-        "@type": "Product",
-        name,
-        image,
-        description,
-        brand: {
-          "@type": "Brand",
-          name: brandName,
-          url: brandUrl,
-        },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue,
-          ratingCount,
-        },
-      };
-    }
-    if (type === "Service") {
-      const {
-        name,
-        providerName,
-        providerUrl,
-        description,
-        url,
-        mainEntityOfPage,
-        areaServed,
-        serviceType = [],
-        sameAs = [],
-      } = data;
-      return {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        name,
-        provider: {
-          "@type": "Organization",
-          name: providerName,
-          url: providerUrl,
-        },
-        description,
-        url,
-        mainEntityOfPage,
-        areaServed,
-        serviceType,
-        sameAs,
-      };
-    }
-    if (type === "BreadcrumbList") {
-      const { items = [] } = data;
-      return {
-        ...base,
-        itemListElement: items.map((it, idx) => ({
-          "@type": "ListItem",
-          position: idx + 1,
-          name: it.name,
-          item: it.item,
-        })),
-      };
-    }
-    return { ...base, ...data };
-  };
-
-  const LocalBusiness = toLd("LocalBusiness", lb);
-  const LocalBusiness2 = toLd("LocalBusiness2", lb2);
-  const Organization = toLd("Organization", org);
+  const LocalBusiness = schemaToLd("LocalBusiness", lb);
+  const LocalBusiness2 = schemaToLd("LocalBusiness2", lb2);
+  const Organization = schemaToLd("Organization", org);
 
   const isProd = process.env.NODE_ENV === 'production'
   return (
@@ -188,14 +46,15 @@ export default async function RootLayout({ children }) {
           }}
         />
       )}
-      {Organization && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(Organization).replace(/</g, '\\u003c'),
-          }}
-        />
-      )}
+        {Organization && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(Organization).replace(/</g, '\\u003c'),
+            }}
+          />
+        )}
+        <PageSchema />
         <Navbar/>
         <main>
         {children}
