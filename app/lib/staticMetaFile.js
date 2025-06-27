@@ -26,9 +26,16 @@ export async function readStaticMeta() {
 }
 
 export async function readStaticMetaWithNotice() {
-  const wasCreated = await ensureStaticMetaFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return { meta: JSON.parse(data || '{}'), wasCreated };
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return { meta: JSON.parse(data || '{}'), wasCreated: false };
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const { meta } = await syncStaticMetaFromDB();
+      return { meta, wasCreated: true };
+    }
+    throw err;
+  }
 }
 
 export async function writeStaticMeta(meta) {
