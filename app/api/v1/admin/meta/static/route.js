@@ -1,17 +1,26 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import StaticMeta from '@/app/models/StaticMeta';
+import {
+  readStaticMetaWithNotice,
+  syncStaticMetaFromDB,
+} from '@/app/lib/staticMetaFile';
 import { staticMetaSchema } from '@/app/lib/validations/staticMeta';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 export async function GET() {
   try {
-    await connectDB();
-    const meta = await StaticMeta.findOne().lean();
-    if (!meta) {
+    const { meta, wasCreated } = await readStaticMetaWithNotice();
+    if (!meta || Object.keys(meta).length === 0) {
       return NextResponse.json({ success: false, error: 'Static meta not found' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, data: meta });
+    return NextResponse.json({
+      success: true,
+      data: meta,
+      ...(wasCreated && {
+        notice: 'Static meta JSON file was missing and has been recreated.',
+      }),
+    });
   } catch (error) {
     console.error('Error fetching static meta:', error);
     return NextResponse.json({ success: false, error: 'Error fetching static meta' }, { status: 500 });
@@ -54,7 +63,14 @@ export async function PUT(request) {
       Object.assign(meta, data);
       await meta.save();
     }
-    return NextResponse.json({ success: true, data: meta });
+    const { wasCreated } = await syncStaticMetaFromDB();
+    return NextResponse.json({
+      success: true,
+      data: meta,
+      ...(wasCreated && {
+        notice: 'Static meta JSON file was missing and has been recreated.',
+      }),
+    });
   } catch (error) {
     console.error('Error updating static meta:', error);
     return NextResponse.json({ success: false, error: 'Error updating static meta' }, { status: 500 });
