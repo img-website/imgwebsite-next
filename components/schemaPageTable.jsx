@@ -75,6 +75,10 @@ export const columns = [
     enableHiding: false,
   },
   {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
     accessorKey: "url",
     header: "URL",
     cell: ({ row }) => (

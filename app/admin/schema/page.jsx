@@ -8,10 +8,9 @@ async function getPages() {
 
 export default async function Page() {
   const pages = await getPages();
-  const data = pages.map(url => ({ url }));
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <SchemaPageTable data={data} />
+      <SchemaPageTable data={pages} />
     </div>
   );
 }

@@ -10,12 +10,11 @@ export default function PageSchema() {
   useEffect(() => {
     async function load() {
       try {
-        const clean = pathname.replace(/\.php$/, '');
-        const res = await fetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(clean)}`);
+        const res = await fetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(pathname)}`);
         const json = await res.json();
         if (json.success && json.data) {
           const entries = Array.isArray(json.data) ? json.data : [json.data];
-          setLds(entries.map((e) => schemaToLd(e.type, e.data, clean)).filter(Boolean));
+          setLds(entries.map((e) => schemaToLd(e.type, e.data, pathname)).filter(Boolean));
         } else {
           setLds([]);
         }
