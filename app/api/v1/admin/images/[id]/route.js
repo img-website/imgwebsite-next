@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Image from '@/app/models/Image';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
+import { deleteObject } from '@/lib/s3';
+import slugify from 'slugify';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 // GET single image
@@ -39,13 +41,28 @@ export async function PUT(request, { params }) {
     const formData = await request.formData();
     const file = formData.get('file');
     if (file && typeof file !== 'string') {
-      // Use the existing storedName for the new upload
-      const uploadRes = await uploadBlogImage(file, 'images', undefined, imageDoc.storedName);
+      const ext = file.name.split('.').pop();
+      const base = file.name.replace(/\.[^/.]+$/, '');
+      let slug = slugify(base, { lower: true, strict: true });
+      if (!slug || slug === 'undefined') {
+        slug = `image-${Date.now()}`;
+      }
+      let storedName = ext ? `${slug}.${ext}` : slug;
+      let counter = 1;
+      while (await Image.findOne({ storedName })) {
+        storedName = ext ? `${slug}-${counter}.${ext}` : `${slug}-${counter}`;
+        counter += 1;
+      }
+
+      const uploadRes = await uploadBlogImage(file, 'images', ext, storedName);
       if (!uploadRes.success) {
         return NextResponse.json({ success: false, error: uploadRes.error }, { status: 400 });
       }
+      if (imageDoc.storedName) {
+        await deleteObject(`uploads/images/${imageDoc.storedName}`).catch(() => {});
+      }
+      imageDoc.storedName = storedName;
     }
-    // No need to update storedName, just update updatedAt
     imageDoc.updatedAt = new Date();
     await imageDoc.save();
     return NextResponse.json({ success: true, data: imageDoc });
