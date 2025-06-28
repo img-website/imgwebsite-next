@@ -4,6 +4,7 @@
 
 import mongoose from 'mongoose';
 import Blog from './app/models/Blog.js';
+import { notifyBlog } from './app/lib/blogNotification.js';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });
@@ -29,6 +30,7 @@ async function publishScheduledBlogs() {
   for (const blog of blogs) {
     blog.status = 2; // Change status to published
     await blog.save();
+    await notifyBlog(blog);
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
 }

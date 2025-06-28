@@ -7,6 +7,7 @@ import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
+import { notifyBlog } from '@/app/lib/blogNotification';
 
 export async function GET(request) {
   try {
@@ -182,6 +183,10 @@ export async function POST(request) {
     };
 
     const blog = await Blog.create(blogData);
+
+    if (statusValue === 2) {
+      await notifyBlog(blog);
+    }
 
     return NextResponse.json({ success: true, data: blog }, { status: 201 });
   } catch (error) {

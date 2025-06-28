@@ -543,3 +543,4 @@ export async function sendLeadEmail(lead) {
     };
   }
 }
+export { queueEmail };
