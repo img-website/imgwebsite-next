@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
@@ -44,7 +44,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -53,6 +53,17 @@ import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useParams, useRouter } from "next/navigation";
 import TinyMCEEditor from "@/components/TinyMCEEditor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+const faqEditorInit = {
+  menubar: false,
+  menu: false,
+  plugins: ["lists", "link"],
+  toolbar: "bold italic underline strikethrough | bullist numlist | link",
+  quickbars_selection_toolbar: false,
+  contextmenu: false,
+  valid_elements: "p,strong/b,em/i,u,strike,ul,ol,li,br,a,a[href|target=_blank]",
+  paste_as_text: true,
+};
 
 // Helper to check if image is present (File or preview URL)
 function isImagePresent(val) {
@@ -93,6 +104,7 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
+      faqs: z.array(z.object({ question: z.string().min(1, "Question is required"), answer: z.string().min(1, "Answer is required") })).optional(),
       status: z.string().default("4"),
       publishedDateTime: z.string().min(1, { message: "Published date & time is required" }),
       bgColorStatus: z.boolean().default(false),
@@ -121,6 +133,7 @@ function getBlogFormSchema(status, bgColorStatus) {
       metaOgDescription: z.string().min(10, { message: "Meta OG description must be at least 10 characters" }).max(500),
       metaXTitle: z.string().min(2, { message: "Meta X title must be at least 2 characters" }).max(200),
       metaXDescription: z.string().min(10, { message: "Meta X description must be at least 10 characters" }).max(500),
+      faqs: z.array(z.object({ question: z.string().min(1, "Question is required"), answer: z.string().min(1, "Answer is required") })).optional(),
       status: z.string().default("2"),
       publishedDateTime: z.string().optional(),
       bgColorStatus: z.boolean().default(false),
@@ -164,12 +177,14 @@ export default function Page() {
       metaOgDescription: "",
       metaXTitle: "",
       metaXDescription: "",
+      faqs: [{ question: "", answer: "" }],
       status: "1",
       publishedDateTime: "",
       bgColorStatus: false,
       bgColor: "",
     },
   });
+  const faqFields = useFieldArray({ control: form.control, name: "faqs" });
 
   // Watch bgColorStatus and update state
   useEffect(() => {
@@ -253,6 +268,7 @@ export default function Page() {
           metaOgDescription: blog.meta_og_description || "",
           metaXTitle: blog.meta_x_title || "",
           metaXDescription: blog.meta_x_description || "",
+          faqs: Array.isArray(blog.faqs) && blog.faqs.length ? blog.faqs : [{ question: "", answer: "" }],
           status: String(blog.status ?? 1),
           publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
           bgColorStatus: blog.bg_color_status ?? false,
@@ -293,6 +309,7 @@ export default function Page() {
       if (!isDraft || data.metaOgDescription !== undefined) formData.append("metaOgDescription", data.metaOgDescription || "");
       if (!isDraft || data.metaXTitle !== undefined) formData.append("metaXTitle", data.metaXTitle || "");
       if (!isDraft || data.metaXDescription !== undefined) formData.append("metaXDescription", data.metaXDescription || "");
+      if (data.faqs && data.faqs.length) formData.append("faqs", JSON.stringify(data.faqs));
       // Always send status as number
       formData.append("status", Number(data.status));
       if (data.publishedDateTime !== undefined) formData.append("publishedDateTime", data.publishedDateTime || "");
@@ -794,8 +811,48 @@ export default function Page() {
                           </FormItem>
                         )}
                       />
-                    </div> 
-                    <Separator className="my-6" />                 
+                    </div>
+                    <div className="w-full px-3 space-y-4">
+                      {faqFields.fields.map((field, index) => (
+                        <div key={field.id} className="border p-4 rounded-md space-y-4">
+                          <div className="flex flex-wrap">
+                            <FormField
+                              control={form.control}
+                              name={`faqs.${index}.question`}
+                              render={({ field }) => (
+                                <FormItem className="grow mr-4">
+                                  <FormLabel>Question</FormLabel>
+                                  <FormControl>
+                                    <Input {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button type="button" variant="outline" size="icon" className="mt-[22px] cursor-pointer" onClick={() => faqFields.remove(index)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <FormField
+                            control={form.control}
+                            name={`faqs.${index}.answer`}
+                            render={({ field }) => (
+                              <FormItem className="[&_.tox-statusbar]:!hidden">
+                                <FormLabel>Answer</FormLabel>
+                                <FormControl>
+                                  <TinyMCEEditor value={field.value} onChange={field.onChange} init={faqEditorInit} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      ))}
+                      <Button type="button" variant="secondary" size="sm" onClick={() => faqFields.append({ question: '', answer: '' })}>
+                        <Plus className="h-4 w-4 mr-2" /> Add FAQ
+                      </Button>
+                    </div>
+                    <Separator className="my-6" />
                     <div className="md:w-1/3 w-full px-3">
                       <FormField
                         control={form.control}

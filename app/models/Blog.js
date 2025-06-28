@@ -100,6 +100,12 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: function() { return this.status !== 1; },
     },
+    faqs: [
+      {
+        question: String,
+        answer: String
+      }
+    ],
     published_date_time: Date,
     bg_color_status: {
       type: Boolean,

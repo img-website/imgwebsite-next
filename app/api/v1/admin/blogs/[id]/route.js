@@ -145,6 +145,15 @@ export async function PUT(request, { params }) {
         .filter((k) => k);
     }
 
+    const faqsString = formData.get('faqs');
+    if (faqsString !== null) {
+      try {
+        blog.faqs = faqsString ? JSON.parse(faqsString) : [];
+      } catch {
+        return NextResponse.json({ success: false, error: 'Invalid FAQs format' }, { status: 400 });
+      }
+    }
+
     const fields = {
       category: 'category',
       title: 'title',

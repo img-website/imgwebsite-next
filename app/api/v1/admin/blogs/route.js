@@ -142,6 +142,16 @@ export async function POST(request) {
       .map((k) => k.trim())
       .filter((k) => k);
 
+    let faqs = [];
+    const faqsString = formData.get('faqs');
+    if (faqsString) {
+      try {
+        faqs = JSON.parse(faqsString);
+      } catch {
+        return NextResponse.json({ success: false, error: 'Invalid FAQs format' }, { status: 400 });
+      }
+    }
+
     const blogData = {
       category: formData.get('category'),
       title: formData.get('title'),
@@ -164,6 +174,7 @@ export async function POST(request) {
       meta_og_description: formData.get('metaOgDescription'),
       meta_x_title: formData.get('metaXTitle'),
       meta_x_description: formData.get('metaXDescription'),
+      faqs,
       status: statusValue,
       published_date_time: formData.get('publishedDateTime') ? new Date(formData.get('publishedDateTime')) : null,
       bg_color_status: formData.get('bgColorStatus') === 'true',
