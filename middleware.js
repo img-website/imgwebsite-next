@@ -35,7 +35,7 @@ export async function middleware(request) {
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self' https://cdn.tiny.cloud;" +
-      " connect-src 'self' https://fcm.googleapis.com https://firebaseinstallations.googleapis.com;" +
+      " connect-src 'self' https://fcm.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com;" +
       " img-src 'self' https://cdn.tiny.cloud blob: data: https:;" +
       " script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud;" +
       " style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud;" +

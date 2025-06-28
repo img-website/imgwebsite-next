@@ -61,3 +61,8 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 When a blog is published, subscribers receive a push notification and an email
 if they're in the newsletter list.
+
+The app's Content Security Policy must allow connections to Firebase domains.
+The default configuration already includes `https://fcm.googleapis.com`,
+`https://firebaseinstallations.googleapis.com` and
+`https://fcmregistrations.googleapis.com`.
