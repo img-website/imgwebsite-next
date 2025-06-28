@@ -3,6 +3,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useMemo, useEffect } from "react";
+import { getCookie, setCookie } from "cookies-next";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -44,7 +45,19 @@ const globalTypes = ["Organization", "LocalBusiness", "LocalBusiness2"];
 export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
-  const [selected, setSelected] = useState("Organization");
+  const [selected, setSelected] = useState(() => {
+    const saved = getCookie(`schemaType_${slug}`);
+    return saved && schemaOptions.includes(saved) ? saved : "Organization";
+  });
+
+  useEffect(() => {
+    if (slug && selected) {
+      setCookie(`schemaType_${slug}`, selected, {
+        maxAge: 7 * 24 * 60 * 60,
+        path: "/",
+      });
+    }
+  }, [selected, slug]);
   const pageUrl = useMemo(
     () => (globalTypes.includes(selected) ? "global" : slug === "home" ? "/" : `/${slug}`),
     [slug, selected]
