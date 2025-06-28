@@ -181,13 +181,6 @@ const data = {
       ],
     },
     {
-      title: "Upcoming Leads",
-      url: "/admin/leads/upcoming",
-      icon: MonitorDown,
-      team: "Leads & Contacts",
-      type: "link"
-    },
-    {
       title: "Career Leads",
       url: "/admin/leads/career",
       icon: UserSearch,

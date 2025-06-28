@@ -27,7 +27,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -49,8 +48,6 @@ import { getPublicUrl } from "@/lib/s3";
 
 function LeadActions({ lead }) {
   const router = useRouter();
-  const [openAssign, setOpenAssign] = React.useState(false);
-  const [assignTo, setAssignTo] = React.useState(lead.assign_to || "");
   const [openAttachments, setOpenAttachments] = React.useState(false);
 
   const handleStatusChange = async (status) => {
@@ -73,49 +70,8 @@ function LeadActions({ lead }) {
     }
   };
 
-  const handleAssign = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("assign_to", assignTo);
-      formData.append("assigned_date", new Date().toISOString());
-      const res = await apiFetch(`/api/v1/admin/leads/${lead.id}`, {
-        method: "PUT",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Lead assigned");
-        router.refresh();
-      } else {
-        toast.error(data.error || "Failed to assign lead");
-      }
-    } catch (error) {
-      toast.error("Failed to assign lead");
-    } finally {
-      setOpenAssign(false);
-    }
-  };
-
   return (
     <>
-      <Dialog open={openAssign} onOpenChange={setOpenAssign}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Assign Lead</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={assignTo}
-            onChange={(e) => setAssignTo(e.target.value)}
-            placeholder="Admin ID"
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setOpenAssign(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleAssign}>Assign</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
       <Dialog open={openAttachments} onOpenChange={setOpenAttachments}>
         <DialogContent>
           <DialogHeader>
@@ -166,10 +122,6 @@ function LeadActions({ lead }) {
               Attachments
             </DropdownMenuItem>
           )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setOpenAssign(true)}>
-            Assign To
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
