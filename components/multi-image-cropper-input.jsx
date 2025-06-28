@@ -27,13 +27,15 @@ function MultiImageCropperInput({ aspectRatio = 1, value = [], onChange, classNa
   const [realFileName, setRealFileName] = useState("");
   const [images, setImages] = useState([]); // {file, preview}
 
-  // Initialize previews from value while avoiding infinite loops
+  // Initialize previews from incoming value while avoiding loops
   useEffect(() => {
-    if (!Array.isArray(value)) return;
+    if (!Array.isArray(value)) {
+      setImages([]);
+      return;
+    }
 
     const currentFiles = images.map((img) => img.file);
     let changed = value.length !== currentFiles.length;
-
     if (!changed) {
       for (let i = 0; i < value.length; i += 1) {
         if (value[i] !== currentFiles[i]) {
@@ -61,7 +63,7 @@ function MultiImageCropperInput({ aspectRatio = 1, value = [], onChange, classNa
     } else {
       setImages([]);
     }
-  }, [value, images]);
+  }, [value]);
 
   const getAcceptedTypes = () => {
     switch (format) {
