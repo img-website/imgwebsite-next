@@ -926,7 +926,7 @@ export default function Page() {
                     control={form.control}
                     name={`faqs.${index}.answer`}
                     render={({ field }) => (
-                      <FormItem className="[&_.tox-statusbar__branding]:!hidden">
+                      <FormItem className="[&_.tox-statusbar]:!hidden">
                         <FormLabel>Answer</FormLabel>
                         <FormControl>
                           <TinyMCEEditor
