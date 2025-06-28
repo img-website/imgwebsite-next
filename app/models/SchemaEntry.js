@@ -11,7 +11,8 @@ const schemaEntrySchema = new mongoose.Schema(
         'LocalBusiness2',
         'BreadcrumbList',
         'Product',
-        'Service'
+        'Service',
+        'FAQPage'
       ],
       required: function () {
         return this.isGlobal;
