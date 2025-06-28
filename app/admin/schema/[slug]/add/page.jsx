@@ -45,10 +45,14 @@ const globalTypes = ["Organization", "LocalBusiness", "LocalBusiness2"];
 export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
-  const [selected, setSelected] = useState(() => {
+  const [selected, setSelected] = useState("Organization");
+
+  useEffect(() => {
     const saved = getCookie(`schemaType_${slug}`);
-    return saved && schemaOptions.includes(saved) ? saved : "Organization";
-  });
+    if (saved && schemaOptions.includes(saved)) {
+      setSelected(saved);
+    }
+  }, [slug]);
 
   useEffect(() => {
     if (slug && selected) {
