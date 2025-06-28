@@ -22,7 +22,6 @@ export default function TinyMCEEditor({ value, onChange, ...props }) {
         ],
         toolbar:
           'undo redo | accordion accordionremove | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        ...props.init,
         menubar: 'file edit view insert format tools table',
         onboarding: false,
         toolbar_mode: 'sliding',
@@ -30,7 +29,8 @@ export default function TinyMCEEditor({ value, onChange, ...props }) {
         sticky_toolbar: true,
         contextmenu: '*[*]',
         quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-        extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]'
+        extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]',
+        ...props.init
       }}
       onEditorChange={onChange}
       {...props}

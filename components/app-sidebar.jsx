@@ -234,13 +234,6 @@ const data = {
       type: "link"
     },
     {
-      title: "FAQs",
-      url: "/admin/faqs",
-      icon: Quote,
-      team: "Meta & Schema",
-      type: "link"
-    },
-    {
       title: "Redirections",
       url: "#",
       icon: Split,

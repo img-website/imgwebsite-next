@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import TinyMCEEditor from "@/components/TinyMCEEditor";
 import { DatePicker } from "@/components/ui/date-picker";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
@@ -27,6 +28,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+
+const faqEditorInit = {
+  menubar: false,
+  menu: false,
+  plugins: ["lists", "link"],
+  toolbar: "bold italic underline strikethrough | bullist numlist | link",
+  quickbars_selection_toolbar: false,
+  contextmenu: false,
+  valid_elements: "p,strong/b,em/i,u,strike,ul,ol,li,br,a,a[href|target=_blank]",
+  paste_as_text: true,
+};
 import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 
@@ -38,6 +50,7 @@ const schemaOptions = [
   "BreadcrumbList",
   "Product",
   "Service",
+  "FAQPage",
 ];
 const globalTypes = ["Organization", "LocalBusiness", "LocalBusiness2"];
 
@@ -140,6 +153,18 @@ export default function Page() {
           serviceType: z.array(z.string().min(1)).min(1, "Service type is required"),
           sameAs: z.array(z.string().min(1)).min(1, "SameAs links are required"),
         });
+      case "FAQPage":
+        return z.object({
+          type: z.literal("FAQPage"),
+          faqs: z
+            .array(
+              z.object({
+                question: z.string().min(1, "Question is required"),
+                answer: z.string().min(1, "Answer is required"),
+              })
+            )
+            .min(1, "Add at least one FAQ"),
+        });
       default:
         return z.object({ type: z.string() });
     }
@@ -221,6 +246,11 @@ export default function Page() {
           serviceType: [],
           sameAs: [],
         };
+      case "FAQPage":
+        return {
+          type: "FAQPage",
+          faqs: [{ question: "", answer: "" }],
+        };
       default:
         return { type };
     }
@@ -234,6 +264,7 @@ export default function Page() {
   });
 
   const breadcrumbFields = useFieldArray({ control: form.control, name: "items" });
+  const faqFields = useFieldArray({ control: form.control, name: "faqs" });
 
 
   const [entryId, setEntryId] = useState(null);
@@ -868,6 +899,52 @@ export default function Page() {
                 </FormItem>
               )} />
             </>
+          )}
+          {selected === "FAQPage" && (
+            <div className="space-y-4">
+              {faqFields.fields.map((field, index) => (
+                <div key={field.id} className="border p-4 rounded-md space-y-4">
+                  <div className="flex flex-wrap">
+                    <FormField
+                      control={form.control}
+                      name={`faqs.${index}.question`}
+                      render={({ field }) => (
+                        <FormItem className="grow mr-4">
+                          <FormLabel>Question</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="button" variant="outline" size="icon" className="mt-[22px] cursor-pointer" onClick={() => faqFields.remove(index)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`faqs.${index}.answer`}
+                    render={({ field }) => (
+                      <FormItem className="[&_.tox-statusbar__branding]:!hidden">
+                        <FormLabel>Answer</FormLabel>
+                        <FormControl>
+                          <TinyMCEEditor
+                            value={field.value}
+                            onChange={field.onChange}
+                            init={faqEditorInit}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ))}
+              <Button type="button" variant="secondary" size="sm" onClick={() => faqFields.append({ question: '', answer: '' })}>
+                <Plus className="h-4 w-4 mr-2" /> Add FAQ
+              </Button>
+            </div>
           )}
           <div className="flex justify-end pt-4">
             <Button type="submit" disabled={form.formState.isSubmitting}>
