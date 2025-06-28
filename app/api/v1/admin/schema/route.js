@@ -10,6 +10,7 @@ export async function GET(request) {
     const pageUrl = searchParams.get('pageUrl');
     const type = searchParams.get('type');
     const isGlobal = searchParams.get('global') === 'true';
+
     if (isGlobal) {
       if (!type) {
         const entries = await SchemaEntry.find({ isGlobal: true }).lean();
@@ -18,16 +19,21 @@ export async function GET(request) {
       const entry = await SchemaEntry.findOne({ type, isGlobal: true }).lean();
       return NextResponse.json({ success: true, data: entry || null });
     }
+
     if (pageUrl) {
-      const query = { pageUrl, isGlobal: false };
-      if (type) {
-        const entry = await SchemaEntry.findOne({ ...query, type }).lean();
-        return NextResponse.json({ success: true, data: entry || null });
+      const entry = await SchemaEntry.findOne({ pageUrl, isGlobal: false }).lean();
+      if (!entry) {
+        return NextResponse.json({ success: true, data: null });
       }
-      const entries = await SchemaEntry.find(query).lean();
-      return NextResponse.json({ success: true, data: entries });
+      if (type) {
+        const data = entry.schemas ? entry.schemas[type] : undefined;
+        if (!data) return NextResponse.json({ success: true, data: null });
+        return NextResponse.json({ success: true, data: { _id: entry._id, type, data } });
+      }
+      return NextResponse.json({ success: true, data: entry });
     }
-    const entries = await SchemaEntry.find().sort({ created_date: -1 }).lean();
+
+    const entries = await SchemaEntry.find({ isGlobal: false }).sort({ created_date: -1 }).lean();
     return NextResponse.json({ success: true, data: entries });
   } catch (error) {
     console.error('Error fetching schema entries:', error);
@@ -51,13 +57,28 @@ export async function POST(request) {
     if (!body.type || !body.data) {
       return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
     }
+
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
-    const pageUrl = isGlobal ? 'global' : body.pageUrl;
-    if (!isGlobal && !pageUrl) {
+    if (isGlobal) {
+      const entry = await SchemaEntry.create({ type: body.type, data: body.data, isGlobal: true });
+      return NextResponse.json({ success: true, data: entry }, { status: 201 });
+    }
+
+    if (!body.pageUrl) {
       return NextResponse.json({ success: false, error: 'Missing pageUrl' }, { status: 400 });
     }
-    const entry = await SchemaEntry.create({ pageUrl, type: body.type, data: body.data, isGlobal });
-    return NextResponse.json({ success: true, data: entry }, { status: 201 });
+
+    const existing = await SchemaEntry.findOne({ pageUrl: body.pageUrl, isGlobal: false });
+    if (existing) {
+      if (existing.schemas && existing.schemas[body.type]) {
+        return NextResponse.json({ success: false, error: 'Schema already exists' }, { status: 400 });
+      }
+      await SchemaEntry.updateOne({ _id: existing._id }, { $set: { [`schemas.${body.type}`]: body.data } });
+      return NextResponse.json({ success: true, data: { _id: existing._id, type: body.type, data: body.data } }, { status: 201 });
+    }
+
+    const entry = await SchemaEntry.create({ pageUrl: body.pageUrl, schemas: { [body.type]: body.data }, isGlobal: false });
+    return NextResponse.json({ success: true, data: { _id: entry._id, type: body.type, data: body.data } }, { status: 201 });
   } catch (error) {
     console.error('Error creating schema entry:', error);
     return NextResponse.json({ success: false, error: 'Error creating schema entry' }, { status: 500 });
@@ -80,18 +101,26 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
     }
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
-    const pageUrl = isGlobal ? 'global' : body.pageUrl;
-    if (!isGlobal && !pageUrl) {
+
+    if (isGlobal) {
+      const entry = await SchemaEntry.findOneAndUpdate(
+        { type: body.type, isGlobal: true },
+        { type: body.type, data: body.data, isGlobal: true },
+        { new: true, upsert: true }
+      );
+      return NextResponse.json({ success: true, data: entry });
+    }
+
+    if (!body.pageUrl) {
       return NextResponse.json({ success: false, error: 'Missing pageUrl' }, { status: 400 });
     }
+
     const entry = await SchemaEntry.findOneAndUpdate(
-      isGlobal
-        ? { type: body.type, isGlobal: true }
-        : { pageUrl, type: body.type },
-      { pageUrl, type: body.type, data: body.data, isGlobal },
+      { pageUrl: body.pageUrl, isGlobal: false },
+      { $set: { [`schemas.${body.type}`]: body.data }, $setOnInsert: { pageUrl: body.pageUrl, isGlobal: false } },
       { new: true, upsert: true }
     );
-    return NextResponse.json({ success: true, data: entry });
+    return NextResponse.json({ success: true, data: { _id: entry._id, type: body.type, data: body.data } });
   } catch (error) {
     console.error('Error updating schema entry:', error);
     return NextResponse.json({ success: false, error: 'Error updating schema entry' }, { status: 500 });

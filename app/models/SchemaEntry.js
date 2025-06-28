@@ -4,7 +4,6 @@ const schemaEntrySchema = new mongoose.Schema(
   {
     type: {
       type: String,
-      required: true,
       enum: [
         'Organization',
         'WebPage',
@@ -13,7 +12,10 @@ const schemaEntrySchema = new mongoose.Schema(
         'BreadcrumbList',
         'Product',
         'Service'
-      ]
+      ],
+      required: function () {
+        return this.isGlobal;
+      }
     },
     pageUrl: {
       type: String,
@@ -27,8 +29,10 @@ const schemaEntrySchema = new mongoose.Schema(
       default: false
     },
     data: {
-      type: mongoose.Schema.Types.Mixed,
-      required: true
+      type: mongoose.Schema.Types.Mixed
+    },
+    schemas: {
+      type: mongoose.Schema.Types.Mixed
     },
     created_date: {
       type: Date,

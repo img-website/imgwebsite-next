@@ -13,8 +13,16 @@ export default function PageSchema() {
         const res = await fetch(`/api/v1/admin/schema?pageUrl=${encodeURIComponent(pathname)}`);
         const json = await res.json();
         if (json.success && json.data) {
-          const entries = Array.isArray(json.data) ? json.data : [json.data];
-          setLds(entries.map((e) => schemaToLd(e.type, e.data, pathname)).filter(Boolean));
+          const { schemas } = json.data;
+          if (schemas && typeof schemas === 'object') {
+            const list = Object.entries(schemas)
+              .map(([t, d]) => schemaToLd(t, d, pathname))
+              .filter(Boolean);
+            setLds(list);
+          } else {
+            const entries = Array.isArray(json.data) ? json.data : [json.data];
+            setLds(entries.map((e) => schemaToLd(e.type, e.data, pathname)).filter(Boolean));
+          }
         } else {
           setLds([]);
         }
