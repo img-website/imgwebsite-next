@@ -188,5 +188,16 @@ export default function schemaToLd(type, data, pagePath = '') {
       })),
     };
   }
+  if (type === "FAQPage") {
+    const { faqs = [] } = data;
+    return {
+      ...base,
+      mainEntity: faqs.map((fq) => ({
+        "@type": "Question",
+        name: fq.question,
+        acceptedAnswer: { "@type": "Answer", text: fq.answer },
+      })),
+    };
+  }
   return { ...base, ...data };
 }
