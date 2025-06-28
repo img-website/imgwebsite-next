@@ -28,6 +28,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+
+const faqEditorInit = {
+  menubar: false,
+  menu: false,
+  plugins: ["lists", "paste"],
+  toolbar: "bold italic underline strikethrough | bullist numlist",
+  quickbars_selection_toolbar: false,
+  contextmenu: false,
+  valid_elements: "p,strong/b,em/i,u,strike,ul,ol,li,br",
+  paste_as_text: true,
+};
 import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 
@@ -913,7 +924,11 @@ export default function Page() {
                       <FormItem className="[&_.tox-statusbar__branding]:!hidden">
                         <FormLabel>Answer</FormLabel>
                         <FormControl>
-                          <TinyMCEEditor value={field.value} onChange={field.onChange} />
+                          <TinyMCEEditor
+                            value={field.value}
+                            onChange={field.onChange}
+                            init={faqEditorInit}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
