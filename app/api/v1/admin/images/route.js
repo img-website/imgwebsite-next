@@ -29,36 +29,38 @@ export async function POST(request) {
     }
     await connectDB();
     const formData = await request.formData();
-    const file = formData.get('file');
-    if (!file || typeof file === 'string') {
+    const files = formData.getAll('files');
+    const validFiles = files.filter((f) => f && typeof f !== 'string');
+    if (validFiles.length === 0) {
       return NextResponse.json({ success: false, error: 'No file uploaded' }, { status: 400 });
     }
-    // Slugify original name (keep extension)
-    const ext = file.name.split('.').pop();
-    const base = file.name.replace(/\.[^/.]+$/, '');
-    let slug = slugify(base, { lower: true, strict: true });
-    if (!slug || slug === 'undefined') {
-      slug = `image-${Date.now()}`;
-    }
-    let storedName = ext ? `${slug}.${ext}` : slug;
-    let counter = 1;
-    // Ensure storedName is unique
-    while (await Image.findOne({ storedName })) {
-      storedName = ext ? `${slug}-${counter}.${ext}` : `${slug}-${counter}`;
-      counter += 1;
+    const uploadedBy = decoded._id || decoded.id;
+    const createdImages = [];
+
+    for (const file of validFiles) {
+      const ext = file.name.split('.').pop();
+      const base = file.name.replace(/\.[^/.]+$/, '');
+      let slug = slugify(base, { lower: true, strict: true });
+      if (!slug || slug === 'undefined') {
+        slug = `image-${Date.now()}`;
+      }
+      let storedName = ext ? `${slug}.${ext}` : slug;
+      let counter = 1;
+      while (await Image.findOne({ storedName })) {
+        storedName = ext ? `${slug}-${counter}.${ext}` : `${slug}-${counter}`;
+        counter += 1;
+      }
+
+      const uploadRes = await uploadBlogImage(file, 'images', ext, storedName);
+      if (!uploadRes.success) {
+        return NextResponse.json({ success: false, error: uploadRes.error }, { status: 400 });
+      }
+
+      const image = await Image.create({ storedName, uploadedBy });
+      createdImages.push(image);
     }
 
-    // Use uploadBlogImage but save in /uploads/images
-    const uploadRes = await uploadBlogImage(file, 'images', ext, storedName);
-    if (!uploadRes.success) {
-      return NextResponse.json({ success: false, error: uploadRes.error }, { status: 400 });
-    }
-    const uploadedBy = decoded._id || decoded.id;
-    const image = await Image.create({
-      storedName,
-      uploadedBy,
-    });
-    return NextResponse.json({ success: true, message: 'Image uploaded successfully', data: image }, { status: 201 });
+    return NextResponse.json({ success: true, message: 'Images uploaded successfully', data: createdImages }, { status: 201 });
   } catch (error) {
     if (error.code === 11000) {
       return NextResponse.json({ success: false, error: 'Image already exists' }, { status: 409 });
