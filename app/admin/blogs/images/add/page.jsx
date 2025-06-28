@@ -5,10 +5,11 @@ import MultiImageCropperInput from "@/components/multi-image-cropper-input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import apiFetch from "@/helpers/apiFetch";
+import TokenFromCookie from "@/helpers/tokenFromCookie";
 
 const imageFormSchema = z.object({
   images: z
@@ -18,6 +19,7 @@ const imageFormSchema = z.object({
 
 export default function AddImagePage() {
   const router = useRouter();
+  const [progress, setProgress] = useState(0);
   const form = useForm({
     resolver: zodResolver(imageFormSchema),
     defaultValues: { images: [] },
@@ -31,19 +33,44 @@ export default function AddImagePage() {
           formData.append("files", file);
         });
       }
-      const res = await apiFetch("/api/v1/admin/images", {
-        method: "POST",
-        body: formData,
+
+      await new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/v1/admin/images");
+        const token = TokenFromCookie();
+        if (token) {
+          xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        }
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            setProgress(percent);
+          }
+        };
+        xhr.onload = () => {
+          let json = {};
+          try {
+            json = JSON.parse(xhr.responseText);
+          } catch (e) {}
+          if (xhr.status >= 200 && xhr.status < 300 && json.success) {
+            toast.success("Images uploaded successfully");
+            router.push("/admin/blogs/images");
+          } else {
+            toast.error(json.error || "Failed to upload images");
+          }
+          setProgress(100);
+          resolve();
+        };
+        xhr.onerror = () => {
+          toast.error("Something went wrong");
+          resolve();
+        };
+        xhr.send(formData);
       });
-      const json = await res.json();
-      if (json.success) {
-        toast.success("Images uploaded successfully");
-        router.push("/admin/blogs/images");
-      } else {
-        toast.error(json.error || "Failed to upload images");
-      }
     } catch (err) {
       toast.error("Something went wrong");
+    } finally {
+      setProgress(0);
     }
   }
 
@@ -77,8 +104,21 @@ export default function AddImagePage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? "Uploading..." : "Upload Images"}
+                <Button
+                  type="submit"
+                  className="w-full relative overflow-hidden"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? (
+                    <div className="w-full h-2 bg-muted/40 rounded">
+                      <div
+                        className="h-2 bg-primary rounded"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  ) : (
+                    "Upload Images"
+                  )}
                 </Button>
               </form>
             </Form>
