@@ -49,23 +49,23 @@ export default function Page() {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    const saved = getCookie(`schemaType_${slug}`);
+    const saved = getCookie("schemaType");
     if (saved && schemaOptions.includes(saved)) {
       setSelected(saved);
     } else {
       setSelected("Organization");
     }
     setInit(true);
-  }, [slug]);
+  }, []);
 
   useEffect(() => {
-    if (slug && selected) {
-      setCookie(`schemaType_${slug}`, selected, {
+    if (selected) {
+      setCookie("schemaType", selected, {
         maxAge: 7 * 24 * 60 * 60,
         path: "/",
       });
     }
-  }, [selected, slug]);
+  }, [selected]);
   const pageUrl = useMemo(
     () => (globalTypes.includes(selected) ? "global" : slug === "home" ? "/" : `/${slug}`),
     [slug, selected]
