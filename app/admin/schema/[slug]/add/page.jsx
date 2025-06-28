@@ -3,7 +3,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useMemo, useEffect } from "react";
-import { getCookie, setCookie } from "cookies-next";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -46,26 +45,6 @@ export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
   const [selected, setSelected] = useState("Organization");
-  const [init, setInit] = useState(false);
-
-  useEffect(() => {
-    const saved = getCookie("schemaType");
-    if (saved && schemaOptions.includes(saved)) {
-      setSelected(saved);
-    } else {
-      setSelected("Organization");
-    }
-    setInit(true);
-  }, []);
-
-  useEffect(() => {
-    if (selected) {
-      setCookie("schemaType", selected, {
-        maxAge: 7 * 24 * 60 * 60,
-        path: "/",
-      });
-    }
-  }, [selected]);
   const pageUrl = useMemo(
     () => (globalTypes.includes(selected) ? "global" : slug === "home" ? "/" : `/${slug}`),
     [slug, selected]
@@ -260,7 +239,6 @@ export default function Page() {
   const [entryId, setEntryId] = useState(null);
 
   useEffect(() => {
-    if (!init) return;
     async function load() {
       const url = globalTypes.includes(selected)
         ? `/api/v1/admin/schema?global=true&type=${selected}`
@@ -298,7 +276,7 @@ export default function Page() {
       }
     }
     load();
-  }, [pageUrl, selected, init]);
+  }, [pageUrl, selected]);
 
   async function uploadFile(file) {
     const formData = new FormData();
