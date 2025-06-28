@@ -42,3 +42,22 @@ Run the unit tests with:
 ```bash
 npm test
 ```
+
+## Push Notifications
+
+This project uses Firebase Cloud Messaging for blog notifications. Configure the
+following variables in a `.env` file:
+
+```env
+FCM_SERVICE_ACCOUNT=<JSON service account string>
+NEXT_PUBLIC_FIREBASE_API_KEY=<api key>
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<auth domain>
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=<project id>
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<sender id>
+NEXT_PUBLIC_FIREBASE_APP_ID=<app id>
+NEXT_PUBLIC_FIREBASE_VAPID_KEY=<vapid key>
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+When a blog is published, subscribers receive a push notification and an email
+if they're in the newsletter list.
