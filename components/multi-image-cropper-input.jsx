@@ -27,23 +27,41 @@ function MultiImageCropperInput({ aspectRatio = 1, value = [], onChange, classNa
   const [realFileName, setRealFileName] = useState("");
   const [images, setImages] = useState([]); // {file, preview}
 
-  // Initialize previews from value
+  // Initialize previews from value while avoiding infinite loops
   useEffect(() => {
-    if (Array.isArray(value) && value.length > 0) {
-      const mapped = value.map((val) => {
-        if (val instanceof File) {
-          return { file: val, preview: URL.createObjectURL(val) };
+    if (!Array.isArray(value)) return;
+
+    const currentFiles = images.map((img) => img.file);
+    let changed = value.length !== currentFiles.length;
+
+    if (!changed) {
+      for (let i = 0; i < value.length; i += 1) {
+        if (value[i] !== currentFiles[i]) {
+          changed = true;
+          break;
         }
-        if (typeof val === "string" && val) {
-          return { file: null, preview: val };
-        }
-        return null;
-      }).filter(Boolean);
+      }
+    }
+
+    if (!changed) return;
+
+    if (value.length > 0) {
+      const mapped = value
+        .map((val) => {
+          if (val instanceof File) {
+            return { file: val, preview: URL.createObjectURL(val) };
+          }
+          if (typeof val === "string" && val) {
+            return { file: null, preview: val };
+          }
+          return null;
+        })
+        .filter(Boolean);
       setImages(mapped);
     } else {
       setImages([]);
     }
-  }, [value]);
+  }, [value, images]);
 
   const getAcceptedTypes = () => {
     switch (format) {
