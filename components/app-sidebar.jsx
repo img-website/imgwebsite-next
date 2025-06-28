@@ -228,39 +228,10 @@ const data = {
     },
     {
       title: "Schemas",
-      url: "#",
+      url: "/admin/schema",
       icon: Braces,
       team: "Meta & Schema",
-      items: [
-        {
-          title: "Organization",
-          url: "/admin/schemas/organization",
-        },
-        {
-          title: "WebPage",
-          url: "/admin/schemas/webpage",
-        },
-        {
-          title: "LocalBusiness",
-          url: "/admin/schemas/localbusiness",
-        },
-        {
-          title: "BreadcrumbList",
-          url: "/admin/schemas/breadcrumblist",
-        },
-        {
-          title: "WebSite",
-          url: "/admin/schemas/website",
-        },
-        {
-          title: "Service",
-          url: "/admin/schemas/service",
-        },
-        {
-          title: "Product",
-          url: "/admin/schemas/product",
-        },
-      ],
+      type: "link"
     },
     {
       title: "FAQs",
