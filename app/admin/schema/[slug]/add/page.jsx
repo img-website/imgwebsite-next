@@ -254,9 +254,17 @@ export default function Page() {
         if (json.data.type && json.data.type !== selected) {
           setSelected(json.data.type);
         }
+        const data = { ...json.data.data };
+        const toUrl = (v) =>
+          v && !v.startsWith("http")
+            ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${v}`
+            : v;
+        if (data.logo) data.logo = toUrl(data.logo);
+        if (data.image) data.image = toUrl(data.image);
+
         form.reset({
           ...getDefaults(json.data.type || selected),
-          ...json.data.data,
+          ...data,
           type: json.data.type || selected,
         });
       } else {
@@ -285,11 +293,7 @@ export default function Page() {
     if (files?.[0] instanceof File) {
       try {
         const nameOnly = await uploadFile(files[0]);
-        form.setValue(
-          name,
-          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`,
-          { shouldValidate: true }
-        );
+        form.setValue(name, nameOnly, { shouldValidate: true });
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
@@ -301,12 +305,17 @@ export default function Page() {
   }
 
   async function onSubmit(values) {
+    const clean = (v) =>
+      v && v.startsWith("http") ? v.split("/").pop().split("?")[0] : v;
+    const submitValues = { ...values };
+    if (submitValues.logo) submitValues.logo = clean(submitValues.logo);
+    if (submitValues.image) submitValues.image = clean(submitValues.image);
     const res = await apiFetch(`/api/v1/admin/schema`, {
       method: "PUT",
       data: {
         pageUrl,
         type: values.type,
-        data: values,
+        data: submitValues,
         isGlobal: globalTypes.includes(values.type),
       }
     });

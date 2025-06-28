@@ -1,5 +1,9 @@
 export default function schemaToLd(type, data, pagePath = '') {
   if (!data) return null;
+  const toUrl = (v) =>
+    v && !v.startsWith('http')
+      ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${v}`
+      : v;
   const base = {
     "@context": "https://schema.org",
     "@type": type === "LocalBusiness2" ? "LocalBusiness" : type,
@@ -29,6 +33,7 @@ export default function schemaToLd(type, data, pagePath = '') {
       },
       founders: founders.map((name) => ({ "@type": "Person", name })),
     };
+    if (org.logo) org.logo = toUrl(org.logo);
     if (contactEmail || contactPhone) {
       org.contactPoint = {
         "@type": "ContactPoint",
@@ -53,7 +58,7 @@ export default function schemaToLd(type, data, pagePath = '') {
     return {
       ...base,
       name: businessName,
-      image,
+      image: toUrl(image),
       telephone: phoneNumber,
       priceRange,
       "@id": `${process.env.NEXT_PUBLIC_BASE_URL}#localbusiness`,
@@ -83,7 +88,7 @@ export default function schemaToLd(type, data, pagePath = '') {
       "@context": "http://schema.org/",
       "@type": "Product",
       name,
-      image,
+      image: toUrl(image),
       description,
       brand: {
         "@type": "Brand",
