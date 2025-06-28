@@ -34,6 +34,7 @@ export default function AddImagePage() {
         });
       }
 
+      setProgress(0);
       await new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/api/v1/admin/images");
@@ -70,7 +71,7 @@ export default function AddImagePage() {
     } catch (err) {
       toast.error("Something went wrong");
     } finally {
-      setProgress(0);
+      setTimeout(() => setProgress(0), 500);
     }
   }
 
@@ -106,15 +107,17 @@ export default function AddImagePage() {
                 />
                 <Button
                   type="submit"
-                  className="w-full relative overflow-hidden"
+                  className="w-full relative h-10 overflow-hidden"
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting ? (
-                    <div className="w-full h-2 bg-muted/40 rounded">
-                      <div
-                        className="h-2 bg-primary rounded"
-                        style={{ width: `${progress}%` }}
-                      />
+                    <div className="absolute inset-0 flex items-center px-2">
+                      <div className="w-full h-2 bg-muted/40 rounded">
+                        <div
+                          className="h-2 bg-primary rounded transition-all"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
                     </div>
                   ) : (
                     "Upload Images"
