@@ -46,12 +46,16 @@ export default function Page() {
   const router = useRouter();
   const { slug } = useParams();
   const [selected, setSelected] = useState("Organization");
+  const [init, setInit] = useState(false);
 
   useEffect(() => {
     const saved = getCookie(`schemaType_${slug}`);
     if (saved && schemaOptions.includes(saved)) {
       setSelected(saved);
+    } else {
+      setSelected("Organization");
     }
+    setInit(true);
   }, [slug]);
 
   useEffect(() => {
@@ -256,6 +260,7 @@ export default function Page() {
   const [entryId, setEntryId] = useState(null);
 
   useEffect(() => {
+    if (!init) return;
     async function load() {
       const url = globalTypes.includes(selected)
         ? `/api/v1/admin/schema?global=true&type=${selected}`
@@ -264,9 +269,6 @@ export default function Page() {
       const json = await res.json();
       if (json.success && json.data) {
         setEntryId(json.data._id);
-        if (json.data.type && json.data.type !== selected) {
-          setSelected(json.data.type);
-        }
         const data = { ...json.data.data };
         const toUrl = (v) =>
           v && !v.startsWith("http")
@@ -296,7 +298,7 @@ export default function Page() {
       }
     }
     load();
-  }, [pageUrl, selected]);
+  }, [pageUrl, selected, init]);
 
   async function uploadFile(file) {
     const formData = new FormData();
