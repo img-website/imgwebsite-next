@@ -37,6 +37,22 @@ function stripOrgServiceDefaults(type, data) {
   return data;
 }
 
+function addImageUrls(type, data) {
+  if (!data) return data;
+  const toUrl = (v) =>
+    v && !v.startsWith('http')
+      ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${v}`
+      : v;
+  if (type === 'Organization' && data.logo) {
+    data.logo = toUrl(data.logo);
+  } else if ((type === 'LocalBusiness' || type === 'LocalBusiness2') && data.image) {
+    data.image = toUrl(data.image);
+  } else if (type === 'Product' && data.image) {
+    data.image = toUrl(data.image);
+  }
+  return data;
+}
+
 export async function GET(request) {
   try {
     await connectDB();
@@ -48,9 +64,17 @@ export async function GET(request) {
     if (isGlobal) {
       if (!type) {
         const entries = await SchemaEntry.find({ isGlobal: true }).lean();
+        for (const e of entries) {
+          addImageUrls(e.type, e.data);
+          if (e.type === 'BreadcrumbList') addDomainToBreadcrumb(e.data);
+        }
         return NextResponse.json({ success: true, data: entries });
       }
       const entry = await SchemaEntry.findOne({ type, isGlobal: true }).lean();
+      if (entry) {
+        addImageUrls(type, entry.data);
+        if (type === 'BreadcrumbList') addDomainToBreadcrumb(entry.data);
+      }
       return NextResponse.json({ success: true, data: entry || null });
     }
 
@@ -63,18 +87,25 @@ export async function GET(request) {
         const data = entry.schemas ? entry.schemas[type] : undefined;
         if (!data) return NextResponse.json({ success: true, data: null });
         if (type === 'BreadcrumbList') addDomainToBreadcrumb(data);
+        addImageUrls(type, data);
         return NextResponse.json({ success: true, data: { _id: entry._id, type, data } });
       }
-      if (entry.schemas && entry.schemas.BreadcrumbList) {
-        addDomainToBreadcrumb(entry.schemas.BreadcrumbList);
+      if (entry.schemas) {
+        for (const [t, d] of Object.entries(entry.schemas)) {
+          if (t === 'BreadcrumbList') addDomainToBreadcrumb(d);
+          addImageUrls(t, d);
+        }
       }
       return NextResponse.json({ success: true, data: entry });
     }
 
     const entries = await SchemaEntry.find({ isGlobal: false }).sort({ created_date: -1 }).lean();
     for (const e of entries) {
-      if (e.schemas && e.schemas.BreadcrumbList) {
-        addDomainToBreadcrumb(e.schemas.BreadcrumbList);
+      if (e.schemas) {
+        for (const [t, d] of Object.entries(e.schemas)) {
+          if (t === 'BreadcrumbList') addDomainToBreadcrumb(d);
+          addImageUrls(t, d);
+        }
       }
     }
     return NextResponse.json({ success: true, data: entries });
