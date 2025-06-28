@@ -261,6 +261,16 @@ export default function Page() {
             : v;
         if (data.logo) data.logo = toUrl(data.logo);
         if (data.image) data.image = toUrl(data.image);
+        const addDomain = (u) =>
+          u && !u.startsWith("http")
+            ? `${process.env.NEXT_PUBLIC_BASE_URL}${u}`
+            : u;
+        if (json.data.type === "BreadcrumbList" && Array.isArray(data.items)) {
+          data.items = data.items.map((it) => ({
+            ...it,
+            item: addDomain(it.item),
+          }));
+        }
 
         form.reset({
           ...getDefaults(json.data.type || selected),
@@ -310,6 +320,20 @@ export default function Page() {
     const submitValues = { ...values };
     if (submitValues.logo) submitValues.logo = clean(submitValues.logo);
     if (submitValues.image) submitValues.image = clean(submitValues.image);
+    const toRelative = (u) => {
+      if (!u) return u;
+      try {
+        return new URL(u).pathname;
+      } catch {
+        return u;
+      }
+    };
+    if (Array.isArray(submitValues.items)) {
+      submitValues.items = submitValues.items.map((it) => ({
+        ...it,
+        item: toRelative(it.item),
+      }));
+    }
     const res = await apiFetch(`/api/v1/admin/schema`, {
       method: "PUT",
       data: {

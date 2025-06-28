@@ -3,6 +3,30 @@ import connectDB from '@/app/lib/db';
 import SchemaEntry from '@/app/models/SchemaEntry';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
+function addDomainToBreadcrumb(data) {
+  if (data && Array.isArray(data.items)) {
+    const base = process.env.NEXT_PUBLIC_BASE_URL;
+    data.items = data.items.map((it) => ({
+      ...it,
+      item: it.item.startsWith('http') ? it.item : `${base}${it.item}`,
+    }));
+  }
+  return data;
+}
+
+function stripDomainBreadcrumb(data) {
+  if (data && Array.isArray(data.items)) {
+    data.items = data.items.map((it) => {
+      try {
+        return { ...it, item: new URL(it.item).pathname };
+      } catch {
+        return it;
+      }
+    });
+  }
+  return data;
+}
+
 export async function GET(request) {
   try {
     await connectDB();
@@ -28,12 +52,21 @@ export async function GET(request) {
       if (type) {
         const data = entry.schemas ? entry.schemas[type] : undefined;
         if (!data) return NextResponse.json({ success: true, data: null });
+        if (type === 'BreadcrumbList') addDomainToBreadcrumb(data);
         return NextResponse.json({ success: true, data: { _id: entry._id, type, data } });
+      }
+      if (entry.schemas && entry.schemas.BreadcrumbList) {
+        addDomainToBreadcrumb(entry.schemas.BreadcrumbList);
       }
       return NextResponse.json({ success: true, data: entry });
     }
 
     const entries = await SchemaEntry.find({ isGlobal: false }).sort({ created_date: -1 }).lean();
+    for (const e of entries) {
+      if (e.schemas && e.schemas.BreadcrumbList) {
+        addDomainToBreadcrumb(e.schemas.BreadcrumbList);
+      }
+    }
     return NextResponse.json({ success: true, data: entries });
   } catch (error) {
     console.error('Error fetching schema entries:', error);
@@ -56,6 +89,10 @@ export async function POST(request) {
     const body = await request.json();
     if (!body.type || !body.data) {
       return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
+    }
+
+    if (body.type === 'BreadcrumbList') {
+      stripDomainBreadcrumb(body.data);
     }
 
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
@@ -99,6 +136,9 @@ export async function PUT(request) {
     const body = await request.json();
     if (!body.type || !body.data) {
       return NextResponse.json({ success: false, error: 'Missing type or data' }, { status: 400 });
+    }
+    if (body.type === 'BreadcrumbList') {
+      stripDomainBreadcrumb(body.data);
     }
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
 

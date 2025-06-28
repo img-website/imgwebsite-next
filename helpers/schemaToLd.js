@@ -175,13 +175,14 @@ export default function schemaToLd(type, data, pagePath = '') {
   }
   if (type === "BreadcrumbList") {
     const { items = [] } = data;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     return {
       ...base,
       itemListElement: items.map((it, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
         name: it.name,
-        item: it.item,
+        item: it.item.startsWith("http") ? it.item : `${baseUrl}${it.item}`,
       })),
     };
   }
