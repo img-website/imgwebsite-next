@@ -32,11 +32,11 @@ import { toast } from "sonner";
 const faqEditorInit = {
   menubar: false,
   menu: false,
-  plugins: ["lists", "paste"],
-  toolbar: "bold italic underline strikethrough | bullist numlist",
+  plugins: ["lists", "link"],
+  toolbar: "bold italic underline strikethrough | bullist numlist | link",
   quickbars_selection_toolbar: false,
   contextmenu: false,
-  valid_elements: "p,strong/b,em/i,u,strike,ul,ol,li,br",
+  valid_elements: "p,strong/b,em/i,u,strike,ul,ol,li,br,a,a[href|target=_blank]",
   paste_as_text: true,
 };
 import { useRouter, useParams } from "next/navigation";
@@ -904,19 +904,24 @@ export default function Page() {
             <div className="space-y-4">
               {faqFields.fields.map((field, index) => (
                 <div key={field.id} className="border p-4 rounded-md space-y-4">
-                  <FormField
-                    control={form.control}
-                    name={`faqs.${index}.question`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Question</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex flex-wrap">
+                    <FormField
+                      control={form.control}
+                      name={`faqs.${index}.question`}
+                      render={({ field }) => (
+                        <FormItem className="grow mr-4">
+                          <FormLabel>Question</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="button" variant="outline" size="icon" className="mt-[22px] cursor-pointer" onClick={() => faqFields.remove(index)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                   <FormField
                     control={form.control}
                     name={`faqs.${index}.answer`}
@@ -934,9 +939,6 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-                  <Button type="button" variant="outline" size="icon" onClick={() => faqFields.remove(index)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </div>
               ))}
               <Button type="button" variant="secondary" size="sm" onClick={() => faqFields.append({ question: '', answer: '' })}>
