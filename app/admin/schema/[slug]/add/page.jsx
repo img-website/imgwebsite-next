@@ -57,7 +57,6 @@ export default function Page() {
           type: z.literal("Organization"),
           name: z.string().min(1, "Name is required"),
           legalName: z.string().min(1, "Legal name is required"),
-          url: z.string().url("Invalid URL").min(1, "URL is required"),
           logo: z.string().min(1, "Logo is required"),
           contactEmail: z
             .string()
@@ -136,7 +135,6 @@ export default function Page() {
           type: z.literal("Service"),
           name: z.string().min(1, "Name is required"),
           providerName: z.string().min(1, "Provider name is required"),
-          providerUrl: z.string().url("Invalid URL").min(1, "Provider URL is required"),
           description: z.string().min(1, "Description is required"),
           areaServed: z.string().min(1, "Area served is required"),
           serviceType: z.array(z.string().min(1)).min(1, "Service type is required"),
@@ -153,7 +151,6 @@ export default function Page() {
           type: "Organization",
           name: "",
           legalName: "",
-          url: "",
           logo: "",
           contactEmail: "",
           contactPhone: "",
@@ -219,7 +216,6 @@ export default function Page() {
           type: "Service",
           name: "",
           providerName: "",
-          providerUrl: "",
           description: "",
           areaServed: "",
           serviceType: [],
@@ -400,13 +396,6 @@ export default function Page() {
               <FormField name="legalName" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Legal Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="url" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
@@ -845,13 +834,6 @@ export default function Page() {
               <FormField name="providerName" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Provider Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="providerUrl" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Provider URL</FormLabel>
                   <FormControl><Input {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>

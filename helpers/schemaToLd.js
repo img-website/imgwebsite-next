@@ -10,6 +10,7 @@ export default function schemaToLd(type, data, pagePath = '') {
   };
   if (type === "Organization") {
     const {
+      url: _omitUrl,
       streetAddress,
       addressLocality,
       addressRegion,
@@ -22,6 +23,7 @@ export default function schemaToLd(type, data, pagePath = '') {
     } = data;
     const org = {
       ...base,
+      url: process.env.NEXT_PUBLIC_BASE_URL,
       ...rest,
       address: {
         "@type": "PostalAddress",
@@ -106,7 +108,7 @@ export default function schemaToLd(type, data, pagePath = '') {
     const {
       name,
       providerName,
-      providerUrl,
+      providerUrl: _omitProviderUrl,
       description,
       url,
       mainEntityOfPage,
@@ -122,7 +124,7 @@ export default function schemaToLd(type, data, pagePath = '') {
       provider: {
         "@type": "Organization",
         name: providerName,
-        url: providerUrl,
+        url: process.env.NEXT_PUBLIC_BASE_URL,
       },
       description,
       url: finalUrl,

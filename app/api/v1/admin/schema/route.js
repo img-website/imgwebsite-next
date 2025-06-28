@@ -27,6 +27,16 @@ function stripDomainBreadcrumb(data) {
   return data;
 }
 
+function stripOrgServiceDefaults(type, data) {
+  if (!data) return data;
+  if (type === 'Organization') {
+    delete data.url;
+  } else if (type === 'Service') {
+    delete data.providerUrl;
+  }
+  return data;
+}
+
 export async function GET(request) {
   try {
     await connectDB();
@@ -94,6 +104,7 @@ export async function POST(request) {
     if (body.type === 'BreadcrumbList') {
       stripDomainBreadcrumb(body.data);
     }
+    stripOrgServiceDefaults(body.type, body.data);
 
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
     if (isGlobal) {
@@ -140,6 +151,7 @@ export async function PUT(request) {
     if (body.type === 'BreadcrumbList') {
       stripDomainBreadcrumb(body.data);
     }
+    stripOrgServiceDefaults(body.type, body.data);
     const isGlobal = ['Organization', 'LocalBusiness', 'LocalBusiness2'].includes(body.type);
 
     if (isGlobal) {
