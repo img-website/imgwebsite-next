@@ -20,20 +20,25 @@ export default function usePushNotifications() {
     messaging = getMessaging(app);
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/firebase-messaging-sw.js').then(() => {
-        requestPermission();
-      });
+      navigator.serviceWorker
+        .register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          requestPermission(registration);
+        });
     }
 
     onMessage(messaging, () => {});
   }, []);
 }
 
-function requestPermission() {
+function requestPermission(registration) {
   Notification.requestPermission().then(async (permission) => {
     if (permission === 'granted') {
       try {
-        const token = await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY });
+        const token = await getToken(messaging, {
+          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+          serviceWorkerRegistration: registration
+        });
         if (token) {
           await fetch('/api/v1/notifications/register', {
             method: 'POST',
