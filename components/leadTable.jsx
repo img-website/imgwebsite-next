@@ -152,26 +152,15 @@ function LeadActions({ lead }) {
           <DropdownMenuItem asChild>
             <Link href={`/admin/leads/${lead.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
-          <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-              {lead.status !== "upcoming" && (
-                <DropdownMenuItem onClick={() => handleStatusChange(1)}>
-                  Upcoming
-                </DropdownMenuItem>
-              )}
-              {lead.status !== "approved" && (
-                <DropdownMenuItem onClick={() => handleStatusChange(2)}>
-                  Approved
-                </DropdownMenuItem>
-              )}
-              {lead.status !== "rejected" && (
-                <DropdownMenuItem onClick={() => handleStatusChange(3)}>
-                  Rejected
-                </DropdownMenuItem>
-              )}
-          </DropdownMenuSubContent>
-          </DropdownMenuSub>
+          {lead.status === "upcoming" ? (
+            <DropdownMenuItem onClick={() => handleStatusChange(2)}>
+              Move to Career
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem onClick={() => handleStatusChange(1)}>
+              Move to Leads
+            </DropdownMenuItem>
+          )}
           {lead.attachments && lead.attachments.length > 0 && (
             <DropdownMenuItem onClick={() => setOpenAttachments(true)}>
               Attachments
@@ -255,7 +244,7 @@ export const columns = [
       const status = row.getValue("status");
       return (
         <Badge
-          variant={status === "approved" ? "default" : "secondary"}
+          variant={status === "career" ? "default" : "secondary"}
           className="capitalize"
         >
           {status}

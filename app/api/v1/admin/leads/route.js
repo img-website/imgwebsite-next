@@ -46,7 +46,7 @@ export async function POST(request) {
       assign_to: formData.get('assign_to') || null,
       assigned_date: formData.get('assigned_date') ? new Date(formData.get('assigned_date')) : null,
       attachments,
-      status: formData.get('status') && [1,2,3].includes(Number(formData.get('status'))) ? Number(formData.get('status')) : LEAD_STATUS.UPCOMING
+      status: formData.get('status') && [1,2].includes(Number(formData.get('status'))) ? Number(formData.get('status')) : LEAD_STATUS.UPCOMING
     });
 
     await sendLeadEmail(lead);

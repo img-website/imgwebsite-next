@@ -13,7 +13,7 @@ export default async function Page({ params }) {
     return <div className="p-4">Lead not found</div>;
   }
 
-  const statusMap = { 1: 'Upcoming', 2: 'Approved', 3: 'Rejected' };
+  const statusMap = { 1: 'Upcoming', 2: 'Career' };
 
   return (
     <div className="w-full p-4">

@@ -72,7 +72,7 @@ export async function PUT(request, { params }) {
     lead.assigned_date = formData.get('assigned_date') ? new Date(formData.get('assigned_date')) : lead.assigned_date;
 
     const statusVal = formData.get('status');
-    if (statusVal && [1,2,3].includes(Number(statusVal))) {
+    if (statusVal && [1,2].includes(Number(statusVal))) {
       lead.status = Number(statusVal);
     }
     lead.modified_date = new Date();

@@ -1,10 +1,10 @@
 import { LeadTable } from "@/components/leadTable";
 
 export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/leads`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/leads/upcoming`, { cache: 'no-store' });
   const json = await res.json();
   const leads = Array.isArray(json?.data) ? json.data : [];
-  const statusMap = { 1: 'upcoming', 2: 'approved', 3: 'rejected' };
+  const statusMap = { 1: 'upcoming', 2: 'career' };
   const data = leads.map(lead => ({
     id: lead._id,
     contact_name: lead.contact_name,

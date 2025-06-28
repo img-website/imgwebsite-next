@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 export const LEAD_STATUS = {
   UPCOMING: 1,
-  APPROVED: 2,
-  REJECTED: 3
+  CAREER: 2,
 };
 
 const leadSchema = new mongoose.Schema(
@@ -18,7 +17,7 @@ const leadSchema = new mongoose.Schema(
     path: { type: String, default: null },
     assign_to: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
     assigned_date: { type: Date, default: null },
-    status: { type: Number, enum: [1, 2, 3], default: LEAD_STATUS.UPCOMING },
+    status: { type: Number, enum: [1, 2], default: LEAD_STATUS.UPCOMING },
     created_date: { type: Date, default: Date.now },
     modified_date: { type: Date, default: Date.now }
   },

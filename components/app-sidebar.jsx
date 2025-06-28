@@ -11,9 +11,7 @@ import {
   UserRoundPen,
   Mail,
   BellRing,
-  CaptionsOff,
   MonitorDown,
-  CircleCheckBig,
   UserSearch,
   Braces,
   Quote,
@@ -183,13 +181,6 @@ const data = {
       ],
     },
     {
-      title: "Rejected Leads",
-      url: "/admin/leads/rejected",
-      icon: CaptionsOff,
-      team: "Leads & Contacts",
-      type: "link"
-    },
-    {
       title: "Upcoming Leads",
       url: "/admin/leads/upcoming",
       icon: MonitorDown,
@@ -197,9 +188,9 @@ const data = {
       type: "link"
     },
     {
-      title: "Approved Leads",
-      url: "/admin/leads/approved",
-      icon: CircleCheckBig,
+      title: "Career Leads",
+      url: "/admin/leads/career",
+      icon: UserSearch,
       team: "Leads & Contacts",
       type: "link"
     },
