@@ -5,6 +5,7 @@ export default function TinyMCEEditor({ value, onChange, ...props }) {
   return (
     <Editor
       apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY || ''}
+      tinymceScriptSrc={`https://cdn.tiny.cloud/1/${process.env.NEXT_PUBLIC_TINYMCE_API_KEY || 'no-api-key'}/tinymce/7/tinymce.min.js`}
       value={value}
       init={{
         min_height: 400,
