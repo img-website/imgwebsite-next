@@ -2,7 +2,8 @@ import EditAuthorForm from "./EditAuthorForm";
 
 export default async function Page({ params }) {
   const { id } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors/${id}`, { cache: 'no-store' });
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
+  const res = await fetch(`${base}/api/v1/admin/blogs/authors/${id}`, { cache: 'no-store' });
   const json = await res.json();
   const author = json?.data;
 

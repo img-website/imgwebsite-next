@@ -1,7 +1,8 @@
 import { SchemaPageTable } from '@/components/schemaPageTable';
 
 async function getPages() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/pages`, { cache: 'no-store' });
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
+  const res = await fetch(`${base}/api/v1/admin/pages`, { cache: 'no-store' });
   const json = await res.json();
   return Array.isArray(json.data) ? json.data : [];
 }

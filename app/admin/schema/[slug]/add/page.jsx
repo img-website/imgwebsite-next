@@ -285,9 +285,10 @@ export default function Page() {
             : v;
         if (data.logo) data.logo = toUrl(data.logo);
         if (data.image) data.image = toUrl(data.image);
+        const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
         const addDomain = (u) =>
           u && !u.startsWith("http")
-            ? `${process.env.NEXT_PUBLIC_BASE_URL}${u}`
+            ? `${base}${u}`
             : u;
         if (json.data.type === "BreadcrumbList" && Array.isArray(data.items)) {
           data.items = data.items.map((it) => ({

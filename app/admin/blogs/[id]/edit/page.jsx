@@ -202,9 +202,10 @@ export default function Page() {
   useEffect(() => {
     async function fetchOptions() {
       try {
+        const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
         const [catRes, authRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/categories?limit=100`),
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors?limit=100`),
+          fetch(`${base}/api/v1/admin/blogs/categories?limit=100`),
+          fetch(`${base}/api/v1/admin/blogs/authors?limit=100`),
         ]);
         const catJson = await catRes.json();
         const authJson = await authRes.json();

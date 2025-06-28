@@ -1,7 +1,8 @@
 import { AuthorTable } from "@/components/authorTable";
 
 export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors`, { cache: 'no-store' });
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
+  const res = await fetch(`${base}/api/v1/admin/blogs/authors`, { cache: 'no-store' });
   const json = await res.json();
   const authors = Array.isArray(json?.data) ? json.data : [];
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };

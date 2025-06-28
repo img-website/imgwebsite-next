@@ -1,7 +1,8 @@
 import { NewsletterTable } from "@/components/newsletterTable";
 
 export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/newsletters`, { cache: 'no-store' });
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? '';
+  const res = await fetch(`${base}/api/v1/admin/newsletters`, { cache: 'no-store' });
   const json = await res.json();
   const newsletters = Array.isArray(json?.data) ? json.data : [];
   const data = newsletters.map(n => ({
