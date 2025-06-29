@@ -58,7 +58,7 @@ This project uses Firebase Cloud Messaging for blog notifications. Configure the
 following variables in a `.env` file:
 
 ```env
-FCM_SERVICE_ACCOUNT=<JSON service account string>
+FCM_SERVICE_ACCOUNT='{"type":"service_account",...}'
 NEXT_PUBLIC_FIREBASE_API_KEY=<api key>
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<auth domain>
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=<project id>

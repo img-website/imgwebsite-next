@@ -4,11 +4,17 @@ let initialized = false;
 
 export function initFirebase() {
   if (!initialized) {
-    const serviceAccount = process.env.FCM_SERVICE_ACCOUNT && JSON.parse(process.env.FCM_SERVICE_ACCOUNT);
+    const serviceAccount =
+      process.env.FCM_SERVICE_ACCOUNT &&
+      JSON.parse(process.env.FCM_SERVICE_ACCOUNT);
     if (!serviceAccount) {
       throw new Error('FCM_SERVICE_ACCOUNT environment variable not set');
     }
-    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+    if (admin.apps.length === 0) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+    }
     initialized = true;
   }
 }
