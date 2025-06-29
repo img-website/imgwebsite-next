@@ -26,9 +26,16 @@ export async function readRedirections() {
 }
 
 export async function readRedirectionsWithNotice() {
-  const wasCreated = await ensureRedirectionsFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return { redirections: JSON.parse(data), wasCreated };
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return { redirections: JSON.parse(data), wasCreated: false };
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const { data } = await syncRedirectionsFromDB();
+      return { redirections: data, wasCreated: true };
+    }
+    throw err;
+  }
 }
 
 export async function writeRedirections(redirections) {
