@@ -269,7 +269,11 @@ export function AppSidebar({
       if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
         mod = parts[2];
       }
-      return role === 'superadmin' || hasClientPermission(mod, 'read');
+      if (mod === 'schema') mod = 'schemas';
+      let action = 'read';
+      if (url.includes('/add')) action = 'write';
+      else if (url.includes('/edit')) action = 'edit';
+      return role === 'superadmin' || hasClientPermission(mod, action);
     };
 
     return data.navMain

@@ -11,6 +11,7 @@ function getModuleAction(pathname) {
     mod = parts[2];
     parts.splice(2, 1);
   }
+  if (mod === 'schema') mod = 'schemas';
   let action = 'read';
   if (parts.includes('add')) action = 'write';
   if (parts.includes('edit')) action = 'edit';

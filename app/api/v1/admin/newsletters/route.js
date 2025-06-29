@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Newsletter from '@/app/models/Newsletter';
+import { ensurePermission } from '@/lib/rbac';
 
 // GET all newsletter emails
-export async function GET() {
+export async function GET(req) {
+  const admin = await ensurePermission(req, 'newsletter', 'read');
+  if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   try {
     await connectDB();
     const emails = await Newsletter.find().sort({ createdAt: -1 }).lean();
@@ -15,6 +18,8 @@ export async function GET() {
 
 // POST add new email
 export async function POST(request) {
+  const admin = await ensurePermission(request, 'newsletter', 'write');
+  if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   try {
     await connectDB();
     const body = await request.json();
