@@ -6,16 +6,26 @@ export async function POST(request) {
   try {
     await connectDB();
     const body = await request.json();
+
     if (!body?.token) {
-      return NextResponse.json({ success: false, error: 'Token required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Token required' },
+        { status: 400 }
+      );
     }
-    const doc = await NotificationToken.findOneAndUpdate(
+
+    await NotificationToken.updateOne(
       { token: body.token },
-      { token: body.token },
-      { upsert: true, new: true }
+      { $set: { token: body.token } },
+      { upsert: true }
     );
-    return NextResponse.json({ success: true, data: doc }, { status: 201 });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ success: false, error: 'Error registering token' }, { status: 500 });
+    console.error('Token registration error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Error registering token' },
+      { status: 500 }
+    );
   }
 }
