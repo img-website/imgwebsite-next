@@ -85,7 +85,7 @@ export async function middleware(request) {
         }
     }
 
-    if (pathname.startsWith("/admin/departments")) {
+    if (pathname.startsWith("/admin/departments") || pathname.startsWith("/admin/admins")) {
         if (!isLoggedIn || isRole !== "superadmin") {
             return NextResponse.redirect(new URL(isLoggedIn ? "/admin" : `/login?redirectTo=${pathname}`, request.url));
         }
