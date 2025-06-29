@@ -12,12 +12,20 @@ import apiFetch from "@/helpers/apiFetch";
 import { MODULES } from "@/lib/modules";
 import { RBAC_ACTIONS } from "@/lib/rbac-actions";
 
-const schema = z.object({
-  name: z.string().min(2, { message: "Name required" }),
-  permissions: z.record(z.record(z.boolean())).optional(),
-});
+const schema = z
+  .object({
+    name: z.string().min(2, { message: "Name required" }),
+    permissions: z.record(z.record(z.boolean())),
+  })
+  .refine(
+    (val) =>
+      Object.values(val.permissions || {}).some((m) =>
+        Object.values(m).some(Boolean)
+      ),
+    { path: ["permissions"], message: "Select at least one permission" }
+  );
 
-export default function DepartmentForm({ onSuccess }) {
+export default function DepartmentForm({ department, onSuccess }) {
   const defaultPermissions = React.useMemo(() => {
     const obj = {};
     MODULES.forEach((m) => {
@@ -31,8 +39,20 @@ export default function DepartmentForm({ onSuccess }) {
 
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", permissions: defaultPermissions },
+    defaultValues: {
+      name: department?.name || "",
+      permissions: department?.permissions || defaultPermissions,
+    },
   });
+
+  React.useEffect(() => {
+    if (department) {
+      form.reset({
+        name: department.name || "",
+        permissions: department.permissions || defaultPermissions,
+      });
+    }
+  }, [department]);
 
   async function onSubmit(values) {
     try {
@@ -40,11 +60,17 @@ export default function DepartmentForm({ onSuccess }) {
         name: values.name.trim(),
         permissions: values.permissions || {},
       };
-      const res = await apiFetch("/api/v1/admin/departments", { method: "POST", data: body });
+      const url = department
+        ? `/api/v1/admin/departments/${department._id}`
+        : "/api/v1/admin/departments";
+      const method = department ? "PUT" : "POST";
+      const res = await apiFetch(url, { method, data: body });
       const data = await res.json();
       if (data.success) {
-        toast.success("Department created");
-        form.reset();
+        toast.success(department ? "Department updated" : "Department created");
+        if (!department) {
+          form.reset();
+        }
         if (onSuccess) onSuccess();
       } else {
         toast.error(data.error || "Failed to create");
@@ -93,7 +119,13 @@ export default function DepartmentForm({ onSuccess }) {
           ))}
         </div>
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Creating..." : "Create Department"}
+          {form.formState.isSubmitting
+            ? department
+              ? "Updating..."
+              : "Creating..."
+            : department
+            ? "Update Department"
+            : "Create Department"}
         </Button>
       </form>
     </Form>

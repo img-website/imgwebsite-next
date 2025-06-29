@@ -69,6 +69,10 @@ function DepartmentActions({ department }) {
           Copy ID
         </DropdownMenuItem>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDelete} className="text-red-600">
           Delete
         </DropdownMenuItem>
