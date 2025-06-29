@@ -74,6 +74,16 @@ export async function middleware(request) {
     if (pathname.startsWith("/api/admin/login") || pathname.startsWith("/api/admin/register") || pathname.startsWith("/api/admin/forgot-password") || pathname.startsWith("/api/admin/reset-password")) {
         return NextResponse.next();
     }
+
+    if (pathname.startsWith("/register")) {
+        if (!isLoggedIn) {
+            return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
+        }
+        if (isRole !== "superadmin") {
+            const redirectUrl = isRole === "admin" ? "/admin" : "/";
+            return NextResponse.redirect(new URL(redirectUrl, request.url));
+        }
+    }
     // If the user is not logged in and trying to access admin pages, redirect to /login
     if (!isLoggedIn && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
@@ -114,9 +124,9 @@ export async function middleware(request) {
         }
     }
 
-    // If user tries to access /register or /forgot-password or /reset-password and is already logged in, redirect based on role
+    // If user tries to access /register or /forgot-password or /reset-password and is already logged in
     if (pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
-        if (isLoggedIn) {
+        if (isLoggedIn && isRole !== "superadmin") {
             const redirectUrl = isRole === "admin" ? "/admin" : "/";
             return NextResponse.redirect(new URL(redirectUrl, request.url));
         }

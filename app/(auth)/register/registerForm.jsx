@@ -61,13 +61,8 @@ export function RegisterForm() {
             }
 
             if (data?.success) {
-                document.cookie = `token=${data?.token}; path=/; priority=high;`
-                document.cookie = `userEmail=${data?.data?.email}; path=/;`
-                document.cookie = `userRole=${data?.data?.role}; path=/;`
-
                 toast.success('Registration successful!');
                 router.push('/admin');
-                router.refresh();
             } else {
                 throw new Error(data?.error || 'Registration failed');
             }

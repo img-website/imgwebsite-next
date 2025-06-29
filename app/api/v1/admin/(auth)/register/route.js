@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { registerAdmin } from '@/app/actions/admin';
 import { rateLimit } from '@/app/middleware/rateLimiter';
+import { extractToken, verifyToken } from '@/app/lib/auth';
 
 /**
  * @route POST /api/v1/admin/register
  * @desc Register a new admin
- * @access Public
+ * @access Private (SuperAdmin only)
  */
 async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAttempts) {
   // Check if IP is locked out
@@ -46,6 +47,14 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
 
 export async function POST(req) {
   try {
+    const token = extractToken(req.headers);
+    const decoded = token && verifyToken(token);
+    if (!decoded || decoded.role !== 'superadmin') {
+      return NextResponse.json(
+        { success: false, error: 'SuperAdmin access required' },
+        { status: 403 }
+      );
+    }
     // Apply rate limit
     return rateLimit(req, handler);
   } catch (error) {

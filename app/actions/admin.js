@@ -79,6 +79,7 @@ export async function registerAdmin(formData, req) {
     // Add virtual fields
     adminResponse.fullName = admin.fullName;
     adminResponse.initials = admin.initials;
+    adminResponse.permissions = admin.permissions || {};
 
    // Revalidate paths
     revalidatePath('/admin');

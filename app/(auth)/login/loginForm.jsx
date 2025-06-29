@@ -73,11 +73,13 @@ export function LoginForm() {
                 // get redirectTo from query params if present
                 const searchParams = new URLSearchParams(window.location.search);
                 const redirectTo = searchParams.get('redirectTo');
+                const hasPerm = data?.data?.permissions && Object.keys(data.data.permissions).length > 0;
+                const defaultDest = hasPerm ? (data?.data?.role === 'admin' ? '/admin' : '/') : '/admin/select-role';
 
                 if (redirectTo) {
                     router.push(redirectTo);
                 } else {
-                    router.push(data?.data?.role === 'admin' ? '/admin' : '/');
+                    router.push(defaultDest);
                 }
 
                 router.refresh();
