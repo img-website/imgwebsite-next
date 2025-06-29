@@ -21,8 +21,16 @@ export async function ensureAdminsFile() {
 
 export async function readAdmins() {
   await ensureAdminsFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return JSON.parse(data);
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      const { admins } = await syncAdminsFromDB();
+      return admins;
+    }
+    throw err;
+  }
 }
 
 export async function readAdminsWithNotice() {
@@ -30,7 +38,7 @@ export async function readAdminsWithNotice() {
     const data = await fs.readFile(DATA_FILE, 'utf8');
     return { admins: JSON.parse(data), wasCreated: false };
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err.code === 'ENOENT' || err instanceof SyntaxError) {
       const { admins } = await syncAdminsFromDB();
       return { admins, wasCreated: true };
     }

@@ -21,8 +21,16 @@ export async function ensureStaticMetaFile() {
 
 export async function readStaticMeta() {
   await ensureStaticMetaFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return JSON.parse(data || '{}');
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return JSON.parse(data || '{}');
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      const { meta } = await syncStaticMetaFromDB();
+      return meta;
+    }
+    throw err;
+  }
 }
 
 export async function readStaticMetaWithNotice() {
@@ -30,7 +38,7 @@ export async function readStaticMetaWithNotice() {
     const data = await fs.readFile(DATA_FILE, 'utf8');
     return { meta: JSON.parse(data || '{}'), wasCreated: false };
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err.code === 'ENOENT' || err instanceof SyntaxError) {
       const { meta } = await syncStaticMetaFromDB();
       return { meta, wasCreated: true };
     }

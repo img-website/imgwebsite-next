@@ -21,14 +21,30 @@ export async function ensureRedirectionsFile() {
 
 export async function readRedirections() {
   await ensureRedirectionsFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return JSON.parse(data);
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      const { data } = await syncRedirectionsFromDB();
+      return data;
+    }
+    throw err;
+  }
 }
 
 export async function readRedirectionsWithNotice() {
   const wasCreated = await ensureRedirectionsFile();
-  const data = await fs.readFile(DATA_FILE, 'utf8');
-  return { redirections: JSON.parse(data), wasCreated };
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return { redirections: JSON.parse(data), wasCreated };
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      const { data } = await syncRedirectionsFromDB();
+      return { redirections: data, wasCreated: true };
+    }
+    throw err;
+  }
 }
 
 export async function writeRedirections(redirections) {
