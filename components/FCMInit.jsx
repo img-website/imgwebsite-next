@@ -15,15 +15,18 @@ const firebaseConfig = {
 
 export default function FCMInit() {
   useEffect(() => {
-    if (typeof window === 'undefined' || !firebaseConfig.apiKey) return;
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
     const init = async () => {
+      if (typeof window === 'undefined' || !firebaseConfig.apiKey) return;
+      const supported = await isSupported();
+      if (!supported) return;
+
+      const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+      const messaging = getMessaging(app);
       try {
-        const supported = await isSupported();
-        if (!supported) return;
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const registration =
+          (await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js')) ??
+          (await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' }));
+        await navigator.serviceWorker.ready;
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') return;
         const token = await getToken(messaging, {
@@ -37,15 +40,15 @@ export default function FCMInit() {
             body: JSON.stringify({ token })
           });
         }
+        onMessage(messaging, payload => {
+          toast.info(payload.notification?.title || 'New Notification');
+        });
       } catch (err) {
         console.error('FCM setup error', err);
       }
     };
 
     init();
-    onMessage(messaging, payload => {
-      toast.info(payload.notification?.title || 'New Notification');
-    });
   }, []);
   return null;
 }
