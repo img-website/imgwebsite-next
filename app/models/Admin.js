@@ -84,6 +84,10 @@ const adminSchema = new mongoose.Schema({
     enum: ['admin', 'superadmin'],
     default: 'admin'
   },
+  permissions: {
+    type: [String],
+    default: []
+  },
   accountStatus: {
     type: String,
     enum: ['active', 'inactive', 'suspended'],

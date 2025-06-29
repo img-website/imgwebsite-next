@@ -4,7 +4,7 @@ import Blog from '@/app/models/Blog';
 import Author from '@/app/models/Author';
 import Category from '@/app/models/Category';
 import Fuse from 'fuse.js';
-import { verifyToken, extractToken } from '@/app/lib/auth';
+import { verifyToken, extractToken, hasModuleAccess } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
 
@@ -86,7 +86,7 @@ export async function POST(request) {
     }
 
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!hasModuleAccess(decoded, 'blogs')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
 

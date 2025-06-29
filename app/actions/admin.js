@@ -57,7 +57,8 @@ export async function registerAdmin(formData, req) {
     const admin = await Admin.create({
       email: validatedData.email,
       password: hashedPassword,
-      registrationIP: 'unknown' // Will be set by middleware
+      registrationIP: 'unknown', // Will be set by middleware
+      permissions: []
     });
 
     // Send welcome email
@@ -65,7 +66,7 @@ export async function registerAdmin(formData, req) {
 
     // Generate token
     const token = jwt.sign(
-      { id: admin._id, email: admin.email, role: admin.role },
+      { id: admin._id, email: admin.email, role: admin.role, permissions: admin.permissions },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '24h' }
     );
@@ -79,6 +80,8 @@ export async function registerAdmin(formData, req) {
     // Add virtual fields
     adminResponse.fullName = admin.fullName;
     adminResponse.initials = admin.initials;
+    adminResponse.permissions = admin.permissions;
+    adminResponse.permissions = admin.permissions;
 
    // Revalidate paths
     revalidatePath('/admin');
@@ -170,12 +173,13 @@ export async function loginAdmin(email, password) {
 
     // If 2FA not enabled, generate normal token
     const token = jwt.sign(
-      { 
-        id: admin._id, 
-        email: admin.email, 
-        username: admin.username, 
+      {
+        id: admin._id,
+        email: admin.email,
+        username: admin.username,
         role: admin.role,
-        twoFactorVerified: false 
+        permissions: admin.permissions,
+        twoFactorVerified: false
       },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '24h' }

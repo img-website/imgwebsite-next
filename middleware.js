@@ -60,6 +60,7 @@ export async function middleware(request) {
     const isLoggedIn = !!decodedToken;
     const isRole = decodedToken?.role;
     const isEmail = decodedToken?.email;
+    const permissions = decodedToken?.permissions || [];
 
     // If token verification fails, clear the token cookies
     if (token && !decodedToken) {
@@ -67,6 +68,7 @@ export async function middleware(request) {
         response.cookies.set("token", "", { maxAge: -1, path: "/" }); // Remove token cookie
         response.cookies.set("userEmail", "", { maxAge: -1, path: "/" }); // Remove token cookie
         response.cookies.set("userRole", "", { maxAge: -1, path: "/" }); // Remove token cookie
+        response.cookies.set("userPermissions", "", { maxAge: -1, path: "/" });
         return response;
     }
 
@@ -93,7 +95,36 @@ export async function middleware(request) {
                 const response = NextResponse.redirect(new URL("/admin", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
+                response.cookies.set("userPermissions", permissions.join(','), { maxAge: 86400, path: "/" });
                 return response;
+            }
+        }
+
+        // Permission checks for admin and superadmin
+        if (isRole === "admin" || isRole === "superadmin") {
+            const checkModule = () => {
+                const maps = [
+                    { prefix: "/admin/blogs", module: "blogs" },
+                    { prefix: "/api/v1/admin/blogs", module: "blogs" },
+                    { prefix: "/admin/leads", module: "leads" },
+                    { prefix: "/api/v1/admin/leads", module: "leads" },
+                    { prefix: "/admin/newsletter", module: "newsletter" },
+                    { prefix: "/api/v1/admin/newsletters", module: "newsletter" },
+                    { prefix: "/admin/meta", module: "meta" },
+                    { prefix: "/api/v1/admin/meta", module: "meta" },
+                    { prefix: "/admin/schema", module: "schema" },
+                    { prefix: "/api/v1/admin/schema", module: "schema" },
+                    { prefix: "/admin/redirections", module: "redirections" },
+                    { prefix: "/api/v1/admin/redirections", module: "redirections" },
+                ];
+                for (const m of maps) {
+                    if (pathname.startsWith(m.prefix)) return m.module;
+                }
+                return null;
+            };
+            const moduleNeeded = checkModule();
+            if (moduleNeeded && isRole !== "superadmin" && !permissions.includes(moduleNeeded)) {
+                return NextResponse.redirect(new URL("/admin", request.url));
             }
         }
 
@@ -109,6 +140,7 @@ export async function middleware(request) {
                 const response = NextResponse.redirect(new URL("/", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
+                response.cookies.set("userPermissions", permissions.join(','), { maxAge: 86400, path: "/" });
                 return response;
             }
         }
@@ -125,6 +157,7 @@ export async function middleware(request) {
     if (isLoggedIn && isRole) {
         response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
         response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
+        response.cookies.set("userPermissions", permissions.join(','), { maxAge: 86400, path: "/" });
     }
 
   return response;

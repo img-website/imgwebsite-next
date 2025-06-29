@@ -64,9 +64,10 @@ export function RegisterForm() {
                 document.cookie = `token=${data?.token}; path=/; priority=high;`
                 document.cookie = `userEmail=${data?.data?.email}; path=/;`
                 document.cookie = `userRole=${data?.data?.role}; path=/;`
+                document.cookie = `userPermissions=${(data?.data?.permissions || []).join()}; path=/;`
 
                 toast.success('Registration successful!');
-                router.push('/admin');
+                router.push('/admin/permissions');
                 router.refresh();
             } else {
                 throw new Error(data?.error || 'Registration failed');

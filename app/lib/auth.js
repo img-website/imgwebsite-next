@@ -46,4 +46,10 @@ export function extractToken(headers) {
  */
 export function isAdmin(decoded) {
   return decoded && decoded.role === 'admin';
-} 
+}
+
+export function hasModuleAccess(decoded, module) {
+  if (!decoded) return false;
+  if (decoded.role === 'superadmin') return true;
+  return Array.isArray(decoded.permissions) && decoded.permissions.includes(module);
+}

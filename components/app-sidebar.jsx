@@ -19,6 +19,7 @@ import {
 
 import dynamic from 'next/dynamic'
 import { useTeamStore } from "@/app/store/use-team-store"
+import permissionsFromCookie from "@/helpers/permissionsFromCookie"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
 import { NavMainSkeleton } from "@/components/skeleton/nav-main-skeleton"
@@ -96,6 +97,7 @@ const data = {
       icon: Rss,
       isActive: true,
       team: "Blogs",
+      permission: "blogs",
       type: "dropdown",
       items: [
         {
@@ -113,6 +115,7 @@ const data = {
       url: "#",
       icon: ChartBarStacked,
       team: "Blogs",
+      permission: "blogs",
       type: "dropdown",
       items: [
         {
@@ -130,6 +133,7 @@ const data = {
       url: "#",
       icon: Images,
       team: "Blogs",
+      permission: "blogs",
       items: [
         {
           title: "Add Image",
@@ -146,6 +150,7 @@ const data = {
       url: "#",
       icon: UserRoundPen,
       team: "Blogs",
+      permission: "blogs",
       items: [
         {
           title: "Add Author",
@@ -162,6 +167,7 @@ const data = {
       url: "/admin/blogs/notifications",
       icon: BellRing,
       team: "Blogs",
+      permission: "blogs",
       type: "link"
     },
     {
@@ -169,6 +175,7 @@ const data = {
       url: "#",
       icon: Target,
       team: "Leads & Contacts",
+      permission: "leads",
       items: [
         {
           title: "Add Lead",
@@ -185,6 +192,7 @@ const data = {
       url: "/admin/leads/career",
       icon: UserSearch,
       team: "Leads & Contacts",
+      permission: "leads",
       type: "link"
     },
     {
@@ -192,6 +200,7 @@ const data = {
       url: "/admin/newsletter",
       icon: BellRing,
       team: "Leads & Contacts",
+      permission: "newsletter",
       type: "link"
     },
     {
@@ -199,6 +208,7 @@ const data = {
       url: "#",
       icon: AArrowUp,
       team: "Meta & Schema",
+      permission: "meta",
       items: [
         {
           title: "Static Meta",
@@ -215,6 +225,7 @@ const data = {
       url: "/admin/schema",
       icon: Braces,
       team: "Meta & Schema",
+      permission: "schema",
       type: "link"
     },
     {
@@ -222,6 +233,7 @@ const data = {
       url: "#",
       icon: Split,
       team: "Redirections",
+      permission: "redirections",
       items: [
         {
           title: "Add Redirection",
@@ -240,12 +252,15 @@ export function AppSidebar({
   ...props
 }) {
   const activeTeam = useTeamStore((state) => state.activeTeam);
+  const perms = permissionsFromCookie();
 
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {
     if (!activeTeam) return [];
-    return data.navMain.filter(item => item.team === activeTeam.name);
-  }, [activeTeam]);
+    return data.navMain.filter(
+      item => item.team === activeTeam.name && (!item.permission || perms.includes(item.permission))
+    );
+  }, [activeTeam, perms]);
 
   return (
     <Sidebar collapsible="icon" {...props}>

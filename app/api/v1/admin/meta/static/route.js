@@ -6,7 +6,7 @@ import {
   syncStaticMetaFromDB,
 } from '@/app/lib/staticMetaFile';
 import { staticMetaSchema } from '@/app/lib/validations/staticMeta';
-import { verifyToken, extractToken } from '@/app/lib/auth';
+import { verifyToken, extractToken, hasModuleAccess } from '@/app/lib/auth';
 
 export async function GET() {
   try {
@@ -34,7 +34,7 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!hasModuleAccess(decoded, 'meta')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
 

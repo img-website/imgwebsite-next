@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Newsletter from '@/app/models/Newsletter';
-import { extractToken, verifyToken } from '@/app/lib/auth';
+import { extractToken, verifyToken, hasModuleAccess } from '@/app/lib/auth';
 
 export async function DELETE(request, { params }) {
   try {
@@ -11,7 +11,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!hasModuleAccess(decoded, 'newsletter')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
     await connectDB();
