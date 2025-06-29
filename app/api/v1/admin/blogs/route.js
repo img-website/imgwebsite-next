@@ -183,6 +183,15 @@ export async function POST(request) {
 
     const blog = await Blog.create(blogData);
 
+    if (blog.status === 2) {
+      const { sendPushNotification } = await import('@/app/lib/push');
+      await sendPushNotification({
+        title: 'New Blog Published',
+        body: blog.title,
+        data: { blogId: String(blog._id) }
+      });
+    }
+
     return NextResponse.json({ success: true, data: blog }, { status: 201 });
   } catch (error) {
     console.error('Error creating blog:', error);

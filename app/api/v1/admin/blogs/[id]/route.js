@@ -188,7 +188,17 @@ export async function PUT(request, { params }) {
       }
     }
 
+    const wasPublished = blog.isModified('status') && blog.status === 2;
     await blog.save();
+
+    if (wasPublished) {
+      const { sendPushNotification } = await import('@/app/lib/push');
+      await sendPushNotification({
+        title: 'New Blog Published',
+        body: blog.title,
+        data: { blogId: String(blog._id) }
+      });
+    }
 
     return NextResponse.json({ success: true, data: blog });
   } catch (error) {

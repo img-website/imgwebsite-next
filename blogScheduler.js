@@ -29,6 +29,12 @@ async function publishScheduledBlogs() {
   for (const blog of blogs) {
     blog.status = 2; // Change status to published
     await blog.save();
+    const { sendPushNotification } = await import('./app/lib/push.js');
+    await sendPushNotification({
+      title: 'New Blog Published',
+      body: blog.title,
+      data: { blogId: String(blog._id) }
+    });
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
 }
