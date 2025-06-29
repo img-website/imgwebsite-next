@@ -84,6 +84,12 @@ export async function middleware(request) {
             return NextResponse.redirect(new URL(redirectUrl, request.url));
         }
     }
+
+    if (pathname.startsWith("/admin/departments")) {
+        if (!isLoggedIn || isRole !== "superadmin") {
+            return NextResponse.redirect(new URL(isLoggedIn ? "/admin" : `/login?redirectTo=${pathname}`, request.url));
+        }
+    }
     // If the user is not logged in and trying to access admin pages, redirect to /login
     if (!isLoggedIn && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));

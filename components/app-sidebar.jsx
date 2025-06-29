@@ -19,6 +19,7 @@ import {
 
 import dynamic from 'next/dynamic'
 import { useTeamStore } from "@/app/store/use-team-store"
+import { getCookie } from "cookies-next"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
 import { NavMainSkeleton } from "@/components/skeleton/nav-main-skeleton"
@@ -257,7 +258,10 @@ export function AppSidebar({
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {
     if (!activeTeam) return [];
-    return data.navMain.filter(item => item.team === activeTeam.name);
+    const role = getCookie('userRole');
+    return data.navMain.filter(
+      item => item.team === activeTeam.name && (item.title !== 'Role Department' || role === 'superadmin')
+    );
   }, [activeTeam]);
 
   return (
