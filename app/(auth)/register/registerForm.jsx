@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,16 +17,20 @@ import {
     FormControl,
     FormMessage,
 } from "@/components/ui/form"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Eye, EyeOff } from "lucide-react"
+import apiFetch from "@/helpers/apiFetch"
 
 // Zod schema for validation
 const registerSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
     password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
+    department: z.string().optional(),
 })
 
 export function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false)
+    const [departments, setDepartments] = useState([])
     const router = useRouter()
     const handleError = useErrorHandler()
 
@@ -36,19 +40,36 @@ export function RegisterForm() {
         defaultValues: {
             email: '',
             password: '',
+            department: '',
         },
     })
+
+    useEffect(() => {
+        async function loadDepts() {
+            try {
+                const res = await fetch('/api/v1/admin/departments');
+                const json = await res.json();
+                if (json.success) setDepartments(json.data);
+            } catch (e) {
+                console.error('Failed to load departments');
+            }
+        }
+        loadDepts();
+    }, []);
     
 
     const registerHandler = async (values) => {
-        const { email, password } = values
+        const { email, password, department } = values
         
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
+        if (department) {
+            formData.append("department", department);
+        }
 
         try {
-            const response = await fetch("/api/v1/admin/register", {
+            const response = await apiFetch("/api/v1/admin/register", {
                 method: "POST",
                 body: formData,
             });
@@ -123,6 +144,31 @@ export function RegisterForm() {
                                     </Button>
                                 </div>
                             </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="department"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Department</FormLabel>
+                            <Select value={field.value} onValueChange={field.onChange}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select department" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {departments.map((d) => (
+                                        <SelectItem key={d._id} value={d._id}>
+                                            {d.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}

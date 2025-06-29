@@ -88,6 +88,12 @@ const data = {
       description: "SEO team",
       isActive: true,
     },
+    {
+      name: "Role Department",
+      logo: Quote,
+      description: "RBAC",
+      isActive: true,
+    },
   ],
   navMain: [
     {
@@ -232,6 +238,13 @@ const data = {
           url: "/admin/redirections",
         },
       ],
+    },
+    {
+      title: "Role Department",
+      url: "/admin/departments",
+      icon: Quote,
+      team: "Role Department",
+      type: "link"
     },
   ],
 }

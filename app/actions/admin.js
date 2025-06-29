@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
+import Department from '@/app/models/Department';
 import { adminRegistrationSchema } from '@/app/lib/validations/admin';
 import { sendLoginEmail, sendWelcomeEmail } from '@/app/lib/mail';
 
@@ -17,6 +18,7 @@ export async function registerAdmin(formData, req) {
     const data = {
       email: formData.get('email'),
       password: formData.get('password'),
+      department: formData.get('department') || null,
     };
 
     // Validate data
@@ -53,11 +55,24 @@ export async function registerAdmin(formData, req) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(validatedData.password, salt);
 
+    let department = null;
+    if (data.department) {
+      department = await Department.findById(data.department);
+      if (!department) {
+        return {
+          success: false,
+          error: 'Department not found'
+        };
+      }
+    }
+
     // Create admin
     const admin = await Admin.create({
       email: validatedData.email,
       password: hashedPassword,
-      registrationIP: 'unknown' // Will be set by middleware
+      registrationIP: 'unknown', // Will be set by middleware
+      permissions: department ? department.permissions : {},
+      department: department ? department._id : null,
     });
 
     // Send welcome email
@@ -80,6 +95,7 @@ export async function registerAdmin(formData, req) {
     adminResponse.fullName = admin.fullName;
     adminResponse.initials = admin.initials;
     adminResponse.permissions = admin.permissions || {};
+    adminResponse.department = admin.department;
 
    // Revalidate paths
     revalidatePath('/admin');
@@ -194,6 +210,8 @@ export async function loginAdmin(email, password) {
     // Add virtual fields to response
     adminResponse.fullName = admin.fullName;
     adminResponse.initials = admin.initials;
+    adminResponse.permissions = admin.permissions || {};
+    adminResponse.department = admin.department;
 
     return {
       success: true,

@@ -84,6 +84,11 @@ const adminSchema = new mongoose.Schema({
     enum: ['admin', 'superadmin'],
     default: 'admin'
   },
+  department: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department',
+    default: null,
+  },
   permissions: {
     type: mongoose.Schema.Types.Mixed,
     default: {}
