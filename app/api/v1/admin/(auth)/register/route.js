@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { registerAdmin } from '@/app/actions/admin';
 import { rateLimit } from '@/app/middleware/rateLimiter';
 import { extractToken, verifyToken } from '@/app/lib/auth';
+import { syncAdminsFromDB } from '@/app/lib/adminsFile';
 
 /**
  * @route POST /api/v1/admin/register
@@ -40,6 +41,7 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
   } else {
     // Clear failed login attempts on successful registration
     failedLoginAttempts.delete(ip);
+    await syncAdminsFromDB();
   }
 
   return NextResponse.json(result, { status: result.success ? 201 : 400 });

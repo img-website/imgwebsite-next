@@ -17,11 +17,11 @@ export default async function Page() {
   });
   const json = await res.json();
   const admins = Array.isArray(json?.data) ? json.data : [];
-  const data = admins.map(a => ({
-    id: a._id,
+  const data = admins.map((a) => ({
+    id: a.id,
     email: a.email,
     role: a.role,
-    department: a.department?.name || '',
+    department: a.department || '',
     createdAt: a.createdAt,
   }));
 
