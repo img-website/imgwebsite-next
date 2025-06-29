@@ -75,7 +75,7 @@ export async function middleware(request) {
         return NextResponse.next();
     }
 
-    if (pathname.startsWith("/register")) {
+    if (pathname.startsWith("/admin/new-admin")) {
         if (!isLoggedIn) {
             return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
         }
@@ -104,8 +104,8 @@ export async function middleware(request) {
     if (isLoggedIn) {
         // Admin Role Handling
         if (isRole === "admin") {
-            // If logged in as admin, prevent access to /login or /register
-            if (pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+            // If logged in as admin, prevent access to /login or /admin/new-admin
+            if (pathname.startsWith("/login") || pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
                 const response = NextResponse.redirect(new URL("/admin", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
@@ -120,8 +120,8 @@ export async function middleware(request) {
                 return NextResponse.redirect(new URL("/", request.url));
             }
 
-            // If logged in as user, prevent access to /login or /register or forgot-password or reset-password
-            if (pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+            // If logged in as user, prevent access to /login or /admin/new-admin or forgot-password or reset-password
+            if (pathname.startsWith("/login") || pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
                 const response = NextResponse.redirect(new URL("/", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
@@ -130,8 +130,8 @@ export async function middleware(request) {
         }
     }
 
-    // If user tries to access /register or /forgot-password or /reset-password and is already logged in
-    if (pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+    // If user tries to access /admin/new-admin or /forgot-password or /reset-password and is already logged in
+    if (pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
         if (isLoggedIn && isRole !== "superadmin") {
             const redirectUrl = isRole === "admin" ? "/admin" : "/";
             return NextResponse.redirect(new URL(redirectUrl, request.url));

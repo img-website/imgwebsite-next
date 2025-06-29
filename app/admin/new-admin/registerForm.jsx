@@ -25,7 +25,7 @@ import apiFetch from "@/helpers/apiFetch"
 const registerSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
     password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
-    department: z.string().optional(),
+    department: z.string().min(1, { message: "Department is required" }),
 })
 
 export function RegisterForm() {
@@ -64,9 +64,7 @@ export function RegisterForm() {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        if (department) {
-            formData.append("department", department);
-        }
+        formData.append("department", department);
 
         try {
             const response = await apiFetch("/api/v1/admin/register", {
