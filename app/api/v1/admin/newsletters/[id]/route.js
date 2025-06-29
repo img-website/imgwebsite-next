@@ -2,18 +2,12 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Newsletter from '@/app/models/Newsletter';
-import { extractToken, verifyToken } from '@/app/lib/auth';
+import { ensurePermission } from '@/lib/rbac';
 
 export async function DELETE(request, { params }) {
+  const admin = await ensurePermission(request, 'newsletter', 'delete');
+  if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   try {
-    const token = extractToken(request.headers);
-    if (!token) {
-      return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
-    }
-    const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
-      return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
-    }
     await connectDB();
     const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {

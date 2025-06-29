@@ -41,7 +41,7 @@ export async function PUT(request, { params }) {
     }
 
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!decoded || (decoded.role !== 'admin' && decoded.role !== 'superadmin')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
 
@@ -209,7 +209,7 @@ export async function DELETE(request, { params }) {
     }
 
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!decoded || (decoded.role !== 'admin' && decoded.role !== 'superadmin')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
 

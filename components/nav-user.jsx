@@ -27,6 +27,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { getCookie } from "cookies-next"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
@@ -40,6 +42,7 @@ export function NavUser({
       const handleLogout = async () => {
           try {
               await fetch("/api/v1/admin/logout");
+              document.cookie = "userPermissions=; max-age=0; path=/;";
               toast.success("Logged out");
               router.push("/login");
           } catch (error) {
@@ -93,6 +96,17 @@ export function NavUser({
                 <Settings2 />
                 Setting
               </DropdownMenuItem>
+              {getCookie('userRole') === 'superadmin' && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/admins">All Admins</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/new-admin">Add Admin</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>

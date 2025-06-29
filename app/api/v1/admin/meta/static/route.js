@@ -34,7 +34,7 @@ export async function PUT(request) {
       return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
     const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
+    if (!decoded || (decoded.role !== 'admin' && decoded.role !== 'superadmin')) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
 

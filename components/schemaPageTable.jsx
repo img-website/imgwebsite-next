@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { MoreHorizontal, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -41,11 +42,13 @@ function PageActions({ page }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem asChild>
-          <Link href={`/admin/schema/${page.url === '/' ? 'home' : page.url.substring(1)}/add`}>
-            Add Schema
-          </Link>
-        </DropdownMenuItem>
+        {hasClientPermission('schemas', 'write') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/schema/${page.url === '/' ? 'home' : page.url.substring(1)}/add`}>
+              Add Schema
+            </Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

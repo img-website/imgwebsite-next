@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import * as React from "react";
 import {
   flexRender,
@@ -32,13 +31,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import apiFetch from "@/helpers/apiFetch";
 
-function ImageActions({ image }) {
+function DepartmentActions({ department }) {
   const router = useRouter();
+
+  const handleDelete = async () => {
+    try {
+      const res = await apiFetch(`/api/v1/admin/departments/${department.id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Department deleted");
+        router.refresh();
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (e) {
+      toast.error("Failed to delete");
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,24 +66,22 @@ function ImageActions({ image }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(image.id)}>
-          Copy image ID
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {
-          // Ensure absolute URL
-          let url = image.url;
-          if (url && !/^https?:\/\//i.test(url)) {
-            url = `${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`;
-          }
-          navigator.clipboard.writeText(url);
-        }}>
-          Copy Image Link
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(department.id)}>
+          Copy ID
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {hasClientPermission('images', 'edit') && (
+        {hasClientPermission('departments', 'edit') && (
           <DropdownMenuItem asChild>
-            <Link href={`/admin/blogs/images/${image.id}/edit`}>Edit</Link>
+            <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
+        )}
+        {hasClientPermission('departments', 'delete') && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
+              Delete
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -97,61 +112,22 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "storedName",
+    accessorKey: "name",
     header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Filename
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}> 
+        Name
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center gap-3">
-        <img
-          src={row.original.url}
-          alt={row.getValue("storedName")}
-          className="h-10 w-10 object-contain rounded border"
-        />
-        <span className="break-all text-sm">{row.getValue("storedName")}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "uploadedBy",
-    header: "Uploaded By",
-    cell: ({ row }) => <span>{row.getValue("uploadedBy")}</span>,
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Uploaded At
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      const formatted = new Intl.DateTimeFormat("en-US", {
-        dateStyle: "medium",
-        timeStyle: "short",
-        timeZone: "UTC",
-      }).format(date);
-      return <div>{formatted}</div>;
-    },
   },
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <ImageActions image={row.original} />,
+    cell: ({ row }) => <DepartmentActions department={row.original} />,
   },
 ];
 
-export function ImageTable({ data }) {
+export function DepartmentTable({ data }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -180,11 +156,9 @@ export function ImageTable({ data }) {
     <div className="w-full">
       <div className="flex gap-3 items-center py-4">
         <Input
-          placeholder="Filter by filename..."
-          value={table.getColumn("storedName")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("storedName")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filter by name..."
+          value={table.getColumn("name")?.getFilterValue() ?? ""}
+          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -197,25 +171,23 @@ export function ImageTable({ data }) {
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('images', 'write') && (
+        {hasClientPermission('departments', 'write') && (
           <Button asChild>
-            <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
+            <Link href="/admin/departments/add">
+              <Plus className="mr-2 h-4 w-4" /> Add
+            </Link>
           </Button>
         )}
       </div>
@@ -224,44 +196,33 @@ export function ImageTable({ data }) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -271,7 +232,7 @@ export function ImageTable({ data }) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {" "}
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
