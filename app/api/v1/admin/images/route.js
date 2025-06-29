@@ -68,3 +68,11 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: 'Error uploading image' }, { status: 500 });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '20mb',
+    },
+  },
+};
