@@ -252,7 +252,11 @@ export function AppSidebar({
   ...props
 }) {
   const activeTeam = useTeamStore((state) => state.activeTeam);
-  const perms = permissionsFromCookie();
+  const [perms, setPerms] = React.useState([]);
+
+  React.useEffect(() => {
+    setPerms(permissionsFromCookie());
+  }, []);
 
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {
