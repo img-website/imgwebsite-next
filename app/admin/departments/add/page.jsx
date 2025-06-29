@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import DepartmentForm from "@/components/department-form";
 
-export default function Page() {
-  const role = cookies().get("userRole")?.value;
+export default async function Page() {
+  const store = await cookies();
+  const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
     redirect("/admin");
   }

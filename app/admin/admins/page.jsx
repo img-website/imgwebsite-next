@@ -3,13 +3,18 @@ import { redirect } from "next/navigation";
 import { AdminTable } from "@/components/adminTable";
 
 export default async function Page() {
-  const role = cookies().get("userRole")?.value;
+  const store = await cookies();
+  const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
     redirect("/admin");
   }
 
   const base = process.env.NEXT_PUBLIC_BASE_URL || '';
-  const res = await fetch(`${base}/api/v1/admin/admins`, { cache: 'no-store' });
+  const token = store.get("token")?.value || '';
+  const res = await fetch(`${base}/api/v1/admin/admins`, {
+    cache: 'no-store',
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const json = await res.json();
   const admins = Array.isArray(json?.data) ? json.data : [];
   const data = admins.map(a => ({

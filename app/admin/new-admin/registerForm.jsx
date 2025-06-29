@@ -47,7 +47,7 @@ export function RegisterForm() {
     useEffect(() => {
         async function loadDepts() {
             try {
-                const res = await fetch('/api/v1/admin/departments');
+                const res = await apiFetch('/api/v1/admin/departments');
                 const json = await res.json();
                 if (json.success) setDepartments(json.data);
             } catch (e) {
