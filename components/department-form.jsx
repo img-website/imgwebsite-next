@@ -10,7 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { MODULES } from "@/lib/modules";
-import { RBAC_ACTIONS } from "@/lib/rbac";
+import { RBAC_ACTIONS } from "@/lib/rbac-actions";
 
 const schema = z.object({
   name: z.string().min(2, { message: "Name required" }),
