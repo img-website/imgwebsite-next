@@ -173,6 +173,7 @@ export const columns = [
       const formatted = new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
+        timeZone: "UTC",
       }).format(date);
       return <div>{formatted}</div>;
     },

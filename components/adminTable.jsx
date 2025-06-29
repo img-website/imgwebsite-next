@@ -84,7 +84,7 @@ export const columns = [
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
-      return date.toLocaleDateString();
+      return date.toLocaleDateString("en-US", { timeZone: "UTC" });
     },
   },
 ];

@@ -198,7 +198,13 @@ export const columns = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("createdAt");
-      return date ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(new Date(date)) : "-";
+      return date
+        ? new Intl.DateTimeFormat("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+            timeZone: "UTC",
+          }).format(new Date(date))
+        : "-";
     },
   },
   {
@@ -206,7 +212,13 @@ export const columns = [
     header: "Updated",
     cell: ({ row }) => {
       const date = row.getValue("updatedAt");
-      return date ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(new Date(date)) : "-";
+      return date
+        ? new Intl.DateTimeFormat("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+            timeZone: "UTC",
+          }).format(new Date(date))
+        : "-";
     },
   },
   {
