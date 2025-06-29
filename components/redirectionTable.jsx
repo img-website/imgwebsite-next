@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -105,13 +106,19 @@ function RedirectionActions({ redirection }) {
             Copy ID
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/redirections/${redirection.id}/edit`}>Edit</Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-red-600" onClick={() => setOpen(true)}>
-            Delete
-          </DropdownMenuItem>
+          {hasClientPermission('redirections', 'edit') && (
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/redirections/${redirection.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+          )}
+          {hasClientPermission('redirections', 'delete') && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600" onClick={() => setOpen(true)}>
+                Delete
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
@@ -271,9 +278,11 @@ export function RedirectionTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/redirections/add"><Plus /> Add Redirection</Link>
-        </Button>
+        {hasClientPermission('redirections', 'write') && (
+          <Button asChild>
+            <Link href="/admin/redirections/add"><Plus /> Add Redirection</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

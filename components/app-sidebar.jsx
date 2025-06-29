@@ -20,6 +20,7 @@ import {
 import dynamic from 'next/dynamic'
 import { useTeamStore } from "@/app/store/use-team-store"
 import { getCookie } from "cookies-next"
+import { hasClientPermission, getUserPermissions } from "@/helpers/permissions"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
 import { NavMainSkeleton } from "@/components/skeleton/nav-main-skeleton"
@@ -259,9 +260,29 @@ export function AppSidebar({
   const filteredItems = React.useMemo(() => {
     if (!activeTeam) return [];
     const role = getCookie('userRole');
-    return data.navMain.filter(
-      item => item.team === activeTeam.name && (item.title !== 'Role Department' || role === 'superadmin')
-    );
+    const perms = getUserPermissions();
+
+    const canSee = (url) => {
+      const parts = url.split('/').filter(Boolean);
+      if (parts.length < 2) return false;
+      let mod = parts[1];
+      if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+        mod = parts[2];
+      }
+      return role === 'superadmin' || hasClientPermission(mod, 'read');
+    };
+
+    return data.navMain
+      .filter(item => item.team === activeTeam.name && (item.title !== 'Role Department' || role === 'superadmin'))
+      .map(item => {
+        if (item.items) {
+          const items = item.items.filter(sub => canSee(sub.url));
+          if (items.length === 0) return null;
+          return { ...item, items };
+        }
+        return canSee(item.url) ? item : null;
+      })
+      .filter(Boolean);
   }, [activeTeam]);
 
   return (

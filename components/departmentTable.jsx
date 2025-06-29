@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -69,13 +70,19 @@ function DepartmentActions({ department }) {
           Copy ID
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-          Delete
-        </DropdownMenuItem>
+        {hasClientPermission('departments', 'edit') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+        )}
+        {hasClientPermission('departments', 'delete') && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
+              Delete
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -176,11 +183,13 @@ export function DepartmentTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/departments/add">
-            <Plus className="mr-2 h-4 w-4" /> Add
-          </Link>
-        </Button>
+        {hasClientPermission('departments', 'write') && (
+          <Button asChild>
+            <Link href="/admin/departments/add">
+              <Plus className="mr-2 h-4 w-4" /> Add
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

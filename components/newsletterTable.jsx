@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -219,9 +220,11 @@ export function NewsletterTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/newsletter/add">Add</Link>
-        </Button>
+        {hasClientPermission('newsletter', 'write') && (
+          <Button asChild>
+            <Link href="/admin/newsletter/add">Add</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

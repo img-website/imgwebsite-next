@@ -2,6 +2,21 @@ import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getRedirections } from './app/lib/redirections';
 
+function getModuleAction(pathname) {
+  if (!pathname.startsWith('/admin')) return null;
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts.length < 2) return null;
+  let mod = parts[1];
+  if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+    mod = parts[2];
+    parts.splice(2, 1);
+  }
+  let action = 'read';
+  if (parts.includes('add')) action = 'write';
+  if (parts.includes('edit')) action = 'edit';
+  return { module: mod, action };
+}
+
 async function verifyToken(token) {
     try {
         const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -141,6 +156,20 @@ export async function middleware(request) {
     if (isLoggedIn && isRole) {
         response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
         response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
+    }
+
+    if (isLoggedIn && isRole !== "superadmin" && pathname.startsWith("/admin")) {
+        const permData = request.cookies.get('userPermissions')?.value || '';
+        let perms = {};
+        if (permData) {
+            try { perms = JSON.parse(Buffer.from(permData, 'base64').toString()); } catch { perms = {}; }
+        }
+        const info = getModuleAction(pathname);
+        if (info) {
+            if (!perms[info.module] || !perms[info.module][info.action]) {
+                return NextResponse.redirect(new URL('/admin', request.url));
+            }
+        }
     }
 
   return response;

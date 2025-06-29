@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -105,9 +106,11 @@ function LeadActions({ lead }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/leads/${lead.id}/edit`}>Edit</Link>
-          </DropdownMenuItem>
+          {hasClientPermission('leads', 'edit') && (
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/leads/${lead.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+          )}
           {lead.status === "upcoming" ? (
             <DropdownMenuItem onClick={() => handleStatusChange(2)}>
               Move to Career
@@ -288,9 +291,11 @@ export function LeadTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/leads/add">Add Lead</Link>
-        </Button>
+        {hasClientPermission('leads', 'write') && (
+          <Button asChild>
+            <Link href="/admin/leads/add">Add Lead</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

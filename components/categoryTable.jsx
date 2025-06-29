@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -76,9 +77,11 @@ function CategoryActions({ category }) {
           Copy category ID
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href={`/admin/blogs/categories/${category.id}/edit`}>Edit</Link>
-        </DropdownMenuItem>
+        {hasClientPermission('categories', 'edit') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/blogs/categories/${category.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
@@ -241,9 +244,11 @@ export function CategoryTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/blogs/categories/add"><Plus /> Add Category</Link>
-        </Button>
+        {hasClientPermission('categories', 'write') && (
+          <Button asChild>
+            <Link href="/admin/blogs/categories/add"><Plus /> Add Category</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
