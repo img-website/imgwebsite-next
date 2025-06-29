@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { initializeApp, getApps } from 'firebase/app';
+import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
 import { toast } from 'sonner';
 
 const firebaseConfig = {
@@ -16,11 +16,13 @@ const firebaseConfig = {
 export default function FCMInit() {
   useEffect(() => {
     if (typeof window === 'undefined' || !firebaseConfig.apiKey) return;
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
     const init = async () => {
       try {
+        const supported = await isSupported();
+        if (!supported) return;
         const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') return;

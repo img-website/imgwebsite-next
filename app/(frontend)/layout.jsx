@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
 import TawkToWidget from "@/components/TawkToWidget";
 import PageSchema from "@/components/page-schema";
-import FCMInit from "@/components/FCMInit";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import schemaToLd from "@/helpers/schemaToLd";
@@ -60,7 +59,6 @@ export default async function RootLayout({ children }) {
         <main>
         {children}
         </main>
-        <FCMInit />
         <LeadPopup/>
         <Footer/>
         {isProd && (
