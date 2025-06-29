@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
+import '@/app/models/Department';
 
 export const DATA_FILE = path.join(process.cwd(), 'data', 'admins.json');
 
