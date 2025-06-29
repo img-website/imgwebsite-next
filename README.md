@@ -43,6 +43,15 @@ Run the unit tests with:
 npm test
 ```
 
+## Environment Variables
+
+Set up a `.env` file with your MongoDB connection string:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/imgwebsite
+```
+
+
 ## Push Notifications
 
 This project uses Firebase Cloud Messaging for blog notifications. Configure the
