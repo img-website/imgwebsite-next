@@ -18,23 +18,29 @@ export default function FCMInit() {
     if (typeof window === 'undefined' || !firebaseConfig.apiKey) return;
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
-    Notification.requestPermission().then(async perm => {
-      if (perm === 'granted') {
-        try {
-          const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-          const token = await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY, serviceWorkerRegistration: registration });
-          if (token) {
-            await fetch('/api/v1/notifications/register', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token })
-            });
-          }
-        } catch (err) {
-          console.error('FCM token error', err);
+
+    const init = async () => {
+      try {
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') return;
+        const token = await getToken(messaging, {
+          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+          serviceWorkerRegistration: registration
+        });
+        if (token) {
+          await fetch('/api/v1/notifications/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
         }
+      } catch (err) {
+        console.error('FCM setup error', err);
       }
-    });
+    };
+
+    init();
     onMessage(messaging, payload => {
       toast.info(payload.notification?.title || 'New Notification');
     });
