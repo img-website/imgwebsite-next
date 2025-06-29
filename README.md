@@ -6,6 +6,8 @@ First, run the development server:
 
 ```bash
 npm run dev
+# or to run over HTTPS for features like push notifications
+npm run dev:https
 # or
 yarn dev
 # or
