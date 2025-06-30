@@ -98,6 +98,11 @@ export function TeamSwitcher({ teams, isLoading }) {
     () => teams[3] && setActiveTeam(teams[3]),
     { dependencies: [teams] }
   );
+  useHotkeys(
+    'shift+5',
+    () => teams[4] && setActiveTeam(teams[4]),
+    { dependencies: [teams] }
+  );
 
   if (!activeTeam) {
     return null;

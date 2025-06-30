@@ -16,7 +16,8 @@ export async function GET(req, { params }) {
       { status: 403 }
     );
   const { admins, wasCreated } = await readAdminsWithNotice();
-  const user = admins.find((a) => a.id === params.id);
+  const { id } = await params;
+  const user = admins.find((a) => a.id === id);
   if (!user)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },

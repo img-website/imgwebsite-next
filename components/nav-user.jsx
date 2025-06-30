@@ -106,11 +106,6 @@ export function NavUser({
                       <Users className="h-4 w-4" /> All Admins
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/admin/new-admin" className="flex items-center gap-2">
-                      <UserPlus className="h-4 w-4" /> Add Admin
-                    </Link>
-                  </DropdownMenuItem>
                 </>
               )}
             </DropdownMenuGroup>
