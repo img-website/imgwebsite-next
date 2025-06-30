@@ -93,6 +93,10 @@ const adminSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },
+  deleted_at: {
+    type: Date,
+    default: null,
+  },
   accountStatus: {
     type: String,
     enum: ['active', 'inactive', 'suspended'],
@@ -162,6 +166,13 @@ adminSchema.virtual('initials').get(function() {
 adminSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcryptjs.compare(candidatePassword, this.password);
 };
+
+adminSchema.pre(['find', 'findOne', 'countDocuments'], function () {
+  const showDeleted = this.getOptions().showDeleted;
+  if (!showDeleted && !this._conditions.deleted_at) {
+    this.where({ deleted_at: null });
+  }
+});
 
 const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 

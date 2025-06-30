@@ -60,6 +60,7 @@ export async function syncAdminsFromDB() {
     email: doc.email,
     role: doc.role,
     department: doc.department ? doc.department.name : null,
+    departmentId: doc.department ? doc.department._id.toString() : null,
     permissions: doc.permissions || {},
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),

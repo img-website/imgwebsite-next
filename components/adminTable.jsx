@@ -8,15 +8,21 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, Plus } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Plus, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import apiFetch from "@/helpers/apiFetch";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,6 +34,56 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+
+function AdminActions({ admin }) {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    if (!window.confirm("Delete this admin?")) return;
+    try {
+      const res = await apiFetch(`/api/v1/admin/admins/${admin.id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        toast.success('Admin deleted');
+        if (data.notice) toast.info(data.notice);
+        router.refresh();
+      } else {
+        toast.error(data.error || 'Failed to delete');
+        if (data.notice) toast.info(data.notice);
+      }
+    } catch (e) {
+      toast.error('Failed to delete');
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(admin.id)}>
+          Copy ID
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        {hasClientPermission('admins','edit') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/admins/${admin.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+        )}
+        {hasClientPermission('admins','delete') && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} className="text-red-600">Delete</DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 export const columns = [
   {
@@ -85,6 +141,11 @@ export const columns = [
       const date = new Date(row.getValue("createdAt"));
       return date.toLocaleDateString("en-US", { timeZone: "UTC" });
     },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <AdminActions admin={row.original} />,
   },
 ];
 

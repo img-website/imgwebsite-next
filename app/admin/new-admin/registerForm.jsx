@@ -95,7 +95,7 @@ export function RegisterForm() {
 
             if (data?.success) {
                 toast.success('Registration successful!');
-                router.push('/admin');
+                router.push('/admin/admins');
             } else {
                 throw new Error(data?.error || 'Registration failed');
             }

@@ -227,3 +227,47 @@ export async function loginAdmin(email, password) {
     };
   }
 }
+
+export async function updateAdmin(id, formData) {
+  try {
+    await connectDB();
+    const admin = await Admin.findById(id);
+    if (!admin) {
+      return { success: false, error: 'Admin not found' };
+    }
+
+    const fields = ['firstName', 'lastName', 'username', 'mobileNumber'];
+    for (const field of fields) {
+      const val = formData.get(field);
+      if (val !== null && val !== undefined && val !== '') {
+        admin[field] = val;
+      }
+    }
+
+    const role = formData.get('role');
+    if (role && ['admin', 'superadmin'].includes(role)) {
+      admin.role = role;
+    }
+
+    const dept = formData.get('department');
+    if (dept) {
+      const department = await Department.findById(dept);
+      if (!department) {
+        return { success: false, error: 'Department not found' };
+      }
+      admin.department = department._id;
+      admin.permissions = department.permissions;
+    }
+
+    await admin.save();
+    revalidatePath('/admin/admins');
+
+    const obj = admin.toObject();
+    delete obj.password;
+    delete obj.resetPasswordToken;
+    delete obj.resetPasswordExpire;
+    return { success: true, data: obj };
+  } catch (error) {
+    return { success: false, error: error.message || 'Failed to update admin' };
+  }
+}
