@@ -8,6 +8,7 @@ import {
 } from '@/app/lib/adminsFile';
 
 export async function GET(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'admins', 'read');
   if (!admin)
     return NextResponse.json(
@@ -15,7 +16,7 @@ export async function GET(req, { params }) {
       { status: 403 }
     );
   const { admins, wasCreated } = await readAdminsWithNotice();
-  const user = admins.find((u) => u.id === params.id);
+  const user = admins.find((u) => u.id === id);
   if (!user)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },
@@ -31,6 +32,7 @@ export async function GET(req, { params }) {
 }
 
 export async function PUT(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'admins', 'edit');
   if (!admin)
     return NextResponse.json(
@@ -40,7 +42,7 @@ export async function PUT(req, { params }) {
   await connectDB();
   const body = await req.json();
   const updated = await Admin.findByIdAndUpdate(
-    params.id,
+    id,
     { permissions: body.permissions, permissionsUpdatedAt: new Date() },
     { new: true }
   );

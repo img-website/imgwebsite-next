@@ -6,15 +6,17 @@ import { ensurePermission } from '@/lib/rbac';
 import { syncAdminsFromDB } from '@/app/lib/adminsFile';
 
 export async function GET(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'departments', 'read');
   if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   await connectDB();
-  const dept = await Department.findById(params.id).lean();
+  const dept = await Department.findById(id).lean();
   if (!dept) return NextResponse.json({ success: false, error: 'Department not found' }, { status: 404 });
   return NextResponse.json({ success: true, data: dept });
 }
 
 export async function PUT(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'departments', 'edit');
   if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   await connectDB();
@@ -28,12 +30,12 @@ export async function PUT(req, { params }) {
   if (!hasPerm) {
     return NextResponse.json({ success: false, error: 'Select at least one permission' }, { status: 400 });
   }
-  const existing = await Department.findOne({ name, _id: { $ne: params.id } });
+  const existing = await Department.findOne({ name, _id: { $ne: id } });
   if (existing) {
     return NextResponse.json({ success: false, error: 'Department already exists' }, { status: 400 });
   }
   const updated = await Department.findByIdAndUpdate(
-    params.id,
+    id,
     { name, permissions },
     { new: true }
   );
@@ -45,7 +47,7 @@ export async function PUT(req, { params }) {
 
   // Update permissions for all admins using this department
   await Admin.updateMany(
-    { department: params.id },
+    { department: id },
     { permissions, permissionsUpdatedAt: new Date(), updatedAt: new Date() }
   );
   await syncAdminsFromDB();
@@ -54,17 +56,18 @@ export async function PUT(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'departments', 'delete');
   if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   await connectDB();
-  const admins = await Admin.find({ department: params.id }).select('email');
+  const admins = await Admin.find({ department: id }).select('email');
   if (admins.length > 0) {
     return NextResponse.json(
       { success: false, error: 'Department is assigned to admins', data: admins },
       { status: 400 }
     );
   }
-  const deleted = await Department.findByIdAndDelete(params.id);
+  const deleted = await Department.findByIdAndDelete(id);
   if (!deleted) return NextResponse.json({ success: false, error: 'Department not found' }, { status: 404 });
   return NextResponse.json({ success: true });
 }
