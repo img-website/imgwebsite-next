@@ -1,6 +1,13 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default async function Page({ params }) {
   const store = await cookies();
@@ -19,14 +26,36 @@ export default async function Page({ params }) {
   const admin = json?.data;
   if (!admin) return <div className="p-4">Admin not found</div>;
   return (
-    <div className="p-4 space-y-2">
-      <h1 className="text-xl font-semibold">{admin.email}</h1>
-      <p>Department: {admin.department || "N/A"}</p>
-      <p>Role: {admin.role}</p>
-      <p>Created: {new Date(admin.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })}</p>
-      <Link href={`/admin/admins/${admin.id}/edit`} className="text-blue-600 underline">
-        Edit
-      </Link>
+    <div className="w-full p-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Admin Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-sm">
+            <p>
+              <strong>Email:</strong> {admin.email}
+            </p>
+            <p>
+              <strong>Department:</strong> {admin.department || "N/A"}
+            </p>
+            <p>
+              <strong>Role:</strong> {admin.role}
+            </p>
+            <p>
+              <strong>Created:</strong>{" "}
+              {new Date(admin.createdAt).toLocaleDateString("en-US", {
+                timeZone: "UTC",
+              })}
+            </p>
+          </div>
+          <div className="mt-4 flex gap-2 justify-end">
+            <Link href={`/admin/admins/${admin.id}/edit`}>
+              <Button type="button">Edit</Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
