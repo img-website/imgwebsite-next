@@ -171,6 +171,9 @@ export const columns = [
         Email <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+    cell: ({ row }) => (
+      <Link href={`/admin/admins/${row.original.id}`}>{row.getValue("email")}</Link>
+    ),
   },
   {
     accessorKey: "role",

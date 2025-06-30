@@ -32,7 +32,6 @@ const schema = z.object({
   lastName: z.string().optional(),
   username: z.string().optional(),
   mobileNumber: z.string().optional(),
-  role: z.enum(["admin", "superadmin"]).optional(),
   department: z.string().optional(),
 });
 
@@ -48,7 +47,6 @@ export default function EditAdminForm({ admin }) {
       lastName: admin.lastName || "",
       username: admin.username || "",
       mobileNumber: admin.mobileNumber || "",
-      role: admin.role || "admin",
       department: admin.departmentId || "",
     },
   });
@@ -142,27 +140,6 @@ export default function EditAdminForm({ admin }) {
               <FormControl>
                 <Input placeholder="Mobile" {...field} />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="role"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Role</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="superadmin">Super Admin</SelectItem>
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

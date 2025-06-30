@@ -19,13 +19,15 @@ export default async function Page() {
   });
   const json = await res.json();
   const admins = Array.isArray(json?.data) ? json.data : [];
-  const data = admins.map((a) => ({
-    id: a.id,
-    email: a.email,
-    role: a.role,
-    department: a.department || '',
-    createdAt: a.createdAt,
-  }));
+  const data = admins
+    .filter((a) => a.role !== 'superadmin')
+    .map((a) => ({
+      id: a.id,
+      email: a.email,
+      role: a.role,
+      department: a.department || '',
+      createdAt: a.createdAt,
+    }));
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
