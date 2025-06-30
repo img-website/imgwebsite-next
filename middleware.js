@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getRedirections } from './app/lib/redirections';
-import { readAdminsWithNotice } from './app/lib/adminsFile';
 
 function getModuleAction(pathname) {
   if (!pathname.startsWith('/admin')) return null;
@@ -80,16 +79,26 @@ export async function middleware(request) {
 
     const permStamp = request.cookies.get('permissionsStamp')?.value;
     if (decodedToken && permStamp) {
-        const { admins } = await readAdminsWithNotice();
-        const rec = admins.find(a => a.id === decodedToken.id);
-        if (rec && rec.permissionsUpdatedAt && permStamp !== rec.permissionsUpdatedAt) {
-            const resLogout = NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
-            resLogout.cookies.set("token", "", { maxAge: -1, path: "/" });
-            resLogout.cookies.set("userEmail", "", { maxAge: -1, path: "/" });
-            resLogout.cookies.set("userRole", "", { maxAge: -1, path: "/" });
-            resLogout.cookies.set("userPermissions", "", { maxAge: -1, path: "/" });
-            resLogout.cookies.set("permissionsStamp", "", { maxAge: -1, path: "/" });
-            return resLogout;
+        try {
+            const res = await fetch(`${origin}/api/v1/admin/admins/me`, {
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store'
+            });
+            if (res.ok) {
+                const json = await res.json();
+                const rec = json.data;
+                if (rec && rec.permissionsUpdatedAt && permStamp !== rec.permissionsUpdatedAt) {
+                    const resLogout = NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
+                    resLogout.cookies.set("token", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userEmail", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userRole", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userPermissions", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("permissionsStamp", "", { maxAge: -1, path: "/" });
+                    return resLogout;
+                }
+            }
+        } catch (err) {
+            console.error('Failed to check permissions stamp', err);
         }
     }
 
