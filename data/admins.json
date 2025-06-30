@@ -1,0 +1,95 @@
+[
+  {
+    "id": "684818e7a3d6fea78a2cc217",
+    "email": "website@imgglobalinfotech.com",
+    "role": "superadmin",
+    "department": null,
+    "departmentId": null,
+    "permissions": [],
+    "createdAt": "2025-06-10T11:37:11.163Z",
+    "updatedAt": "2025-06-30T06:31:20.560Z"
+  },
+  {
+    "id": "68623cb330ec27c5ec71a754",
+    "email": "seo@imgglobalinfotech.com",
+    "role": "admin",
+    "department": "seo",
+    "departmentId": "68623c1e30ec27c5ec71a74b",
+    "permissions": {
+      "blogs": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "delete": true
+      },
+      "categories": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "delete": true
+      },
+      "images": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "delete": true
+      },
+      "authors": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "delete": true
+      },
+      "notifications": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "leads": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "careerLeads": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "newsletter": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "meta": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "schemas": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "redirections": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      },
+      "admins": {
+        "read": false,
+        "write": false,
+        "edit": false,
+        "delete": false
+      }
+    },
+    "createdAt": "2025-06-30T07:28:51.899Z",
+    "updatedAt": "2025-06-30T07:47:37.500Z"
+  }
+]
