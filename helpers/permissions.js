@@ -25,3 +25,24 @@ export function hasClientPermission(module, action = 'read') {
   const perms = getUserPermissions();
   return !!perms?.[module]?.[action];
 }
+
+export function getServerPermissions(cookies) {
+  const raw = cookies.get('userPermissions')?.value || '';
+  if (!raw) return {};
+  try {
+    return JSON.parse(Buffer.from(raw, 'base64').toString());
+  } catch {
+    try {
+      return JSON.parse(decodeURIComponent(raw));
+    } catch {
+      return {};
+    }
+  }
+}
+
+export function hasServerPermission(cookies, module, action = 'read') {
+  const role = cookies.get('userRole')?.value;
+  if (role === 'superadmin') return true;
+  const perms = getServerPermissions(cookies);
+  return !!perms?.[module]?.[action];
+}

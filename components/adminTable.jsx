@@ -11,7 +11,6 @@ import {
 import { ArrowUpDown, ChevronDown, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -89,7 +88,7 @@ export const columns = [
   },
 ];
 
-export function AdminTable({ data }) {
+export function AdminTable({ data, canAdd = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -147,7 +146,7 @@ export function AdminTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('admins', 'write') && (
+        {canAdd && (
           <Button asChild>
             <Link href="/admin/new-admin">
               <Plus className="mr-2 h-4 w-4" /> Add Admin

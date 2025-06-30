@@ -1,13 +1,15 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AdminTable } from "@/components/adminTable";
+import { hasServerPermission } from "@/helpers/permissions";
 
 export default async function Page() {
-  const store = await cookies();
+  const store = cookies();
   const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
     redirect("/admin");
   }
+  const canAdd = hasServerPermission(store, 'admins', 'write');
 
   const base = process.env.NEXT_PUBLIC_BASE_URL || '';
   const token = store.get("token")?.value || '';
@@ -27,7 +29,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <AdminTable data={data} />
+      <AdminTable data={data} canAdd={canAdd} />
     </div>
   );
 }
