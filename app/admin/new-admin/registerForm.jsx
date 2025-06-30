@@ -6,6 +6,20 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from "@/components/ui/popover"
+import {
+    Command,
+    CommandInput,
+    CommandList,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+} from "@/components/ui/command"
+import { Check, ChevronsUpDown } from "lucide-react"
 import { toast } from "sonner"
 import useErrorHandler from "@/helpers/errors"
 import { useRouter } from "next/navigation"
@@ -17,8 +31,8 @@ import {
     FormControl,
     FormMessage,
 } from "@/components/ui/form"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Eye, EyeOff } from "lucide-react"
+import { cn } from "@/lib/utils"
 import apiFetch from "@/helpers/apiFetch"
 
 // Zod schema for validation
@@ -92,7 +106,7 @@ export function RegisterForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(registerHandler)} className="grid gap-4">
+            <form onSubmit={form.handleSubmit(registerHandler)} autoComplete="off" className="grid gap-4">
                 <FormField
                     control={form.control}
                     name="email"
@@ -153,20 +167,54 @@ export function RegisterForm() {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Department</FormLabel>
-                            <Select value={field.value} onValueChange={field.onChange}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select department" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {departments.map((d) => (
-                                        <SelectItem key={d._id} value={d._id}>
-                                            {d.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl className="w-full">
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className={cn(
+                                                "w-full justify-between",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value ? (
+                                                departments.find((d) => d._id === field.value)?.name
+                                            ) : (
+                                                "Select department..."
+                                            )}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                    <Command>
+                                        <CommandInput placeholder="Search department..." className="h-9" />
+                                        <CommandList>
+                                            <CommandEmpty>No department found.</CommandEmpty>
+                                            <CommandGroup>
+                                                {departments.map((d) => (
+                                                    <CommandItem
+                                                        key={d._id}
+                                                        value={d.name}
+                                                        onSelect={() => {
+                                                            form.setValue("department", d._id);
+                                                        }}
+                                                    >
+                                                        {d.name}
+                                                        <Check
+                                                            className={cn(
+                                                                "ml-auto h-4 w-4",
+                                                                field.value === d._id ? "opacity-100" : "opacity-0"
+                                                            )}
+                                                        />
+                                                    </CommandItem>
+                                                ))}
+                                            </CommandGroup>
+                                        </CommandList>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
                             <FormMessage />
                         </FormItem>
                     )}

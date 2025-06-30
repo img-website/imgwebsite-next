@@ -255,12 +255,42 @@ export function AppSidebar({
   ...props
 }) {
   const activeTeam = useTeamStore((state) => state.activeTeam);
+  const setActiveTeam = useTeamStore((state) => state.setActiveTeam);
+  const role = getCookie('userRole');
+
+  const canSee = (url) => {
+    const parts = url.split('/').filter(Boolean);
+    if (parts.length < 2) return false;
+    let mod = parts[1];
+    if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+      mod = parts[2];
+    }
+    if (mod === 'schema') mod = 'schemas';
+    let action = 'read';
+    if (url.includes('/add')) action = 'write';
+    else if (url.includes('/edit')) action = 'edit';
+    return role === 'superadmin' || hasClientPermission(mod, action);
+  };
+
+  const accessibleTeams = data.teams.filter(team => {
+    if (team.name === 'Role Department' && role !== 'superadmin') return false;
+    const items = data.navMain.filter(item => item.team === team.name);
+    return items.some(item => {
+      if (item.items) return item.items.some(sub => canSee(sub.url));
+      return canSee(item.url);
+    });
+  });
+
+  React.useEffect(() => {
+    if (activeTeam && !accessibleTeams.find(t => t.name === activeTeam.name)) {
+      setActiveTeam(accessibleTeams[0] || null);
+    }
+  }, [accessibleTeams, activeTeam, setActiveTeam]);
 
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {
     if (!activeTeam) return [];
     const role = getCookie('userRole');
-    const perms = getUserPermissions();
 
     const canSee = (url) => {
       const parts = url.split('/').filter(Boolean);
@@ -293,7 +323,7 @@ export function AppSidebar({
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <ErrorBoundary>
-          <TeamSwitcher teams={data.teams} />
+          <TeamSwitcher teams={accessibleTeams} />
         </ErrorBoundary>
       </SidebarHeader>
       <SidebarContent>
