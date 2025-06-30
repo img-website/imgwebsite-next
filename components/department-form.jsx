@@ -6,7 +6,22 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { MODULES } from "@/lib/modules";
@@ -54,6 +69,25 @@ export default function DepartmentForm({ department, onSuccess }) {
     }
   }, [department]);
 
+  const watchPermissions = form.watch("permissions");
+
+  const moduleAllChecked = React.useCallback(
+    (key) => RBAC_ACTIONS.every((a) => watchPermissions?.[key]?.[a]),
+    [watchPermissions]
+  );
+
+  const allChecked = MODULES.every((m) => moduleAllChecked(m.key));
+
+  const toggleModuleAll = (key, value) => {
+    RBAC_ACTIONS.forEach((a) =>
+      form.setValue(`permissions.${key}.${a}`, !!value, { shouldDirty: true })
+    );
+  };
+
+  const toggleAll = (value) => {
+    MODULES.forEach((m) => toggleModuleAll(m.key, value));
+  };
+
   async function onSubmit(values) {
     try {
       const body = {
@@ -97,26 +131,56 @@ export default function DepartmentForm({ department, onSuccess }) {
           )}
         />
         <div className="space-y-2">
-          {MODULES.map((mod) => (
-            <div key={mod.key} className="flex items-center gap-4">
-              <span className="w-40 font-medium">{mod.label}</span>
-              {RBAC_ACTIONS.map((action) => (
-                <FormField
-                  key={action}
-                  control={form.control}
-                  name={`permissions.${mod.key}.${action}`}
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center gap-2">
-                      <FormLabel className="capitalize">{action}</FormLabel>
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div>
-          ))}
+          <div className="flex items-center gap-2">
+            <Checkbox checked={allChecked} onCheckedChange={toggleAll} />
+            <span className="text-sm font-medium">Check all modules</span>
+          </div>
+          <div className="rounded-md border overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-40">Module</TableHead>
+                  {RBAC_ACTIONS.map((action) => (
+                    <TableHead key={action} className="capitalize text-center">
+                      {action}
+                    </TableHead>
+                  ))}
+                  <TableHead className="text-center">All</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {MODULES.map((mod) => (
+                  <TableRow key={mod.key}>
+                    <TableCell className="font-medium">{mod.label}</TableCell>
+                    {RBAC_ACTIONS.map((action) => (
+                      <TableCell key={action} className="text-center">
+                        <FormField
+                          control={form.control}
+                          name={`permissions.${mod.key}.${action}`}
+                          render={({ field }) => (
+                            <FormItem className="flex items-center justify-center">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </TableCell>
+                    ))}
+                    <TableCell className="text-center">
+                      <Checkbox
+                        checked={moduleAllChecked(mod.key)}
+                        onCheckedChange={(val) => toggleModuleAll(mod.key, val)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting
