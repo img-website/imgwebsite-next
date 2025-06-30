@@ -26,6 +26,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -37,9 +45,9 @@ import Link from "next/link";
 
 function AdminActions({ admin }) {
   const router = useRouter();
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleDelete = async () => {
-    if (!window.confirm("Delete this admin?")) return;
     try {
       const res = await apiFetch(`/api/v1/admin/admins/${admin.id}`, { method: 'DELETE' });
       const data = await res.json();
@@ -53,35 +61,80 @@ function AdminActions({ admin }) {
       }
     } catch (e) {
       toast.error('Failed to delete');
+    } finally {
+      setOpenDelete(false);
     }
   };
+  if (admin.role === 'superadmin') {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(admin.id)}>
+            Copy ID
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {hasClientPermission('admins','edit') && (
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/admins/${admin.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(admin.id)}>
-          Copy ID
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {hasClientPermission('admins','edit') && (
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/admins/${admin.id}/edit`}>Edit</Link>
+    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(admin.id)}>
+            Copy ID
           </DropdownMenuItem>
-        )}
-        {hasClientPermission('admins','delete') && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-red-600">Delete</DropdownMenuItem>
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuSeparator />
+          {hasClientPermission('admins','edit') && (
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/admins/${admin.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+          )}
+          {hasClientPermission('admins','delete') && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setOpenDelete(true)} className="text-red-600">
+                Delete
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Admin</DialogTitle>
+          <DialogDescription>
+            This will permanently delete the admin. Continue?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpenDelete(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={handleDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

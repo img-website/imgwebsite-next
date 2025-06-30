@@ -45,6 +45,12 @@ export async function DELETE(req, { params }) {
       { success: false, error: 'Admin not found' },
       { status: 404 }
     );
+  if (doc.role === 'superadmin') {
+    return NextResponse.json(
+      { success: false, error: 'Cannot delete superadmin' },
+      { status: 400 }
+    );
+  }
   if (!doc.deleted_at) {
     doc.deleted_at = new Date();
     await doc.save();
