@@ -1,4 +1,4 @@
-import { getRedis } from './redis';
+import { getRedis, REDIS_ENABLED } from './redis';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
 import '@/app/models/Department';
@@ -6,12 +6,17 @@ import '@/app/models/Department';
 const KEY = 'admins';
 
 export async function ensureAdminsFile() {
+  if (!REDIS_ENABLED) return false;
   const redis = getRedis();
   const exists = await redis.exists(KEY);
   return !exists;
 }
 
 export async function readAdmins() {
+  if (!REDIS_ENABLED) {
+    const { admins } = await syncAdminsFromDB();
+    return admins;
+  }
   const redis = getRedis();
   const data = await redis.get(KEY);
   if (data) {
@@ -27,6 +32,10 @@ export async function readAdmins() {
 }
 
 export async function readAdminsWithNotice() {
+  if (!REDIS_ENABLED) {
+    const { admins } = await syncAdminsFromDB();
+    return { admins, wasCreated: false };
+  }
   const redis = getRedis();
   const data = await redis.get(KEY);
   if (data) {
@@ -42,6 +51,7 @@ export async function readAdminsWithNotice() {
 }
 
 export async function writeAdmins(admins) {
+  if (!REDIS_ENABLED) return;
   const redis = getRedis();
   await redis.set(KEY, JSON.stringify(admins));
 }
@@ -59,8 +69,12 @@ export async function syncAdminsFromDB() {
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
   }));
-  const redis = getRedis();
-  const existed = await redis.exists(KEY);
-  await writeAdmins(admins);
-  return { admins, wasCreated: !existed };
+  let wasCreated = false;
+  if (REDIS_ENABLED) {
+    const redis = getRedis();
+    const existed = await redis.exists(KEY);
+    await writeAdmins(admins);
+    wasCreated = !existed;
+  }
+  return { admins, wasCreated };
 }

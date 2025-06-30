@@ -11,7 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { hasClientPermission } from "@/helpers/permissions";
+import { usePermission } from "@/hooks/use-permission";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -45,7 +45,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-function RedirectionActions({ redirection }) {
+function RedirectionActions({ redirection, canEdit, canDelete }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -106,12 +106,12 @@ function RedirectionActions({ redirection }) {
             Copy ID
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {hasClientPermission('redirections', 'edit') && (
+          {canEdit && (
             <DropdownMenuItem asChild>
               <Link href={`/admin/redirections/${redirection.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
           )}
-          {hasClientPermission('redirections', 'delete') && (
+          {canDelete && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600" onClick={() => setOpen(true)}>
@@ -125,9 +125,10 @@ function RedirectionActions({ redirection }) {
   );
 }
 
-export const columns = [
-  {
-    id: "select",
+function createColumns(canEdit, canDelete) {
+  return [
+    {
+      id: "select",
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -224,17 +225,37 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <RedirectionActions redirection={row.original} />,
+    cell: ({ row }) => (
+      <RedirectionActions
+        redirection={row.original}
+        canEdit={canEdit}
+        canDelete={canDelete}
+      />
+    ),
   },
-];
+  ];
+}
 
-export function RedirectionTable({ data }) {
+export function RedirectionTable({ data, canAdd = false, canEdit = false, canDelete = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({
     updatedAt: false,
   });
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const clientCanAdd = usePermission('redirections', 'write');
+  const clientCanEdit = usePermission('redirections', 'edit');
+  const clientCanDelete = usePermission('redirections', 'delete');
+
+  const finalCanAdd = canAdd || clientCanAdd;
+  const finalCanEdit = canEdit || clientCanEdit;
+  const finalCanDelete = canDelete || clientCanDelete;
+
+  const columns = React.useMemo(
+    () => createColumns(finalCanEdit, finalCanDelete),
+    [finalCanEdit, finalCanDelete]
+  );
 
   const table = useReactTable({
     data,
@@ -290,7 +311,7 @@ export function RedirectionTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('redirections', 'write') && (
+        {finalCanAdd && (
           <Button asChild>
             <Link href="/admin/redirections/add"><Plus /> Add Redirection</Link>
           </Button>

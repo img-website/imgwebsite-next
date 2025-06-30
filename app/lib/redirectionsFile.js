@@ -1,16 +1,21 @@
-import { getRedis } from './redis';
+import { getRedis, REDIS_ENABLED } from './redis';
 import connectDB from '@/app/lib/db';
 import Redirection from '@/app/models/Redirection';
 
 const KEY = 'redirections';
 
 export async function ensureRedirectionsFile() {
+  if (!REDIS_ENABLED) return false;
   const redis = getRedis();
   const exists = await redis.exists(KEY);
   return !exists;
 }
 
 export async function readRedirections() {
+  if (!REDIS_ENABLED) {
+    const { data } = await syncRedirectionsFromDB();
+    return data;
+  }
   const redis = getRedis();
   const data = await redis.get(KEY);
   if (data) {
@@ -26,6 +31,10 @@ export async function readRedirections() {
 }
 
 export async function readRedirectionsWithNotice() {
+  if (!REDIS_ENABLED) {
+    const { data } = await syncRedirectionsFromDB();
+    return { redirections: data, wasCreated: false };
+  }
   const redis = getRedis();
   const data = await redis.get(KEY);
   if (data) {
@@ -41,6 +50,7 @@ export async function readRedirectionsWithNotice() {
 }
 
 export async function writeRedirections(redirections) {
+  if (!REDIS_ENABLED) return;
   const redis = getRedis();
   await redis.set(KEY, JSON.stringify(redirections));
 }
@@ -81,7 +91,10 @@ export async function syncRedirectionsFromDB() {
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
   }));
-  const wasCreated = await ensureRedirectionsFile();
-  await writeRedirections(data);
+  let wasCreated = false;
+  if (REDIS_ENABLED) {
+    wasCreated = await ensureRedirectionsFile();
+    await writeRedirections(data);
+  }
   return { data, wasCreated };
 }
