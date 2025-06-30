@@ -1,0 +1,18 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import DepartmentForm from "@/components/department-form";
+
+export default async function Page() {
+  const store = await cookies();
+  const role = store.get("userRole")?.value;
+  if (role !== "superadmin") {
+    redirect("/admin");
+  }
+
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Add Department</h2>
+      <DepartmentForm />
+    </div>
+  );
+}

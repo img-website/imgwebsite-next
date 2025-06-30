@@ -12,6 +12,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { hasClientPermission } from "@/helpers/permissions"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -88,9 +89,11 @@ function AuthorActions({ author }) {
         <DropdownMenuItem onClick={() => window.open(author.facebook_link, '_blank')}>
           View Facebook
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={`/admin/blogs/authors/${author.id}/edit`}>Edit</Link>
-        </DropdownMenuItem>
+        {hasClientPermission('authors', 'edit') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/blogs/authors/${author.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
@@ -198,6 +201,7 @@ export const columns = [
       const formatted = new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
+        timeZone: "UTC",
       }).format(date)
       return <div>{formatted}</div>
     },
@@ -276,9 +280,11 @@ export function AuthorTable({ data }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/blogs/authors/add"><Plus /> Add Author</Link>
-        </Button>
+        {hasClientPermission('authors', 'write') && (
+          <Button asChild>
+            <Link href="/admin/blogs/authors/add"><Plus /> Add Author</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

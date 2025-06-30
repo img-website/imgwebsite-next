@@ -2,6 +2,22 @@ import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getRedirections } from './app/lib/redirections';
 
+function getModuleAction(pathname) {
+  if (!pathname.startsWith('/admin')) return null;
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts.length < 2) return null;
+  let mod = parts[1];
+  if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+    mod = parts[2];
+    parts.splice(2, 1);
+  }
+  if (mod === 'schema') mod = 'schemas';
+  let action = 'read';
+  if (parts.includes('add')) action = 'write';
+  if (parts.includes('edit')) action = 'edit';
+  return { module: mod, action };
+}
+
 async function verifyToken(token) {
     try {
         const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -74,6 +90,22 @@ export async function middleware(request) {
     if (pathname.startsWith("/api/admin/login") || pathname.startsWith("/api/admin/register") || pathname.startsWith("/api/admin/forgot-password") || pathname.startsWith("/api/admin/reset-password")) {
         return NextResponse.next();
     }
+
+    if (pathname.startsWith("/admin/new-admin")) {
+        if (!isLoggedIn) {
+            return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
+        }
+        if (isRole !== "superadmin") {
+            const redirectUrl = isRole === "admin" ? "/admin" : "/";
+            return NextResponse.redirect(new URL(redirectUrl, request.url));
+        }
+    }
+
+    if (pathname.startsWith("/admin/departments") || pathname.startsWith("/admin/admins")) {
+        if (!isLoggedIn || isRole !== "superadmin") {
+            return NextResponse.redirect(new URL(isLoggedIn ? "/admin" : `/login?redirectTo=${pathname}`, request.url));
+        }
+    }
     // If the user is not logged in and trying to access admin pages, redirect to /login
     if (!isLoggedIn && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
@@ -88,8 +120,8 @@ export async function middleware(request) {
     if (isLoggedIn) {
         // Admin Role Handling
         if (isRole === "admin") {
-            // If logged in as admin, prevent access to /login or /register
-            if (pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+            // If logged in as admin, prevent access to /login or /admin/new-admin
+            if (pathname.startsWith("/login") || pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
                 const response = NextResponse.redirect(new URL("/admin", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
@@ -104,8 +136,8 @@ export async function middleware(request) {
                 return NextResponse.redirect(new URL("/", request.url));
             }
 
-            // If logged in as user, prevent access to /login or /register or forgot-password or reset-password
-            if (pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+            // If logged in as user, prevent access to /login or /admin/new-admin or forgot-password or reset-password
+            if (pathname.startsWith("/login") || pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
                 const response = NextResponse.redirect(new URL("/", request.url));
                 response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
                 response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
@@ -114,9 +146,9 @@ export async function middleware(request) {
         }
     }
 
-    // If user tries to access /register or /forgot-password or /reset-password and is already logged in, redirect based on role
-    if (pathname.startsWith("/register") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
-        if (isLoggedIn) {
+    // If user tries to access /admin/new-admin or /forgot-password or /reset-password and is already logged in
+    if (pathname.startsWith("/admin/new-admin") || pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+        if (isLoggedIn && isRole !== "superadmin") {
             const redirectUrl = isRole === "admin" ? "/admin" : "/";
             return NextResponse.redirect(new URL(redirectUrl, request.url));
         }
@@ -125,6 +157,20 @@ export async function middleware(request) {
     if (isLoggedIn && isRole) {
         response.cookies.set("userEmail", isEmail, { maxAge: 86400, path: "/" });
         response.cookies.set("userRole", isRole, { maxAge: 86400, path: "/" });
+    }
+
+    if (isLoggedIn && isRole !== "superadmin" && pathname.startsWith("/admin")) {
+        const permData = request.cookies.get('userPermissions')?.value || '';
+        let perms = {};
+        if (permData) {
+            try { perms = JSON.parse(Buffer.from(permData, 'base64').toString()); } catch { perms = {}; }
+        }
+        const info = getModuleAction(pathname);
+        if (info) {
+            if (!perms[info.module] || !perms[info.module][info.action]) {
+                return NextResponse.redirect(new URL('/admin', request.url));
+            }
+        }
     }
 
   return response;

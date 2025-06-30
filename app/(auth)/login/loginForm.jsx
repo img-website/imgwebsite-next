@@ -67,17 +67,23 @@ export function LoginForm() {
                 document.cookie = `token=${data?.token}; path=/; priority=high;`;
                 document.cookie = `userEmail=${data?.data?.email}; path=/;`;
                 document.cookie = `userRole=${data?.data?.role}; path=/;`;
+                const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
+                document.cookie = `userPermissions=${permStr}; path=/;`;
 
                 toast.success(data.message);
 
                 // get redirectTo from query params if present
                 const searchParams = new URLSearchParams(window.location.search);
                 const redirectTo = searchParams.get('redirectTo');
+                const defaultDest =
+                    data?.data?.role === 'admin' || data?.data?.role === 'superadmin'
+                        ? '/admin'
+                        : '/';
 
                 if (redirectTo) {
                     router.push(redirectTo);
                 } else {
-                    router.push(data?.data?.role === 'admin' ? '/admin' : '/');
+                    router.push(defaultDest);
                 }
 
                 router.refresh();

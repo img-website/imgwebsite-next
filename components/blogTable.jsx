@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -189,13 +190,15 @@ function BlogActions({ blog }) {
             Copy blog ID
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            {blog.status === "draft" ? (
-              <Link href={`/admin/blogs/add?id=${blog.id}`}>Edit</Link>
-            ) : (
-              <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
-            )}
-          </DropdownMenuItem>
+          {hasClientPermission('blogs', 'edit') && (
+            <DropdownMenuItem asChild>
+              {blog.status === "draft" ? (
+                <Link href={`/admin/blogs/add?id=${blog.id}`}>Edit</Link>
+              ) : (
+                <Link href={`/admin/blogs/${blog.id}/edit`}>Edit</Link>
+              )}
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={handleSendNotification}>
             Send Notification
           </DropdownMenuItem>
@@ -234,7 +237,7 @@ function BlogActions({ blog }) {
               </DropdownMenuSubContent>
             </DropdownMenuSub>
           )}
-          {blog.status === "draft" && (
+          {blog.status === "draft" && hasClientPermission('blogs', 'delete') && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive" onClick={() => setOpenDelete(true)}>
@@ -383,6 +386,7 @@ export const columns = [
       return new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
+        timeZone: "UTC",
       }).format(date);
     },
   },
@@ -451,9 +455,11 @@ export function BlogTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/blogs/add"><Plus /> Add Blog</Link>
-        </Button>
+        {hasClientPermission('blogs', 'write') && (
+          <Button asChild>
+            <Link href="/admin/blogs/add"><Plus /> Add Blog</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

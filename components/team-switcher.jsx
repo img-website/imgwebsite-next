@@ -78,10 +78,26 @@ export function TeamSwitcher({ teams, isLoading }) {
   }, [activeTeam]);
 
   // Setup hotkeys for team switching
-  useHotkeys('shift+1', () => teams[0] && setActiveTeam(teams[0]));
-  useHotkeys('shift+2', () => teams[1] && setActiveTeam(teams[1]));
-  useHotkeys('shift+3', () => teams[2] && setActiveTeam(teams[2]));
-  useHotkeys('shift+4', () => teams[3] && setActiveTeam(teams[3]));
+  useHotkeys(
+    'shift+1',
+    () => teams[0] && setActiveTeam(teams[0]),
+    { dependencies: [teams] }
+  );
+  useHotkeys(
+    'shift+2',
+    () => teams[1] && setActiveTeam(teams[1]),
+    { dependencies: [teams] }
+  );
+  useHotkeys(
+    'shift+3',
+    () => teams[2] && setActiveTeam(teams[2]),
+    { dependencies: [teams] }
+  );
+  useHotkeys(
+    'shift+4',
+    () => teams[3] && setActiveTeam(teams[3]),
+    { dependencies: [teams] }
+  );
 
   if (!activeTeam) {
     return null;

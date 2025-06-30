@@ -29,12 +29,6 @@ const page = () => {
         </CardHeader>
         <CardContent>
           <RegisterForm />
-          <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="underline">
-              Sign in
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </>

@@ -19,6 +19,8 @@ import {
 
 import dynamic from 'next/dynamic'
 import { useTeamStore } from "@/app/store/use-team-store"
+import { getCookie } from "cookies-next"
+import { hasClientPermission, getUserPermissions } from "@/helpers/permissions"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { TeamSwitcherSkeleton } from "@/components/skeleton/team-switcher-skeleton"
 import { NavMainSkeleton } from "@/components/skeleton/nav-main-skeleton"
@@ -86,6 +88,12 @@ const data = {
       name: "Redirections",
       logo: Split,
       description: "SEO team",
+      isActive: true,
+    },
+    {
+      name: "Role Department",
+      logo: Quote,
+      description: "RBAC",
       isActive: true,
     },
   ],
@@ -233,6 +241,13 @@ const data = {
         },
       ],
     },
+    {
+      title: "Role Department",
+      url: "/admin/departments",
+      icon: Quote,
+      team: "Role Department",
+      type: "link"
+    },
   ],
 }
 
@@ -240,18 +255,75 @@ export function AppSidebar({
   ...props
 }) {
   const activeTeam = useTeamStore((state) => state.activeTeam);
+  const setActiveTeam = useTeamStore((state) => state.setActiveTeam);
+  const role = getCookie('userRole');
+
+  const canSee = (url) => {
+    const parts = url.split('/').filter(Boolean);
+    if (parts.length < 2) return false;
+    let mod = parts[1];
+    if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+      mod = parts[2];
+    }
+    if (mod === 'schema') mod = 'schemas';
+    let action = 'read';
+    if (url.includes('/add')) action = 'write';
+    else if (url.includes('/edit')) action = 'edit';
+    return role === 'superadmin' || hasClientPermission(mod, action);
+  };
+
+  const accessibleTeams = data.teams.filter(team => {
+    if (team.name === 'Role Department' && role !== 'superadmin') return false;
+    const items = data.navMain.filter(item => item.team === team.name);
+    return items.some(item => {
+      if (item.items) return item.items.some(sub => canSee(sub.url));
+      return canSee(item.url);
+    });
+  });
+
+  React.useEffect(() => {
+    if (activeTeam && !accessibleTeams.find(t => t.name === activeTeam.name)) {
+      setActiveTeam(accessibleTeams[0] || null);
+    }
+  }, [accessibleTeams, activeTeam, setActiveTeam]);
 
   // Filter nav items based on active team
   const filteredItems = React.useMemo(() => {
     if (!activeTeam) return [];
-    return data.navMain.filter(item => item.team === activeTeam.name);
+    const role = getCookie('userRole');
+
+    const canSee = (url) => {
+      const parts = url.split('/').filter(Boolean);
+      if (parts.length < 2) return false;
+      let mod = parts[1];
+      if (mod === 'blogs' && ['authors','categories','images'].includes(parts[2])) {
+        mod = parts[2];
+      }
+      if (mod === 'schema') mod = 'schemas';
+      let action = 'read';
+      if (url.includes('/add')) action = 'write';
+      else if (url.includes('/edit')) action = 'edit';
+      return role === 'superadmin' || hasClientPermission(mod, action);
+    };
+
+    return data.navMain
+      .filter(item => item.team === activeTeam.name && (item.title !== 'Role Department' || role === 'superadmin'))
+      .map(item => {
+        if (item.items) {
+          const items = item.items.filter(sub => canSee(sub.url));
+          if (items.length === 0) return null;
+          return { ...item, items };
+        }
+        return canSee(item.url) ? item : null;
+      })
+      .filter(Boolean);
   }, [activeTeam]);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <ErrorBoundary>
-          <TeamSwitcher teams={data.teams} />
+          <TeamSwitcher teams={accessibleTeams} />
         </ErrorBoundary>
       </SidebarHeader>
       <SidebarContent>

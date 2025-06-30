@@ -12,6 +12,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -62,9 +63,11 @@ function ImageActions({ image }) {
           Copy Image Link
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href={`/admin/blogs/images/${image.id}/edit`}>Edit</Link>
-        </DropdownMenuItem>
+        {hasClientPermission('images', 'edit') && (
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/blogs/images/${image.id}/edit`}>Edit</Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -136,6 +139,7 @@ export const columns = [
       const formatted = new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
+        timeZone: "UTC",
       }).format(date);
       return <div>{formatted}</div>;
     },
@@ -209,9 +213,11 @@ export function ImageTable({ data }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
-        </Button>
+        {hasClientPermission('images', 'write') && (
+          <Button asChild>
+            <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

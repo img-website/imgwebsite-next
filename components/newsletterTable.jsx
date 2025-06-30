@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -65,6 +66,22 @@ function NewsletterActions({ newsletter }) {
       setOpen(false);
     }
   };
+
+  if (!hasClientPermission('newsletter', 'delete')) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -151,6 +168,7 @@ export const columns = [
       return new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
+        timeZone: "UTC",
       }).format(date);
     },
   },
@@ -219,9 +237,11 @@ export function NewsletterTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button asChild>
-          <Link href="/admin/newsletter/add">Add</Link>
-        </Button>
+        {hasClientPermission('newsletter', 'write') && (
+          <Button asChild>
+            <Link href="/admin/newsletter/add">Add</Link>
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
