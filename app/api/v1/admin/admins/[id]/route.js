@@ -33,6 +33,7 @@ export async function GET(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'admins', 'delete');
   if (!admin)
     return NextResponse.json(
@@ -40,7 +41,7 @@ export async function DELETE(req, { params }) {
       { status: 403 }
     );
   await connectDB();
-  const doc = await Admin.findById(params.id);
+  const doc = await Admin.findById(id);
   if (!doc)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },
@@ -66,6 +67,7 @@ export async function DELETE(req, { params }) {
 }
 
 export async function PUT(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'admins', 'edit');
   if (!admin)
     return NextResponse.json(
@@ -73,7 +75,7 @@ export async function PUT(req, { params }) {
       { status: 403 }
     );
   const formData = await req.formData();
-  const result = await updateAdmin(params.id, formData);
+  const result = await updateAdmin(id, formData);
   if (result.success) {
     await syncAdminsFromDB();
   }

@@ -4,9 +4,10 @@ import SchemaEntry from '@/app/models/SchemaEntry';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 export async function GET(request, { params }) {
+  const { id } = await params;
   try {
     await connectDB();
-    const entry = await SchemaEntry.findById(params.id).lean();
+    const entry = await SchemaEntry.findById(id).lean();
     if (!entry) {
       return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
     }
@@ -18,6 +19,7 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
+  const { id } = await params;
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -30,7 +32,7 @@ export async function PUT(request, { params }) {
     await connectDB();
     const body = await request.json();
     const entry = await SchemaEntry.findByIdAndUpdate(
-      params.id,
+      id,
       { pageUrl: body.pageUrl, type: body.type, data: body.data },
       { new: true }
     );
@@ -45,6 +47,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+  const { id } = await params;
   try {
     const token = extractToken(request.headers);
     if (!token) {
@@ -55,7 +58,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: false, error: 'Admin access required' }, { status: 403 });
     }
     await connectDB();
-    const entry = await SchemaEntry.findByIdAndDelete(params.id);
+    const entry = await SchemaEntry.findByIdAndDelete(id);
     if (!entry) {
       return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
     }

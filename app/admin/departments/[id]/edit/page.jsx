@@ -3,13 +3,14 @@ import { redirect } from "next/navigation";
 import DepartmentForm from "@/components/department-form";
 
 export default async function Page({ params }) {
+  const { id } = await params;
   const store = await cookies();
   const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
     redirect("/admin");
   }
   const token = store.get("token")?.value || '';
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/departments/${params.id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/departments/${id}`, {
     cache: 'no-store',
     headers: { Authorization: `Bearer ${token}` },
   });

@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default async function Page({ params }) {
+  const { id } = await params;
   const store = await cookies();
   const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
@@ -18,7 +19,7 @@ export default async function Page({ params }) {
 
   const token = store.get("token")?.value || "";
   const base = process.env.NEXT_PUBLIC_BASE_URL || "";
-  const res = await fetch(`${base}/api/v1/admin/admins/${params.id}`, {
+  const res = await fetch(`${base}/api/v1/admin/admins/${id}`, {
     cache: "no-store",
     headers: { Authorization: `Bearer ${token}` },
   });
