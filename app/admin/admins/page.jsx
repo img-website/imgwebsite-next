@@ -4,7 +4,7 @@ import { AdminTable } from "@/components/adminTable";
 import { hasServerPermission } from "@/helpers/permissions";
 
 export default async function Page() {
-  const store = cookies();
+  const store = await cookies();
   const role = store.get("userRole")?.value;
   if (role !== "superadmin") {
     redirect("/admin");
