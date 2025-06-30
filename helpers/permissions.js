@@ -18,9 +18,23 @@ export function getUserPermissions() {
 
 export function hasClientPermission(module, action = 'read') {
   if (typeof window === 'undefined') return false;
-  const role = document.cookie
+  const roleCookie = document.cookie
     .split('; ')
     .find(row => row.startsWith('userRole='))?.split('=')[1];
+  let role = roleCookie;
+  if (!roleCookie) {
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        role = payload.role;
+      } catch {
+        role = null;
+      }
+    }
+  }
   if (role === 'superadmin') return true;
   const perms = getUserPermissions();
   return !!perms?.[module]?.[action];
@@ -41,7 +55,18 @@ export function getServerPermissions(cookies) {
 }
 
 export function hasServerPermission(cookies, module, action = 'read') {
-  const role = cookies.get('userRole')?.value;
+  let role = cookies.get('userRole')?.value;
+  if (!role) {
+    const token = cookies.get('token')?.value;
+    if (token) {
+      try {
+        const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64'));
+        role = payload.role;
+      } catch {
+        role = null;
+      }
+    }
+  }
   if (role === 'superadmin') return true;
   const perms = getServerPermissions(cookies);
   return !!perms?.[module]?.[action];

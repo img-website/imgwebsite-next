@@ -1,4 +1,5 @@
 import EditAdminForm from "./EditAdminForm";
+import { cookies } from "next/headers";
 
 export default async function Page({ params }) {
   const { id } = await params;
