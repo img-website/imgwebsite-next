@@ -35,35 +35,53 @@ import Link from "next/link";
 import DeleteDepartmentButtons from "@/components/delete-department-buttons";
 
 function DepartmentActions({ department }) {
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const canEdit = hasClientPermission('departments', 'edit');
+  const canDelete = hasClientPermission('departments', 'delete');
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(department.id)}>
-          Copy ID
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {hasClientPermission('departments', 'edit') && (
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(department.id)}>
+            Copy ID
           </DropdownMenuItem>
-        )}
-        {hasClientPermission('departments', 'delete') && (
-          <>
-            <DropdownMenuSeparator />
-            <DeleteDepartmentButtons id={department.id}>
-              <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-            </DeleteDepartmentButtons>
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuSeparator />
+          {canEdit && (
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/departments/${department.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+          )}
+          {canDelete && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setOpenDelete(true);
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {canDelete && (
+        <DeleteDepartmentButtons
+          id={department.id}
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+        />
+      )}
+    </>
   );
 }
 
@@ -106,7 +124,7 @@ export const columns = [
   },
 ];
 
-export function DepartmentTable({ data }) {
+export function DepartmentTable({ data, canAdd = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -162,7 +180,7 @@ export function DepartmentTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('departments', 'write') && (
+        {canAdd && (
           <Button asChild>
             <Link href="/admin/departments/add">
               <Plus className="mr-2 h-4 w-4" /> Add

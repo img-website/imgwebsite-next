@@ -1,7 +1,7 @@
 import EditAdminForm from "./EditAdminForm";
 
 export default async function Page({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const store = await cookies();
   const token = store.get("token")?.value || "";
   const base = process.env.NEXT_PUBLIC_BASE_URL || "";

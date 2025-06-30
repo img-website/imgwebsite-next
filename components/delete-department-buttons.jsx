@@ -17,20 +17,35 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import React from "react";
 
-export default function DeleteDepartmentButtons({ id, children }) {
+export default function DeleteDepartmentButtons({
+  id,
+  children,
+  open: controlledOpen,
+  onOpenChange,
+}) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const setOpen = onOpenChange || setInternalOpen;
   const [admins, setAdmins] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleOpen = async () => {
-    setOpen(true);
-    setLoading(true);
-    const res = await fetch(`/api/v1/admin/admins/by-department/${id}`);
-    const data = await res.json();
-    setAdmins(data.success ? data.data : []);
-    setLoading(false);
-  };
+  const handleOpen = () => setOpen(true);
+
+  React.useEffect(() => {
+    async function fetchAdmins() {
+      setLoading(true);
+      const res = await fetch(`/api/v1/admin/admins/by-department/${id}`);
+      const data = await res.json();
+      setAdmins(data.success ? data.data : []);
+      setLoading(false);
+    }
+    if (open) {
+      fetchAdmins();
+    } else {
+      setAdmins(null);
+    }
+  }, [open, id]);
 
   const handleDelete = async () => {
     try {

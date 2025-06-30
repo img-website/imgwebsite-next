@@ -5,7 +5,7 @@ import Admin from '@/app/models/Admin';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ success: false, error: 'Department ID required' }, { status: 400 });
     }
