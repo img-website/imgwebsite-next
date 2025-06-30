@@ -1,6 +1,11 @@
+import { cookies } from "next/headers";
 import { BlogTable } from "@/components/blogTable";
+import { hasServerPermission } from "@/helpers/permissions";
 
 export default async function Page() {
+  const store = await cookies();
+  const canAdd = hasServerPermission(store, 'blogs', 'write');
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs`, { cache: 'no-store' });
   const json = await res.json();
   const blogs = Array.isArray(json?.data) ? json.data : [];
@@ -24,7 +29,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <BlogTable data={data} />
+        <BlogTable data={data} canAdd={canAdd} />
       </div>
     </>
   );
