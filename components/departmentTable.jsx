@@ -32,30 +32,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import apiFetch from "@/helpers/apiFetch";
+import DeleteDepartmentButtons from "@/components/delete-department-buttons";
 
 function DepartmentActions({ department }) {
-  const router = useRouter();
-
-  const handleDelete = async () => {
-    try {
-      const res = await apiFetch(`/api/v1/admin/departments/${department.id}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Department deleted");
-        router.refresh();
-      } else {
-        toast.error(data.error || "Failed to delete");
-      }
-    } catch (e) {
-      toast.error("Failed to delete");
-    }
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -78,9 +57,9 @@ function DepartmentActions({ department }) {
         {hasClientPermission('departments', 'delete') && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-              Delete
-            </DropdownMenuItem>
+            <DeleteDepartmentButtons id={department.id}>
+              <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+            </DeleteDepartmentButtons>
           </>
         )}
       </DropdownMenuContent>
