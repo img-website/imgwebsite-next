@@ -17,6 +17,7 @@ export async function GET() {
   response.cookies.set("userEmail", "", { maxAge: -1, path: "/" });
   response.cookies.set("userRole", "", { maxAge: -1, path: "/" });
   response.cookies.set("userPermissions", "", { maxAge: -1, path: "/" });
+  response.cookies.set("permissionsStamp", "", { maxAge: -1, path: "/" });
 
   return response;
 }

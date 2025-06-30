@@ -44,7 +44,10 @@ export async function PUT(req, { params }) {
     );
 
   // Update permissions for all admins using this department
-  await Admin.updateMany({ department: params.id }, { permissions });
+  await Admin.updateMany(
+    { department: params.id },
+    { permissions, permissionsUpdatedAt: new Date(), updatedAt: new Date() }
+  );
   await syncAdminsFromDB();
 
   return NextResponse.json({ success: true, data: updated });

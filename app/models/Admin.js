@@ -93,6 +93,10 @@ const adminSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },
+  permissionsUpdatedAt: {
+    type: Date,
+    default: Date.now,
+  },
   deleted_at: {
     type: Date,
     default: null,

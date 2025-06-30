@@ -69,6 +69,9 @@ export function LoginForm() {
                 document.cookie = `userRole=${data?.data?.role}; path=/;`;
                 const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
                 document.cookie = `userPermissions=${permStr}; path=/;`;
+                if (data?.data?.permissionsUpdatedAt) {
+                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/;`;
+                }
 
                 toast.success(data.message);
 

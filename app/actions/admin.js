@@ -73,6 +73,7 @@ export async function registerAdmin(formData, req) {
       registrationIP: 'unknown', // Will be set by middleware
       permissions: department ? department.permissions : {},
       department: department ? department._id : null,
+      permissionsUpdatedAt: new Date(),
     });
 
     // Send welcome email
@@ -257,6 +258,7 @@ export async function updateAdmin(id, formData) {
       }
       admin.department = department._id;
       admin.permissions = department.permissions;
+      admin.permissionsUpdatedAt = new Date();
     }
 
     await admin.save();

@@ -66,6 +66,7 @@ export async function syncAdminsFromDB() {
     department: doc.department ? doc.department.name : null,
     departmentId: doc.department ? doc.department._id.toString() : null,
     permissions: doc.permissions || {},
+    permissionsUpdatedAt: doc.permissionsUpdatedAt ? doc.permissionsUpdatedAt.toISOString() : new Date().toISOString(),
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
   }));

@@ -41,7 +41,7 @@ export async function PUT(req, { params }) {
   const body = await req.json();
   const updated = await Admin.findByIdAndUpdate(
     params.id,
-    { permissions: body.permissions },
+    { permissions: body.permissions, permissionsUpdatedAt: new Date() },
     { new: true }
   );
   if (!updated)
