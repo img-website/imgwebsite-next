@@ -1,6 +1,11 @@
 import { AuthorTable } from "@/components/authorTable";
+import { cookies } from "next/headers";
+import { hasServerPermission } from "@/helpers/permissions";
 
 export default async function Page() {
+  const store = await cookies();
+  const canAdd = hasServerPermission(store, 'authors', 'write');
+  const canEdit = hasServerPermission(store, 'authors', 'edit');
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors`, { cache: 'no-store' });
   const json = await res.json();
   const authors = Array.isArray(json?.data) ? json.data : [];
@@ -26,7 +31,7 @@ export default async function Page() {
           <h2 className="text-3xl font-bold tracking-tight">Authors</h2>
           <p className="text-muted-foreground">Authors are the people who have contributed to the blogs.</p>
         </div> */}
-        <AuthorTable data={data} />
+        <AuthorTable data={data} canAdd={canAdd} canEdit={canEdit} />
       </div>
     </>
   );

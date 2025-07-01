@@ -11,7 +11,6 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -77,7 +76,7 @@ function CategoryActions({ category }) {
           Copy category ID
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {hasClientPermission('categories', 'edit') && (
+        {canEdit && (
           <DropdownMenuItem asChild>
             <Link href={`/admin/blogs/categories/${category.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
@@ -185,7 +184,7 @@ export const columns = [
   },
 ];
 
-export function CategoryTable({ data }) {
+export function CategoryTable({ data, canAdd = false, canEdit = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -245,7 +244,7 @@ export function CategoryTable({ data }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('categories', 'write') && (
+        {canAdd && (
           <Button asChild>
             <Link href="/admin/blogs/categories/add"><Plus /> Add Category</Link>
           </Button>

@@ -12,7 +12,6 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { hasClientPermission } from "@/helpers/permissions"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -89,7 +88,7 @@ function AuthorActions({ author }) {
         <DropdownMenuItem onClick={() => window.open(author.facebook_link, '_blank')}>
           View Facebook
         </DropdownMenuItem>
-        {hasClientPermission('authors', 'edit') && (
+        {canEdit && (
           <DropdownMenuItem asChild>
             <Link href={`/admin/blogs/authors/${author.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
@@ -218,7 +217,7 @@ export const columns = [
   },
 ]
 
-export function AuthorTable({ data }) {
+export function AuthorTable({ data, canAdd = false, canEdit = false }) {
   const [sorting, setSorting] = React.useState([])
   const [columnFilters, setColumnFilters] = React.useState([])
   const [columnVisibility, setColumnVisibility] = React.useState({})
@@ -280,7 +279,7 @@ export function AuthorTable({ data }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('authors', 'write') && (
+        {canAdd && (
           <Button asChild>
             <Link href="/admin/blogs/authors/add"><Plus /> Add Author</Link>
           </Button>
