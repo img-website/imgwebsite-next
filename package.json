@@ -47,6 +47,7 @@
     "moment": "^2.30.1",
     "mongoose": "^8.16.0",
     "next": "^15.3.3",
+    "nextjs-progressbar": "^0.0.16",
     "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.3",
     "nprogress": "^0.2.0",

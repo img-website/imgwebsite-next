@@ -1,7 +1,8 @@
 import { Poppins } from "next/font/google";
 import "@/app/globals.css";
+import "@/app/nprogress.css";
 import { Toaster } from "sonner";
-import PageProgress from "@/components/ui/page-progress";
+import NextNProgress from "nextjs-progressbar";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // choose weights you want
@@ -145,7 +146,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} antialiased scroll font-poppins group overflow-x-hidden overflow-y-auto has-[.leadPopup:checked]:overflow-hidden`}
       >
-        <PageProgress />
+        <NextNProgress color="var(--color-theme4)" height={2} options={{ showSpinner: false }} />
         <Toaster position="bottom-center" richColors />
         {children}
       </body>
