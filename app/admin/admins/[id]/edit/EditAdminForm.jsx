@@ -37,7 +37,11 @@ const schema = z.object({
   department: z.string().optional(),
 });
 
-export default function EditAdminForm({ admin, hideDepartment = false }) {
+export default function EditAdminForm({
+  admin,
+  hideDepartment = false,
+  redirectTo = "/admin/admins",
+}) {
   const [departments, setDepartments] = useState([]);
   const router = useRouter();
   const handleError = useErrorHandler();
@@ -87,7 +91,7 @@ export default function EditAdminForm({ admin, hideDepartment = false }) {
       if (data.success) {
         toast.success("Admin updated");
         if (data.notice) toast.info(data.notice);
-        router.push("/admin/admins");
+        router.push(redirectTo);
         router.refresh();
       } else {
         toast.error(data.error || "Failed to update");
