@@ -6,12 +6,14 @@ const blogSchema = new mongoose.Schema(
     status: {
       type: Number,
       enum: [1, 2, 3, 4], // 1=draft, 2=published, 3=archived
-      default: 1
+      default: 1,
+      index: true // allow efficient queries by status
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
-      required: function() { return this.status !== 1; }
+      required: function() { return this.status !== 1; },
+      index: true // index for faster lookups by category
     },
     title: {
       type: String,
@@ -23,7 +25,8 @@ const blogSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Author',
-      required: function() { return this.status !== 1; }
+      required: function() { return this.status !== 1; },
+      index: true // speed up queries filtering by author
     },
     blog_written_date: {
       type: Date,
@@ -147,8 +150,19 @@ blogSchema.pre('validate', async function (next) {
 });
 
 
+// Compound text index for search capability
 blogSchema.index({ title: 'text', short_description: 'text', description: 'text' });
 
+// Single field indexes to optimize filtering queries
+blogSchema.index({ status: 1 });
+blogSchema.index({ author: 1 });
+blogSchema.index({ category: 1 });
+
 const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+
+// Ensure all indexes are created when the model is compiled
+Blog.init().catch((err) => {
+  console.error('Blog index creation failed:', err);
+});
 
 export default Blog;
