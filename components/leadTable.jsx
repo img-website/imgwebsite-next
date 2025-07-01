@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -293,9 +294,7 @@ export function LeadTable({ data }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {hasClientPermission('leads', 'write') && (
-          <Button asChild>
-            <Link href="/admin/leads/add">Add Lead</Link>
-          </Button>
+          <ButtonLink href="/admin/leads/add">Add Lead</ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

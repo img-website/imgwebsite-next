@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import DeleteDepartmentButtons from "@/components/delete-department-buttons";
 
 function DepartmentActions({ department }) {
@@ -174,11 +175,9 @@ export function DepartmentTable({ data, canAdd = false }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {canAdd && (
-          <Button asChild>
-            <Link href="/admin/departments/add">
-              <Plus className="mr-2 h-4 w-4" /> Add
-            </Link>
-          </Button>
+          <ButtonLink href="/admin/departments/add">
+            <Plus className="mr-2 h-4 w-4" /> Add
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

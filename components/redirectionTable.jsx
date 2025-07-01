@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -312,9 +313,9 @@ export function RedirectionTable({ data, canAdd = false, canEdit = false, canDel
           </DropdownMenuContent>
         </DropdownMenu>
         {finalCanAdd && (
-          <Button asChild>
-            <Link href="/admin/redirections/add"><Plus /> Add Redirection</Link>
-          </Button>
+          <ButtonLink href="/admin/redirections/add">
+            <Plus /> Add Redirection
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

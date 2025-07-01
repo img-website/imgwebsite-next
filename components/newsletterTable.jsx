@@ -40,6 +40,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -238,9 +239,7 @@ export function NewsletterTable({ data }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {hasClientPermission('newsletter', 'write') && (
-          <Button asChild>
-            <Link href="/admin/newsletter/add">Add</Link>
-          </Button>
+          <ButtonLink href="/admin/newsletter/add">Add</ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

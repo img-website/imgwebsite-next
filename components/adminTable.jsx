@@ -42,6 +42,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 
 function AdminActions({ admin }) {
   const router = useRouter();
@@ -264,11 +265,9 @@ export function AdminTable({ data, canAdd = false }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {canAdd && (
-          <Button asChild>
-            <Link href="/admin/new-admin">
-              <Plus className="mr-2 h-4 w-4" /> Add Admin
-            </Link>
-          </Button>
+          <ButtonLink href="/admin/new-admin">
+            <Plus className="mr-2 h-4 w-4" /> Add Admin
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

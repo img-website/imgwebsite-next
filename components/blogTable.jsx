@@ -46,6 +46,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -456,9 +457,9 @@ export function BlogTable({ data, canAdd = false }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {canAdd && (
-          <Button asChild>
-            <Link href="/admin/blogs/add"><Plus /> Add Blog</Link>
-          </Button>
+          <ButtonLink href="/admin/blogs/add">
+            <Plus /> Add Blog
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

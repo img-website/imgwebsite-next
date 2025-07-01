@@ -35,6 +35,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 
 function ImageActions({ image }) {
@@ -214,9 +215,9 @@ export function ImageTable({ data }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {hasClientPermission('images', 'write') && (
-          <Button asChild>
-            <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
-          </Button>
+          <ButtonLink href="/admin/blogs/images/add">
+            <Plus /> Add Image
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

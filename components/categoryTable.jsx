@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button-link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
@@ -246,9 +247,9 @@ export function CategoryTable({ data }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {hasClientPermission('categories', 'write') && (
-          <Button asChild>
-            <Link href="/admin/blogs/categories/add"><Plus /> Add Category</Link>
-          </Button>
+          <ButtonLink href="/admin/blogs/categories/add">
+            <Plus /> Add Category
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">

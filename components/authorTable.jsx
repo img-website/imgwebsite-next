@@ -39,6 +39,7 @@ import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
+import { ButtonLink } from "@/components/ui/button-link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import apiFetch from "@/helpers/apiFetch"
@@ -281,9 +282,9 @@ export function AuthorTable({ data }) {
           </DropdownMenuContent>
         </DropdownMenu>
         {hasClientPermission('authors', 'write') && (
-          <Button asChild>
-            <Link href="/admin/blogs/authors/add"><Plus /> Add Author</Link>
-          </Button>
+          <ButtonLink href="/admin/blogs/authors/add">
+            <Plus /> Add Author
+          </ButtonLink>
         )}
       </div>
       <div className="rounded-md border">
