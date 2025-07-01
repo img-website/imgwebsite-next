@@ -34,6 +34,7 @@ const schema = z.object({
   lastName: z.string().optional(),
   username: z.string().optional(),
   mobileNumber: z.string().optional(),
+  profileImage: z.any().optional(),
   department: z.string().optional(),
 });
 
