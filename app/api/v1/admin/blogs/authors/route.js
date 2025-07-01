@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Author, { AUTHOR_STATUS } from '@/app/models/Author';
 import Blog from '@/app/models/Blog';
-import Fuse from 'fuse.js';// We'll need this for blog count
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadAuthorImage } from '@/app/middleware/imageUpload';
 
@@ -47,37 +46,26 @@ export async function GET(request) {
       baseQuery.status = numericStatus;
     }
 
-    // Get all authors first for Fuse.js search
-    let allAuthors = await Author.find(baseQuery, null, { showDeleted })
-      .select('-__v')
-      .lean(); // Using lean for better performance
-
-    // Apply Fuse.js search if search parameter exists
+    // Apply search using regex on author_name, description, and slug
     if (search) {
-      const fuseOptions = {
-        keys: ['author_name', 'description', 'slug'],
-        threshold: 0.3, // Adjust this value for search sensitivity (0.0 is exact match)
-        includeScore: true
-      };
-      const fuse = new Fuse(allAuthors, fuseOptions);
-      const searchResults = fuse.search(search);
-      allAuthors = searchResults.map(result => result.item);
+      const regex = new RegExp(search, 'i');
+      baseQuery.$or = [
+        { author_name: regex },
+        { description: regex },
+        { slug: regex }
+      ];
     }
 
-    // Get total count after search
-    const total = allAuthors.length;
+    // Get total count directly from the database
+    const total = await Author.countDocuments(baseQuery).setOptions({ showDeleted });
 
-    // Apply sorting
-    if (sortBy) {
-      allAuthors.sort((a, b) => {
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
-        return sortOrder * (aValue > bValue ? 1 : -1);
-      });
-    }
-
-    // Apply pagination manually after search
-    const authors = allAuthors.slice(skip, skip + limit);
+    // Query authors with sorting and pagination handled by MongoDB
+    const authors = await Author.find(baseQuery, null, { showDeleted })
+      .select('-__v')
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
     // Update blog counts for all authors
     const authorsWithCounts = await Promise.all(authors.map(async (author) => {
