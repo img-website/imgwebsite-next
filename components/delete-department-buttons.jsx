@@ -67,7 +67,7 @@ export default function DeleteDepartmentButtons({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      {/* <DialogTrigger asChild>
         {children ? (
           React.cloneElement(children, { onClick: handleOpen })
         ) : (
@@ -79,7 +79,7 @@ export default function DeleteDepartmentButtons({
             Delete
           </Button>
         )}
-      </DialogTrigger>
+      </DialogTrigger> */}
       <DialogContent className="flex flex-col">
         <DialogHeader>
           <DialogTitle>Delete Department</DialogTitle>
