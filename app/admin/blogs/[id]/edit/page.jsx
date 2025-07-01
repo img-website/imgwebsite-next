@@ -51,7 +51,16 @@ import apiFetch from "@/helpers/apiFetch";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useParams, useRouter } from "next/navigation";
-import TinyMCEEditor from "@/components/TinyMCEEditor";
+import dynamic from "next/dynamic";
+
+const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 flex items-center justify-center text-sm text-muted-foreground">
+      Loading editor...
+    </div>
+  ),
+});
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const faqEditorInit = {
