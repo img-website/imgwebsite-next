@@ -868,7 +868,7 @@ export default function Page() {
                               </FormControl>
                               <SelectContent>
                                 <SelectItem value="2">Published</SelectItem>
-                                <SelectItem value="3">Archived</SelectItem>
+                                {/* <SelectItem value="3">Archived</SelectItem> */}
                                 <SelectItem value="4">Schedule</SelectItem>
                               </SelectContent>
                             </Select>
