@@ -53,7 +53,16 @@ import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import TinyMCEEditor from "@/components/TinyMCEEditor";
+import dynamic from "next/dynamic";
+
+const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 flex items-center justify-center text-sm text-muted-foreground">
+      Loading editor...
+    </div>
+  ),
+});
 
 const faqEditorInit = {
   menubar: false,
