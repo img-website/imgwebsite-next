@@ -109,10 +109,14 @@ function createColumns(canEdit) {
     ),
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <img
+        <Image
+          width={40}
+          height={40}
+          placeholder="blur"
+          blurDataURL={row.original.url}
           src={row.original.url}
           alt={row.getValue("storedName")}
-          className="h-10 w-10 object-contain rounded border"
+          className="size-10 object-contain rounded border"
         />
         <span className="break-all text-sm">{row.getValue("storedName")}</span>
       </div>

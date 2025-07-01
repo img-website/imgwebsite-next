@@ -299,7 +299,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
       >
         {!preview ? (
           <>
-            <Images className="h-10 w-10 text-muted-foreground/50" />
+            <Images className="size-10 text-muted-foreground/50" />
             <p className="text-sm text-muted-foreground text-center">
               Drag and drop an image, or click to select
             </p>
