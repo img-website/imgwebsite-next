@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"next dev --turbopack\" \"node blogScheduler.js\"",
-    "build": "concurrently \"next build\" \"node blogScheduler.js\"",
+    "dev": "next dev --turbopack",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
