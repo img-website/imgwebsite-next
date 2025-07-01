@@ -24,6 +24,10 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
   const [imageSrc, setImageSrc] = useState(null);
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
+  const previewId = React.useMemo(
+    () => `cropper-preview-${Math.random().toString(36).slice(2, 9)}`,
+    []
+  );
 
   // Track the last selected file's real/original name
   const [realFileName, setRealFileName] = useState("");
@@ -346,14 +350,18 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
             <DialogDescription>Select the area of the image you want to keep.</DialogDescription>
           </DialogHeader>
           {imageSrc && (
-            <Cropper
-              src={imageSrc}
-              style={{ height: 400, width: "100%" }}
-              aspectRatio={aspectRatio}
-              viewMode={1}
-              guides={false}
-              ref={cropperRef}
-            />
+            <div className="flex flex-col md:flex-row gap-4">
+              <Cropper
+                src={imageSrc}
+                style={{ height: 400, width: "100%" }}
+                aspectRatio={aspectRatio}
+                viewMode={1}
+                guides={false}
+                ref={cropperRef}
+                preview={`#${previewId}`}
+              />
+              <div className="w-40 h-40 rounded-md overflow-hidden border" id={previewId}></div>
+            </div>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
