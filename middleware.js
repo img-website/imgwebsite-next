@@ -4,6 +4,7 @@ import { getRedirections } from './app/lib/redirections';
 
 function getModuleAction(pathname) {
   if (!pathname.startsWith('/admin')) return null;
+  if (pathname.startsWith('/admin/profile')) return null;
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length < 2) return null;
   let mod = parts[1];
