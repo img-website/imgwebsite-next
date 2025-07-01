@@ -28,6 +28,7 @@ function DatePicker({ value, onChange, placeholder = "Pick a date", className })
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
+          captionLayout="dropdown"
           selected={selected}
           onSelect={(date) => onChange(date ? format(date, "yyyy-MM-dd") : "")}
           initialFocus
