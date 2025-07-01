@@ -80,12 +80,6 @@ const data = {
       isActive: true,
     },
     {
-      name: "Redirections",
-      logo: Split,
-      description: "SEO team",
-      isActive: true,
-    },
-    {
       name: "Role Department",
       logo: Quote,
       description: "RBAC",
@@ -219,22 +213,6 @@ const data = {
       icon: Braces,
       team: "Meta & Schema",
       type: "link"
-    },
-    {
-      title: "Redirections",
-      url: "#",
-      icon: Split,
-      team: "Redirections",
-      items: [
-        {
-          title: "Add Redirection",
-          url: "/admin/redirections/add",
-        },
-        {
-          title: "View Redirections",
-          url: "/admin/redirections",
-        },
-      ],
     },
     {
       title: "Role Department",

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { getRedirections } from './app/lib/redirections';
 
 function getModuleAction(pathname) {
   if (!pathname.startsWith('/admin')) return null;
@@ -57,13 +56,6 @@ export async function middleware(request) {
     return response;
   }
 
-  const redirects = await getRedirections(origin);
-  const pathWithQuery = pathname + search;
-  const match = redirects.find(r => r.from === pathWithQuery || r.from === pathname);
-  if (match) {
-    const url = match.to.startsWith('http') ? match.to : `${origin}${match.to}`;
-    return NextResponse.redirect(url, match.methodCode);
-  }
 
     const token = request.cookies.get('token')?.value;
     let decodedToken = null;
