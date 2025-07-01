@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PhoneInput from "@/components/ui/phone-input";
+import ImageCropperInput from "@/components/image-cropper-input";
 import {
   Popover,
   PopoverTrigger,
@@ -32,10 +34,15 @@ const schema = z.object({
   lastName: z.string().optional(),
   username: z.string().optional(),
   mobileNumber: z.string().optional(),
+  profileImage: z.any().optional(),
   department: z.string().optional(),
 });
 
-export default function EditAdminForm({ admin }) {
+export default function EditAdminForm({
+  admin,
+  hideDepartment = false,
+  redirectTo = "/admin/admins",
+}) {
   const [departments, setDepartments] = useState([]);
   const router = useRouter();
   const handleError = useErrorHandler();
@@ -48,6 +55,9 @@ export default function EditAdminForm({ admin }) {
       username: admin.username || "",
       mobileNumber: admin.mobileNumber || "",
       department: admin.departmentId || "",
+      profileImage: admin.profileImage
+        ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${admin.profileImage}?t=${Date.now()}`
+        : undefined,
     },
   });
 
@@ -68,7 +78,11 @@ export default function EditAdminForm({ admin }) {
     try {
       const fd = new FormData();
       Object.entries(values).forEach(([k, v]) => {
-        if (v) fd.append(k, v);
+        if (k === 'profileImage') {
+          if (v && v[0]) fd.append('profileImage', v[0]);
+        } else if (v) {
+          fd.append(k, v);
+        }
       });
       const res = await apiFetch(`/api/v1/admin/admins/${admin.id}`, {
         method: "PUT",
@@ -78,7 +92,7 @@ export default function EditAdminForm({ admin }) {
       if (data.success) {
         toast.success("Admin updated");
         if (data.notice) toast.info(data.notice);
-        router.push("/admin/admins");
+        router.push(redirectTo);
         router.refresh();
       } else {
         toast.error(data.error || "Failed to update");
@@ -133,12 +147,12 @@ export default function EditAdminForm({ admin }) {
         />
         <FormField
           control={form.control}
-          name="mobileNumber"
-          render={({ field }) => (
+          name="profileImage"
+          render={({ field: { onChange, value } }) => (
             <FormItem>
-              <FormLabel>Mobile Number</FormLabel>
+              <FormLabel>Profile Image</FormLabel>
               <FormControl>
-                <Input placeholder="Mobile" {...field} />
+                <ImageCropperInput value={value} onChange={onChange} aspectRatio={1} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -146,40 +160,73 @@ export default function EditAdminForm({ admin }) {
         />
         <FormField
           control={form.control}
-          name="department"
+          name="mobileNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Department</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl className="w-full">
-                    <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")}> 
-                      {field.value ? departments.find((d) => d._id === field.value)?.name : "Select department..."}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput placeholder="Search department..." className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>No department found.</CommandEmpty>
-                      <CommandGroup>
-                        {departments.map((d) => (
-                          <CommandItem key={d._id} value={d.name} onSelect={() => form.setValue("department", d._id)}>
-                            {d.name}
-                            <Check className={cn("ml-auto h-4 w-4", field.value === d._id ? "opacity-100" : "opacity-0")} />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <FormLabel>Mobile Number</FormLabel>
+              <FormControl>
+                <PhoneInput value={field.value} onChange={field.onChange} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        {!hideDepartment && (
+          <FormField
+            control={form.control}
+            name="department"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Department</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl className="w-full">
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? departments.find((d) => d._id === field.value)?.name
+                          : "Select department..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput placeholder="Search department..." className="h-9" />
+                      <CommandList>
+                        <CommandEmpty>No department found.</CommandEmpty>
+                        <CommandGroup>
+                          {departments.map((d) => (
+                            <CommandItem
+                              key={d._id}
+                              value={d.name}
+                              onSelect={() => form.setValue("department", d._id)}
+                            >
+                              {d.name}
+                              <Check
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  field.value === d._id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
           {form.formState.isSubmitting ? "Updating..." : "Update"}
         </Button>

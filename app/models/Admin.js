@@ -61,10 +61,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: function(v) {
-        // Allow empty or valid 10-digit number
-        return v === '' || v === null || /^[0-9]{10}$/.test(v);
+        // Allow empty or valid E.164 number with optional leading '+'
+        return v === '' || v === null || /^\+?[1-9]\d{6,14}$/.test(v);
       },
-      message: 'If provided, mobile number must be a valid 10-digit number'
+      message: 'If provided, mobile number must be a valid phone number'
     }
   },
   profileImage: {

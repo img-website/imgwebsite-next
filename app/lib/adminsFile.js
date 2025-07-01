@@ -61,7 +61,12 @@ export async function syncAdminsFromDB() {
   const docs = await Admin.find().populate('department', 'name').lean();
   const admins = docs.map((doc) => ({
     id: doc._id.toString(),
+    firstName: doc.firstName || '',
+    lastName: doc.lastName || '',
+    username: doc.username || '',
     email: doc.email,
+    mobileNumber: doc.mobileNumber || '',
+    profileImage: doc.profileImage || null,
     role: doc.role,
     department: doc.department ? doc.department.name : null,
     departmentId: doc.department ? doc.department._id.toString() : null,

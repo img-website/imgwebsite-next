@@ -18,7 +18,7 @@ Send the request as FormData with the following fields:
   username: "johndoe",     // Required, 3-30 characters, unique
   email: "john@example.com", // Required, valid email, unique
   password: "password123",  // Required, min 6 characters
-  mobileNumber: "1234567890", // Required, 10 digits
+  mobileNumber: "+1234567890", // Required, E.164 format
   profileImage: File       // Optional, image file, max 2MB
 }
 ```
@@ -29,7 +29,7 @@ Send the request as FormData with the following fields:
 - All fields are required except profileImage
 - Email and username must be unique
 - Password minimum 6 characters
-- Mobile number must be 10 digits
+- Mobile number must be in E.164 format (e.g. +1234567890)
 - First name and last name: 2-30 characters, letters and spaces only
 - Username: 3-30 characters, letters, numbers, and underscores only
 

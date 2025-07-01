@@ -98,6 +98,36 @@ export async function uploadAuthorImage(file) {
   }
 }
 
+// Upload and process admin profile image
+export async function uploadAdminImage(file) {
+  try {
+    if (!file || typeof file !== 'object' || typeof file.arrayBuffer !== 'function') {
+      return { success: false, error: 'Please provide a valid image file' };
+    }
+
+    const buffer = await file.arrayBuffer();
+    const fileType = await validateImageType(Buffer.from(buffer));
+    if (!fileType.success) {
+      return fileType;
+    }
+
+    const filename = `admin-${Date.now()}.webp`;
+    const key = `uploads/admins/${filename}`;
+
+    const processed = await sharp(Buffer.from(buffer))
+      .resize(400, 400, { fit: 'cover', position: 'center' })
+      .webp({ quality: 80 })
+      .toBuffer();
+
+    await uploadBuffer(processed, key, 'image/webp');
+
+    return { success: true, filename };
+  } catch (error) {
+    console.error('Error uploading admin image:', error);
+    return { success: false, error: 'Error processing image' };
+  }
+}
+
 // Upload and process blog image
 export async function uploadBlogImage(file, type = 'generic', ext, storedName) {
   try {

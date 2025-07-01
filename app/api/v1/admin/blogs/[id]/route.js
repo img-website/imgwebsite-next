@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
+import Author from '@/app/models/Author';
+import Category from '@/app/models/Category';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import { deleteObject } from '@/lib/s3';

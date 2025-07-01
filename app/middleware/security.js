@@ -19,7 +19,7 @@ export function securityMiddleware(req) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  response.headers.set('Content-Security-Policy', "default-src 'self'; img-src 'self' blob: data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';");
+  response.headers.set('Content-Security-Policy', "default-src 'self' https://cdn.tiny.cloud; connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud; img-src 'self' https://cdn.tiny.cloud blob: data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud; style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; font-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud;");
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
   return response;

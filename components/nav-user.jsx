@@ -1,5 +1,7 @@
 "use client"
 
+import * as React from "react";
+
 import {
   ChevronsUpDown,
   CircleUser,
@@ -38,6 +40,28 @@ export function NavUser({
   user
 }) {
   const { isMobile } = useSidebar()
+  const [profile, setProfile] = React.useState(user)
+  React.useEffect(() => {
+    async function load() {
+      try {
+        const token = getCookie('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch('/api/v1/admin/admins/me', { cache: 'no-store', headers });
+        const json = await res.json();
+        if (json.success) {
+          const d = json.data;
+          const name = d.firstName || d.lastName
+            ? `${d.firstName || ''} ${d.lastName || ''}`.trim()
+            : d.username || d.email;
+          const avatar = d.profileImage
+            ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${d.profileImage}`
+            : null;
+          setProfile({ name, email: d.email, avatar });
+        }
+      } catch {}
+    }
+    load();
+  }, []);
 
       const router = useRouter();
   
@@ -61,12 +85,12 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">{profile.name || 'User'}</span>
+                <span className="truncate text-xs">{profile.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -79,20 +103,21 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">{profile.name || 'User'}</span>
+                  <span className="truncate text-xs">{profile.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <CircleUser />
-                Profile
+              <DropdownMenuItem asChild>
+                <Link href="/admin/profile" className="flex items-center gap-2">
+                  <CircleUser className="h-4 w-4" /> Profile
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings2 />
