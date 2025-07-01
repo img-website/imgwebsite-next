@@ -22,6 +22,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 import { Separator } from "@/components/ui/separator";
 
 const defaultMeta = {
@@ -119,6 +120,8 @@ export default function EditStaticMetaForm({ meta }) {
       const json = await res.json();
       if (json.success) {
         toast.success("Meta updated successfully");
+        const clearData = useApiCache.getState().clearData;
+        clearData("static-meta");
       } else {
         toast.error(json.error || "Failed to update meta");
       }

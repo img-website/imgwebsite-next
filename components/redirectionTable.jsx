@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 import {
   Dialog,
   DialogTrigger,
@@ -60,6 +61,8 @@ function RedirectionActions({ redirection, canEdit, canDelete }) {
       if (data.success) {
         toast.success("Redirection deleted");
         if (data.notice) toast.info(data.notice);
+        const clearData = useApiCache.getState().clearData;
+        clearData("redirections");
         setOpen(false);
         router.refresh();
       } else {

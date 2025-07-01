@@ -43,6 +43,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 
 function NewsletterActions({ newsletter }) {
   const router = useRouter();
@@ -56,6 +57,8 @@ function NewsletterActions({ newsletter }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Deleted");
+        const clearData = useApiCache.getState().clearData;
+        clearData("newsletters");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to delete");

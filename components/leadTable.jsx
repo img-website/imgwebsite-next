@@ -45,6 +45,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 import { getPublicUrl } from "@/lib/s3";
 
 function LeadActions({ lead }) {
@@ -62,6 +63,8 @@ function LeadActions({ lead }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Status updated");
+        const clearData = useApiCache.getState().clearData;
+        clearData("leads");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to update status");

@@ -41,6 +41,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import apiFetch from "@/helpers/apiFetch"
+import { useApiCache } from "@/app/store/use-api-cache"
 
 function AuthorActions({ author, canEdit }) {
   const router = useRouter()
@@ -56,6 +57,8 @@ function AuthorActions({ author, canEdit }) {
       const data = await res.json()
       if (data.success) {
         toast.success('Status updated')
+        const clearData = useApiCache.getState().clearData
+        clearData('authors')
         router.refresh()
       } else {
         toast.error(data.error || 'Failed to update status')

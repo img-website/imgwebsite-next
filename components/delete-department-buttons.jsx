@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useApiCache } from "@/app/store/use-api-cache";
 
 import React from "react";
 
@@ -54,6 +55,8 @@ export default function DeleteDepartmentButtons({
       const data = await res.json();
       if (data.success) {
         toast.success("Department deleted");
+        const clearData = useApiCache.getState().clearData;
+        clearData("departments");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to delete department");

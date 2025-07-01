@@ -49,6 +49,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 import RedirectionForm from "@/components/RedirectionForm";
 import { deleteRedirection } from "@/actions/redirections";
 
@@ -80,6 +81,8 @@ function BlogActions({ blog }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Status updated");
+        const clearData = useApiCache.getState().clearData;
+        clearData("blogs");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to update status");
@@ -113,6 +116,8 @@ function BlogActions({ blog }) {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || "Blog deleted");
+        const clearData = useApiCache.getState().clearData;
+        clearData("blogs");
         router.refresh();
       } else {
         toast.error(data.error || "Failed to delete blog");
