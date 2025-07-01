@@ -1,6 +1,13 @@
-import { create } from 'zustand'
+"use client";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export const useTeamStore = create((set) => ({
-  activeTeam: null,
-  setActiveTeam: (team) => set({ activeTeam: team }),
-}))
+export const useTeamStore = create(
+  persist(
+    (set) => ({
+      activeTeam: null,
+      setActiveTeam: (team) => set({ activeTeam: team }),
+    }),
+    { name: 'active-team' }
+  )
+);
