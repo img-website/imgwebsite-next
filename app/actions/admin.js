@@ -270,9 +270,11 @@ export async function updateAdmin(id, formData) {
       if (!department) {
         return { success: false, error: 'Department not found' };
       }
-      admin.department = department._id;
-      admin.permissions = department.permissions;
-      admin.permissionsUpdatedAt = new Date();
+      if (!admin.department || admin.department.toString() !== dept) {
+        admin.department = department._id;
+        admin.permissions = department.permissions;
+        admin.permissionsUpdatedAt = new Date();
+      }
     }
 
     await admin.save();

@@ -16,7 +16,7 @@ export default async function Page() {
     <div className="w-full p-4">
       <EditAdminForm
         admin={admin}
-        hideDepartment={admin.role === 'superadmin'}
+        hideDepartment={admin.role !== 'superadmin'}
         redirectTo="/admin/profile"
       />
     </div>

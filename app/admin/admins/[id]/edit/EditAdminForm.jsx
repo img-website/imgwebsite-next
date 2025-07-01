@@ -78,6 +78,7 @@ export default function EditAdminForm({
     try {
       const fd = new FormData();
       Object.entries(values).forEach(([k, v]) => {
+        if (hideDepartment && k === 'department') return;
         if (k === 'profileImage') {
           if (v && v[0]) fd.append('profileImage', v[0]);
         } else if (v) {
