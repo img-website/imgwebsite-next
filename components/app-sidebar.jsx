@@ -58,13 +58,8 @@ const TeamSwitcher = dynamic(
   }
 );
 
-// This is sample data.
+// This is sample data for navigation only.
 const data = {
-  user: {
-    name: "Mohit Mittal",
-    email: "mohit@imgglobalinfotech.com",
-    avatar: "https://d1y41eupgbwbb2.cloudfront.net/images/blogauthor/blogauthor-1747657504.webp",
-  },
   teams: [
     {
       name: "Blogs",
@@ -333,7 +328,7 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <ErrorBoundary>
-          <NavUser user={data.user} />
+          <NavUser />
         </ErrorBoundary>
       </SidebarFooter>
       <SidebarRail />

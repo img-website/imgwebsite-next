@@ -36,11 +36,9 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-export function NavUser({
-  user
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar()
-  const [profile, setProfile] = React.useState(user)
+  const [profile, setProfile] = React.useState({ name: '', email: '', avatar: null, initials: '' })
   React.useEffect(() => {
     async function load() {
       try {
@@ -56,7 +54,8 @@ export function NavUser({
           const avatar = d.profileImage
             ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${d.profileImage}`
             : null;
-          setProfile({ name, email: d.email, avatar });
+          const initials = `${d.firstName?.[0] || ''}${d.lastName?.[0] || ''}`.toUpperCase();
+          setProfile({ name, email: d.email, avatar, initials });
         }
       } catch {}
     }
@@ -86,7 +85,7 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{profile.initials || (profile.name?.[0] || 'U')}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{profile.name || 'User'}</span>
@@ -104,7 +103,7 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{profile.initials || (profile.name?.[0] || 'U')}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{profile.name || 'User'}</span>

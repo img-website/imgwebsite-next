@@ -71,14 +71,6 @@ const adminSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  thumbnailImage: {
-    type: String,
-    default: null
-  },
-  largeImage: {
-    type: String,
-    default: null
-  },
   role: {
     type: String,
     enum: ['admin', 'superadmin'],
@@ -180,4 +172,4 @@ adminSchema.pre(['find', 'findOne', 'countDocuments'], function () {
 
 const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 
-export default Admin; 
+export default Admin;
