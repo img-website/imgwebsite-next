@@ -37,7 +37,7 @@ const schema = z.object({
   department: z.string().optional(),
 });
 
-export default function EditAdminForm({ admin }) {
+export default function EditAdminForm({ admin, hideDepartment = false }) {
   const [departments, setDepartments] = useState([]);
   const router = useRouter();
   const handleError = useErrorHandler();
@@ -166,42 +166,62 @@ export default function EditAdminForm({ admin }) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="department"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Department</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl className="w-full">
-                    <Button variant="outline" role="combobox" className={cn("w-full justify-between", !field.value && "text-muted-foreground")}> 
-                      {field.value ? departments.find((d) => d._id === field.value)?.name : "Select department..."}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput placeholder="Search department..." className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>No department found.</CommandEmpty>
-                      <CommandGroup>
-                        {departments.map((d) => (
-                          <CommandItem key={d._id} value={d.name} onSelect={() => form.setValue("department", d._id)}>
-                            {d.name}
-                            <Check className={cn("ml-auto h-4 w-4", field.value === d._id ? "opacity-100" : "opacity-0")} />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!hideDepartment && (
+          <FormField
+            control={form.control}
+            name="department"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Department</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl className="w-full">
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? departments.find((d) => d._id === field.value)?.name
+                          : "Select department..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0">
+                    <Command>
+                      <CommandInput placeholder="Search department..." className="h-9" />
+                      <CommandList>
+                        <CommandEmpty>No department found.</CommandEmpty>
+                        <CommandGroup>
+                          {departments.map((d) => (
+                            <CommandItem
+                              key={d._id}
+                              value={d.name}
+                              onSelect={() => form.setValue("department", d._id)}
+                            >
+                              {d.name}
+                              <Check
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  field.value === d._id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
           {form.formState.isSubmitting ? "Updating..." : "Update"}
         </Button>

@@ -14,7 +14,7 @@ export default async function Page() {
   if (!admin) return <div className="p-4">Admin not found</div>;
   return (
     <div className="w-full p-4">
-      <EditAdminForm admin={admin} />
+      <EditAdminForm admin={admin} hideDepartment={admin.role === 'superadmin'} />
     </div>
   );
 }

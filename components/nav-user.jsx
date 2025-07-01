@@ -44,7 +44,9 @@ export function NavUser({
   React.useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('/api/v1/admin/admins/me', { cache: 'no-store' });
+        const token = getCookie('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch('/api/v1/admin/admins/me', { cache: 'no-store', headers });
         const json = await res.json();
         if (json.success) {
           const d = json.data;

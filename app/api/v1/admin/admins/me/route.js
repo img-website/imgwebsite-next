@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { extractToken, verifyToken } from '@/app/lib/auth';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
 
 export async function GET(req) {
-  const token = extractToken(req.headers);
+  let token = extractToken(req.headers);
+  if (!token) {
+    const cookieStore = cookies();
+    token = cookieStore.get('token')?.value || null;
+  }
   if (!token) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
