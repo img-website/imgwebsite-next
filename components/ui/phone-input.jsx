@@ -1,24 +1,12 @@
-"use client";
-import { useEffect, useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 
 export default function PhoneInputWrapper({ value, onChange, className = "", ...props }) {
-  const [country, setCountry] = useState("in");
 
-  useEffect(() => {
-    fetch("https://ipinfo.io/json")
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.country) setCountry(data.country.toLowerCase());
-      })
-      .catch(() => {});
-  }, []);
 
   return (
     <PhoneInput
       {...props}
-      defaultCountry={country}
       preferredCountries={["in", "us"]}
       value={value}
       onChange={onChange}
