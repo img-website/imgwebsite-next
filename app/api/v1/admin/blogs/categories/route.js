@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Category from '@/app/models/Category';
 import Blog from '@/app/models/Blog';
-import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 
 export async function GET(request) {
@@ -34,32 +33,23 @@ export async function GET(request) {
       baseQuery.status = numericStatus;
     }
 
-    let allCategories = await Category.find(baseQuery, null, { showDeleted })
-      .select('-__v')
-      .lean();
-
     if (search) {
-      const fuseOptions = {
-        keys: ['category_name', 'description', 'slug'],
-        threshold: 0.3,
-        includeScore: true
-      };
-      const fuse = new Fuse(allCategories, fuseOptions);
-      const searchResults = fuse.search(search);
-      allCategories = searchResults.map(result => result.item);
+      const regex = new RegExp(search, 'i');
+      baseQuery.$or = [
+        { category_name: regex },
+        { description: regex },
+        { slug: regex }
+      ];
     }
 
-    const total = allCategories.length;
+    const total = await Category.countDocuments(baseQuery).setOptions({ showDeleted });
 
-    if (sortBy) {
-      allCategories.sort((a, b) => {
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
-        return sortOrder * (aValue > bValue ? 1 : -1);
-      });
-    }
-
-    const categories = allCategories.slice(skip, skip + limit);
+    const categories = await Category.find(baseQuery, null, { showDeleted })
+      .select('-__v')
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
     const categoriesWithCounts = await Promise.all(categories.map(async (cat) => {
       const blogCount = await Blog.countDocuments({ categories: cat._id, status: 2 });
