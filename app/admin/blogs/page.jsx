@@ -1,18 +1,17 @@
 import { cookies } from "next/headers";
 import { BlogTable } from "@/components/blogTable";
 import { hasServerPermission } from "@/helpers/permissions";
+import { getBlogs } from "@/app/actions/blogs";
 
 export default async function Page() {
   const store = await cookies();
   const canAdd = hasServerPermission(store, 'blogs', 'write');
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs`, { cache: 'no-store' });
-  const json = await res.json();
-  const blogs = Array.isArray(json?.data) ? json.data : [];
+  const blogs = await getBlogs();
   const statusMap = { 1: 'draft', 2: 'published', 3: 'archived', 4: 'scheduled' };
   const data = blogs.map(blog => {
     const obj = {
-      id: blog._id,
+      id: blog.id,
       title: blog.title,
       status: statusMap[blog.status] || 'draft',
       created_date: blog.created_date,

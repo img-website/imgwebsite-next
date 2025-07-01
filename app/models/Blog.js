@@ -147,7 +147,16 @@ blogSchema.pre('validate', async function (next) {
 });
 
 
-blogSchema.index({ title: 'text', short_description: 'text', description: 'text' });
+// Text index for blog search
+blogSchema.index({ title: 'text', short_description: 'text', description: 'text', slug: 'text' });
+
+// Additional indexes to speed up admin queries
+// - status: filter by publication status
+// - author: filter by author when needed
+// - category: filter by category when needed
+blogSchema.index({ status: 1 });
+blogSchema.index({ author: 1 });
+blogSchema.index({ category: 1 });
 
 const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema);
 

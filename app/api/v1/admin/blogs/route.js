@@ -3,7 +3,6 @@ import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
 import Author from '@/app/models/Author';
 import Category from '@/app/models/Category';
-import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
@@ -33,34 +32,26 @@ export async function GET(request) {
       baseQuery.status = numericStatus;
     }
 
-    let allBlogs = await Blog.find(baseQuery)
+    const query = { ...baseQuery };
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { title: regex },
+        { short_description: regex },
+        { slug: regex },
+      ];
+    }
+
+    const total = await Blog.countDocuments(query);
+
+    const blogs = await Blog.find(query)
       .populate('author')
       .populate('category')
       .select('-__v')
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(limit)
       .lean();
-
-    if (search) {
-      const fuseOptions = {
-        keys: ['title', 'short_description', 'slug'],
-        threshold: 0.3,
-        includeScore: true
-      };
-      const fuse = new Fuse(allBlogs, fuseOptions);
-      const searchResults = fuse.search(search);
-      allBlogs = searchResults.map((r) => r.item);
-    }
-
-    const total = allBlogs.length;
-
-    if (sortBy) {
-      allBlogs.sort((a, b) => {
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
-        return sortOrder * (aValue > bValue ? 1 : -1);
-      });
-    }
-
-    const blogs = allBlogs.slice(skip, skip + limit);
 
     return NextResponse.json({
       success: true,
