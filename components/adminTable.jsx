@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useApiCache } from "@/app/store/use-api-cache";
 import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -45,6 +46,7 @@ import Link from "next/link";
 
 function AdminActions({ admin }) {
   const router = useRouter();
+  const clearData = useApiCache((state) => state.clearData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleDelete = async () => {
@@ -54,6 +56,7 @@ function AdminActions({ admin }) {
       if (data.success) {
         toast.success('Admin deleted');
         if (data.notice) toast.info(data.notice);
+        clearData("admins");
         router.refresh();
       } else {
         toast.error(data.error || 'Failed to delete');
