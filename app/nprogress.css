@@ -1,0 +1,8 @@
+/* Custom NProgress color */
+#nprogress .bar {
+  background: var(--color-theme4);
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--color-theme4), 0 0 5px var(--color-theme4);
+}
