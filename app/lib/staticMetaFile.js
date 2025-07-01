@@ -1,60 +1,67 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getRedis, REDIS_ENABLED } from './redis';
 import connectDB from '@/app/lib/db';
 import StaticMeta from '@/app/models/StaticMeta';
 
-export const DATA_FILE = path.join(process.cwd(), 'data', 'staticMeta.json');
+const KEY = 'staticMeta';
 
 export async function ensureStaticMetaFile() {
-  try {
-    await fs.access(DATA_FILE);
-    return false;
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-      await fs.writeFile(DATA_FILE, '{}', 'utf8');
-      return true;
-    }
-    throw err;
-  }
+  if (!REDIS_ENABLED) return false;
+  const redis = getRedis();
+  const exists = await redis.exists(KEY);
+  return !exists;
 }
 
 export async function readStaticMeta() {
-  await ensureStaticMetaFile();
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return JSON.parse(data || '{}');
-  } catch (err) {
-    if (err instanceof SyntaxError) {
+  if (!REDIS_ENABLED) {
+    const { meta } = await syncStaticMetaFromDB();
+    return meta;
+  }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return JSON.parse(data || '{}');
+    } catch {
       const { meta } = await syncStaticMetaFromDB();
       return meta;
     }
-    throw err;
   }
+  const { meta } = await syncStaticMetaFromDB();
+  return meta;
 }
 
 export async function readStaticMetaWithNotice() {
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return { meta: JSON.parse(data || '{}'), wasCreated: false };
-  } catch (err) {
-    if (err.code === 'ENOENT' || err instanceof SyntaxError) {
+  if (!REDIS_ENABLED) {
+    const { meta } = await syncStaticMetaFromDB();
+    return { meta, wasCreated: false };
+  }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return { meta: JSON.parse(data || '{}'), wasCreated: false };
+    } catch {
       const { meta } = await syncStaticMetaFromDB();
       return { meta, wasCreated: true };
     }
-    throw err;
   }
+  const { meta } = await syncStaticMetaFromDB();
+  return { meta, wasCreated: true };
 }
 
 export async function writeStaticMeta(meta) {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(meta, null, 2), 'utf8');
+  if (!REDIS_ENABLED) return;
+  const redis = getRedis();
+  await redis.set(KEY, JSON.stringify(meta));
 }
 
 export async function syncStaticMetaFromDB() {
   await connectDB();
   const doc = await StaticMeta.findOne().lean();
-  const wasCreated = await ensureStaticMetaFile();
+  let wasCreated = false;
+  if (REDIS_ENABLED) {
+    wasCreated = await ensureStaticMetaFile();
+  }
   if (doc) {
     const meta = {
       ...doc,
@@ -62,9 +69,13 @@ export async function syncStaticMetaFromDB() {
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString(),
     };
-    await writeStaticMeta(meta);
+    if (REDIS_ENABLED) {
+      await writeStaticMeta(meta);
+    }
     return { meta, wasCreated };
   }
-  await writeStaticMeta({});
+  if (REDIS_ENABLED) {
+    await writeStaticMeta({});
+  }
   return { meta: null, wasCreated };
 }

@@ -15,21 +15,31 @@ export async function GET(req, { params }) {
       { success: false, error: 'Permission denied' },
       { status: 403 }
     );
-  const { admins, wasCreated } = await readAdminsWithNotice();
   const { id } = await params;
-  const user = admins.find((a) => a.id === id);
-  if (!user)
+  await connectDB();
+  const doc = await Admin.findById(id).populate('department', 'name').lean();
+  if (!doc)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },
       { status: 404 }
     );
-  return NextResponse.json({
-    success: true,
-    data: user,
-    ...(wasCreated && {
-      notice: 'Admins JSON file was missing and has been recreated.',
-    }),
-  });
+  const data = {
+    id: doc._id.toString(),
+    firstName: doc.firstName || '',
+    lastName: doc.lastName || '',
+    username: doc.username || '',
+    email: doc.email,
+    mobileNumber: doc.mobileNumber || '',
+    profileImage: doc.profileImage || null,
+    department: doc.department ? doc.department.name : null,
+    departmentId: doc.department ? doc.department._id.toString() : null,
+    role: doc.role,
+    permissions: doc.permissions || {},
+    permissionsUpdatedAt: doc.permissionsUpdatedAt?.toISOString(),
+    createdAt: doc.createdAt.toISOString(),
+    updatedAt: doc.updatedAt.toISOString(),
+  };
+  return NextResponse.json({ success: true, data });
 }
 
 export async function DELETE(req, { params }) {

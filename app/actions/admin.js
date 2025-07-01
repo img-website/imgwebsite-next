@@ -8,6 +8,7 @@ import Admin from '@/app/models/Admin';
 import Department from '@/app/models/Department';
 import { adminRegistrationSchema } from '@/app/lib/validations/admin';
 import { sendLoginEmail, sendWelcomeEmail } from '@/app/lib/mail';
+import { uploadAdminImage } from '@/app/middleware/imageUpload';
 
 export async function registerAdmin(formData, req) {
   try {
@@ -73,6 +74,7 @@ export async function registerAdmin(formData, req) {
       registrationIP: 'unknown', // Will be set by middleware
       permissions: department ? department.permissions : {},
       department: department ? department._id : null,
+      permissionsUpdatedAt: new Date(),
     });
 
     // Send welcome email
@@ -240,8 +242,21 @@ export async function updateAdmin(id, formData) {
     for (const field of fields) {
       const val = formData.get(field);
       if (val !== null && val !== undefined && val !== '') {
-        admin[field] = val;
+        if (field === 'mobileNumber') {
+          admin[field] = val.toString().replace(/\s+/g, '');
+        } else {
+          admin[field] = val;
+        }
       }
+    }
+
+    const img = formData.get('profileImage');
+    if (img && typeof img !== 'string') {
+      const uploadRes = await uploadAdminImage(img);
+      if (!uploadRes.success) {
+        return { success: false, error: uploadRes.error || 'Failed to upload image' };
+      }
+      admin.profileImage = uploadRes.filename;
     }
 
     const role = formData.get('role');
@@ -257,6 +272,7 @@ export async function updateAdmin(id, formData) {
       }
       admin.department = department._id;
       admin.permissions = department.permissions;
+      admin.permissionsUpdatedAt = new Date();
     }
 
     await admin.save();

@@ -1,55 +1,58 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getRedis, REDIS_ENABLED } from './redis';
 import connectDB from '@/app/lib/db';
 import Redirection from '@/app/models/Redirection';
 
-export const DATA_FILE = path.join(process.cwd(), 'data', 'redirections.json');
+const KEY = 'redirections';
 
 export async function ensureRedirectionsFile() {
-  try {
-    await fs.access(DATA_FILE);
-    return false;
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-      await fs.writeFile(DATA_FILE, '[]', 'utf8');
-      return true;
-    }
-    throw err;
-  }
+  if (!REDIS_ENABLED) return false;
+  const redis = getRedis();
+  const exists = await redis.exists(KEY);
+  return !exists;
 }
 
 export async function readRedirections() {
-  await ensureRedirectionsFile();
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
-    if (err instanceof SyntaxError) {
-      const { data } = await syncRedirectionsFromDB();
-      return data;
-    }
-    throw err;
+  if (!REDIS_ENABLED) {
+    const { data } = await syncRedirectionsFromDB();
+    return data;
   }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return JSON.parse(data);
+    } catch {
+      const { data: list } = await syncRedirectionsFromDB();
+      return list;
+    }
+  }
+  const { data: list } = await syncRedirectionsFromDB();
+  return list;
 }
 
 export async function readRedirectionsWithNotice() {
-  const wasCreated = await ensureRedirectionsFile();
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return { redirections: JSON.parse(data), wasCreated };
-  } catch (err) {
-    if (err instanceof SyntaxError) {
-      const { data } = await syncRedirectionsFromDB();
-      return { redirections: data, wasCreated: true };
-    }
-    throw err;
+  if (!REDIS_ENABLED) {
+    const { data } = await syncRedirectionsFromDB();
+    return { redirections: data, wasCreated: false };
   }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return { redirections: JSON.parse(data), wasCreated: false };
+    } catch {
+      const { data: list } = await syncRedirectionsFromDB();
+      return { redirections: list, wasCreated: true };
+    }
+  }
+  const { data: list } = await syncRedirectionsFromDB();
+  return { redirections: list, wasCreated: true };
 }
 
 export async function writeRedirections(redirections) {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(redirections, null, 2), 'utf8');
+  if (!REDIS_ENABLED) return;
+  const redis = getRedis();
+  await redis.set(KEY, JSON.stringify(redirections));
 }
 
 export async function addRedirection(redirection) {
@@ -88,7 +91,10 @@ export async function syncRedirectionsFromDB() {
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
   }));
-  const wasCreated = await ensureRedirectionsFile();
-  await writeRedirections(data);
+  let wasCreated = false;
+  if (REDIS_ENABLED) {
+    wasCreated = await ensureRedirectionsFile();
+    await writeRedirections(data);
+  }
   return { data, wasCreated };
 }

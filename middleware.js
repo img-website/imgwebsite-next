@@ -77,6 +77,31 @@ export async function middleware(request) {
     const isRole = decodedToken?.role;
     const isEmail = decodedToken?.email;
 
+    const permStamp = request.cookies.get('permissionsStamp')?.value;
+    if (decodedToken && permStamp) {
+        try {
+            const res = await fetch(`${origin}/api/v1/admin/admins/me`, {
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store'
+            });
+            if (res.ok) {
+                const json = await res.json();
+                const rec = json.data;
+                if (rec && rec.permissionsUpdatedAt && permStamp !== rec.permissionsUpdatedAt) {
+                    const resLogout = NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
+                    resLogout.cookies.set("token", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userEmail", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userRole", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("userPermissions", "", { maxAge: -1, path: "/" });
+                    resLogout.cookies.set("permissionsStamp", "", { maxAge: -1, path: "/" });
+                    return resLogout;
+                }
+            }
+        } catch (err) {
+            console.error('Failed to check permissions stamp', err);
+        }
+    }
+
     // If token verification fails, clear the token cookies
     if (token && !decodedToken) {
         const response = NextResponse.redirect(new URL("/", request.url));

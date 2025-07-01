@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PhoneInput from "@/components/ui/phone-input";
+import ImageCropperInput from "@/components/image-cropper-input";
 import {
   Popover,
   PopoverTrigger,
@@ -48,6 +50,9 @@ export default function EditAdminForm({ admin }) {
       username: admin.username || "",
       mobileNumber: admin.mobileNumber || "",
       department: admin.departmentId || "",
+      profileImage: admin.profileImage
+        ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${admin.profileImage}?t=${Date.now()}`
+        : undefined,
     },
   });
 
@@ -68,7 +73,11 @@ export default function EditAdminForm({ admin }) {
     try {
       const fd = new FormData();
       Object.entries(values).forEach(([k, v]) => {
-        if (v) fd.append(k, v);
+        if (k === 'profileImage') {
+          if (v && v[0]) fd.append('profileImage', v[0]);
+        } else if (v) {
+          fd.append(k, v);
+        }
       });
       const res = await apiFetch(`/api/v1/admin/admins/${admin.id}`, {
         method: "PUT",
@@ -133,12 +142,25 @@ export default function EditAdminForm({ admin }) {
         />
         <FormField
           control={form.control}
+          name="profileImage"
+          render={({ field: { onChange, value } }) => (
+            <FormItem>
+              <FormLabel>Profile Image</FormLabel>
+              <FormControl>
+                <ImageCropperInput value={value} onChange={onChange} aspectRatio={1} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="mobileNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Mobile Number</FormLabel>
               <FormControl>
-                <Input placeholder="Mobile" {...field} />
+                <PhoneInput value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

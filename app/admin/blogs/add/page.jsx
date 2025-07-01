@@ -57,7 +57,7 @@ import TinyMCEEditor from "@/components/TinyMCEEditor";
 
 const faqEditorInit = {
   menubar: false,
-  menu: false,
+  menu: {},
   plugins: ["lists", "link"],
   toolbar: "bold italic underline strikethrough | bullist numlist | link",
   quickbars_selection_toolbar: false,

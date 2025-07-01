@@ -1,55 +1,59 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { getRedis, REDIS_ENABLED } from './redis';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
 import '@/app/models/Department';
 
-export const DATA_FILE = path.join(process.cwd(), 'data', 'admins.json');
+const KEY = 'admins';
 
 export async function ensureAdminsFile() {
-  try {
-    await fs.access(DATA_FILE);
-    return false;
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-      await fs.writeFile(DATA_FILE, '[]', 'utf8');
-      return true;
-    }
-    throw err;
-  }
+  if (!REDIS_ENABLED) return false;
+  const redis = getRedis();
+  const exists = await redis.exists(KEY);
+  return !exists;
 }
 
 export async function readAdmins() {
-  await ensureAdminsFile();
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
-    if (err instanceof SyntaxError) {
+  if (!REDIS_ENABLED) {
+    const { admins } = await syncAdminsFromDB();
+    return admins;
+  }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return JSON.parse(data);
+    } catch {
       const { admins } = await syncAdminsFromDB();
       return admins;
     }
-    throw err;
   }
+  const { admins } = await syncAdminsFromDB();
+  return admins;
 }
 
 export async function readAdminsWithNotice() {
-  try {
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return { admins: JSON.parse(data), wasCreated: false };
-  } catch (err) {
-    if (err.code === 'ENOENT' || err instanceof SyntaxError) {
+  if (!REDIS_ENABLED) {
+    const { admins } = await syncAdminsFromDB();
+    return { admins, wasCreated: false };
+  }
+  const redis = getRedis();
+  const data = await redis.get(KEY);
+  if (data) {
+    try {
+      return { admins: JSON.parse(data), wasCreated: false };
+    } catch {
       const { admins } = await syncAdminsFromDB();
       return { admins, wasCreated: true };
     }
-    throw err;
   }
+  const { admins } = await syncAdminsFromDB();
+  return { admins, wasCreated: true };
 }
 
 export async function writeAdmins(admins) {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(admins, null, 2), 'utf8');
+  if (!REDIS_ENABLED) return;
+  const redis = getRedis();
+  await redis.set(KEY, JSON.stringify(admins));
 }
 
 export async function syncAdminsFromDB() {
@@ -62,10 +66,16 @@ export async function syncAdminsFromDB() {
     department: doc.department ? doc.department.name : null,
     departmentId: doc.department ? doc.department._id.toString() : null,
     permissions: doc.permissions || {},
+    permissionsUpdatedAt: doc.permissionsUpdatedAt ? doc.permissionsUpdatedAt.toISOString() : new Date().toISOString(),
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
   }));
-  const wasCreated = await ensureAdminsFile();
-  await writeAdmins(admins);
+  let wasCreated = false;
+  if (REDIS_ENABLED) {
+    const redis = getRedis();
+    const existed = await redis.exists(KEY);
+    await writeAdmins(admins);
+    wasCreated = !existed;
+  }
   return { admins, wasCreated };
 }
