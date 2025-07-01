@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { BlogTable } from '@/components/blogTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function BlogsPageClient({ canAdd }) {
   const { data, loading } = useCachedApi('blogs', async () => {
@@ -25,7 +26,7 @@ export default function BlogsPageClient({ canAdd }) {
     });
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

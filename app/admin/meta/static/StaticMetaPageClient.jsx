@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import EditStaticMetaForm from './EditStaticMetaForm';
+import { FormSkeleton } from '@/components/skeleton/form-skeleton';
 
 export default function StaticMetaPageClient() {
   const { data: meta, loading } = useCachedApi('static-meta', async () => {
@@ -29,7 +30,7 @@ export default function StaticMetaPageClient() {
     return meta;
   });
 
-  if (loading) return <div className="p-4">Loading...</div>;
+  if (loading) return <FormSkeleton rows={4} />;
 
   return (
     <div className="w-full p-4">

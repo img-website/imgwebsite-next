@@ -54,10 +54,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import dynamic from "next/dynamic";
+import { EditorSkeleton } from "@/components/skeleton/editor-skeleton";
+import { FormSkeleton } from "@/components/skeleton/form-skeleton";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
   ssr: false,
-  loading: () => <p>Loading editor...</p>,
+  loading: () => <EditorSkeleton />,
 });
 
 const faqEditorInit = {
@@ -1149,7 +1151,7 @@ function BlogAdd() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<FormSkeleton rows={8} />}>
       <BlogAdd />
     </Suspense>
   );

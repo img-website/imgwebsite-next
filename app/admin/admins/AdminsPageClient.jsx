@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { AdminTable } from '@/components/adminTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function AdminsPageClient({ token, canAdd }) {
   const { data: admins, loading } = useCachedApi('admins', async () => {
@@ -12,7 +13,7 @@ export default function AdminsPageClient({ token, canAdd }) {
   });
 
   if (loading || !admins) {
-    return <div className="p-4">Loading...</div>;
+    return <TableSkeleton />;
   }
 
   const rows = admins

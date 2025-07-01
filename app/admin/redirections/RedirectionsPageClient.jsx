@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { RedirectionTable } from '@/components/redirectionTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function RedirectionsPageClient({ token, canAdd, canEdit, canDelete }) {
   const { data, loading } = useCachedApi('redirections', async () => {
@@ -19,7 +20,7 @@ export default function RedirectionsPageClient({ token, canAdd, canEdit, canDele
     }));
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

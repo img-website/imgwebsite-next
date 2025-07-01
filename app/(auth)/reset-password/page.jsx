@@ -3,6 +3,7 @@ import ResetForm from "./resetForm";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
+import { FormSkeleton } from "@/components/skeleton/form-skeleton";
 
 const title = 'Reset Password';
 
@@ -37,7 +38,7 @@ const ResetPasswordPage = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<FormSkeleton rows={3} />}>
           <ResetForm />
         </Suspense>
         <div className="mt-4 text-center text-sm">

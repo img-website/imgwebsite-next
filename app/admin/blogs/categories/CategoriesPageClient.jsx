@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { CategoryTable } from '@/components/categoryTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function CategoriesPageClient({ canAdd, canEdit }) {
   const { data, loading } = useCachedApi('categories', async () => {
@@ -19,7 +20,7 @@ export default function CategoriesPageClient({ canAdd, canEdit }) {
     }));
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

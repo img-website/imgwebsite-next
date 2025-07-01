@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { DepartmentTable } from '@/components/departmentTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function DepartmentsPageClient({ token, canAdd }) {
   const { data, loading } = useCachedApi('departments', async () => {
@@ -13,7 +14,7 @@ export default function DepartmentsPageClient({ token, canAdd }) {
   });
 
   if (loading || !data) {
-    return <div className="p-4">Loading...</div>;
+    return <TableSkeleton />;
   }
 
   return (

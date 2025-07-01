@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { LeadTable } from '@/components/leadTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function LeadsPageClient({ endpoint, cacheKey, statusValue }) {
   const { data, loading } = useCachedApi(cacheKey, async () => {
@@ -22,7 +23,7 @@ export default function LeadsPageClient({ endpoint, cacheKey, statusValue }) {
     }));
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

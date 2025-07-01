@@ -52,10 +52,11 @@ import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { EditorSkeleton } from "@/components/skeleton/editor-skeleton";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
   ssr: false,
-  loading: () => <p>Loading editor...</p>,
+  loading: () => <EditorSkeleton />,
 });
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 

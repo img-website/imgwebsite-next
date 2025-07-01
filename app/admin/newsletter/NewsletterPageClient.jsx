@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { NewsletterTable } from '@/components/newsletterTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function NewsletterPageClient() {
   const { data, loading } = useCachedApi('newsletters', async () => {
@@ -10,7 +11,7 @@ export default function NewsletterPageClient() {
     return newsletters.map(n => ({ id: n._id, email: n.email, createdAt: n.createdAt }));
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

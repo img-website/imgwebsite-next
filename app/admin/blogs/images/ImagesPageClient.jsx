@@ -1,6 +1,7 @@
 "use client";
 import { useCachedApi } from '@/hooks/use-cached-api';
 import { ImageTable } from '@/components/ImageTable';
+import { TableSkeleton } from '@/components/skeleton/table-skeleton';
 
 export default function ImagesPageClient({ canAdd, canEdit }) {
   const { data, loading } = useCachedApi('images', async () => {
@@ -18,7 +19,7 @@ export default function ImagesPageClient({ canAdd, canEdit }) {
     }));
   });
 
-  if (loading || !data) return <div className="p-4">Loading...</div>;
+  if (loading || !data) return <TableSkeleton />;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
