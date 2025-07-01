@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import { Images, X } from "lucide-react";
 import slugify from "slugify";
+import { Card } from "./ui/card";
 
 export default function MultiImageCropperInput({
   aspectRatio = 1,
@@ -296,28 +297,30 @@ export default function MultiImageCropperInput({
             </div>
           </>
         ) : (
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="flex flex-wrap justify-center w-full">
             {previews.map((src, idx) => (
-              <div key={idx} className="relative w-full h-32">
-                <Image
-                  src={src}
-                  alt="Preview"
-                  className="rounded-md object-cover"
-                  fill
-                  sizes="100%"
-                  unoptimized={src.startsWith("blob:") ? false : true}
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleRemove(idx);
-                  }}
-                  className="absolute -top-2 -right-2 p-1 rounded-full bg-black text-white cursor-pointer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+              <div key={idx} className="lg:w-1/5 md:w-1/3 sm:w-1/2 w-full p-4">
+                <Card className="relative w-full h-32">
+                  <Image
+                    src={src}
+                    alt="Preview"
+                    className="rounded-lg object-cover"
+                    fill
+                    sizes="100%"
+                    unoptimized={src.startsWith("blob:") ? false : true}
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleRemove(idx);
+                    }}
+                    className="absolute -top-2 -right-2 p-1 rounded-full bg-black text-white cursor-pointer"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </Card>
               </div>
             ))}
           </div>
