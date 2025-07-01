@@ -58,7 +58,17 @@ export async function writeAdmins(admins) {
 
 export async function syncAdminsFromDB() {
   await connectDB();
-  const docs = await Admin.find().populate('department', 'name').lean();
+  const docs = await Admin.aggregate([
+    {
+      $lookup: {
+        from: 'departments',
+        localField: 'department',
+        foreignField: '_id',
+        as: 'department'
+      }
+    },
+    { $unwind: { path: '$department', preserveNullAndEmptyArrays: true } }
+  ]);
   const admins = docs.map((doc) => ({
     id: doc._id.toString(),
     firstName: doc.firstName || '',

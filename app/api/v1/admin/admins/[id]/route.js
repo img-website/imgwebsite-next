@@ -6,6 +6,7 @@ import {
 } from '@/app/lib/adminsFile';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
+import mongoose from 'mongoose';
 import { updateAdmin } from '@/app/actions/admin';
 
 export async function GET(req, { params }) {
@@ -17,7 +18,19 @@ export async function GET(req, { params }) {
     );
   const { id } = await params;
   await connectDB();
-  const doc = await Admin.findById(id).populate('department', 'name').lean();
+  const agg = await Admin.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(id) } },
+    {
+      $lookup: {
+        from: 'departments',
+        localField: 'department',
+        foreignField: '_id',
+        as: 'department'
+      }
+    },
+    { $unwind: { path: '$department', preserveNullAndEmptyArrays: true } }
+  ]);
+  const doc = agg[0];
   if (!doc)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },

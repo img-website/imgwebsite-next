@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { extractToken, verifyToken } from '@/app/lib/auth';
 import connectDB from '@/app/lib/db';
 import Admin from '@/app/models/Admin';
+import mongoose from 'mongoose';
 
 export async function GET(req) {
   let token = extractToken(req.headers);
@@ -18,7 +19,19 @@ export async function GET(req) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
   await connectDB();
-  const doc = await Admin.findById(decoded.id).populate('department','name').lean();
+  const agg = await Admin.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(decoded.id) } },
+    {
+      $lookup: {
+        from: 'departments',
+        localField: 'department',
+        foreignField: '_id',
+        as: 'department'
+      }
+    },
+    { $unwind: { path: '$department', preserveNullAndEmptyArrays: true } }
+  ]);
+  const doc = agg[0];
   if (!doc) {
     return NextResponse.json({ success: false, error: 'Admin not found' }, { status: 404 });
   }

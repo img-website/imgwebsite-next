@@ -20,9 +20,28 @@ export async function GET(request, { params }) {
 
     const query = { _id: id };
 
-    const blog = await Blog.findOne(query)
-      .populate('author')
-      .populate('category');
+    const blogAgg = await Blog.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } }
+    ]);
+    const blog = blogAgg[0];
 
     if (!blog) {
       return NextResponse.json({ success: false, error: 'Blog not found' }, { status: 404 });

@@ -33,11 +33,28 @@ export async function GET(request) {
       baseQuery.status = numericStatus;
     }
 
-    let allBlogs = await Blog.find(baseQuery)
-      .populate('author')
-      .populate('category')
-      .select('-__v')
-      .lean();
+    let allBlogs = await Blog.aggregate([
+      { $match: baseQuery },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
+      { $project: { __v: 0 } }
+    ]);
 
     if (search) {
       const fuseOptions = {
