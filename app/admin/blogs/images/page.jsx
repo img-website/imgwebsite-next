@@ -1,6 +1,12 @@
 import { ImageTable } from "@/components/ImageTable";
+import { cookies } from "next/headers";
+import { hasServerPermission } from "@/helpers/permissions";
 
 export default async function Page() {
+  const store = await cookies();
+  const canAdd = hasServerPermission(store, 'images', 'write');
+  const canEdit = hasServerPermission(store, 'images', 'edit');
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/images`, { cache: 'no-store' });
   const json = await res.json();
   const images = Array.isArray(json?.data) ? json.data : [];
@@ -19,7 +25,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <ImageTable data={data} />
+        <ImageTable data={data} canAdd={canAdd} canEdit={canEdit} />
       </div>
     </>
   );

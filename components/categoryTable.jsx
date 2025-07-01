@@ -39,7 +39,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 
-function CategoryActions({ category }) {
+function CategoryActions({ category, canEdit }) {
   const router = useRouter();
 
   const handleStatusChange = async (status) => {
@@ -95,7 +95,8 @@ function CategoryActions({ category }) {
   );
 }
 
-export const columns = [
+function createColumns(canEdit) {
+  return [
   {
     id: "select",
     header: ({ table }) => (
@@ -180,15 +181,18 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <CategoryActions category={row.original} />,
+    cell: ({ row }) => <CategoryActions category={row.original} canEdit={canEdit} />,
   },
-];
+  ];
+}
 
 export function CategoryTable({ data, canAdd = false, canEdit = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns = React.useMemo(() => createColumns(canEdit), [canEdit]);
 
   const table = useReactTable({
     data,

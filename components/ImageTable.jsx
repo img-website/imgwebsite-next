@@ -12,7 +12,6 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { hasClientPermission } from "@/helpers/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -37,7 +36,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-function ImageActions({ image }) {
+function ImageActions({ image, canEdit }) {
   const router = useRouter();
   return (
     <DropdownMenu>
@@ -63,7 +62,7 @@ function ImageActions({ image }) {
           Copy Image Link
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {hasClientPermission('images', 'edit') && (
+        {canEdit && (
           <DropdownMenuItem asChild>
             <Link href={`/admin/blogs/images/${image.id}/edit`}>Edit</Link>
           </DropdownMenuItem>
@@ -73,7 +72,8 @@ function ImageActions({ image }) {
   );
 }
 
-export const columns = [
+function createColumns(canEdit) {
+  return [
   {
     id: "select",
     header: ({ table }) => (
@@ -147,15 +147,18 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <ImageActions image={row.original} />,
+    cell: ({ row }) => <ImageActions image={row.original} canEdit={canEdit} />,
   },
-];
+  ];
+}
 
-export function ImageTable({ data }) {
+export function ImageTable({ data, canAdd = false, canEdit = false }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns = React.useMemo(() => createColumns(canEdit), [canEdit]);
 
   const table = useReactTable({
     data,
@@ -213,7 +216,7 @@ export function ImageTable({ data }) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        {hasClientPermission('images', 'write') && (
+        {canAdd && (
           <Button asChild>
             <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
           </Button>

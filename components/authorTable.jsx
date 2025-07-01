@@ -42,7 +42,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import apiFetch from "@/helpers/apiFetch"
 
-function AuthorActions({ author }) {
+function AuthorActions({ author, canEdit }) {
   const router = useRouter()
 
   const handleStatusChange = async (status) => {
@@ -107,7 +107,8 @@ function AuthorActions({ author }) {
   )
 }
 
-export const columns = [
+function createColumns(canEdit) {
+  return [
   {
     id: "select",
     header: ({ table }) => (
@@ -213,15 +214,18 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <AuthorActions author={row.original} />,
+    cell: ({ row }) => <AuthorActions author={row.original} canEdit={canEdit} />,
   },
-]
+  ]
+}
 
 export function AuthorTable({ data, canAdd = false, canEdit = false }) {
   const [sorting, setSorting] = React.useState([])
   const [columnFilters, setColumnFilters] = React.useState([])
   const [columnVisibility, setColumnVisibility] = React.useState({})
   const [rowSelection, setRowSelection] = React.useState({})
+
+  const columns = React.useMemo(() => createColumns(canEdit), [canEdit])
 
   const table = useReactTable({
     data,
