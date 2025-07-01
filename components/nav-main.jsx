@@ -20,6 +20,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link";
+import { IconDashboard } from "@tabler/icons-react";
 
 export function NavMain({
   items
@@ -49,6 +50,14 @@ export function NavMain({
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <Link href={'/admin'}>
+              <IconDashboard />
+              <span>Dashboard</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
         {items.map((item) => {
           if (item.type === "link") {
             return (
