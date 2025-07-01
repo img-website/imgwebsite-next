@@ -74,6 +74,13 @@ function DepartmentActions({ department }) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      {canDelete && (
+        <DeleteDepartmentButtons
+          id={department.id}
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+        />
+      )}
     </>
   );
 }
