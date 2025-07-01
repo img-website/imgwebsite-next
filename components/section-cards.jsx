@@ -14,34 +14,26 @@ export function SectionCards({ stats }) {
   const items = [
     {
       label: "Published Blogs",
-      value: stats?.blogs ?? 0,
-      positive: true,
-      percent: `${((stats?.blogs ?? 0) / 10).toFixed(1)}%`,
-      message: "Trending up this month",
+      data: stats?.blogs,
+      message: "Trending vs last month",
       description: "Published blog posts",
     },
     {
       label: "Leads",
-      value: stats?.leads ?? 0,
-      positive: false,
-      percent: `-${((stats?.leads ?? 0) / 20).toFixed(1)}%`,
-      message: "Down this period",
+      data: stats?.leads,
+      message: "Lead generation change",
       description: "New leads captured",
     },
     {
       label: "Subscribers",
-      value: stats?.newsletters ?? 0,
-      positive: true,
-      percent: `${((stats?.newsletters ?? 0) / 15).toFixed(1)}%`,
-      message: "Strong user retention",
+      data: stats?.newsletters,
+      message: "User retention",
       description: "Newsletter signups",
     },
     {
       label: "Admins",
-      value: stats?.admins ?? 0,
-      positive: true,
-      percent: `${((stats?.admins ?? 0) / 10).toFixed(1)}%`,
-      message: "Steady performance increase",
+      data: stats?.admins,
+      message: "Team growth",
       description: "Team members",
     },
   ];
@@ -49,18 +41,21 @@ export function SectionCards({ stats }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => {
-        const Icon = item.positive ? IconTrendingUp : IconTrendingDown;
+        const value = item.data?.count ?? 0;
+        const percent = item.data?.percent ?? '0%';
+        const positive = item.data?.positive ?? true;
+        const Icon = positive ? IconTrendingUp : IconTrendingDown;
         return (
           <Card key={item.label}>
             <CardHeader>
               <CardDescription>{item.label}</CardDescription>
               <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                {item.value}
+                {value}
               </CardTitle>
               <CardAction>
                 <Badge variant="outline">
                   <Icon />
-                  {item.percent}
+                  {percent}
                 </Badge>
               </CardAction>
             </CardHeader>
