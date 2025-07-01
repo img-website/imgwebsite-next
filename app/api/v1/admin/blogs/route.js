@@ -3,7 +3,6 @@ import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
 import Author from '@/app/models/Author';
 import Category from '@/app/models/Category';
-import Fuse from 'fuse.js';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
@@ -21,7 +20,7 @@ export async function GET(request) {
     const limit = parseInt(searchParams.get('limit')) || 10;
     const skip = (page - 1) * limit;
 
-    const baseQuery = {};
+    const query = {};
     if (status) {
       const numericStatus = parseInt(status, 10);
       if (![1, 2, 3, 4].includes(numericStatus)) {
@@ -30,37 +29,29 @@ export async function GET(request) {
           { status: 400 }
         );
       }
-      baseQuery.status = numericStatus;
+      query.status = numericStatus;
     }
-
-    let allBlogs = await Blog.find(baseQuery)
-      .populate('author')
-      .populate('category')
-      .select('-__v')
-      .lean();
 
     if (search) {
-      const fuseOptions = {
-        keys: ['title', 'short_description', 'slug'],
-        threshold: 0.3,
-        includeScore: true
-      };
-      const fuse = new Fuse(allBlogs, fuseOptions);
-      const searchResults = fuse.search(search);
-      allBlogs = searchResults.map((r) => r.item);
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { title: { $regex: regex } },
+        { short_description: { $regex: regex } },
+        { slug: { $regex: regex } }
+      ];
     }
 
-    const total = allBlogs.length;
-
-    if (sortBy) {
-      allBlogs.sort((a, b) => {
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
-        return sortOrder * (aValue > bValue ? 1 : -1);
-      });
-    }
-
-    const blogs = allBlogs.slice(skip, skip + limit);
+    const [blogs, total] = await Promise.all([
+      Blog.find(query)
+        .populate('author')
+        .populate('category')
+        .select('-__v')
+        .sort({ [sortBy]: sortOrder })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Blog.countDocuments(query)
+    ]);
 
     return NextResponse.json({
       success: true,
