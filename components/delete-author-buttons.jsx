@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { refreshModule } from "@/app/store/use-api-store";
 import { Copy } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -34,6 +35,7 @@ export default function DeleteAuthorButtons({ id }) {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || "Author deleted");
+        refreshModule('authors', '/api/v1/admin/blogs/authors');
         router.push("/admin/blogs/authors");
       } else {
         toast.error(data.error || "Failed to delete author");

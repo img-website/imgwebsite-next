@@ -25,6 +25,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { createAuthor } from "@/app/actions/authors";
 import { useRouter } from "next/navigation";
+import { refreshModule } from "@/app/store/use-api-store";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -84,9 +85,10 @@ export default function Page() {
       });
 
       const result = await createAuthor(formData);
-      
+
       if (result.success) {
         toast.success("Author created successfully!");
+        refreshModule('authors', '/api/v1/admin/blogs/authors');
         form.reset();
         router.push(`/admin/blogs/authors`);
         router.refresh();

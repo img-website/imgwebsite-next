@@ -1,12 +1,13 @@
 import { CategoryTable } from "@/components/categoryTable";
 import { cookies } from "next/headers";
 import { hasServerPermission } from "@/helpers/permissions";
+import { refreshModuleServer } from "@/app/actions/apiStore";
 
 export default async function Page() {
-  const store = await cookies();
+  const store = cookies();
   const canAdd = hasServerPermission(store, 'categories', 'write');
   const canEdit = hasServerPermission(store, 'categories', 'edit');
-  // Data is loaded on the client via useModuleData hook
+  await refreshModuleServer('categories', `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/categories`);
 
   return (
     <>

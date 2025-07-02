@@ -1,6 +1,17 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { setCookie, getCookie } from 'cookies-next'
+// Client-side cookie helpers using the Web API
+function getCookie(name) {
+  if (typeof document === 'undefined') return null
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+  return match ? decodeURIComponent(match[2]) : null
+}
+
+function setCookie(name, value, options = {}) {
+  if (typeof document === 'undefined') return
+  const opts = { path: '/', maxAge: 7 * 24 * 60 * 60, ...options }
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=${opts.path}; max-age=${opts.maxAge}`
+}
 
 const cookieStorage = {
   getItem: (name) => {
@@ -31,14 +42,13 @@ export const useApiStore = create(
   )
 )
 
+import { refreshModuleServer } from '@/app/actions/apiStore'
+
 export async function refreshModule(module, url) {
   try {
-    const token = getCookie('token')
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await fetch(url, { cache: 'no-store', headers })
-    const json = await res.json()
-    if (json.success) {
-      useApiStore.getState().setModuleData(module, json.data)
+    const data = await refreshModuleServer(module, url)
+    if (data) {
+      useApiStore.getState().setModuleData(module, data)
     }
   } catch (e) {
     console.error('Failed to refresh module', module, e)

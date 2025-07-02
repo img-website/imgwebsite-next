@@ -27,6 +27,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateAuthor } from "@/app/actions/authors";
 import { useEffect } from "react";
+import { refreshModule } from "@/app/store/use-api-store";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -106,6 +107,7 @@ export default function EditAuthorForm({ author }) {
       const result = await updateAuthor(author._id, formData);
       if (result.success) {
         toast.success("Author updated successfully!");
+        refreshModule('authors', '/api/v1/admin/blogs/authors');
         router.push(`/admin/blogs/authors/${author._id}`);
         router.refresh();
       } else {

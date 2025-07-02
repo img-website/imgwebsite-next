@@ -41,6 +41,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import apiFetch from "@/helpers/apiFetch"
+import { useModuleData } from "@/hooks/use-module-data"
 
 function AuthorActions({ author, canEdit }) {
   const router = useRouter()
@@ -220,6 +221,25 @@ function createColumns(canEdit) {
 }
 
 export function AuthorTable({ data, canAdd = false, canEdit = false }) {
+  const [storedData] = useModuleData('authors', '/api/v1/admin/blogs/authors')
+  const tableData = React.useMemo(() => {
+    const authors = storedData || data || []
+    const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' }
+    return authors.map(author => ({
+      id: author._id || author.id,
+      author_name: author.author_name,
+      description: author.description,
+      linkedin_link: author.linkedin_link,
+      facebook_link: author.facebook_link,
+      twitter_link: author.twitter_link,
+      status: statusMap[author.status] || 'inactive',
+      image: author.image?.startsWith('http') ? author.image : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${author.image}`,
+      created_date: author.created_date,
+      modified_date: author.modified_date,
+      blog_count: author.blog_count || 0,
+    }))
+  }, [storedData, data])
+
   const [sorting, setSorting] = React.useState([])
   const [columnFilters, setColumnFilters] = React.useState([])
   const [columnVisibility, setColumnVisibility] = React.useState({})
@@ -228,7 +248,7 @@ export function AuthorTable({ data, canAdd = false, canEdit = false }) {
   const columns = React.useMemo(() => createColumns(canEdit), [canEdit])
 
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
