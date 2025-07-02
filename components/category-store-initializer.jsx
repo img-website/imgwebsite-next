@@ -14,7 +14,7 @@ export default function CategoryStoreInitializer({ categories, category }) {
 
   useEffect(() => {
     if (category) {
-      setCategoryDetail(category);
+      setCategoryDetail(category._id || category.id, category);
     }
   }, [category, setCategoryDetail]);
 

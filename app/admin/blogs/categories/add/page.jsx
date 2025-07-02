@@ -53,8 +53,9 @@ export default function Page() {
       const result = await createCategory(formData);
       if (result.success) {
         if (result.data) {
-          setCategoryDetail(result.data);
-          setCategories(categories ? [result.data, ...categories] : [result.data]);
+          const newCategory = result.data;
+          setCategoryDetail(newCategory._id || newCategory.id, newCategory);
+          setCategories(categories ? [newCategory, ...categories] : [newCategory]);
         }
         toast.success("Category created successfully!");
         form.reset();

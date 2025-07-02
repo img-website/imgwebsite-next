@@ -9,14 +9,14 @@ import CategoryDetailSkeleton from "@/components/skeleton/category-detail-skelet
 
 export default function Page({ params }) {
   const { id } = usePromise(params);
-  const { category, loading } = useCategory(id);
+  const { category } = useCategory(id);
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
 
-  if (loading && !category) {
+  if (category === undefined) {
     return <CategoryDetailSkeleton />;
   }
 
-  if (!loading && !category) {
+  if (category === null) {
     return <div className="p-4">Category not found</div>;
   }
 

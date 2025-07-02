@@ -4,9 +4,9 @@ export const useCategoryStore = create((set) => ({
   categories: null,
   categoryDetails: {},
   setCategories: (cats) => set({ categories: cats }),
-  setCategoryDetail: (cat) =>
+  setCategoryDetail: (id, cat) =>
     set((state) => ({
-      categoryDetails: { ...state.categoryDetails, [cat._id || cat.id]: cat },
+      categoryDetails: { ...state.categoryDetails, [id]: cat },
     })),
   updateCategory: (id, updates) =>
     set((state) => {

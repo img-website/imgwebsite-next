@@ -5,7 +5,7 @@ import { useCategories } from "@/hooks/use-categories";
 import { usePermission } from "@/hooks/use-permission";
 
 export default function Page() {
-  const { categories, loading } = useCategories();
+  const { categories } = useCategories();
   const canAdd = usePermission('categories', 'write');
   const canEdit = usePermission('categories', 'edit');
 
@@ -20,7 +20,7 @@ export default function Page() {
     blog_count: cat.blog_count,
   })) : [];
 
-  if (loading && !categories) {
+  if (!categories) {
     return <CategoryTableSkeleton />;
   }
 

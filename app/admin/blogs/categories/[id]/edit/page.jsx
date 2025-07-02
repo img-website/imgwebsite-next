@@ -6,13 +6,13 @@ import CategoryEditSkeleton from "@/components/skeleton/category-edit-skeleton";
 
 export default function Page({ params }) {
   const { id } = usePromise(params);
-  const { category, loading } = useCategory(id);
+  const { category } = useCategory(id);
 
-  if (loading && !category) {
+  if (category === undefined) {
     return <CategoryEditSkeleton />;
   }
 
-  if (!loading && !category) {
+  if (category === null) {
     return <div className="p-4">Category not found</div>;
   }
 
