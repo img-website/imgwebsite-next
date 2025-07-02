@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { createCategory } from "@/app/actions/categories";
+import { refreshModule } from "@/app/store/use-api-store";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -49,6 +50,7 @@ export default function Page() {
       const result = await createCategory(formData);
       if (result.success) {
         toast.success("Category created successfully!");
+        refreshModule('categories', '/api/v1/admin/blogs/categories');
         form.reset();
       } else {
         toast.error(result.error || "Failed to create category");

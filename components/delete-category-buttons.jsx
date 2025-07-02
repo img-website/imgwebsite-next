@@ -5,6 +5,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { refreshModule } from "@/app/store/use-api-store";
 import { Copy } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -34,6 +35,7 @@ export default function DeleteCategoryButtons({ id }) {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || "Category deleted");
+        refreshModule('categories', '/api/v1/admin/blogs/categories');
         router.push("/admin/blogs/categories");
       } else {
         toast.error(data.error || "Failed to delete category");

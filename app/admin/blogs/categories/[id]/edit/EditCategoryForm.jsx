@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateCategory } from "@/app/actions/categories";
+import { refreshModule } from "@/app/store/use-api-store";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -55,6 +56,7 @@ export default function EditCategoryForm({ category }) {
       const result = await updateCategory(category._id, formData);
       if (result.success) {
         toast.success("Category updated successfully!");
+        refreshModule('categories', '/api/v1/admin/blogs/categories');
         router.push(`/admin/blogs/categories/${category._id}`);
         router.refresh();
       } else {

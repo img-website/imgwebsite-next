@@ -38,6 +38,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useModuleData } from "@/hooks/use-module-data";
 
 function CategoryActions({ category, canEdit }) {
   const router = useRouter();
@@ -187,6 +188,21 @@ function createColumns(canEdit) {
 }
 
 export function CategoryTable({ data, canAdd = false, canEdit = false }) {
+  const [storedData] = useModuleData('categories', '/api/v1/admin/blogs/categories');
+  const tableData = React.useMemo(() => {
+    const categories = storedData || data || [];
+    const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
+    return categories.map(cat => ({
+      id: cat._id || cat.id,
+      category_name: cat.category_name,
+      description: cat.description,
+      status: statusMap[cat.status] || 'inactive',
+      created_date: cat.created_date,
+      modified_date: cat.modified_date,
+      blog_count: cat.blog_count,
+    }));
+  }, [storedData, data]);
+
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -195,7 +211,7 @@ export function CategoryTable({ data, canAdd = false, canEdit = false }) {
   const columns = React.useMemo(() => createColumns(canEdit), [canEdit]);
 
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
