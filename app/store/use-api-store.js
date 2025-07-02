@@ -42,13 +42,16 @@ export const useApiStore = create(
   )
 )
 
-import { refreshModuleServer } from '@/app/actions/apiStore'
-
 export async function refreshModule(module, url) {
   try {
-    const data = await refreshModuleServer(module, url)
-    if (data) {
-      useApiStore.getState().setModuleData(module, data)
+    const res = await fetch('/api/refresh-module', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ module, url })
+    })
+    const json = await res.json()
+    if (json.success && json.data) {
+      useApiStore.getState().setModuleData(module, json.data)
     }
   } catch (e) {
     console.error('Failed to refresh module', module, e)
