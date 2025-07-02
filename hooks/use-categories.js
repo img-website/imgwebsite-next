@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import apiFetch from '@/helpers/apiFetch'
 import { useCategoryStore } from '@/app/store/use-category-store'
 
 export function useCategories() {
   const categories = useCategoryStore(state => state.categories)
   const setCategories = useCategoryStore(state => state.setCategories)
+  const clearCategories = useCategoryStore(state => state.clearCategories)
   const [loading, setLoading] = useState(false)
+
+  const refresh = useCallback(() => {
+    clearCategories()
+  }, [clearCategories])
 
   useEffect(() => {
     if (!categories && !loading) {
@@ -21,13 +26,18 @@ export function useCategories() {
     }
   }, [categories, loading, setCategories])
 
-  return { categories, loading }
+  return { categories, loading, refresh }
 }
 
 export function useCategory(id) {
   const category = useCategoryStore(state => state.categoryDetails[id])
   const setCategoryDetail = useCategoryStore(state => state.setCategoryDetail)
+  const removeCategory = useCategoryStore(state => state.removeCategory)
   const [loading, setLoading] = useState(false)
+
+  const refresh = useCallback(() => {
+    removeCategory(id)
+  }, [removeCategory, id])
 
   useEffect(() => {
     if (id && !category && !loading) {
@@ -43,5 +53,5 @@ export function useCategory(id) {
     }
   }, [id, category, loading, setCategoryDetail])
 
-  return { category, loading }
+  return { category, loading, refresh }
 }

@@ -24,6 +24,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { createCategory } from "@/app/actions/categories";
 import { useCategoryStore } from "@/app/store/use-category-store";
+import { useCategories } from "@/hooks/use-categories";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -45,6 +46,7 @@ export default function Page() {
   const categories = useCategoryStore((state) => state.categories);
   const setCategories = useCategoryStore((state) => state.setCategories);
   const setCategoryDetail = useCategoryStore((state) => state.setCategoryDetail);
+  const { refresh } = useCategories();
   async function onSubmit(data) {
     try {
       const formData = new FormData();
@@ -56,6 +58,7 @@ export default function Page() {
           setCategoryDetail(result.data);
           setCategories(categories ? [result.data, ...categories] : [result.data]);
         }
+        refresh();
         toast.success("Category created successfully!");
         form.reset();
       } else {
