@@ -5,7 +5,8 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
-import { useCategory, useCategories } from "@/hooks/use-categories";
+import { useCategory } from "@/hooks/use-categories";
+import { useCategoryStore } from "@/app/store/use-category-store";
 import { Copy } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -15,8 +16,8 @@ export default function DeleteCategoryButtons({ id }) {
   const [open, setOpen] = useState(false);
   const [blogs, setBlogs] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { refresh: refreshCategory } = useCategory(id);
-  const { refresh: refreshCategories } = useCategories();
+  useCategory(id); // preload for cache update
+  const removeCategory = useCategoryStore(state => state.removeCategory);
 
   const handleOpen = async () => {
     setOpen(true);
@@ -36,8 +37,7 @@ export default function DeleteCategoryButtons({ id }) {
       });
       const data = await res.json();
       if (data.success) {
-        refreshCategory();
-        refreshCategories();
+        removeCategory(id);
         toast.success(data.message || "Category deleted");
         router.push("/admin/blogs/categories");
       } else {

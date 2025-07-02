@@ -4,10 +4,12 @@ import DeleteCategoryButtons from "@/components/delete-category-buttons";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useCategory } from "@/hooks/use-categories";
+import { use as usePromise } from "react";
 import CategoryDetailSkeleton from "@/components/skeleton/category-detail-skeleton";
 
 export default function Page({ params }) {
-  const { category, loading } = useCategory(params.id);
+  const { id } = usePromise(params);
+  const { category, loading } = useCategory(id);
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
 
   if (loading && !category) {

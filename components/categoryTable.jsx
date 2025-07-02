@@ -35,14 +35,12 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
-import { useCategories } from "@/hooks/use-categories";
+import { useCategoryStore } from "@/app/store/use-category-store";
 
 function CategoryActions({ category, canEdit }) {
-  const router = useRouter();
-  const { refresh } = useCategories();
+  const updateCategory = useCategoryStore(state => state.updateCategory);
 
   const handleStatusChange = async (status) => {
     try {
@@ -55,8 +53,7 @@ function CategoryActions({ category, canEdit }) {
       const data = await res.json();
       if (data.success) {
         toast.success('Status updated');
-        refresh();
-        router.refresh();
+        updateCategory(category.id, { status });
       } else {
         toast.error(data.error || 'Failed to update status');
       }
