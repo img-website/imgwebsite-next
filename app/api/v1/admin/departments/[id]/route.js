@@ -6,10 +6,11 @@ import { ensurePermission } from '@/lib/rbac';
 import { syncAdminsFromDB } from '@/app/lib/adminsFile';
 
 export async function GET(req, { params }) {
+  const { id } = await params;
   const admin = await ensurePermission(req, 'departments', 'read');
   if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   await connectDB();
-  const dept = await Department.findById(params.id).lean();
+  const dept = await Department.findById(id).lean();
   if (!dept) return NextResponse.json({ success: false, error: 'Department not found' }, { status: 404 });
   return NextResponse.json({ success: true, data: dept });
 }

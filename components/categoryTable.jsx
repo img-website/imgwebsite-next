@@ -38,9 +38,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useCategories } from "@/hooks/use-categories";
 
 function CategoryActions({ category, canEdit }) {
   const router = useRouter();
+  const { refresh } = useCategories();
 
   const handleStatusChange = async (status) => {
     try {
@@ -53,6 +55,7 @@ function CategoryActions({ category, canEdit }) {
       const data = await res.json();
       if (data.success) {
         toast.success('Status updated');
+        refresh();
         router.refresh();
       } else {
         toast.error(data.error || 'Failed to update status');
