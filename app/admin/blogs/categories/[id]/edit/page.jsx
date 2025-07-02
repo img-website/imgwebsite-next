@@ -1,20 +1,22 @@
+"use client";
 import EditCategoryForm from "./EditCategoryForm";
+import { useCategory } from "@/hooks/use-categories";
+import CategoryEditSkeleton from "@/components/skeleton/category-edit-skeleton";
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/categories/${id}`, { cache: 'no-store' });
-  const json = await res.json();
-  const category = json?.data;
+export default function Page({ params }) {
+  const { category, loading } = useCategory(params.id);
 
-  if (!category) {
+  if (loading && !category) {
+    return <CategoryEditSkeleton />;
+  }
+
+  if (!loading && !category) {
     return <div className="p-4">Category not found</div>;
   }
 
   return (
-    <>
-      <div className="w-full p-4">
-        <EditCategoryForm category={category} />
-      </div>
-    </>
+    <div className="w-full p-4">
+      <EditCategoryForm category={category} />
+    </div>
   );
 }
