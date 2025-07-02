@@ -7,7 +7,7 @@ import Admin from '@/app/models/Admin';
 export async function GET(req) {
   let token = extractToken(req.headers);
   if (!token) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     token = cookieStore.get('token')?.value || null;
   }
   if (!token) {
