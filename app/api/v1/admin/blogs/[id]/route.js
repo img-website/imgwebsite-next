@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
-import Author from '@/app/models/Author';
-import Category from '@/app/models/Category';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import { deleteObject } from '@/lib/s3';
@@ -18,16 +16,33 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, error: 'Invalid blog ID' }, { status: 400 });
     }
 
-    const query = { _id: id };
-
-    const blog = await Blog.findOne(query)
-      .populate('author')
-      .populate('category');
-
+    const objectId = new mongoose.Types.ObjectId(String(id));
+    const blogs = await Blog.aggregate([
+      { $match: { _id: objectId } },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
+      { $limit: 1 },
+    ]);
+    const blog = blogs[0];
     if (!blog) {
       return NextResponse.json({ success: false, error: 'Blog not found' }, { status: 404 });
     }
-
     return NextResponse.json({ success: true, data: blog });
   } catch (error) {
     console.error('Error fetching blog:', error);

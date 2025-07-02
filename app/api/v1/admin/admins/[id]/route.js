@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ensurePermission } from '@/lib/rbac';
 import {
-  readAdminsWithNotice,
   syncAdminsFromDB,
 } from '@/app/lib/adminsFile';
 import connectDB from '@/app/lib/db';
@@ -17,7 +16,21 @@ export async function GET(req, { params }) {
     );
   const { id } = await params;
   await connectDB();
-  const doc = await Admin.findById(id).populate('department', 'name').lean();
+  const mongoose = await import('mongoose');
+  const docs = await Admin.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(String(id)) } },
+    {
+      $lookup: {
+        from: 'departments',
+        localField: 'department',
+        foreignField: '_id',
+        as: 'department',
+      },
+    },
+    { $unwind: { path: '$department', preserveNullAndEmptyArrays: true } },
+    { $limit: 1 },
+  ]);
+  const doc = docs[0];
   if (!doc)
     return NextResponse.json(
       { success: false, error: 'Admin not found' },

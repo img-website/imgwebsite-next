@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db';
 import Blog from '@/app/models/Blog';
-import Author from '@/app/models/Author';
-import Category from '@/app/models/Category';
 import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import slugify from 'slugify';
@@ -44,14 +42,37 @@ export async function GET(request) {
 
     const total = await Blog.countDocuments(query);
 
-    const blogs = await Blog.find(query)
-      .populate('author')
-      .populate('category')
-      .select('-__v')
-      .sort({ [sortBy]: sortOrder })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+
+    const mongoose = await import('mongoose');
+    const blogs = await Blog.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
+      { $sort: { [sortBy]: sortOrder } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $project: {
+          __v: 0
+        }
+      }
+    ]);
 
     return NextResponse.json({
       success: true,
