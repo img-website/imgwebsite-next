@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { createAuthor } from "@/app/actions/authors";
-import { useRouter } from "next/navigation";
+import { useAuthorStore } from "@/app/store/use-author-store";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -53,7 +53,6 @@ const authorFormSchema = z.object({
 });
 
 export default function Page() {
-  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(authorFormSchema),
     defaultValues: {
@@ -64,6 +63,9 @@ export default function Page() {
       twitter_link: "",
     },
   });
+  const authors = useAuthorStore(state => state.authors);
+  const setAuthors = useAuthorStore(state => state.setAuthors);
+  const setAuthorDetail = useAuthorStore(state => state.setAuthorDetail);
   async function onSubmit(data) {
     try {
       const formData = new FormData();
@@ -86,10 +88,13 @@ export default function Page() {
       const result = await createAuthor(formData);
       
       if (result.success) {
+        if (result.data) {
+          const newAuthor = result.data;
+          setAuthorDetail(newAuthor._id || newAuthor.id, newAuthor);
+          setAuthors(authors ? [newAuthor, ...authors] : [newAuthor]);
+        }
         toast.success("Author created successfully!");
         form.reset();
-        router.push(`/admin/blogs/authors`);
-        router.refresh();
       } else {
         toast.error(result.error || "Failed to create author");
       }

@@ -38,12 +38,12 @@ import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import apiFetch from "@/helpers/apiFetch"
+import { useAuthorStore } from "@/app/store/use-author-store"
 
 function AuthorActions({ author, canEdit }) {
-  const router = useRouter()
+  const updateAuthor = useAuthorStore(state => state.updateAuthor)
 
   const handleStatusChange = async (status) => {
     try {
@@ -56,7 +56,7 @@ function AuthorActions({ author, canEdit }) {
       const data = await res.json()
       if (data.success) {
         toast.success('Status updated')
-        router.refresh()
+        updateAuthor(author.id, { status })
       } else {
         toast.error(data.error || 'Failed to update status')
       }
