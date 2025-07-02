@@ -22,6 +22,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
+import { useImageStore } from "@/app/store/use-image-store";
 
 const imageFormSchema = z.object({
   images: z
@@ -34,6 +35,8 @@ const imageFormSchema = z.object({
 
 export default function AddImagePage() {
   const router = useRouter();
+  const images = useImageStore((state) => state.images);
+  const setImages = useImageStore((state) => state.setImages);
   const form = useForm({
     resolver: zodResolver(imageFormSchema),
     defaultValues: { images: [] },
@@ -53,6 +56,13 @@ export default function AddImagePage() {
       });
       const json = await res.json();
       if (json.success) {
+        if (Array.isArray(json.data) && json.data.length > 0) {
+          const newImgs = json.data.map((img) => ({
+            ...img,
+            _id: img._id || img.id,
+          }));
+          setImages(images ? [...newImgs, ...images] : newImgs);
+        }
         toast.success("Image uploaded successfully");
         router.push("/admin/blogs/images");
       } else {
