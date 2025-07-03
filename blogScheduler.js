@@ -12,6 +12,7 @@ const { default: Blog } = await import('./app/models/Blog.js');
 const { sendNotification } = await import('./app/actions/pwa.js');
 
 const MONGODB_URI = process.env.MONGODB_URI || process.env.NEXT_PUBLIC_MONGODB_URI;
+const notify = process.env.NOTIFY_AFTER_PUBLISH || false;
 
 async function connectDB() {
   if (mongoose.connection.readyState === 0) {
@@ -30,7 +31,10 @@ async function publishScheduledBlogs() {
   for (const blog of blogs) {
     blog.status = 2; // Change status to published
     await blog.save();
-    await sendNotification(blog.short_description, blog.title, blog.banner);
+    if (notify) {
+      // Send notification if enabled
+      await sendNotification(blog.short_description, blog.title, blog.banner);
+    }
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
 }
