@@ -8,25 +8,36 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 )
 
-let subscription = null
+// Store subscription in memory for demo purposes. In production
+// you should persist subscriptions in a database.
+if (!globalThis.pwaSubscription) globalThis.pwaSubscription = null;
+
+function getSubscription() {
+  return globalThis.pwaSubscription;
+}
+
+function setSubscription(sub) {
+  globalThis.pwaSubscription = sub;
+}
 
 export async function subscribeUser(sub) {
-  subscription = sub
-  return { success: true }
+  setSubscription(sub);
+  return { success: true };
 }
 
 export async function unsubscribeUser() {
-  subscription = null
-  return { success: true }
+  setSubscription(null);
+  return { success: true };
 }
 
 export async function sendNotification(message) {
-  if (!subscription) {
-    throw new Error('No subscription available')
+  const sub = getSubscription();
+  if (!sub) {
+    throw new Error('No subscription available');
   }
   try {
     await webpush.sendNotification(
-      subscription,
+      sub,
       JSON.stringify({
         title: 'Test Notification',
         body: message,

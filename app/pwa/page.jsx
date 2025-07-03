@@ -44,7 +44,7 @@ function PushNotificationManager() {
       )
     })
     setSubscription(sub)
-    await subscribeUser(sub)
+    await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
