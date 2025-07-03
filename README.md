@@ -59,3 +59,10 @@ next dev --experimental-https
 ```
 
 This allows testing notifications locally over HTTPS.
+
+To send push notifications when a scheduled blog is published, run the blog
+scheduler script in a separate process:
+
+```bash
+node blogScheduler.js
+```

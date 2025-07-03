@@ -1,52 +1,45 @@
 'use server'
 
 import webpush from 'web-push'
+import connectDB from '@/app/lib/db'
+import PushSubscription from '@/app/models/PushSubscription'
 
 webpush.setVapidDetails(
   'mailto:your-email@example.com',
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
+  process.env.VAPID_PRIVATE_KEY,
 )
 
-// Store subscription in memory for demo purposes. In production
-// you should persist subscriptions in a database.
-if (!globalThis.pwaSubscription) globalThis.pwaSubscription = null;
-
-function getSubscription() {
-  return globalThis.pwaSubscription;
-}
-
-function setSubscription(sub) {
-  globalThis.pwaSubscription = sub;
-}
-
 export async function subscribeUser(sub) {
-  setSubscription(sub);
-  return { success: true };
+  await connectDB()
+  await PushSubscription.findOneAndUpdate(
+    { endpoint: sub.endpoint },
+    sub,
+    { upsert: true, new: true },
+  )
+  return { success: true }
 }
 
-export async function unsubscribeUser() {
-  setSubscription(null);
-  return { success: true };
+export async function unsubscribeUser(endpoint) {
+  await connectDB()
+  await PushSubscription.deleteOne({ endpoint })
+  return { success: true }
 }
 
-export async function sendNotification(message) {
-  const sub = getSubscription();
-  if (!sub) {
-    throw new Error('No subscription available');
+export async function sendNotification(
+  body,
+  title = 'Test Notification',
+  icon = '/icon.png',
+) {
+  await connectDB()
+  const subs = await PushSubscription.find().lean()
+  const payload = JSON.stringify({ title, body, icon })
+  for (const sub of subs) {
+    try {
+      await webpush.sendNotification(sub, payload)
+    } catch (error) {
+      console.error('Error sending push notification:', error)
+    }
   }
-  try {
-    await webpush.sendNotification(
-      sub,
-      JSON.stringify({
-        title: 'Test Notification',
-        body: message,
-        icon: '/icon.png'
-      })
-    )
-    return { success: true }
-  } catch (error) {
-    console.error('Error sending push notification:', error)
-    return { success: false, error: 'Failed to send notification' }
-  }
+  return { success: true }
 }

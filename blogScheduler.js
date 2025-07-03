@@ -4,13 +4,12 @@
 
 import mongoose from 'mongoose';
 import Blog from './app/models/Blog.js';
+import { sendNotification } from './app/actions/pwa.js';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });
 
-console.log('TEST ENV:', process.env.MONGODB_URI);
 const MONGODB_URI = process.env.MONGODB_URI || process.env.NEXT_PUBLIC_MONGODB_URI;
-console.log('MONGODB_URI:', MONGODB_URI); // Debug: check if env variable is loaded
 
 async function connectDB() {
   if (mongoose.connection.readyState === 0) {
@@ -29,6 +28,7 @@ async function publishScheduledBlogs() {
   for (const blog of blogs) {
     blog.status = 2; // Change status to published
     await blog.save();
+    await sendNotification(blog.short_description, blog.title, blog.banner);
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
 }
