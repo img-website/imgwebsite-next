@@ -1,21 +1,28 @@
+"use client";
 import { LeadTable } from "@/components/leadTable";
+import LeadTableSkeleton from "@/components/skeleton/lead-table-skeleton";
+import { useLeads } from "@/hooks/use-leads";
 
-export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/leads/career`, { cache: 'no-store' });
-  const json = await res.json();
-  const leads = Array.isArray(json?.data) ? json.data : [];
-  const data = leads.map(lead => ({
-    id: lead._id,
-    contact_name: lead.contact_name,
-    mobile_number: lead.mobile_number,
-    email: lead.email,
-    organization: lead.organization,
-    requirements: lead.requirements,
-    status: 'career',
-    created_date: lead.created_date,
-    assign_to: lead.assign_to,
-    attachments: lead.attachments,
-  }));
+export default function Page() {
+  const { leads } = useLeads('career');
+  const data = leads
+    ? leads.map((lead) => ({
+        id: lead._id,
+        contact_name: lead.contact_name,
+        mobile_number: lead.mobile_number,
+        email: lead.email,
+        organization: lead.organization,
+        requirements: lead.requirements,
+        status: 'career',
+        created_date: lead.created_date,
+        assign_to: lead.assign_to,
+        attachments: lead.attachments,
+      }))
+    : [];
+
+  if (!leads) {
+    return <LeadTableSkeleton />;
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

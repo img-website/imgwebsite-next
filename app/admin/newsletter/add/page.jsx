@@ -9,11 +9,14 @@ import * as z from "zod";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useNewsletterStore } from "@/app/store/use-newsletter-store";
 
 const schema = z.object({ email: z.string().email() });
 
 export default function Page() {
   const router = useRouter();
+  const setNewsletters = useNewsletterStore((state) => state.setNewsletters);
+  const newsletters = useNewsletterStore((state) => state.newsletters);
   const form = useForm({ resolver: zodResolver(schema), defaultValues: { email: "" } });
 
   async function onSubmit(values) {
@@ -21,9 +24,11 @@ export default function Page() {
     const result = await res.json();
     if (result.success) {
       toast.success('Subscribed');
+      if (result.data) {
+        setNewsletters(newsletters ? [result.data, ...newsletters] : [result.data]);
+      }
       form.reset();
       router.push('/admin/newsletter');
-      router.refresh();
     } else {
       toast.error(result.error || 'Failed');
     }

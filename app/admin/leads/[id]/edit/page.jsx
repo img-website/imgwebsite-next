@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { use as usePromise, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { getPublicUrl } from "@/lib/s3";
 import { Download } from "lucide-react";
 import Link from "next/link";
+import { useLead } from "@/hooks/use-leads";
+import LeadEditSkeleton from "@/components/skeleton/lead-edit-skeleton";
 
 const leadSchema = z.object({
   contact_name: z.string().optional(),
@@ -27,51 +29,66 @@ const leadSchema = z.object({
 
 export default function Page({ params }) {
   const router = useRouter();
-  const { id } = use(params);
+  const { id } = usePromise(params);
+  const { lead } = useLead(id);
   const [existingAttachments, setExistingAttachments] = useState([]);
-  const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "", attachments: null } });
+  const form = useForm({
+    resolver: zodResolver(leadSchema),
+    defaultValues: {
+      contact_name: "",
+      mobile_number: "",
+      email: "",
+      organization: "",
+      requirements: "",
+      description: "",
+      attachments: null,
+    },
+  });
 
   useEffect(() => {
-    async function fetchLead() {
-      const res = await fetch(`/api/v1/admin/leads/${id}`);
-      const data = await res.json();
-      if (data.success && data.data) {
-        form.reset({
-          contact_name: data.data.contact_name || "",
-          mobile_number: data.data.mobile_number || "",
-          email: data.data.email || "",
-          organization: data.data.organization || "",
-          requirements: data.data.requirements || "",
-          description: data.data.description || "",
-        });
-        setExistingAttachments(data.data.attachments || []);
-      }
+    if (lead) {
+      form.reset({
+        contact_name: lead.contact_name || "",
+        mobile_number: lead.mobile_number || "",
+        email: lead.email || "",
+        organization: lead.organization || "",
+        requirements: lead.requirements || "",
+        description: lead.description || "",
+      });
+      setExistingAttachments(lead.attachments || []);
     }
-    fetchLead();
-  }, [id]);
+  }, [lead]);
 
   async function onSubmit(values) {
     const formData = new FormData();
-    if (values.contact_name) formData.append('contact_name', values.contact_name);
-    if (values.mobile_number) formData.append('mobile_number', values.mobile_number);
-    if (values.email) formData.append('email', values.email);
-    if (values.organization) formData.append('organization', values.organization);
-    if (values.requirements) formData.append('requirements', values.requirements);
-    if (values.description) formData.append('description', values.description);
+    if (values.contact_name) formData.append("contact_name", values.contact_name);
+    if (values.mobile_number) formData.append("mobile_number", values.mobile_number);
+    if (values.email) formData.append("email", values.email);
+    if (values.organization) formData.append("organization", values.organization);
+    if (values.requirements) formData.append("requirements", values.requirements);
+    if (values.description) formData.append("description", values.description);
     if (values.attachments && values.attachments.length) {
       for (const file of values.attachments) {
-        formData.append('attachments', file);
+        formData.append("attachments", file);
       }
     }
-    const res = await apiFetch(`/api/v1/admin/leads/${id}`, { method: 'PUT', body: formData });
+    const res = await apiFetch(`/api/v1/admin/leads/${id}`, { method: "PUT", body: formData });
     const result = await res.json();
     if (result.success) {
-      toast.success('Lead updated');
+      toast.success("Lead updated");
       router.push(`/admin/leads/${id}`);
       router.refresh();
     } else {
-      toast.error(result.error || 'Failed to update');
+      toast.error(result.error || "Failed to update");
     }
+  }
+
+  if (lead === undefined) {
+    return <LeadEditSkeleton />;
+  }
+
+  if (lead === null) {
+    return <div className="p-4">Lead not found</div>;
   }
 
   return (
@@ -129,7 +146,7 @@ export default function Page({ params }) {
                 <FormItem>
                   <FormLabel>Attachments</FormLabel>
                   <FormControl>
-                    <Input type="file" multiple onChange={e => field.onChange(e.target.files)} />
+                    <Input type="file" multiple onChange={(e) => field.onChange(e.target.files)} />
                   </FormControl>
                 </FormItem>
               )} />

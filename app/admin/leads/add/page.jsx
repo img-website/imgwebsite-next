@@ -10,6 +10,7 @@ import * as z from "zod";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useLeadStore } from "@/app/store/use-lead-store";
 
 const leadSchema = z.object({
   contact_name: z.string().min(1, { message: "Name is required" }),
@@ -23,6 +24,8 @@ const leadSchema = z.object({
 
 export default function Page() {
   const router = useRouter();
+  const addUpcoming = useLeadStore((state) => state.setUpcoming);
+  const leadsUpcoming = useLeadStore((state) => state.upcoming);
   const form = useForm({ resolver: zodResolver(leadSchema), defaultValues: { contact_name: "", mobile_number: "", email: "", organization: "", requirements: "", description: "" } });
 
   async function onSubmit(values) {
@@ -40,9 +43,12 @@ export default function Page() {
     const result = await res.json();
     if (result.success) {
       toast.success('Lead created');
+      if (result.data) {
+        const newLead = result.data;
+        addUpcoming(leadsUpcoming ? [newLead, ...leadsUpcoming] : [newLead]);
+      }
       form.reset();
       router.push('/admin/leads');
-      router.refresh();
     } else {
       toast.error(result.error || 'Failed to create');
     }
@@ -102,7 +108,7 @@ export default function Page() {
               <FormField name="attachments" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Attachments</FormLabel>
-                  <FormControl><Input type="file" multiple onChange={e => field.onChange(e.target.files)} /></FormControl>
+                  <FormControl><Input type="file" multiple onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                 </FormItem>
               )} />
               <div className="flex justify-end">
