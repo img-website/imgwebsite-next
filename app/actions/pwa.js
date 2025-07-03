@@ -27,18 +27,40 @@ export async function unsubscribeUser(endpoint) {
 }
 
 export async function sendNotification(
-  body,
-  title = 'Test Notification',
-  icon = '/icon.png',
+  bodyOrOptions,
+  title,
+  icon,
+  url,
 ) {
   await connectDB()
   const subs = await PushSubscription.find().lean()
-  const payload = JSON.stringify({ title, body, icon })
+  let payload
+
+  if (bodyOrOptions && typeof bodyOrOptions === 'object' && !Array.isArray(bodyOrOptions)) {
+    payload = { ...bodyOrOptions }
+  } else {
+    payload = {
+      title: title ?? 'Test Notification',
+      body: bodyOrOptions,
+      icon: icon ?? '/icon.png',
+      url: url ?? '/',
+    }
+  }
+
+  const payloadString = JSON.stringify(payload)
   for (const sub of subs) {
     try {
-      await webpush.sendNotification(sub, payload)
+      await webpush.sendNotification(sub, payloadString)
     } catch (error) {
       console.error('Error sending push notification:', error)
+      // Clean up expired or unsubscribed endpoints
+      if (error.statusCode === 404 || error.statusCode === 410) {
+        try {
+          await PushSubscription.deleteOne({ endpoint: sub.endpoint })
+        } catch (delErr) {
+          console.error('Failed to remove subscription:', delErr)
+        }
+      }
     }
   }
   return { success: true }

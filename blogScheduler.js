@@ -33,7 +33,18 @@ async function publishScheduledBlogs() {
     await blog.save();
     if (notify) {
       // Send notification if enabled
-      await sendNotification(blog.short_description, blog.title, blog.banner);
+      const icon = blog.banner
+        ? (blog.banner.startsWith('http')
+            ? blog.banner
+            : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`)
+        : undefined;
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${blog.slug}`;
+      await sendNotification({
+        body: blog.short_description,
+        title: blog.title,
+        icon,
+        url,
+      });
     }
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }

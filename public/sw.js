@@ -4,19 +4,22 @@ self.addEventListener('push', function (event) {
     const options = {
       body: data.body,
       icon: data.icon || '/icon.png',
-      badge: '/badge.png',
-      vibrate: [100, 50, 100],
+      badge: data.badge || '/badge.png',
+      vibrate: data.vibrate || [100, 50, 100],
       data: {
-        dateOfArrival: Date.now(),
-        primaryKey: '2'
-      }
+        url: data.url || '/',
+        ...(data.data || {})
+      },
+      actions: data.actions,
+      tag: data.tag,
+      timestamp: data.timestamp
     }
     event.waitUntil(self.registration.showNotification(data.title, options))
   }
 })
 
 self.addEventListener('notificationclick', function (event) {
-  console.log('Notification click received.')
   event.notification.close()
-  event.waitUntil(clients.openWindow('https://your-website.com'))
+  const target = event.notification.data && event.notification.data.url
+  event.waitUntil(clients.openWindow(target || '/'))
 })
