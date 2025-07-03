@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { createCategory } from "@/app/actions/categories";
+import { useCategoryStore } from "@/app/store/use-category-store";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -41,6 +42,9 @@ export default function Page() {
       description: "",
     },
   });
+  const categories = useCategoryStore((state) => state.categories);
+  const setCategories = useCategoryStore((state) => state.setCategories);
+  const setCategoryDetail = useCategoryStore((state) => state.setCategoryDetail);
   async function onSubmit(data) {
     try {
       const formData = new FormData();
@@ -48,6 +52,11 @@ export default function Page() {
       formData.append('description', data.description.trim());
       const result = await createCategory(formData);
       if (result.success) {
+        if (result.data) {
+          const newCategory = result.data;
+          setCategoryDetail(newCategory._id || newCategory.id, newCategory);
+          setCategories(categories ? [newCategory, ...categories] : [newCategory]);
+        }
         toast.success("Category created successfully!");
         form.reset();
       } else {
