@@ -199,9 +199,11 @@ function BlogActions({ blog }) {
               )}
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={handleSendNotification}>
-            Send Notification
-          </DropdownMenuItem>
+          {blog.status === "published" && (
+            <DropdownMenuItem onClick={handleSendNotification}>
+              Send Notification
+            </DropdownMenuItem>
+          )}
           {blog.status !== "draft" && (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
