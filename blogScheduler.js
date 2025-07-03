@@ -38,7 +38,8 @@ async function publishScheduledBlogs() {
             ? blog.banner
             : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`)
         : undefined;
-      await sendNotification(blog.short_description, blog.title, icon);
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${blog.slug}`;
+      await sendNotification(blog.short_description, blog.title, icon, url);
     }
     console.log(`Published blog: ${blog.title} (${blog._id})`);
   }
