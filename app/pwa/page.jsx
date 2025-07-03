@@ -26,6 +26,16 @@ function PushNotificationManager() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!isSupported) return
+    const timer = setTimeout(() => {
+      if (!subscription && Notification.permission === 'default') {
+        subscribeToPush().catch(() => {})
+      }
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [isSupported, subscription])
+
   async function registerServiceWorker() {
     const registration = await navigator.serviceWorker.register('/sw.js', {
       scope: '/',
