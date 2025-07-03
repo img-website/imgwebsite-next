@@ -52,6 +52,7 @@ npx web-push generate-vapid-keys
 ```
 
 Copy the resulting keys into `.env` based on `.env.example`.
+Set `MONGODB_URI` in your `.env` file to point to your MongoDB instance.
 During development run:
 
 ```bash

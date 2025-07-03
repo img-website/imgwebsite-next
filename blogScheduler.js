@@ -2,12 +2,14 @@
 // This script will run independently to publish scheduled blogs at the right time.
 // To use: `node blogScheduler.js` (run with pm2/forever for production)
 
-import mongoose from 'mongoose';
-import Blog from './app/models/Blog.js';
-import { sendNotification } from './app/actions/pwa.js';
 import dotenv from 'dotenv';
 
+// Load environment variables before importing modules that depend on them
 dotenv.config({ path: '.env.local' });
+
+const mongoose = (await import('mongoose')).default;
+const { default: Blog } = await import('./app/models/Blog.js');
+const { sendNotification } = await import('./app/actions/pwa.js');
 
 const MONGODB_URI = process.env.MONGODB_URI || process.env.NEXT_PUBLIC_MONGODB_URI;
 
