@@ -7,6 +7,7 @@ self.addEventListener('push', function (event) {
       badge: '/badge.png',
       vibrate: [100, 50, 100],
       data: {
+        url: data.url || '/',
         dateOfArrival: Date.now(),
         primaryKey: '2'
       }
@@ -16,7 +17,7 @@ self.addEventListener('push', function (event) {
 })
 
 self.addEventListener('notificationclick', function (event) {
-  console.log('Notification click received.')
   event.notification.close()
-  event.waitUntil(clients.openWindow('https://your-website.com'))
+  const target = event.notification.data && event.notification.data.url
+  event.waitUntil(clients.openWindow(target || '/'))
 })

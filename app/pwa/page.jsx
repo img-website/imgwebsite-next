@@ -29,8 +29,16 @@ function PushNotificationManager() {
   useEffect(() => {
     if (!isSupported) return
     const timer = setTimeout(() => {
-      if (!subscription && Notification.permission === 'default') {
-        subscribeToPush().catch(() => {})
+      if (!subscription) {
+        if (Notification.permission === 'default') {
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              subscribeToPush().catch(() => {})
+            }
+          })
+        } else if (Notification.permission === 'granted') {
+          subscribeToPush().catch(() => {})
+        }
       }
     }, 3000)
     return () => clearTimeout(timer)

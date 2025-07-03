@@ -30,10 +30,11 @@ export async function sendNotification(
   body,
   title = 'Test Notification',
   icon = '/icon.png',
+  url = '/',
 ) {
   await connectDB()
   const subs = await PushSubscription.find().lean()
-  const payload = JSON.stringify({ title, body, icon })
+  const payload = JSON.stringify({ title, body, icon, url })
   for (const sub of subs) {
     try {
       await webpush.sendNotification(sub, payload)
