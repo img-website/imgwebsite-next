@@ -1,8 +1,8 @@
 'use server';
 
 import webpush from 'web-push';
-import connectDB from '@/app/lib/db';
-import PushSubscriber from '@/app/models/PushSubscriber';
+import connectDB from './lib/db';
+import PushSubscriber from './models/PushSubscriber';
 
 webpush.setVapidDetails(
   'mailto:your-email@example.com',
