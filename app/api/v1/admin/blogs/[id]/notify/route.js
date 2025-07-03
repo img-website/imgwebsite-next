@@ -40,7 +40,12 @@ export async function POST(request, { params }) {
       : undefined;
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${blog.slug}`;
 
-    await sendNotification(blog.short_description, blog.title, icon, url);
+    await sendNotification({
+      body: blog.short_description,
+      title: blog.title,
+      icon,
+      url,
+    });
     return NextResponse.json({ success: true, message: 'Notification sent' });
   } catch (error) {
     console.error('Error sending notification:', error);

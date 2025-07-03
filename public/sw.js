@@ -3,14 +3,16 @@ self.addEventListener('push', function (event) {
     const data = event.data.json()
     const options = {
       body: data.body,
-      icon: data.icon || '/icon.png',
-      badge: '/badge.png',
-      vibrate: [100, 50, 100],
+      icon: data.icon || '/android-chrome-192x192.png',
+      badge: data.badge || '/favicon-16x16.png',
+      vibrate: data.vibrate || [100, 50, 100],
       data: {
         url: data.url || '/',
-        dateOfArrival: Date.now(),
-        primaryKey: '2'
-      }
+        ...(data.data || {})
+      },
+      actions: data.actions,
+      tag: data.tag,
+      timestamp: data.timestamp
     }
     event.waitUntil(self.registration.showNotification(data.title, options))
   }
