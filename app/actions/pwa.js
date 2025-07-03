@@ -40,9 +40,9 @@ export async function sendNotification(
     payload = { ...bodyOrOptions }
   } else {
     payload = {
-      title: title ?? 'Test Notification',
+      title: title ?? 'I have a new message for you!',
       body: bodyOrOptions,
-      icon: icon ?? '/icon.png',
+      icon: icon ?? '/android-chrome-192x192.png',
       url: url ?? '/',
     }
   }
