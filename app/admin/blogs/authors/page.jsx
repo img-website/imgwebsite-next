@@ -1,16 +1,16 @@
+"use client";
 import { AuthorTable } from "@/components/authorTable";
-import { cookies } from "next/headers";
-import { hasServerPermission } from "@/helpers/permissions";
+import AuthorTableSkeleton from "@/components/skeleton/author-table-skeleton";
+import { useAuthors } from "@/hooks/use-authors";
+import { usePermission } from "@/hooks/use-permission";
 
-export default async function Page() {
-  const store = await cookies();
-  const canAdd = hasServerPermission(store, 'authors', 'write');
-  const canEdit = hasServerPermission(store, 'authors', 'edit');
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors`, { cache: 'no-store' });
-  const json = await res.json();
-  const authors = Array.isArray(json?.data) ? json.data : [];
+export default function Page() {
+  const { authors } = useAuthors();
+  const canAdd = usePermission('authors', 'write');
+  const canEdit = usePermission('authors', 'edit');
+
   const statusMap = { 1: 'active', 2: 'inactive', 3: 'suspended' };
-  const data = authors.map(author => ({
+  const data = authors ? authors.map(author => ({
     id: author._id,
     author_name: author.author_name,
     description: author.description,
@@ -22,17 +22,15 @@ export default async function Page() {
     created_date: author.created_date,
     modified_date: author.modified_date,
     blog_count: author.blog_count || 0,
-  }));
+  })) : [];
+
+  if (!authors) {
+    return <AuthorTableSkeleton />;
+  }
 
   return (
-    <>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        {/* <div className="space-y-1">
-          <h2 className="text-3xl font-bold tracking-tight">Authors</h2>
-          <p className="text-muted-foreground">Authors are the people who have contributed to the blogs.</p>
-        </div> */}
-        <AuthorTable data={data} canAdd={canAdd} canEdit={canEdit} />
-      </div>
-    </>
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <AuthorTable data={data} canAdd={canAdd} canEdit={canEdit} />
+    </div>
   );
 }

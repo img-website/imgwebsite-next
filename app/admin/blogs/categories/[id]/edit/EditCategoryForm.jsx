@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateCategory } from "@/app/actions/categories";
+import { useCategory } from "@/hooks/use-categories";
+import { useCategoryStore } from "@/app/store/use-category-store";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -37,6 +39,8 @@ const categoryFormSchema = z.object({
 
 export default function EditCategoryForm({ category }) {
   const router = useRouter();
+  useCategory(category._id); // ensure detail cached
+  const updateCat = useCategoryStore(state => state.updateCategory);
   const form = useForm({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -54,9 +58,11 @@ export default function EditCategoryForm({ category }) {
       formData.append("status", String(data.status || 1));
       const result = await updateCategory(category._id, formData);
       if (result.success) {
+        if (result.data) {
+          updateCat(category._id, result.data);
+        }
         toast.success("Category updated successfully!");
         router.push(`/admin/blogs/categories/${category._id}`);
-        router.refresh();
       } else {
         toast.error(result.error || "Failed to update category");
       }

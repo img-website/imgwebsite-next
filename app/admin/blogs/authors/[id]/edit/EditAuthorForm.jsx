@@ -27,6 +27,8 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { updateAuthor } from "@/app/actions/authors";
 import { useEffect } from "react";
+import { useAuthor } from "@/hooks/use-authors";
+import { useAuthorStore } from "@/app/store/use-author-store";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -56,6 +58,8 @@ const authorFormSchema = z.object({
 
 export default function EditAuthorForm({ author }) {
   const router = useRouter();
+  useAuthor(author._id);
+  const updateAuth = useAuthorStore(state => state.updateAuthor);
   const form = useForm({
     resolver: zodResolver(authorFormSchema),
     defaultValues: {
@@ -105,9 +109,11 @@ export default function EditAuthorForm({ author }) {
       formData.append("status", String(data.status || 1));
       const result = await updateAuthor(author._id, formData);
       if (result.success) {
+        if (result.data) {
+          updateAuth(author._id, result.data);
+        }
         toast.success("Author updated successfully!");
         router.push(`/admin/blogs/authors/${author._id}`);
-        router.refresh();
       } else {
         toast.error(result.error || "Failed to update author");
       }

@@ -1,19 +1,24 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getPublicUrl } from "@/lib/s3";
 import Link from "next/link";
+import { use as usePromise } from "react";
+import { useLead } from "@/hooks/use-leads";
+import LeadDetailSkeleton from "@/components/skeleton/lead-detail-skeleton";
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/leads/${id}`, { cache: 'no-store' });
-  const json = await res.json();
-  const lead = json?.data;
+export default function Page({ params }) {
+  const { id } = usePromise(params);
+  const { lead } = useLead(id);
+  const statusMap = { 1: 'Upcoming', 2: 'Career' };
 
-  if (!lead) {
-    return <div className="p-4">Lead not found</div>;
+  if (lead === undefined) {
+    return <LeadDetailSkeleton />;
   }
 
-  const statusMap = { 1: 'Upcoming', 2: 'Career' };
+  if (lead === null) {
+    return <div className="p-4">Lead not found</div>;
+  }
 
   return (
     <div className="w-full p-4">
@@ -31,7 +36,9 @@ export default async function Page({ params }) {
             <p><strong>Description:</strong> {lead.description}</p>
             <p><strong>Status:</strong> {statusMap[lead.status]}</p>
             {lead.assign_to && <p><strong>Assigned To:</strong> {lead.assign_to}</p>}
-            {lead.assigned_date && <p><strong>Assigned Date:</strong> {new Date(lead.assigned_date).toLocaleString()}</p>}
+            {lead.assigned_date && (
+              <p><strong>Assigned Date:</strong> {new Date(lead.assigned_date).toLocaleString()}</p>
+            )}
             <p><strong>Created:</strong> {new Date(lead.created_date).toLocaleString()}</p>
             {lead.attachments && lead.attachments.length > 0 && (
               <div>

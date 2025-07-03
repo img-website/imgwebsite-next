@@ -1,14 +1,21 @@
+"use client";
 import { NewsletterTable } from "@/components/newsletterTable";
+import NewsletterTableSkeleton from "@/components/skeleton/newsletter-table-skeleton";
+import { useNewsletters } from "@/hooks/use-newsletters";
 
-export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/newsletters`, { cache: 'no-store' });
-  const json = await res.json();
-  const newsletters = Array.isArray(json?.data) ? json.data : [];
-  const data = newsletters.map(n => ({
-    id: n._id,
-    email: n.email,
-    createdAt: n.createdAt,
-  }));
+export default function Page() {
+  const { newsletters } = useNewsletters();
+  const data = newsletters
+    ? newsletters.map((n) => ({
+        id: n._id,
+        email: n.email,
+        createdAt: n.createdAt,
+      }))
+    : [];
+
+  if (!newsletters) {
+    return <NewsletterTableSkeleton />;
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

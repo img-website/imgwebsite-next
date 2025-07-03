@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useAuthor } from "@/hooks/use-authors";
+import { useAuthorStore } from "@/app/store/use-author-store";
 import { Copy } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,6 +16,8 @@ export default function DeleteAuthorButtons({ id }) {
   const [open, setOpen] = useState(false);
   const [blogs, setBlogs] = useState(null);
   const [loading, setLoading] = useState(false);
+  useAuthor(id); // preload for cache update
+  const removeAuthor = useAuthorStore(state => state.removeAuthor);
 
   const handleOpen = async () => {
     setOpen(true);
@@ -33,6 +37,7 @@ export default function DeleteAuthorButtons({ id }) {
       });
       const data = await res.json();
       if (data.success) {
+        removeAuthor(id);
         toast.success(data.message || "Author deleted");
         router.push("/admin/blogs/authors");
       } else {

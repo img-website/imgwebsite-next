@@ -23,6 +23,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { Separator } from "@/components/ui/separator";
+import { useMetaStore } from "@/app/store/use-meta-store";
 
 const defaultMeta = {
   creator: "",
@@ -64,7 +65,31 @@ function mergeDeep(target, source) {
   return target;
 }
 
+function addImageUrls(meta) {
+  if (!meta) return meta;
+  const toUrl = (name) =>
+    name && !name.startsWith("http")
+      ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`
+      : name;
+  meta.appleWebApp.startupImage.mainImageUrl = toUrl(
+    meta.appleWebApp.startupImage.mainImageUrl
+  );
+  meta.appleWebApp.startupImage.url = toUrl(meta.appleWebApp.startupImage.url);
+  meta.icons.icon = meta.icons.icon.map((i) => ({ ...i, url: toUrl(i.url) }));
+  meta.icons.shortcut = toUrl(meta.icons.shortcut);
+  meta.icons.apple = toUrl(meta.icons.apple);
+  meta.icons.other = meta.icons.other.map((i) => ({ ...i, url: toUrl(i.url) }));
+  meta.twitter.images = meta.twitter.images.map(toUrl);
+  meta.openGraph.images = meta.openGraph.images.map((img) => ({
+    ...img,
+    url: toUrl(img.url),
+  }));
+  return meta;
+}
+
 export default function EditStaticMetaForm({ meta }) {
+  const setMeta = useMetaStore((state) => state.setStaticMeta);
+
   const form = useForm({
     resolver: zodResolver(staticMetaSchema),
     defaultValues: structuredClone(defaultMeta),
@@ -118,6 +143,9 @@ export default function EditStaticMetaForm({ meta }) {
       });
       const json = await res.json();
       if (json.success) {
+        if (json.data) {
+          setMeta(addImageUrls(json.data));
+        }
         toast.success("Meta updated successfully");
       } else {
         toast.error(json.error || "Failed to update meta");
