@@ -20,6 +20,8 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener('notificationclick', function (event) {
   event.notification.close()
-  const target = event.notification.data && event.notification.data.url
-  event.waitUntil(clients.openWindow(target || '/'))
+  if (event.action !== 'dismiss') {
+    const target = event.notification.data && event.notification.data.url
+    event.waitUntil(clients.openWindow(target || '/'))
+  }
 })

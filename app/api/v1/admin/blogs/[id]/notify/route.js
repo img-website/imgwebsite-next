@@ -39,12 +39,17 @@ export async function POST(request, { params }) {
           : `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`)
       : undefined;
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${blog.slug}`;
+    const actions = [
+      { action: 'view', title: 'View' },
+      { action: 'dismiss', title: 'Dismiss' }
+    ];
 
     await sendNotification({
       body: blog.short_description,
       title: blog.title,
       icon,
       url,
+      actions,
     });
     return NextResponse.json({ success: true, message: 'Notification sent' });
   } catch (error) {
