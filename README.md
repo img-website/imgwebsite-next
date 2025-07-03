@@ -42,3 +42,20 @@ Run the unit tests with:
 ```bash
 npm test
 ```
+
+## PWA Setup
+
+To enable push notifications, generate VAPID keys using:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+Copy the resulting keys into `.env` based on `.env.example`.
+During development run:
+
+```bash
+next dev --experimental-https
+```
+
+This allows testing notifications locally over HTTPS.
