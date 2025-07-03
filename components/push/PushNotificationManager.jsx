@@ -48,8 +48,8 @@ export default function PushNotificationManager() {
 
   async function unsubscribeFromPush() {
     await subscription?.unsubscribe()
+    await unsubscribeUser(subscription)
     setSubscription(null)
-    await unsubscribeUser()
   }
 
   async function sendTestNotification() {
