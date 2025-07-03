@@ -6,6 +6,7 @@ import { verifyToken, extractToken } from '@/app/lib/auth';
 import { uploadBlogImage } from '@/app/middleware/imageUpload';
 import { deleteObject } from '@/lib/s3';
 import slugify from 'slugify';
+import { sendNotification } from '@/app/pushActions';
 
 export async function GET(request, { params }) {
   try {
@@ -78,6 +79,7 @@ export async function PUT(request, { params }) {
     if (!blog) {
       return NextResponse.json({ success: false, error: 'Blog not found' }, { status: 404 });
     }
+    const prevStatus = blog.status;
 
     const newSlug = formData.get('slug');
     // Slug unique check only for published/archived/scheduled
@@ -206,6 +208,13 @@ export async function PUT(request, { params }) {
     }
 
     await blog.save();
+    if (prevStatus !== 2 && blog.status === 2) {
+      try {
+        await sendNotification(`New blog published: ${blog.title}`);
+      } catch (err) {
+        console.error('Failed to send notification', err);
+      }
+    }
 
     return NextResponse.json({ success: true, data: blog });
   } catch (error) {

@@ -26,6 +26,8 @@ const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1
 })
 import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
+import PushNotificationManager from '@/components/push/PushNotificationManager';
+import InstallPrompt from '@/components/push/InstallPrompt';
 
 export const metadata = {
     title: "Mobile App Development & IT Consulting Services in USA | IMG Global Infotech",
@@ -300,6 +302,8 @@ export default function Home() {
       <Usp/>
       <Testimonial/>
       <Faq/>
+      <PushNotificationManager />
+      <InstallPrompt />
     </>
   );
 }

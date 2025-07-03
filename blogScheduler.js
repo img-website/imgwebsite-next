@@ -5,6 +5,7 @@
 import mongoose from 'mongoose';
 import Blog from './app/models/Blog.js';
 import dotenv from 'dotenv';
+import { sendNotification } from './app/pushActions.js';
 
 dotenv.config({ path: '.env.local' });
 
@@ -30,6 +31,11 @@ async function publishScheduledBlogs() {
     blog.status = 2; // Change status to published
     await blog.save();
     console.log(`Published blog: ${blog.title} (${blog._id})`);
+    try {
+      await sendNotification(`New blog published: ${blog.title}`);
+    } catch (err) {
+      console.error('Failed to send notification', err);
+    }
   }
 }
 
