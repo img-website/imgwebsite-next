@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import useErrorHandler from "@/helpers/errors"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import {
     Form,
@@ -39,6 +39,7 @@ const loginSchema = z.object({
 export function LoginForm() {
     const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
+    const searchParams = useSearchParams()
     const handleError = useErrorHandler()
 
     // useForm with Zod schema
@@ -67,7 +68,6 @@ export function LoginForm() {
                 toast.success(data.message);
 
                 // get redirectTo from query params if present
-                const searchParams = new URLSearchParams(window.location.search);
                 const redirectTo = searchParams.get('redirectTo');
                 const defaultDest =
                     data?.data?.role === 'admin' || data?.data?.role === 'superadmin'
@@ -80,7 +80,6 @@ export function LoginForm() {
                     router.push(defaultDest);
                 }
 
-                router.refresh();
             } else {
                 handleError(data?.error);
             }
