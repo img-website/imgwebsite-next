@@ -33,11 +33,13 @@ import {
 } from "@/components/ui/sidebar"
 import { getCookie } from "cookies-next"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [profile, setProfile] = React.useState({ name: '', email: '', avatar: null, initials: '' })
   React.useEffect(() => {
     async function load() {
@@ -62,18 +64,19 @@ export function NavUser() {
     load();
   }, []);
 
-      const router = useRouter();
-  
-      const handleLogout = async () => {
-          try {
-              await fetch("/api/v1/admin/logout");
-              document.cookie = "userPermissions=; max-age=0; path=/;";
-              toast.success("Logged out");
-              router.push("/login");
-          } catch (error) {
-              toast.error("Failed to logout");
-          }
-      };
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/v1/admin/logout");
+      document.cookie = "userPermissions=; max-age=0; path=/;";
+      toast.success("Logged out");
+      const currentPath = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+      router.push(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  };
 
   return (
     (<SidebarMenu>
