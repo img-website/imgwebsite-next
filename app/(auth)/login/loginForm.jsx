@@ -64,13 +64,14 @@ export function LoginForm() {
             const data = await response.json();
 
             if (data?.success) {
-                document.cookie = `token=${data?.token}; path=/; priority=high;`;
-                document.cookie = `userEmail=${data?.data?.email}; path=/;`;
-                document.cookie = `userRole=${data?.data?.role}; path=/;`;
+                const expiry = new Date(Date.now() + 2592000 * 1000).toUTCString();
+                document.cookie = `token=${data?.token}; path=/; priority=high; max-age=2592000; expires=${expiry}`;
+                document.cookie = `userEmail=${data?.data?.email}; path=/; expires=${expiry}`;
+                document.cookie = `userRole=${data?.data?.role}; path=/; expires=${expiry}`;
                 const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
-                document.cookie = `userPermissions=${permStr}; path=/;`;
+                document.cookie = `userPermissions=${permStr}; path=/; max-age=2592000; expires=${expiry}`;
                 if (data?.data?.permissionsUpdatedAt) {
-                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/;`;
+                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/; max-age=2592000; expires=${expiry}`;
                 }
 
                 toast.success(data.message);
