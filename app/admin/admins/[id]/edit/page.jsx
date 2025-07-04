@@ -1,18 +1,21 @@
+"use client";
 import EditAdminForm from "./EditAdminForm";
-import { cookies } from "next/headers";
+import { useAdmin } from "@/hooks/use-admins";
+import { use as usePromise } from "react";
+import AdminEditSkeleton from "@/components/skeleton/admin-edit-skeleton";
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const store = await cookies();
-  const token = store.get("token")?.value || "";
-  const base = process.env.NEXT_PUBLIC_BASE_URL || "";
-  const res = await fetch(`${base}/api/v1/admin/admins/${id}`, {
-    cache: "no-store",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const json = await res.json();
-  const admin = json?.data;
-  if (!admin) return <div className="p-4">Admin not found</div>;
+export default function Page({ params }) {
+  const { id } = usePromise(params);
+  const { admin } = useAdmin(id);
+
+  if (admin === undefined) {
+    return <AdminEditSkeleton />;
+  }
+
+  if (admin === null) {
+    return <div className="p-4">Admin not found</div>;
+  }
+
   return (
     <div className="w-full p-4">
       <EditAdminForm admin={admin} />

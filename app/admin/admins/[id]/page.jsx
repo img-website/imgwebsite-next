@@ -1,31 +1,23 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useAdmin } from "@/hooks/use-admins";
+import { use as usePromise } from "react";
+import AdminDetailSkeleton from "@/components/skeleton/admin-detail-skeleton";
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const store = await cookies();
-  const role = store.get("userRole")?.value;
-  if (role !== "superadmin") {
-    redirect("/admin");
+export default function Page({ params }) {
+  const { id } = usePromise(params);
+  const { admin } = useAdmin(id);
+
+  if (admin === undefined) {
+    return <AdminDetailSkeleton />;
   }
 
-  const token = store.get("token")?.value || "";
-  const base = process.env.NEXT_PUBLIC_BASE_URL || "";
-  const res = await fetch(`${base}/api/v1/admin/admins/${id}`, {
-    cache: "no-store",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const json = await res.json();
-  const admin = json?.data;
-  if (!admin) return <div className="p-4">Admin not found</div>;
+  if (admin === null) {
+    return <div className="p-4">Admin not found</div>;
+  }
+
   return (
     <div className="w-full p-4">
       <Card>
