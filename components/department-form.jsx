@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { MODULES } from "@/lib/modules";
 import { RBAC_ACTIONS } from "@/lib/rbac-actions";
+import { useDepartmentStore } from "@/app/store/use-department-store";
 
 const schema = z
   .object({
@@ -59,6 +60,13 @@ export default function DepartmentForm({ department, onSuccess }) {
       permissions: department?.permissions || defaultPermissions,
     },
   });
+
+  const departments = useDepartmentStore((state) => state.departments);
+  const setDepartments = useDepartmentStore((state) => state.setDepartments);
+  const setDepartmentDetail = useDepartmentStore(
+    (state) => state.setDepartmentDetail,
+  );
+  const updateDepartment = useDepartmentStore((state) => state.updateDepartment);
 
   React.useEffect(() => {
     if (department) {
@@ -102,10 +110,20 @@ export default function DepartmentForm({ department, onSuccess }) {
       const data = await res.json();
       if (data.success) {
         toast.success(department ? "Department updated" : "Department created");
+        if (data.data) {
+          const dep = { ...data.data, id: data.data._id || data.data.id };
+          if (department) {
+            updateDepartment(dep.id, dep);
+            setDepartmentDetail(dep.id, dep);
+          } else {
+            setDepartmentDetail(dep.id, dep);
+            setDepartments(departments ? [dep, ...departments] : [dep]);
+          }
+        }
         if (!department) {
           form.reset();
         }
-        if (onSuccess) onSuccess();
+        if (onSuccess) onSuccess(data.data);
       } else {
         toast.error(data.error || "Failed to create");
       }
