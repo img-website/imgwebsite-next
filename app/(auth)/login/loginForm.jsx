@@ -64,6 +64,15 @@ export function LoginForm() {
             const data = await response.json();
 
             if (data?.success) {
+                document.cookie = `token=${data?.token}; path=/; priority=high;`;
+                document.cookie = `userEmail=${data?.data?.email}; path=/;`;
+                document.cookie = `userRole=${data?.data?.role}; path=/;`;
+                const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
+                document.cookie = `userPermissions=${permStr}; path=/;`;
+                if (data?.data?.permissionsUpdatedAt) {
+                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/;`;
+                }
+
                 toast.success(data.message);
 
                 // get redirectTo from query params if present

@@ -20,7 +20,7 @@ export function verifyToken(token) {
  * @param {string} expiresIn - Token expiration time
  * @returns {string} - Generated JWT token
  */
-export function generateToken(payload, expiresIn = '30d') {
+export function generateToken(payload, expiresIn = '24h') {
   return jwt.sign(payload, process.env.JWT_SECRET || 'your-secret-key', { expiresIn });
 }
 
