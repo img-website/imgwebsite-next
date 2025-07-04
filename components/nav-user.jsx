@@ -8,7 +8,6 @@ import {
   LogOut,
   Settings2,
   Users,
-  UserPlus,
 } from "lucide-react"
 
 import {
@@ -35,45 +34,38 @@ import { getCookie } from "cookies-next"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useProfile } from "@/hooks/use-profile"
+import { NavUserSkeleton } from "@/components/skeleton/nav-user-skeleton"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const [profile, setProfile] = React.useState({ name: '', email: '', avatar: null, initials: '' })
-  React.useEffect(() => {
-    async function load() {
-      try {
-        const token = getCookie('token');
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const res = await fetch('/api/v1/admin/admins/me', { cache: 'no-store', headers });
-        const json = await res.json();
-        if (json.success) {
-          const d = json.data;
-          const name = d.firstName || d.lastName
-            ? `${d.firstName || ''} ${d.lastName || ''}`.trim()
-            : d.username || d.email;
-          const avatar = d.profileImage
-            ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${d.profileImage}`
-            : null;
-          const initials = `${d.firstName?.[0] || ''}${d.lastName?.[0] || ''}`.toUpperCase();
-          setProfile({ name, email: d.email, avatar, initials });
-        }
-      } catch {}
-    }
-    load();
-  }, []);
+  const { profile } = useProfile()
 
-      const router = useRouter();
-  
-      const handleLogout = async () => {
-          try {
-              await fetch("/api/v1/admin/logout");
-              document.cookie = "userPermissions=; max-age=0; path=/;";
-              toast.success("Logged out");
-              router.push("/login");
-          } catch (error) {
-              toast.error("Failed to logout");
-          }
-      };
+  if (profile === undefined) {
+    return <NavUserSkeleton />
+  }
+
+  const name = profile && (profile.firstName || profile.lastName)
+    ? `${profile.firstName || ''} ${profile.lastName || ''}`.trim()
+    : profile?.username || profile?.email || 'User'
+  const avatar = profile?.profileImage
+    ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/admins/${profile.profileImage}`
+    : null
+  const initials = `${profile?.firstName?.[0] || ''}${profile?.lastName?.[0] || ''}`.toUpperCase()
+  const email = profile?.email || ''
+
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/v1/admin/logout")
+      document.cookie = "userPermissions=; max-age=0; path=/;"
+      toast.success("Logged out")
+      router.push("/login")
+    } catch (error) {
+      toast.error("Failed to logout")
+    }
+  }
 
   return (
     (<SidebarMenu>
@@ -84,12 +76,12 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
-                <AvatarFallback className="rounded-lg">{profile.initials || (profile.name?.[0] || 'U')}</AvatarFallback>
+                <AvatarImage src={avatar || undefined} alt={name} />
+                <AvatarFallback className="rounded-lg">{initials || (name?.[0] || 'U')}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{profile.name || 'User'}</span>
-                <span className="truncate text-xs">{profile.email}</span>
+                <span className="truncate font-medium">{name || 'User'}</span>
+                <span className="truncate text-xs">{email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -102,12 +94,12 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={profile.avatar || undefined} alt={profile.name} />
-                  <AvatarFallback className="rounded-lg">{profile.initials || (profile.name?.[0] || 'U')}</AvatarFallback>
+                  <AvatarImage src={avatar || undefined} alt={name} />
+                  <AvatarFallback className="rounded-lg">{initials || (name?.[0] || 'U')}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{profile.name || 'User'}</span>
-                  <span className="truncate text-xs">{profile.email}</span>
+                  <span className="truncate font-medium">{name || 'User'}</span>
+                  <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
