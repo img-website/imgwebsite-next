@@ -54,7 +54,7 @@ export async function POST(req) {
         twoFactorVerified: true 
       },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      { expiresIn: '30d' }
     );
 
     return NextResponse.json({
