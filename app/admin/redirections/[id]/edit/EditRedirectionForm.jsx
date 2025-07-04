@@ -4,20 +4,46 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useRedirectionStore } from "@/app/store/use-redirection-store";
 
-const urlOrPath = z.string().refine(val => {
-  try {
-    new URL(val);
-    return true;
-  } catch {
-    return val.startsWith('/');
-  }
-}, { message: 'Enter a valid absolute or relative URL (must start with / for relative)' });
+const urlOrPath = z.string().refine(
+  (val) => {
+    try {
+      new URL(val);
+      return true;
+    } catch {
+      return val.startsWith("/");
+    }
+  },
+  {
+    message:
+      "Enter a valid absolute or relative URL (must start with / for relative)",
+  },
+);
 
 const redirectionSchema = z.object({
   from: urlOrPath,
@@ -27,6 +53,8 @@ const redirectionSchema = z.object({
 
 export default function EditRedirectionForm({ redirection }) {
   const router = useRouter();
+  const updateRedir = useRedirectionStore((state) => state.updateRedirection);
+  const setDetail = useRedirectionStore((state) => state.setRedirectionDetail);
   const form = useForm({
     resolver: zodResolver(redirectionSchema),
     defaultValues: {
@@ -46,6 +74,10 @@ export default function EditRedirectionForm({ redirection }) {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          updateRedir(redirection.id, data.data);
+          setDetail(redirection.id, data.data);
+        }
         toast.success("Redirection updated successfully");
         if (data.notice) toast.info(data.notice);
         router.push("/admin/redirections");
@@ -64,7 +96,9 @@ export default function EditRedirectionForm({ redirection }) {
       <Card>
         <CardHeader>
           <CardTitle>Edit Redirection</CardTitle>
-          <CardDescription>Update the redirection details below.</CardDescription>
+          <CardDescription>
+            Update the redirection details below.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -110,16 +144,26 @@ export default function EditRedirectionForm({ redirection }) {
                       <SelectContent>
                         <SelectItem value="301">301 (Permanent)</SelectItem>
                         <SelectItem value="302">302 (Temporary)</SelectItem>
-                        <SelectItem value="307">307 (Temporary, method preserved)</SelectItem>
-                        <SelectItem value="308">308 (Permanent, method preserved)</SelectItem>
+                        <SelectItem value="307">
+                          307 (Temporary, method preserved)
+                        </SelectItem>
+                        <SelectItem value="308">
+                          308 (Permanent, method preserved)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                {form.formState.isSubmitting ? "Updating..." : "Update Redirection"}
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                className="w-full"
+              >
+                {form.formState.isSubmitting
+                  ? "Updating..."
+                  : "Update Redirection"}
               </Button>
             </form>
           </Form>

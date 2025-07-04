@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useRedirectionStore } from "@/app/store/use-redirection-store";
 import {
   Dialog,
   DialogTrigger,
@@ -48,10 +49,9 @@ import {
 function RedirectionActions({ redirection, canEdit, canDelete }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const deleteRedirection = useRedirectionStore((s) => s.deleteRedirection);
 
   const handleDelete = async () => {
-    setLoading(true);
     try {
       const res = await apiFetch(`/api/v1/admin/redirections/${redirection.id}`, {
         method: "DELETE",
@@ -60,6 +60,7 @@ function RedirectionActions({ redirection, canEdit, canDelete }) {
       if (data.success) {
         toast.success("Redirection deleted");
         if (data.notice) toast.info(data.notice);
+        deleteRedirection(redirection.id);
         setOpen(false);
         router.refresh();
       } else {
@@ -68,8 +69,6 @@ function RedirectionActions({ redirection, canEdit, canDelete }) {
       }
     } catch (error) {
       toast.error("Failed to delete redirection");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -84,11 +83,11 @@ function RedirectionActions({ redirection, canEdit, canDelete }) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+            <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              {loading ? "Deleting..." : "Delete"}
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>
