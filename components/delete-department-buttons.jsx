@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDepartmentStore } from "@/app/store/use-department-store";
 
 import React from "react";
 
@@ -29,6 +30,7 @@ export default function DeleteDepartmentButtons({
   const setOpen = onOpenChange || setInternalOpen;
   const [admins, setAdmins] = useState(null);
   const [loading, setLoading] = useState(false);
+  const deleteDepartmentFromStore = useDepartmentStore((state) => state.deleteDepartment);
 
   const handleOpen = () => setOpen(true);
 
@@ -53,6 +55,7 @@ export default function DeleteDepartmentButtons({
       const res = await apiFetch(url, { method: "DELETE" });
       const data = await res.json();
       if (data.success) {
+        deleteDepartmentFromStore(id);
         toast.success("Department deleted");
         router.refresh();
       } else {

@@ -1,29 +1,24 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 import DepartmentForm from "@/components/department-form";
+import { useDepartment } from "@/hooks/use-departments";
+import { use as usePromise } from "react";
+import DepartmentEditSkeleton from "@/components/skeleton/department-edit-skeleton";
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const store = await cookies();
-  const role = store.get("userRole")?.value;
-  if (role !== "superadmin") {
-    redirect("/admin");
+export default function Page({ params }) {
+  const { id } = usePromise(params);
+  const { department } = useDepartment(id);
+
+  if (department === undefined) {
+    return <DepartmentEditSkeleton />;
   }
-  const token = store.get("token")?.value || '';
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/departments/${id}`, {
-    cache: 'no-store',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const json = await res.json();
-  const department = json?.data;
-  if (!department) {
+
+  if (department === null) {
     return <div className="p-4">Department not found</div>;
   }
+
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Edit Department</h2>
+    <div className="w-full p-4">
       <DepartmentForm department={department} />
     </div>
   );
 }
-
