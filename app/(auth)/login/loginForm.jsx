@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import useErrorHandler from "@/helpers/errors"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
     Form,
@@ -39,7 +39,6 @@ const loginSchema = z.object({
 export function LoginForm() {
     const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
-    const searchParams = useSearchParams()
     const handleError = useErrorHandler()
 
     // useForm with Zod schema
@@ -59,26 +58,38 @@ export function LoginForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include",
                 body: JSON.stringify({ email, password })
             });
 
             const data = await response.json();
 
             if (data?.success) {
+                document.cookie = `token=${data?.token}; path=/; priority=high;`;
+                document.cookie = `userEmail=${data?.data?.email}; path=/;`;
+                document.cookie = `userRole=${data?.data?.role}; path=/;`;
+                const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
+                document.cookie = `userPermissions=${permStr}; path=/;`;
+                if (data?.data?.permissionsUpdatedAt) {
+                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/;`;
+                }
+
                 toast.success(data.message);
 
                 // get redirectTo from query params if present
+                const searchParams = new URLSearchParams(window.location.search);
                 const redirectTo = searchParams.get('redirectTo');
                 const defaultDest =
                     data?.data?.role === 'admin' || data?.data?.role === 'superadmin'
                         ? '/admin'
                         : '/';
 
-                const dest = redirectTo || defaultDest;
-                router.push(dest);
-                router.refresh();
+                if (redirectTo) {
+                    router.push(redirectTo);
+                } else {
+                    router.push(defaultDest);
+                }
 
+                router.refresh();
             } else {
                 handleError(data?.error);
             }

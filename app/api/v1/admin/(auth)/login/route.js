@@ -42,32 +42,15 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
   // Clear failed login attempts on successful login
   failedLoginAttempts.delete(ip);
 
-  const json = {
-    success: true,
-    message: 'Login successful',
-    data: result.data,
-    token: result.token
-  };
-  const response = NextResponse.json(json, { status: 200 });
-  const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-  const secureOpts = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    maxAge: COOKIE_MAX_AGE,
-    expires: new Date(Date.now() + COOKIE_MAX_AGE * 1000),
-    path: '/'
-  };
-  const publicOpts = { ...secureOpts, httpOnly: false };
-  response.cookies.set('token', result.token, secureOpts);
-  response.cookies.set('userEmail', result.data.email, publicOpts);
-  response.cookies.set('userRole', result.data.role, publicOpts);
-  const permStr = Buffer.from(JSON.stringify(result.data.permissions || {})).toString('base64');
-  response.cookies.set('userPermissions', permStr, publicOpts);
-  if (result.data.permissionsUpdatedAt) {
-    response.cookies.set('permissionsStamp', result.data.permissionsUpdatedAt, secureOpts);
-  }
-  return response;
+  return NextResponse.json(
+    {
+      success: true,
+      message: 'Login successful',
+      data: result.data,
+      token: result.token
+    },
+    { status: 200 }
+  );
 }
 
 export async function POST(req) {

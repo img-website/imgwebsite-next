@@ -84,7 +84,7 @@ export async function registerAdmin(formData, req) {
     const token = jwt.sign(
       { id: admin._id, email: admin.email, role: admin.role },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '30d' }
+      { expiresIn: '24h' }
     );
 
     // Remove sensitive data
@@ -197,7 +197,7 @@ export async function loginAdmin(email, password) {
         twoFactorVerified: false 
       },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '30d' }
+      { expiresIn: '24h' }
     );
 
     // Remove sensitive data from response
