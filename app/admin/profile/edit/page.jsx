@@ -4,9 +4,9 @@ import { useProfile } from "@/hooks/use-profile";
 import ProfileEditSkeleton from "@/components/skeleton/profile-edit-skeleton";
 
 export default function Page() {
-  const { profile: admin } = useProfile();
+  const { profile: admin, loading } = useProfile();
 
-  if (admin === undefined) {
+  if (loading) {
     return <ProfileEditSkeleton />;
   }
 

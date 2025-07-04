@@ -6,9 +6,9 @@ import ProfileSkeleton from "@/components/skeleton/profile-skeleton";
 import { useProfile } from "@/hooks/use-profile";
 
 export default function Page() {
-  const { profile: admin } = useProfile();
+  const { profile: admin, loading } = useProfile();
 
-  if (admin === undefined) {
+  if (loading) {
     return <ProfileSkeleton />;
   }
 
