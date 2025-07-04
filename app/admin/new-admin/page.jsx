@@ -1,4 +1,3 @@
-import Link from "next/link";
 import RegisterForm from "./registerForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
