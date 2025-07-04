@@ -29,4 +29,12 @@ export const useRedirectionStore = create((set) => ({
       const { [id]: removed, ...rest } = state.redirectionDetails;
       return { redirectionDetails: rest };
     }),
+  deleteRedirection: (id) =>
+    set((state) => {
+      const redirections = state.redirections
+        ? state.redirections.filter((r) => r.id !== id)
+        : null;
+      const { [id]: removed, ...rest } = state.redirectionDetails;
+      return { redirections, redirectionDetails: rest };
+    }),
 }));
