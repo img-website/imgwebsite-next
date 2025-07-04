@@ -54,14 +54,26 @@ export async function POST(req) {
         twoFactorVerified: true 
       },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      { expiresIn: '30d' }
     );
 
-    return NextResponse.json({
+    const json = {
       success: true,
       message: '2FA verification successful',
       token: jwtToken
-    });
+    };
+    const response = NextResponse.json(json);
+    const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+    const options = { maxAge: COOKIE_MAX_AGE, path: '/' };
+    response.cookies.set('token', jwtToken, options);
+    response.cookies.set('userEmail', admin.email, options);
+    response.cookies.set('userRole', admin.role, options);
+    const permStr = Buffer.from(JSON.stringify(admin.permissions || {})).toString('base64');
+    response.cookies.set('userPermissions', permStr, options);
+    if (admin.permissionsUpdatedAt) {
+      response.cookies.set('permissionsStamp', admin.permissionsUpdatedAt.toISOString(), options);
+    }
+    return response;
 
   } catch (error) {
     return NextResponse.json(

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import useErrorHandler from "@/helpers/errors"
+import { setCookie } from "cookies-next"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -64,13 +65,20 @@ export function LoginForm() {
             const data = await response.json();
 
             if (data?.success) {
-                document.cookie = `token=${data?.token}; path=/; priority=high;`;
-                document.cookie = `userEmail=${data?.data?.email}; path=/;`;
-                document.cookie = `userRole=${data?.data?.role}; path=/;`;
+                const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+                const options = {
+                    maxAge: COOKIE_MAX_AGE,
+                    path: '/',
+                    sameSite: 'lax',
+                    expires: new Date(Date.now() + COOKIE_MAX_AGE * 1000)
+                };
+                setCookie('token', data?.token, options);
+                setCookie('userEmail', data?.data?.email, options);
+                setCookie('userRole', data?.data?.role, options);
                 const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
-                document.cookie = `userPermissions=${permStr}; path=/;`;
+                setCookie('userPermissions', permStr, options);
                 if (data?.data?.permissionsUpdatedAt) {
-                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/;`;
+                    setCookie('permissionsStamp', data.data.permissionsUpdatedAt, options);
                 }
 
                 toast.success(data.message);
