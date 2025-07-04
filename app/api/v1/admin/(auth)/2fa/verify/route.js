@@ -64,7 +64,14 @@ export async function POST(req) {
     };
     const response = NextResponse.json(json);
     const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-    const options = { maxAge: COOKIE_MAX_AGE, path: '/' };
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: COOKIE_MAX_AGE,
+      expires: new Date(Date.now() + COOKIE_MAX_AGE * 1000),
+      path: '/'
+    };
     response.cookies.set('token', jwtToken, options);
     response.cookies.set('userEmail', admin.email, options);
     response.cookies.set('userRole', admin.role, options);

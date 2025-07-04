@@ -50,7 +50,14 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
   };
   const response = NextResponse.json(json, { status: 200 });
   const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-  const options = { maxAge: COOKIE_MAX_AGE, path: '/' };
+  const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    maxAge: COOKIE_MAX_AGE,
+    expires: new Date(Date.now() + COOKIE_MAX_AGE * 1000),
+    path: '/'
+  };
   response.cookies.set('token', result.token, options);
   response.cookies.set('userEmail', result.data.email, options);
   response.cookies.set('userRole', result.data.role, options);
