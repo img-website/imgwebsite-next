@@ -32,13 +32,14 @@ import {
 } from "@/components/ui/sidebar"
 import { getCookie } from "cookies-next"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useProfile } from "@/hooks/use-profile"
 import { NavUserSkeleton } from "@/components/skeleton/nav-user-skeleton"
+import { useRouter } from "next/navigation"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
+  const router = useRouter()
   const { profile } = useProfile()
 
   if (profile === undefined) {
@@ -53,8 +54,6 @@ export function NavUser() {
     : null
   const initials = `${profile?.firstName?.[0] || ''}${profile?.lastName?.[0] || ''}`.toUpperCase()
   const email = profile?.email || ''
-
-  const router = useRouter()
 
   const handleLogout = async () => {
     try {
