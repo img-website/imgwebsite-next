@@ -64,16 +64,6 @@ export function LoginForm() {
             const data = await response.json();
 
             if (data?.success) {
-                const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-                document.cookie = `token=${data?.token}; path=/; max-age=${COOKIE_MAX_AGE}; priority=high;`;
-                document.cookie = `userEmail=${data?.data?.email}; path=/; max-age=${COOKIE_MAX_AGE}`;
-                document.cookie = `userRole=${data?.data?.role}; path=/; max-age=${COOKIE_MAX_AGE}`;
-                const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
-                document.cookie = `userPermissions=${permStr}; path=/; max-age=${COOKIE_MAX_AGE}`;
-                if (data?.data?.permissionsUpdatedAt) {
-                    document.cookie = `permissionsStamp=${data.data.permissionsUpdatedAt}; path=/; max-age=${COOKIE_MAX_AGE}`;
-                }
-
                 toast.success(data.message);
 
                 // get redirectTo from query params if present
