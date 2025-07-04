@@ -50,7 +50,7 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
   };
   const response = NextResponse.json(json, { status: 200 });
   const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-  const options = {
+  const secureOpts = {
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
@@ -58,13 +58,14 @@ async function handler(req, ip, failedLoginAttempts, lockoutDuration, failedAtte
     expires: new Date(Date.now() + COOKIE_MAX_AGE * 1000),
     path: '/'
   };
-  response.cookies.set('token', result.token, options);
-  response.cookies.set('userEmail', result.data.email, options);
-  response.cookies.set('userRole', result.data.role, options);
+  const publicOpts = { ...secureOpts, httpOnly: false };
+  response.cookies.set('token', result.token, secureOpts);
+  response.cookies.set('userEmail', result.data.email, publicOpts);
+  response.cookies.set('userRole', result.data.role, publicOpts);
   const permStr = Buffer.from(JSON.stringify(result.data.permissions || {})).toString('base64');
-  response.cookies.set('userPermissions', permStr, options);
+  response.cookies.set('userPermissions', permStr, publicOpts);
   if (result.data.permissionsUpdatedAt) {
-    response.cookies.set('permissionsStamp', result.data.permissionsUpdatedAt, options);
+    response.cookies.set('permissionsStamp', result.data.permissionsUpdatedAt, secureOpts);
   }
   return response;
 }

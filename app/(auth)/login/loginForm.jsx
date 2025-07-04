@@ -59,6 +59,7 @@ export function LoginForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({ email, password })
             });
 
@@ -74,11 +75,9 @@ export function LoginForm() {
                         ? '/admin'
                         : '/';
 
-                if (redirectTo) {
-                    router.push(redirectTo);
-                } else {
-                    router.push(defaultDest);
-                }
+                const dest = redirectTo || defaultDest;
+                router.push(dest);
+                router.refresh();
 
             } else {
                 handleError(data?.error);
