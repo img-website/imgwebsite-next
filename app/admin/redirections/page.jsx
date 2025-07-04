@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { RedirectionTable } from "@/components/redirectionTable";
 import { hasServerPermission } from "@/helpers/permissions";
+import { useRedirections } from "@/hooks/use-redirections";
+import RedirectionTableSkeleton from "@/components/skeleton/redirection-table-skeleton";
 
 export default async function Page() {
   const store = await cookies();
@@ -10,26 +12,30 @@ export default async function Page() {
     redirect("/admin");
   }
 
-  const canAdd = hasServerPermission(store, 'redirections', 'write');
-  const canEdit = hasServerPermission(store, 'redirections', 'edit');
-  const canDelete = hasServerPermission(store, 'redirections', 'delete');
+  const canAdd = hasServerPermission(store, "redirections", "write");
+  const canEdit = hasServerPermission(store, "redirections", "edit");
+  const canDelete = hasServerPermission(store, "redirections", "delete");
 
-  const base = process.env.NEXT_PUBLIC_BASE_URL || '';
-  const token = store.get("token")?.value || '';
-  const res = await fetch(`${base}/api/v1/admin/redirections`, {
-    cache: 'no-store',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const json = await res.json();
-  const redirections = Array.isArray(json?.data) ? json.data : [];
-  const data = redirections.map(r => ({
-    id: r.id,
-    from: r.from,
-    to: r.to,
-    methodCode: r.methodCode,
-    createdAt: r.createdAt,
-    updatedAt: r.updatedAt,
-  }));
+  return <Client canAdd={canAdd} canEdit={canEdit} canDelete={canDelete} />;
+}
+
+function Client({ canAdd, canEdit, canDelete }) {
+  "use client";
+  const { redirections } = useRedirections();
+  const data = redirections
+    ? redirections.map((r) => ({
+        id: r.id,
+        from: r.from,
+        to: r.to,
+        methodCode: r.methodCode,
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt,
+      }))
+    : [];
+
+  if (!redirections) {
+    return <RedirectionTableSkeleton />;
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
