@@ -1,33 +1,42 @@
-import EditStaticMetaForm from './EditStaticMetaForm';
+"use client";
+import { useMemo } from "react";
+import EditStaticMetaForm from "./EditStaticMetaForm";
+import StaticMetaEditSkeleton from "@/components/skeleton/static-meta-edit-skeleton";
+import { useStaticMeta } from "@/hooks/use-static-meta";
 
-export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/meta/static`, { cache: 'no-store' });
-  const json = await res.json();
-  const meta = json?.data || null;
+export default function Page() {
+  const { meta } = useStaticMeta();
 
-  const toUrl = (name) =>
-    name && !name.startsWith('http')
-      ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`
-      : name;
-  if (meta) {
-    meta.appleWebApp.startupImage.mainImageUrl = toUrl(
-      meta.appleWebApp.startupImage.mainImageUrl
+  const processedMeta = useMemo(() => {
+    if (!meta) return meta;
+    const m = structuredClone(meta);
+    const toUrl = (name) =>
+      name && !name.startsWith("http")
+        ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`
+        : name;
+    m.appleWebApp.startupImage.mainImageUrl = toUrl(
+      m.appleWebApp.startupImage.mainImageUrl
     );
-    meta.appleWebApp.startupImage.url = toUrl(meta.appleWebApp.startupImage.url);
-    meta.icons.icon = meta.icons.icon.map((i) => ({ ...i, url: toUrl(i.url) }));
-    meta.icons.shortcut = toUrl(meta.icons.shortcut);
-    meta.icons.apple = toUrl(meta.icons.apple);
-    meta.icons.other = meta.icons.other.map((i) => ({ ...i, url: toUrl(i.url) }));
-    meta.twitter.images = meta.twitter.images.map(toUrl);
-    meta.openGraph.images = meta.openGraph.images.map((img) => ({
+    m.appleWebApp.startupImage.url = toUrl(m.appleWebApp.startupImage.url);
+    m.icons.icon = m.icons.icon.map((i) => ({ ...i, url: toUrl(i.url) }));
+    m.icons.shortcut = toUrl(m.icons.shortcut);
+    m.icons.apple = toUrl(m.icons.apple);
+    m.icons.other = m.icons.other.map((i) => ({ ...i, url: toUrl(i.url) }));
+    m.twitter.images = m.twitter.images.map(toUrl);
+    m.openGraph.images = m.openGraph.images.map((img) => ({
       ...img,
       url: toUrl(img.url),
     }));
+    return m;
+  }, [meta]);
+
+  if (meta === undefined) {
+    return <StaticMetaEditSkeleton />;
   }
 
   return (
     <div className="w-full p-4">
-      <EditStaticMetaForm meta={meta} />
+      <EditStaticMetaForm meta={processedMeta} />
     </div>
   );
 }
