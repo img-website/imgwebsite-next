@@ -15,7 +15,7 @@ export function useBlogs() {
   useEffect(() => {
     if (!blogs) {
       setLoading(true)
-      apiFetch('/api/v1/admin/blogs')
+      apiFetch('/api/v1/admin/blogs?limit=1000')
         .then((res) => res.json())
         .then((json) => {
           if (Array.isArray(json?.data)) {
