@@ -1,0 +1,280 @@
+"use client";
+import { useEffect } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { dynamicMetaSchema } from '@/app/lib/validations/dynamicMeta';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import MultiKeywordCombobox from '@/components/ui/multi-keyword-combobox';
+import ImageCropperInput from '@/components/image-cropper-input';
+import { useParams, useRouter } from 'next/navigation';
+import apiFetch from '@/helpers/apiFetch';
+import { toast } from 'sonner';
+
+export default function Page() {
+  const { slug } = useParams();
+  const router = useRouter();
+  const pageUrl = slug === 'home' ? '/' : `/${slug}`;
+
+  const form = useForm({
+    resolver: zodResolver(dynamicMetaSchema),
+    defaultValues: {
+      pageUrl,
+      title: '',
+      description: '',
+      keywords: [],
+      openGraph: { title: '', description: '', images: [], url: pageUrl },
+      twitter: { title: '', description: '', images: [] },
+      robots: {
+        index: true,
+        follow: true,
+        nocache: false,
+        googleBot: {
+          index: true,
+          follow: true,
+          noimageindex: false,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
+      other: { classification: '' },
+      alternates: { canonical: pageUrl },
+    },
+  });
+
+  const { control, handleSubmit, setValue, reset } = form;
+  const ogImageFields = useFieldArray({ control, name: 'openGraph.images' });
+  const twitterImageFields = useFieldArray({ control, name: 'twitter.images' });
+
+  useEffect(() => {
+    async function load() {
+      const res = await apiFetch(`/api/v1/admin/meta/dynamic?pageUrl=${encodeURIComponent(pageUrl)}`);
+      const json = await res.json();
+      if (json.success && json.data) {
+        const data = json.data;
+        const toUrl = (u) => (u && !u.startsWith('http') ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${u}` : u);
+        if (data.openGraph?.images) {
+          data.openGraph.images = data.openGraph.images.map((img) => ({ ...img, url: toUrl(img.url) }));
+        }
+        if (data.twitter?.images) {
+          data.twitter.images = data.twitter.images.map(toUrl);
+        }
+        reset(data);
+      }
+    }
+    load();
+  }, [pageUrl, reset]);
+
+  async function uploadFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiFetch('/api/v1/admin/images', { method: 'POST', body: formData });
+    const json = await res.json();
+    if (json.success && json.data?.storedName) {
+      return json.data.storedName;
+    }
+    throw new Error(json.error || 'Failed to upload image');
+  }
+
+  async function handleImageChange(name, files) {
+    if (files?.[0] instanceof File) {
+      try {
+        const nameOnly = await uploadFile(files[0]);
+        setValue(name, `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`, { shouldValidate: true });
+      } catch (err) {
+        toast.error(err.message || 'Image upload failed');
+      }
+    } else if (Array.isArray(files) && files.length === 0) {
+      setValue(name, '', { shouldValidate: true });
+    } else {
+      setValue(name, files, { shouldValidate: true });
+    }
+  }
+
+  async function onSubmit(values) {
+    const strip = (v) => (typeof v === 'string' ? v.split('/').pop().split('?')[0] : v);
+    values.openGraph.images = values.openGraph.images.map((img) => ({ ...img, url: strip(img.url) }));
+    values.twitter.images = values.twitter.images.map(strip);
+    const res = await apiFetch('/api/v1/admin/meta/dynamic', { method: 'PUT', data: values });
+    const json = await res.json();
+    if (json.success) {
+      toast.success('Saved');
+      router.push('/admin/meta/dynamic');
+    } else {
+      toast.error(json.error || 'Failed');
+    }
+  }
+
+  return (
+    <div className="w-full p-4">
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <FormField control={control} name="title" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <FormField control={control} name="description" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <FormField control={control} name="keywords" render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <MultiKeywordCombobox value={field.value} onChange={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )} />
+          <div className="grid md:grid-cols-2 gap-6">
+            <FormField control={control} name="openGraph.title" render={({ field }) => (
+              <FormItem>
+                <FormLabel>OG Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={control} name="openGraph.description" render={({ field }) => (
+              <FormItem>
+                <FormLabel>OG Description</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+          </div>
+          {ogImageFields.fields.map((item, index) => (
+            <div key={item.id} className="space-y-2">
+              <FormField control={control} name={`openGraph.images.${index}.url`} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>OG Image</FormLabel>
+                  <FormControl>
+                    <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <div className="grid grid-cols-3 gap-2">
+                <FormField control={control} name={`openGraph.images.${index}.width`} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Width</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={control} name={`openGraph.images.${index}.height`} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Height</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={control} name={`openGraph.images.${index}.type`} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
+              <FormField control={control} name={`openGraph.images.${index}.alt`} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Alt</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+            </div>
+          ))}
+          <Button type="button" onClick={() => ogImageFields.append({ url: '', width: 0, height: 0, alt: '', type: '' })}>
+            Add OG Image
+          </Button>
+          <div className="grid md:grid-cols-2 gap-6">
+            <FormField control={control} name="twitter.title" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Twitter Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={control} name="twitter.description" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Twitter Description</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+          </div>
+          {twitterImageFields.fields.map((item, index) => (
+            <FormField key={item.id} control={control} name={`twitter.images.${index}`} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Twitter Image</FormLabel>
+                <FormControl>
+                  <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+          ))}
+          <Button type="button" onClick={() => twitterImageFields.append('')}>
+            Add Twitter Image
+          </Button>
+          <FormField control={control} name="other.classification" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Classification</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <FormField control={control} name="alternates.canonical" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Canonical</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <div className="flex justify-end">
+            <Button type="submit">Save</Button>
+          </div>
+        </form>
+      </Form>
+    </div>
+  );
+}
