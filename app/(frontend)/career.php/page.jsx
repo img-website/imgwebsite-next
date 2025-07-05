@@ -1,61 +1,8 @@
 import Image from "next/image";
-import { fetchDynamicMeta } from "@/app/lib/dynamicMeta";
-
-const defaultMetadata = {
-        title: "Job Openings & Career Growth Opportunities - IMG Global Infotech",
-        description: "Explore exciting career opportunities at IMG Global Infotech. Join our talented professionals and take your skills to the next level with IT, software, and web developer job openings.",
-        keywords: [
-            'Mobile App Development',
-            'IT Consulting',
-            'Software Development',
-            'USA',
-            'UK',
-            'UAE',
-            'India',
-            'IMG Global Infotech',
-        ],
-        openGraph: {
-            title: "Job Openings & Career Growth Opportunities - IMG Global Infotech",
-            description: "Explore exciting career opportunities at IMG Global Infotech. Join our talented professionals and take your skills to the next level with IT, software, and web developer job openings.",
-            images: [
-                {
-                url: 'https://d1y41eupgbwbb2.cloudfront.net/images/og/career.jpg',
-                width: 1200,
-                height: 630,
-                alt: 'IMG Global Infotech',
-                type: 'image/png',
-                },
-            ],
-            url: process.env.NEXT_PUBLIC_BASE_URL,
-        },
-        twitter: {
-            title: "Job Openings & Career Growth Opportunities - IMG Global Infotech",
-            description: "Explore exciting career opportunities at IMG Global Infotech. Join our talented professionals and take your skills to the next level with IT, software, and web developer job openings.",
-            images: ["https://d1y41eupgbwbb2.cloudfront.net/images/og/career.jpg"]
-        },
-        robots: {
-            index: process.env.NODE_ENV === 'production',
-            follow: process.env.NODE_ENV === 'production',
-            nocache: false,
-            googleBot: {
-                index: process.env.NODE_ENV === 'production',
-                follow: process.env.NODE_ENV === 'production',
-                noimageindex: process.env.NODE_ENV === 'production',
-                'max-video-preview': -1,
-                'max-image-preview': 'large',
-                'max-snippet': -1,
-            },
-        },
-        other: {
-            classification: 'Technology'
-        },
-        alternates: {
-            canonical: "/career.php"
-        }
-};
+import { fetchCurrentDynamicMeta } from "@/app/lib/dynamicMeta";
 
 export async function generateMetadata() {
-  return (await fetchDynamicMeta('/career.php')) || defaultMetadata;
+  return (await fetchCurrentDynamicMeta()) || {};
 }
 
 export default function Career() {

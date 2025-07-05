@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 export async function fetchDynamicMeta(pageUrl) {
   try {
     const res = await fetch(
@@ -26,4 +27,19 @@ export async function fetchDynamicMeta(pageUrl) {
     console.error('Failed to fetch dynamic meta', err);
   }
   return null;
+}
+
+export async function fetchCurrentDynamicMeta() {
+  try {
+    const h = await headers();
+    const path =
+      h.get("x-pathname") ||
+      h.get("next-url") ||
+      h.get("x-invoke-path") ||
+      h.get("x-matched-path");
+    if (!path) return null;
+    return await fetchDynamicMeta(path);
+  } catch {
+    return null;
+  }
 }
