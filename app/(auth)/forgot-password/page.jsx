@@ -2,21 +2,13 @@ import Image from "next/image";
 import ForgotForm from "./forgotForm";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import getDynamicMeta from "@/helpers/getDynamicMeta";
+
+export async function generateMetadata() {
+  return await getDynamicMeta("/forgot-password");
+}
 
 const title = 'Forgot Password';
-
-export const metadata = {
-  title,
-  description: 'Reset your password',
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
-};
 
 const ForgotPasswordPage = () => {
   return (

@@ -1,22 +1,13 @@
 import Image from "next/image";
 import LoginForm from "./loginForm";
-import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import getDynamicMeta from "@/helpers/getDynamicMeta";
+
+export async function generateMetadata() {
+  return await getDynamicMeta("/login");
+}
 
 const title = 'Login';
-
-export const metadata = {
-  title,
-  description: 'Login to your account',
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
-};
 
 const page = () => {
   return (

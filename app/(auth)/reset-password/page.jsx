@@ -3,21 +3,13 @@ import ResetForm from "./resetForm";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
+import getDynamicMeta from "@/helpers/getDynamicMeta";
+
+export async function generateMetadata() {
+  return await getDynamicMeta("/reset-password");
+}
 
 const title = 'Reset Password';
-
-export const metadata = {
-  title,
-  description: 'Reset your password',
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
-};
 
 const ResetPasswordPage = () => {
   return (

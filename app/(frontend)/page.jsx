@@ -26,58 +26,11 @@ const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1
 })
 import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
+import getDynamicMeta from '@/helpers/getDynamicMeta';
 
-export const metadata = {
-    title: "Mobile App Development & IT Consulting Services in USA | IMG Global Infotech",
-    description: "IMG Global Infotech is a top mobile app development company in USA, UK, UAE, and India, providing expert IT consulting services for startups to large enterprises.",keywords: [
-      'Mobile App Development',
-      'IT Consulting',
-      'Software Development',
-      'USA',
-      'UK',
-      'UAE',
-      'India',
-      'IMG Global Infotech',
-    ],
-    openGraph: {
-      title: "IMG Global Infotech | Mobile App Development & IT Consulting Agency in USA, UK, UAE & India",
-      description: "IMG Global Infotech is the best IT consulting Company that provides the best IT consulting services to startups, mid-size, medium-size and large-size businesses.",
-      images: [
-        {
-          url: 'https://d1y41eupgbwbb2.cloudfront.net/images/android-chrome-192x192.png',
-          width: 1200,
-          height: 630,
-          alt: 'Mobile App Development & IT Consulting Services in USA | IMG Global Infotech',
-          type: 'image/png',
-        },
-      ],
-      url: process.env.NEXT_PUBLIC_BASE_URL,
-    },
-    twitter: {
-      title: "IMG Global Infotech | Mobile App Development & IT Consulting Agency in USA, UK, UAE & India",
-      description: "IMG Global Infotech is the best IT consulting Company that provides the best IT consulting services to startups, mid-size, medium-size and large-size businesses.",
-      images: ["https://d1y41eupgbwbb2.cloudfront.net/images/android-chrome-192x192.png"]
-    },
-    robots: {
-      index: process.env.NODE_ENV === 'production',
-      follow: process.env.NODE_ENV === 'production',
-      nocache: false,
-      googleBot: {
-        index: process.env.NODE_ENV === 'production',
-        follow: process.env.NODE_ENV === 'production',
-        noimageindex: process.env.NODE_ENV === 'production',
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    other: {
-      classification: 'Technology'
-    },
-    alternates: {
-      canonical: '/'
-    }
-};
+export async function generateMetadata() {
+  return await getDynamicMeta('/');
+}
 
 
   const graphSchema = {

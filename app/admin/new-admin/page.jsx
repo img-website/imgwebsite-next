@@ -1,20 +1,12 @@
 import RegisterForm from "./registerForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import getDynamicMeta from "@/helpers/getDynamicMeta";
+
+export async function generateMetadata() {
+  return await getDynamicMeta("/admin/new-admin");
+}
 
 const title = "Register";
-
-export const metadata = {
-  title,
-  description: "Register for an account",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title,
-    images: [`/api/og?title=${title}`],
-  },
-};
 
 const page = () => {
   return (
