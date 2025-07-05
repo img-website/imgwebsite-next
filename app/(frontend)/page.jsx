@@ -1,19 +1,18 @@
 export const dynamic = 'force-dynamic';
 
-
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { fetchCurrentDynamicMeta } from '@/app/lib/dynamicMeta';
-const HomeHero = dynamic(() => import('@/components/HomeHero'), {
+const HomeHero = nextDynamic(() => import('@/components/HomeHero'), {
   loading: () => <HomeHeroSkeleton />
 })
 import CoreServices from '@/components/HomePage/CoreServices';
-const CaseStudy = dynamic(() => import('@/components/HomePage/CaseStudy'), {
+const CaseStudy = nextDynamic(() => import('@/components/HomePage/CaseStudy'), {
   loading: () =>  <div className="flex justify-center items-center w-full min-h-[519.33px] bg-gray-300 animate-pulse"></div>
 })
 
 import Brands from '@/components/HomePage/Brands';
 import Cta1 from '@/components/cta/Cta1';
-const Portfolio1 = dynamic(() => import('@/components/portfolios/Portfolio1'), {
+const Portfolio1 = nextDynamic(() => import('@/components/portfolios/Portfolio1'), {
   loading: () =>  <div className="flex justify-center items-center w-full min-h-[436px] bg-gray-300 animate-pulse"></div>
 })
 import AdvanceTech from '@/components/HomePage/AdvanceTech';
@@ -22,7 +21,7 @@ import QuickInsight from '@/components/HomePage/QuickInsight';
 import WhyChooseUs from '@/components/HomePage/WhyChooseUs';
 import Cta2 from '@/components/cta/Cta2';
 import Usp from '@/components/Usp';
-const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1'), {
+const Testimonial = nextDynamic(() => import('@/components/testimonials/Testimonial1'), {
   loading: () =>  <div className="flex justify-center items-center w-full h-[565.39px] bg-gray-300 animate-pulse"></div>
 })
 import Faq from '@/components/Faq';
