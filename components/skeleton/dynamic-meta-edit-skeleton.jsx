@@ -13,7 +13,7 @@ export default function DynamicMetaEditSkeleton() {
         </CardHeader>
         <CardContent>
           <div className="space-y-8">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(7)].map((_, i) => (
               <div key={i} className="space-y-2">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-10 w-full" />

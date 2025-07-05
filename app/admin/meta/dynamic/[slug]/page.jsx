@@ -43,7 +43,7 @@ export default function Page() {
         title: '',
         description: '',
         images: [
-          { url: '', width: 1200, height: 630, alt: '', type: 'image/png' },
+          { url: '', width: 1200, height: 630, alt: '', type: 'image/jpeg' },
         ],
         url: pageUrl,
       },
@@ -62,11 +62,17 @@ export default function Page() {
         },
       },
       other: { classification: '' },
-      alternates: { canonical: pageUrl },
     },
   });
 
   const { control, handleSubmit, setValue, reset, watch } = form;
+
+  const ogWidth = watch('openGraph.images.0.width');
+  const ogHeight = watch('openGraph.images.0.height');
+  const ogType = watch('openGraph.images.0.type');
+  const aspectRatio = ogWidth && ogHeight ? ogWidth / ogHeight : 1200 / 630;
+  const size = ogWidth && ogHeight ? `${ogWidth}x${ogHeight}` : '1200x630';
+  const format = (ogType || 'image/jpeg').split('/')[1];
 
   useEffect(() => {
     async function load() {
@@ -80,7 +86,7 @@ export default function Page() {
         } else {
           data.openGraph = {
             ...data.openGraph,
-            images: [{ url: '', width: 1200, height: 630, alt: '', type: 'image/png' }],
+            images: [{ url: '', width: 1200, height: 630, alt: '', type: 'image/jpeg' }],
           };
         }
         if (data.twitter?.images?.length) {
@@ -88,6 +94,7 @@ export default function Page() {
         } else {
           data.twitter = { ...data.twitter, images: [''] };
         }
+        delete data.alternates;
         reset(data);
       }
     }
@@ -124,6 +131,7 @@ export default function Page() {
     const strip = (v) => (typeof v === 'string' ? v.split('/').pop().split('?')[0] : v);
     values.openGraph.images = values.openGraph.images.map((img) => ({ ...img, url: strip(img.url) }));
     values.twitter.images = values.twitter.images.map(strip);
+    delete values.alternates;
     const res = await apiFetch('/api/v1/admin/meta/dynamic', { method: 'PUT', data: values });
     const json = await res.json();
     if (json.success) {
@@ -184,15 +192,25 @@ export default function Page() {
             )} />
           </div>
           <div className="space-y-2">
-            <FormField control={control} name="openGraph.images.0.url" render={({ field }) => (
-              <FormItem>
-                <FormLabel>OG Image</FormLabel>
-                <FormControl>
-                  <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
+            <FormField
+              control={control}
+              name="openGraph.images.0.url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>OG Image</FormLabel>
+                  <FormControl>
+                    <ImageCropperInput
+                      format={format}
+                      aspectRatio={aspectRatio}
+                      size={size}
+                      value={field.value}
+                      onChange={(v) => handleImageChange(field.name, v)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-3 gap-2">
               <FormField control={control} name="openGraph.images.0.width" render={({ field }) => (
                 <FormItem>
@@ -212,15 +230,31 @@ export default function Page() {
                   <FormMessage />
                 </FormItem>
               )} />
-              <FormField control={control} name="openGraph.images.0.type" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                control={control}
+                name="openGraph.images.0.type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="image/jpeg">jpg</SelectItem>
+                          <SelectItem value="image/png">png</SelectItem>
+                          <SelectItem value="image/webp">webp</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
               <FormItem>
@@ -252,15 +286,25 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          <FormField control={control} name="twitter.images.0" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Twitter Image</FormLabel>
-              <FormControl>
-                <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
+          <FormField
+            control={control}
+            name="twitter.images.0"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Twitter Image</FormLabel>
+                <FormControl>
+                  <ImageCropperInput
+                    format={format}
+                    aspectRatio={aspectRatio}
+                    size={size}
+                    value={field.value}
+                    onChange={(v) => handleImageChange(field.name, v)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid md:grid-cols-3 gap-6">
             <FormField control={control} name="robots.index" render={({ field }) => (
               <FormItem>
@@ -342,15 +386,6 @@ export default function Page() {
           <FormField control={control} name="other.classification" render={({ field }) => (
             <FormItem>
               <FormLabel>Classification</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <FormField control={control} name="alternates.canonical" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Canonical</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

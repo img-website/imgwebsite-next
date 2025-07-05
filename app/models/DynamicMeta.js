@@ -6,7 +6,12 @@ const imageSchema = new mongoose.Schema(
     width: { type: Number, required: true, default: 1200 },
     height: { type: Number, required: true, default: 630 },
     alt: { type: String, required: true },
-    type: { type: String, required: true, default: 'image/png' },
+    type: {
+      type: String,
+      required: true,
+      enum: ['image/jpeg', 'image/png', 'image/webp'],
+      default: 'image/jpeg',
+    },
   },
   { _id: false }
 );

@@ -45,6 +45,7 @@ export async function POST(request) {
       index: data.robots.index,
       follow: data.robots.follow,
     };
+    data.alternates = { canonical: data.pageUrl };
     await connectDB();
     const existing = await DynamicMeta.findOne({ pageUrl: data.pageUrl });
     if (existing) {
@@ -82,6 +83,7 @@ export async function PUT(request) {
       index: data.robots.index,
       follow: data.robots.follow,
     };
+    data.alternates = { canonical: data.pageUrl };
     await connectDB();
     const entry = await DynamicMeta.findOneAndUpdate(
       { pageUrl: data.pageUrl },

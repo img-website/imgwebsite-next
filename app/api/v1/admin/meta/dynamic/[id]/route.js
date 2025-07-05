@@ -44,6 +44,7 @@ export async function PUT(request, { params }) {
       index: data.robots.index,
       follow: data.robots.follow,
     };
+    data.alternates = { canonical: data.pageUrl };
     await connectDB();
     const entry = await DynamicMeta.findByIdAndUpdate(id, data, { new: true });
     if (!entry) {
