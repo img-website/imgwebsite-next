@@ -46,14 +46,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import RedirectionForm from "@/components/RedirectionForm";
 import { deleteRedirection } from "@/actions/redirections";
+import { useBlogStore } from "@/app/store/use-blog-store";
 
 function BlogActions({ blog }) {
-  const router = useRouter();
+  const updateBlog = useBlogStore((state) => state.updateBlog)
+  const removeBlog = useBlogStore((state) => state.removeBlog)
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openSchedule, setOpenSchedule] = React.useState(false);
   const [scheduleDate, setScheduleDate] = React.useState("");
@@ -80,7 +81,7 @@ function BlogActions({ blog }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Status updated");
-        router.refresh();
+        updateBlog(blog.id, data.data);
       } else {
         toast.error(data.error || "Failed to update status");
       }
@@ -113,7 +114,7 @@ function BlogActions({ blog }) {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || "Blog deleted");
-        router.refresh();
+        removeBlog(blog.id);
       } else {
         toast.error(data.error || "Failed to delete blog");
       }

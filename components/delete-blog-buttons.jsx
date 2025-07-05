@@ -13,10 +13,12 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useBlogStore } from "@/app/store/use-blog-store";
 
 export default function DeleteBlogButtons({ id }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const removeBlog = useBlogStore((state) => state.removeBlog);
 
   const handleDelete = async () => {
     try {
@@ -27,6 +29,7 @@ export default function DeleteBlogButtons({ id }) {
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || "Blog deleted");
+        removeBlog(id);
         router.push("/admin/blogs");
       } else {
         toast.error(data.error || "Failed to delete blog");

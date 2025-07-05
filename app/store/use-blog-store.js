@@ -27,6 +27,9 @@ export const useBlogStore = create((set) => ({
   removeBlog: (id) =>
     set((state) => {
       const { [id]: removed, ...rest } = state.blogDetails
-      return { blogDetails: rest }
+      const blogs = state.blogs
+        ? state.blogs.filter((b) => (b._id || b.id) !== id)
+        : null
+      return { blogDetails: rest, blogs }
     }),
 }))

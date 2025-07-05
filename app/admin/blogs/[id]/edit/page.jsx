@@ -53,6 +53,7 @@ import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useRouter } from "next/navigation";
 import { useBlog } from "@/hooks/use-blogs";
 import BlogEditSkeleton from "@/components/skeleton/blog-edit-skeleton";
+import { useBlogStore } from "@/app/store/use-blog-store";
 import dynamic from "next/dynamic";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
@@ -158,6 +159,7 @@ export default function Page({ params }) {
   const { id: blogId } = usePromise(params);
   const { blog } = useBlog(blogId);
   const router = useRouter();
+  const updateBlog = useBlogStore((state) => state.updateBlog);
 
   const blogFormSchema = useMemo(() => getBlogFormSchema(status, bgColorStatusValue), [status, bgColorStatusValue]);
 
@@ -327,8 +329,8 @@ export default function Page({ params }) {
       const result = await res.json();
       if (result.success) {
         toast.success("Blog updated successfully!");
+        updateBlog(blogId, result.data);
         router.push(`/admin/blogs/${blogId}`);
-        router.refresh();
       } else {
         toast.error(result.error || "Failed to update blog");
       }
