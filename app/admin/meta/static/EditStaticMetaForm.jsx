@@ -87,13 +87,14 @@ export default function EditStaticMetaForm({ meta }) {
   async function uploadFile(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const res = await apiFetch("/api/v1/admin/images", {
+    const res = await apiFetch("/api/v1/admin/images?noRecord=1", {
       method: "POST",
       body: formData,
     });
     const json = await res.json();
-    if (json.success && json.data?.storedName) {
-      return json.data.storedName;
+    const result = Array.isArray(json.data) ? json.data[0] : json.data;
+    if (json.success && result?.storedName) {
+      return result.storedName;
     }
     throw new Error(json.error || "Failed to upload image");
   }

@@ -44,6 +44,8 @@ export async function POST(request) {
       );
     }
     await connectDB();
+    const url = new URL(request.url);
+    const noRecord = url.searchParams.get("noRecord") === "1";
     const formData = await request.formData();
     let files = formData.getAll("files");
     if (!files || files.length === 0) {
@@ -79,8 +81,13 @@ export async function POST(request) {
           { status: 400 },
         );
       }
-      const img = await Image.create({ storedName, uploadedBy });
-      createdImages.push(img);
+      let record;
+      if (!noRecord) {
+        record = await Image.create({ storedName, uploadedBy });
+      } else {
+        record = { storedName };
+      }
+      createdImages.push(record);
     }
     return NextResponse.json(
       {
@@ -88,7 +95,7 @@ export async function POST(request) {
         message: "Images uploaded successfully",
         data: createdImages,
       },
-      { status: 201 },
+      { status: noRecord ? 200 : 201 },
     );
   } catch (error) {
     if (error.code === 11000) {
