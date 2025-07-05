@@ -1,10 +1,3 @@
-
-import { fetchCurrentDynamicMeta } from '@/app/lib/dynamicMeta';
-
-export async function generateMetadata() {
-  return (await fetchCurrentDynamicMeta()) || {};
-}
-
 export default function Disclaimer() {
     return (
         <>

@@ -1,11 +1,58 @@
-
 import Image from "next/image";
 import Link from "next/link";
-import { fetchCurrentDynamicMeta } from "@/app/lib/dynamicMeta";
 
-export async function generateMetadata() {
-  return (await fetchCurrentDynamicMeta()) || {};
-}
+export const metadata = {
+        title: "About IMG Global Infotech - App & Web Development Company",
+        description: "IMG Global Infotech, a leading mobile app development company specializing in innovative web and mobile app development services. Discover our story, expertise, and commitment to delivering innovative digital solutions worldwide.",
+        keywords: [
+            'Mobile App Development',
+            'IT Consulting',
+            'Software Development',
+            'USA',
+            'UK',
+            'UAE',
+            'India',
+            'IMG Global Infotech',
+        ],
+        openGraph: {
+            title: "About Us | IMG Global Infotech – Innovating Tech Solutions",
+            description: "Learn about IMG Global Infotech, where innovation meets reality. Our team is accomplished to help businesses grow through cutting-edge technology solutions. Explore our story today!",
+            images: [
+                {
+                url: 'https://d1y41eupgbwbb2.cloudfront.net/images/og/about-us.jpg',
+                width: 1200,
+                height: 630,
+                alt: 'IMG Global Infotech',
+                type: 'image/png',
+                },
+            ],
+            url: process.env.NEXT_PUBLIC_BASE_URL,
+        },
+        twitter: {
+            title: "About Us | IMG Global Infotech – Your Partner in Innovation",
+            description: "Get to know IMG Global Infotech, a team of dedicated experts passionate about delivering innovative tech solutions. Learn how we help businesses through our tailored services.",
+            images: ["https://d1y41eupgbwbb2.cloudfront.net/images/og/about-us.jpg"]
+        },
+        robots: {
+            index: process.env.NODE_ENV === 'production',
+            follow: process.env.NODE_ENV === 'production',
+            nocache: false,
+            googleBot: {
+                index: process.env.NODE_ENV === 'production',
+                follow: process.env.NODE_ENV === 'production',
+                noimageindex: process.env.NODE_ENV === 'production',
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
+        },
+        other: {
+            classification: 'Technology'
+        },
+        alternates: {
+            canonical: "/about-us.php"
+        }
+};
 
 export default function AboutUs() {
   return (
