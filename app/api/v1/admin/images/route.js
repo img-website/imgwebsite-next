@@ -45,7 +45,11 @@ export async function POST(request) {
     }
     await connectDB();
     const formData = await request.formData();
-    const files = formData.getAll("files");
+    let files = formData.getAll("files");
+    if (!files || files.length === 0) {
+      const single = formData.get("file");
+      files = single && typeof single !== "string" ? [single] : [];
+    }
     if (!files || files.length === 0) {
       return NextResponse.json(
         { success: false, error: "No file uploaded" },
