@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { fetchDynamicMeta } from "@/app/lib/dynamicMeta";
 
-export const metadata = {
+const defaultMetadata = {
         title: "About IMG Global Infotech - App & Web Development Company",
         description: "IMG Global Infotech, a leading mobile app development company specializing in innovative web and mobile app development services. Discover our story, expertise, and commitment to delivering innovative digital solutions worldwide.",
         keywords: [
@@ -53,6 +54,10 @@ export const metadata = {
             canonical: "/about-us.php"
         }
 };
+
+export async function generateMetadata() {
+  return (await fetchDynamicMeta('/about-us.php')) || defaultMetadata;
+}
 
 export default function AboutUs() {
   return (

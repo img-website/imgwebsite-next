@@ -1,3 +1,9 @@
+import { fetchDynamicMeta } from '@/app/lib/dynamicMeta';
+
+export async function generateMetadata() {
+  return (await fetchDynamicMeta('/disclaimer.php')) || {};
+}
+
 export default function Disclaimer() {
     return (
         <>

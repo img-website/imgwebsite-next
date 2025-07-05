@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { fetchDynamicMeta } from "@/app/lib/dynamicMeta";
 
-export const metadata = {
+const defaultMetadata = {
         title: "Job Openings & Career Growth Opportunities - IMG Global Infotech",
         description: "Explore exciting career opportunities at IMG Global Infotech. Join our talented professionals and take your skills to the next level with IT, software, and web developer job openings.",
         keywords: [
@@ -52,6 +53,10 @@ export const metadata = {
             canonical: "/career.php"
         }
 };
+
+export async function generateMetadata() {
+  return (await fetchDynamicMeta('/career.php')) || defaultMetadata;
+}
 
 export default function Career() {
     return (

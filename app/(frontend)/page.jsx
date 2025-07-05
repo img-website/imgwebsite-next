@@ -2,6 +2,7 @@
 
 
 import dynamic from 'next/dynamic';
+import { fetchDynamicMeta } from '@/app/lib/dynamicMeta';
 const HomeHero = dynamic(() => import('@/components/HomeHero'), {
   loading: () => <HomeHeroSkeleton />
 })
@@ -27,7 +28,7 @@ const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1
 import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 
-export const metadata = {
+const defaultMetadata = {
     title: "Mobile App Development & IT Consulting Services in USA | IMG Global Infotech",
     description: "IMG Global Infotech is a top mobile app development company in USA, UK, UAE, and India, providing expert IT consulting services for startups to large enterprises.",keywords: [
       'Mobile App Development',
@@ -78,6 +79,10 @@ export const metadata = {
       canonical: '/'
     }
 };
+
+export async function generateMetadata() {
+  return (await fetchDynamicMeta('/')) || defaultMetadata;
+}
 
 
   const graphSchema = {

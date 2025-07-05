@@ -1,5 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { fetchDynamicMeta } from '@/app/lib/dynamicMeta';
+
+export async function generateMetadata() {
+  return (await fetchDynamicMeta('/casestudy.php')) || {};
+}
 
 export default function CaseStudy() {
     return (
