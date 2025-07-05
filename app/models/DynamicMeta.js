@@ -10,7 +10,7 @@ const imageSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ['image/jpeg', 'image/png', 'image/webp'],
-      default: 'image/jpeg',
+      default: 'image/png',
     },
   },
   { _id: false }

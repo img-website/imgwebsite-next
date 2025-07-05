@@ -43,7 +43,7 @@ export default function Page() {
         title: '',
         description: '',
         images: [
-          { url: '', width: 1200, height: 630, alt: '', type: 'image/jpeg' },
+          { url: '', width: 1200, height: 630, alt: '', type: 'image/png' },
         ],
         url: pageUrl,
       },
@@ -72,7 +72,7 @@ export default function Page() {
   const ogType = watch('openGraph.images.0.type');
   const aspectRatio = ogWidth && ogHeight ? ogWidth / ogHeight : 1200 / 630;
   const size = ogWidth && ogHeight ? `${ogWidth}x${ogHeight}` : '1200x630';
-  const format = (ogType || 'image/jpeg').split('/')[1];
+  const format = (ogType || 'image/png').split('/')[1];
 
   useEffect(() => {
     async function load() {
@@ -86,7 +86,7 @@ export default function Page() {
         } else {
           data.openGraph = {
             ...data.openGraph,
-            images: [{ url: '', width: 1200, height: 630, alt: '', type: 'image/jpeg' }],
+            images: [{ url: '', width: 1200, height: 630, alt: '', type: 'image/png' }],
           };
         }
         if (data.twitter?.images?.length) {

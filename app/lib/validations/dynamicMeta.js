@@ -9,7 +9,7 @@ const image = z.object({
   alt: requiredString('Alt text'),
   type: z
     .enum(['image/jpeg', 'image/png', 'image/webp'])
-    .default('image/jpeg'),
+    .default('image/png'),
 });
 
 export const dynamicMetaSchema = z.object({
