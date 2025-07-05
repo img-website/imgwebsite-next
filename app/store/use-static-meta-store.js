@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 export const useStaticMetaStore = create((set) => ({
   meta: undefined,
@@ -8,4 +8,4 @@ export const useStaticMetaStore = create((set) => ({
       meta: state.meta ? { ...state.meta, ...updates } : updates,
     })),
   clearMeta: () => set({ meta: undefined }),
-}))
+}));

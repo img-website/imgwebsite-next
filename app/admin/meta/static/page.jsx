@@ -15,7 +15,7 @@ export default function Page() {
         ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${name}`
         : name;
     m.appleWebApp.startupImage.mainImageUrl = toUrl(
-      m.appleWebApp.startupImage.mainImageUrl
+      m.appleWebApp.startupImage.mainImageUrl,
     );
     m.appleWebApp.startupImage.url = toUrl(m.appleWebApp.startupImage.url);
     m.icons.icon = m.icons.icon.map((i) => ({ ...i, url: toUrl(i.url) }));
