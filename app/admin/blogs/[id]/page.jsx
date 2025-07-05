@@ -1,18 +1,24 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteBlogButtons from "@/components/delete-blog-buttons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { use as usePromise } from "react";
+import { useBlog } from "@/hooks/use-blogs";
+import BlogDetailSkeleton from "@/components/skeleton/blog-detail-skeleton";
 import 'tinymce/skins/ui/oxide/content.min.css';
 import 'tinymce/skins/content/default/content.min.css';
 
-export default async function Page({ params }) {
-  const { id } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/${id}`, { cache: 'no-store' });
-  const json = await res.json();
-  const blog = json?.data;
+export default function Page({ params }) {
+  const { id } = usePromise(params);
+  const { blog } = useBlog(id);
 
-  if (!blog) {
+  if (blog === undefined) {
+    return <BlogDetailSkeleton />;
+  }
+
+  if (blog === null) {
     return <div className="p-4">Blog not found</div>;
   }
 

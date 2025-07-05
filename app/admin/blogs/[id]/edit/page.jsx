@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, use as usePromise } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,7 +50,9 @@ import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useBlog } from "@/hooks/use-blogs";
+import BlogEditSkeleton from "@/components/skeleton/blog-edit-skeleton";
 import dynamic from "next/dynamic";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
@@ -148,12 +150,13 @@ function getBlogFormSchema(status, bgColorStatus) {
 }
 
 
-export default function Page() {
+export default function Page({ params }) {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
-  const { id: blogId } = useParams();
+  const { id: blogId } = usePromise(params);
+  const { blog } = useBlog(blogId);
   const router = useRouter();
 
   const blogFormSchema = useMemo(() => getBlogFormSchema(status, bgColorStatusValue), [status, bgColorStatusValue]);
@@ -222,70 +225,66 @@ export default function Page() {
     fetchOptions();
   }, []);
 
-  // Fetch blog data if id is present in URL
   useEffect(() => {
-    if (!blogId) return;
-    async function fetchBlog() {
-      try {
-        const res = await fetch(`/api/v1/admin/blogs/${blogId}`);
-        const result = await res.json();
-        if (!result.success || !result.data) {
-          router.replace("/admin/blogs");
-          return;
-        }
-        // Map API fields to form fields
-        const blog = result.data;
-        form.reset({
-          category: blog.category?._id || "",
-          title: blog.title || "",
-          authorId: blog.author?._id || "",
-          blogWrittenDate: blog.blog_written_date ? blog.blog_written_date.slice(0, 10) : "",
-          slug: blog.slug || "",
-          shortDescription: blog.short_description || "",
-          description: blog.description || "",
-          banner: blog.banner?.startsWith('http')
-            ? blog.banner
-            : blog.banner
-              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`
-              : undefined,
-          thumbnail: blog.thumbnail?.startsWith('http')
-            ? blog.thumbnail
-            : blog.thumbnail
-              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.thumbnail}`
-              : undefined,
-          imageAlt: blog.image_alt || "",
-          xImage: blog.x_image?.startsWith('http')
-            ? blog.x_image
-            : blog.x_image
-              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.x_image}`
-              : undefined,
-          xImageAlt: blog.x_image_alt || "",
-          ogImage: blog.og_image?.startsWith('http')
-            ? blog.og_image
-            : blog.og_image
-              ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.og_image}`
-              : undefined,
-          ogImageAlt: blog.og_image_alt || "",
-          metaTitle: blog.meta_title || "",
-          metaKeyword: blog.meta_keyword || [],
-          metaDescription: blog.meta_description || "",
-          metaOgTitle: blog.meta_og_title || "",
-          metaOgDescription: blog.meta_og_description || "",
-          metaXTitle: blog.meta_x_title || "",
-          metaXDescription: blog.meta_x_description || "",
-          faqs: Array.isArray(blog.faqs) && blog.faqs.length ? blog.faqs : [{ question: "", answer: "" }],
-          status: String(blog.status ?? 1),
-          publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
-          bgColorStatus: blog.bg_color_status ?? false,
-          bgColor: blog.bg_color || "",
-        });
-      } catch (err) {
-        router.replace("/admin/blogs");
-      }
+    if (blog === undefined) return;
+    if (blog === null) {
+      router.replace("/admin/blogs");
+      return;
     }
-    fetchBlog();
+    form.reset({
+      category: blog.category?._id || "",
+      title: blog.title || "",
+      authorId: blog.author?._id || "",
+      blogWrittenDate: blog.blog_written_date ? blog.blog_written_date.slice(0, 10) : "",
+      slug: blog.slug || "",
+      shortDescription: blog.short_description || "",
+      description: blog.description || "",
+      banner: blog.banner?.startsWith('http')
+        ? blog.banner
+        : blog.banner
+          ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.banner}`
+          : undefined,
+      thumbnail: blog.thumbnail?.startsWith('http')
+        ? blog.thumbnail
+        : blog.thumbnail
+          ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.thumbnail}`
+          : undefined,
+      imageAlt: blog.image_alt || "",
+      xImage: blog.x_image?.startsWith('http')
+        ? blog.x_image
+        : blog.x_image
+          ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.x_image}`
+          : undefined,
+      xImageAlt: blog.x_image_alt || "",
+      ogImage: blog.og_image?.startsWith('http')
+        ? blog.og_image
+        : blog.og_image
+          ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.og_image}`
+          : undefined,
+      ogImageAlt: blog.og_image_alt || "",
+      metaTitle: blog.meta_title || "",
+      metaKeyword: blog.meta_keyword || [],
+      metaDescription: blog.meta_description || "",
+      metaOgTitle: blog.meta_og_title || "",
+      metaOgDescription: blog.meta_og_description || "",
+      metaXTitle: blog.meta_x_title || "",
+      metaXDescription: blog.meta_x_description || "",
+      faqs: Array.isArray(blog.faqs) && blog.faqs.length ? blog.faqs : [{ question: "", answer: "" }],
+      status: String(blog.status ?? 1),
+      publishedDateTime: blog.published_date_time ? new Date(blog.published_date_time).toISOString().slice(0, 16) : "",
+      bgColorStatus: blog.bg_color_status ?? false,
+      bgColor: blog.bg_color || "",
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blogId]);
+  }, [blog]);
+
+  if (blog === undefined) {
+    return <BlogEditSkeleton />;
+  }
+
+  if (blog === null) {
+    return <div className="p-4">Blog not found</div>;
+  }
 
   async function onSubmit(data) {
     try {
