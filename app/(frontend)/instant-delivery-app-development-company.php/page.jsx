@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import ClientPage from './client';
 import { fetchCurrentDynamicMeta } from '@/app/lib/dynamicMeta';
 

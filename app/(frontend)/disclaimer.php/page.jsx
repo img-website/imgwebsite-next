@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { fetchCurrentDynamicMeta } from '@/app/lib/dynamicMeta';
 
 export async function generateMetadata() {
