@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dynamicMetaSchema } from '@/app/lib/validations/dynamicMeta';
 import {
@@ -14,6 +14,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import MultiKeywordCombobox from '@/components/ui/multi-keyword-combobox';
 import ImageCropperInput from '@/components/image-cropper-input';
 import { useParams, useRouter } from 'next/navigation';
@@ -32,15 +39,22 @@ export default function Page() {
       title: '',
       description: '',
       keywords: [],
-      openGraph: { title: '', description: '', images: [], url: pageUrl },
-      twitter: { title: '', description: '', images: [] },
+      openGraph: {
+        title: '',
+        description: '',
+        images: [
+          { url: '', width: 1200, height: 630, alt: '', type: 'image/png' },
+        ],
+        url: pageUrl,
+      },
+      twitter: { title: '', description: '', images: [''] },
       robots: {
-        index: true,
-        follow: true,
+        index: false,
+        follow: false,
         nocache: false,
         googleBot: {
-          index: true,
-          follow: true,
+          index: false,
+          follow: false,
           noimageindex: false,
           'max-video-preview': -1,
           'max-image-preview': 'large',
@@ -52,9 +66,7 @@ export default function Page() {
     },
   });
 
-  const { control, handleSubmit, setValue, reset } = form;
-  const ogImageFields = useFieldArray({ control, name: 'openGraph.images' });
-  const twitterImageFields = useFieldArray({ control, name: 'twitter.images' });
+  const { control, handleSubmit, setValue, reset, watch } = form;
 
   useEffect(() => {
     async function load() {
@@ -63,11 +75,18 @@ export default function Page() {
       if (json.success && json.data) {
         const data = json.data;
         const toUrl = (u) => (u && !u.startsWith('http') ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${u}` : u);
-        if (data.openGraph?.images) {
+        if (data.openGraph?.images?.length) {
           data.openGraph.images = data.openGraph.images.map((img) => ({ ...img, url: toUrl(img.url) }));
+        } else {
+          data.openGraph = {
+            ...data.openGraph,
+            images: [{ url: '', width: 1200, height: 630, alt: '', type: 'image/png' }],
+          };
         }
-        if (data.twitter?.images) {
+        if (data.twitter?.images?.length) {
           data.twitter.images = data.twitter.images.map(toUrl);
+        } else {
+          data.twitter = { ...data.twitter, images: [''] };
         }
         reset(data);
       }
@@ -164,49 +183,38 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          {ogImageFields.fields.map((item, index) => (
-            <div key={item.id} className="space-y-2">
-              <FormField control={control} name={`openGraph.images.${index}.url`} render={({ field }) => (
+          <div className="space-y-2">
+            <FormField control={control} name="openGraph.images.0.url" render={({ field }) => (
+              <FormItem>
+                <FormLabel>OG Image</FormLabel>
+                <FormControl>
+                  <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <div className="grid grid-cols-3 gap-2">
+              <FormField control={control} name="openGraph.images.0.width" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>OG Image</FormLabel>
+                  <FormLabel>Width</FormLabel>
                   <FormControl>
-                    <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+                    <Input type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
-              <div className="grid grid-cols-3 gap-2">
-                <FormField control={control} name={`openGraph.images.${index}.width`} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Width</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField control={control} name={`openGraph.images.${index}.height`} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Height</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField control={control} name={`openGraph.images.${index}.type`} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-              <FormField control={control} name={`openGraph.images.${index}.alt`} render={({ field }) => (
+              <FormField control={control} name="openGraph.images.0.height" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Alt</FormLabel>
+                  <FormLabel>Height</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={control} name="openGraph.images.0.type" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -214,10 +222,16 @@ export default function Page() {
                 </FormItem>
               )} />
             </div>
-          ))}
-          <Button type="button" onClick={() => ogImageFields.append({ url: '', width: 0, height: 0, alt: '', type: '' })}>
-            Add OG Image
-          </Button>
+            <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Alt</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             <FormField control={control} name="twitter.title" render={({ field }) => (
               <FormItem>
@@ -238,20 +252,93 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          {twitterImageFields.fields.map((item, index) => (
-            <FormField key={item.id} control={control} name={`twitter.images.${index}`} render={({ field }) => (
+          <FormField control={control} name="twitter.images.0" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Twitter Image</FormLabel>
+              <FormControl>
+                <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <div className="grid md:grid-cols-3 gap-6">
+            <FormField control={control} name="robots.index" render={({ field }) => (
               <FormItem>
-                <FormLabel>Twitter Image</FormLabel>
+                <FormLabel>Robots Index</FormLabel>
                 <FormControl>
-                  <ImageCropperInput value={field.value} onChange={(v) => handleImageChange(field.name, v)} />
+                  <Select value={String(field.value)} onValueChange={(v) => {
+                    const val = v === 'true';
+                    field.onChange(val);
+                    setValue('robots.googleBot.index', val);
+                  }}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">true</SelectItem>
+                      <SelectItem value="false">false</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )} />
-          ))}
-          <Button type="button" onClick={() => twitterImageFields.append('')}>
-            Add Twitter Image
-          </Button>
+            <FormField control={control} name="robots.follow" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Robots Follow</FormLabel>
+                <FormControl>
+                  <Select value={String(field.value)} onValueChange={(v) => {
+                    const val = v === 'true';
+                    field.onChange(val);
+                    setValue('robots.googleBot.follow', val);
+                  }}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">true</SelectItem>
+                      <SelectItem value="false">false</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={control} name="robots.nocache" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Robots Nocache</FormLabel>
+                <FormControl>
+                  <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">true</SelectItem>
+                      <SelectItem value="false">false</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+          </div>
+          <FormField control={control} name="robots.googleBot.noimageindex" render={({ field }) => (
+            <FormItem>
+              <FormLabel>GoogleBot Noimageindex</FormLabel>
+              <FormControl>
+                <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="true">true</SelectItem>
+                    <SelectItem value="false">false</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
           <FormField control={control} name="other.classification" render={({ field }) => (
             <FormItem>
               <FormLabel>Classification</FormLabel>

@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 
-const imageSchema = new mongoose.Schema({
-  url: { type: String, required: true },
-  width: { type: Number, required: true },
-  height: { type: Number, required: true },
-  alt: { type: String, required: true },
-  type: { type: String, required: true }
-}, { _id: false });
+const imageSchema = new mongoose.Schema(
+  {
+    url: { type: String, required: true },
+    width: { type: Number, required: true, default: 1200 },
+    height: { type: Number, required: true, default: 630 },
+    alt: { type: String, required: true },
+    type: { type: String, required: true, default: 'image/png' },
+  },
+  { _id: false }
+);
 
 const dynamicMetaSchema = new mongoose.Schema({
   pageUrl: { type: String, required: true, unique: true },
@@ -25,17 +28,17 @@ const dynamicMetaSchema = new mongoose.Schema({
     images: [String]
   },
   robots: {
-    index: Boolean,
-    follow: Boolean,
-    nocache: Boolean,
+    index: { type: Boolean, default: false },
+    follow: { type: Boolean, default: false },
+    nocache: { type: Boolean, default: false },
     googleBot: {
-      index: Boolean,
-      follow: Boolean,
-      noimageindex: Boolean,
-      'max-video-preview': Number,
-      'max-image-preview': String,
-      'max-snippet': Number
-    }
+      index: { type: Boolean, default: false },
+      follow: { type: Boolean, default: false },
+      noimageindex: { type: Boolean, default: false },
+      'max-video-preview': { type: Number, default: -1 },
+      'max-image-preview': { type: String, default: 'large' },
+      'max-snippet': { type: Number, default: -1 },
+    },
   },
   other: {
     classification: String

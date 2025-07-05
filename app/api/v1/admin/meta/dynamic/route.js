@@ -34,14 +34,23 @@ export async function POST(request) {
     const body = await request.json();
     const parsed = dynamicMetaSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: parsed.error.errors[0].message },
+        { status: 400 }
+      );
     }
+    const data = parsed.data;
+    data.robots.googleBot = {
+      ...data.robots.googleBot,
+      index: data.robots.index,
+      follow: data.robots.follow,
+    };
     await connectDB();
-    const existing = await DynamicMeta.findOne({ pageUrl: parsed.data.pageUrl });
+    const existing = await DynamicMeta.findOne({ pageUrl: data.pageUrl });
     if (existing) {
       return NextResponse.json({ success: false, error: 'Meta already exists' }, { status: 400 });
     }
-    const entry = await DynamicMeta.create(parsed.data);
+    const entry = await DynamicMeta.create(data);
     return NextResponse.json({ success: true, data: entry }, { status: 201 });
   } catch (error) {
     console.error('Error creating dynamic meta:', error);
@@ -62,12 +71,21 @@ export async function PUT(request) {
     const body = await request.json();
     const parsed = dynamicMetaSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: parsed.error.errors[0].message },
+        { status: 400 }
+      );
     }
+    const data = parsed.data;
+    data.robots.googleBot = {
+      ...data.robots.googleBot,
+      index: data.robots.index,
+      follow: data.robots.follow,
+    };
     await connectDB();
     const entry = await DynamicMeta.findOneAndUpdate(
-      { pageUrl: parsed.data.pageUrl },
-      parsed.data,
+      { pageUrl: data.pageUrl },
+      data,
       { new: true, upsert: true }
     );
     return NextResponse.json({ success: true, data: entry });
