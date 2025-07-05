@@ -104,10 +104,14 @@ export default function Page() {
   async function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await apiFetch('/api/v1/admin/images', { method: 'POST', body: formData });
+    const res = await apiFetch('/api/v1/admin/images?noRecord=1', {
+      method: 'POST',
+      body: formData,
+    });
     const json = await res.json();
-    if (json.success && json.data?.storedName) {
-      return json.data.storedName;
+    const result = Array.isArray(json.data) ? json.data[0] : json.data;
+    if (json.success && result?.storedName) {
+      return result.storedName;
     }
     throw new Error(json.error || 'Failed to upload image');
   }
@@ -205,6 +209,7 @@ export default function Page() {
                       size={size}
                       value={field.value}
                       onChange={(v) => handleImageChange(field.name, v)}
+                      originalName={true}
                     />
                   </FormControl>
                   <FormMessage />
@@ -299,6 +304,7 @@ export default function Page() {
                     size={size}
                     value={field.value}
                     onChange={(v) => handleImageChange(field.name, v)}
+                    originalName={true}
                   />
                 </FormControl>
                 <FormMessage />
