@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dynamicMetaSchema } from '@/app/lib/validations/dynamicMeta';
@@ -65,14 +65,39 @@ export default function Page() {
     },
   });
 
-  const { control, handleSubmit, setValue, reset, watch } = form;
+  const { control, handleSubmit, setValue, reset, watch, setError, clearErrors } =
+    form;
+
+  const [imageResetKey, setImageResetKey] = useState(0);
+  const prevTypeRef = useRef();
 
   const ogWidth = watch('openGraph.images.0.width');
   const ogHeight = watch('openGraph.images.0.height');
   const ogType = watch('openGraph.images.0.type');
   const aspectRatio = ogWidth && ogHeight ? ogWidth / ogHeight : 1200 / 630;
   const size = ogWidth && ogHeight ? `${ogWidth}x${ogHeight}` : '1200x630';
-  const format = (ogType || 'image/png').split('/')[1];
+  const format = ogType
+    ? ogType.split('/')[1] === 'jpeg'
+      ? 'jpg'
+      : ogType.split('/')[1]
+    : 'png';
+
+  useEffect(() => {
+    if (prevTypeRef.current && prevTypeRef.current !== ogType) {
+      setValue('openGraph.images.0.url', '', { shouldValidate: false });
+      setValue('twitter.images.0', '', { shouldValidate: false });
+      setImageResetKey((k) => k + 1);
+      setError('openGraph.images.0.url', {
+        type: 'manual',
+        message: 'Please upload image of selected type',
+      });
+      setError('twitter.images.0', {
+        type: 'manual',
+        message: 'Please upload image of selected type',
+      });
+    }
+    prevTypeRef.current = ogType;
+  }, [ogType, setValue, setError]);
 
   useEffect(() => {
     async function load() {
@@ -120,7 +145,12 @@ export default function Page() {
     if (files?.[0] instanceof File) {
       try {
         const nameOnly = await uploadFile(files[0]);
-        setValue(name, `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`, { shouldValidate: true });
+        setValue(
+          name,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`,
+          { shouldValidate: true }
+        );
+        clearErrors(name);
       } catch (err) {
         toast.error(err.message || 'Image upload failed');
       }
@@ -209,6 +239,7 @@ export default function Page() {
                       size={size}
                       value={field.value}
                       onChange={(v) => handleImageChange(field.name, v)}
+                      resetKey={imageResetKey}
                       originalName={true}
                     />
                   </FormControl>
@@ -304,6 +335,7 @@ export default function Page() {
                     size={size}
                     value={field.value}
                     onChange={(v) => handleImageChange(field.name, v)}
+                    resetKey={imageResetKey}
                     originalName={true}
                   />
                 </FormControl>
