@@ -58,12 +58,16 @@ export async function middleware(request) {
     return response;
   }
 
-  if (!pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/blogs/')) {
     const redirects = await getRedirections(origin);
     const pathWithQuery = pathname + search;
-    const match = redirects.find(r => r.from === pathWithQuery || r.from === pathname);
+    const match = redirects.find(
+      (r) => r.from === pathWithQuery || r.from === pathname,
+    );
     if (match) {
-      const url = match.to.startsWith('http') ? match.to : `${origin}${match.to}`;
+      const url = match.to.startsWith('http')
+        ? match.to
+        : `${origin}${match.to}`;
       return NextResponse.redirect(url, match.methodCode);
     }
   }
