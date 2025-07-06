@@ -51,7 +51,13 @@ export default function Page() {
                 </FormItem>
               )} />
               <div className="flex justify-end">
-                <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting ? 'Submitting...' : 'Submit'}</Button>
+                <Button
+                  type="submit"
+                  className="cursor-pointer"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? 'Submitting...' : 'Submit'}
+                </Button>
               </div>
             </form>
           </Form>

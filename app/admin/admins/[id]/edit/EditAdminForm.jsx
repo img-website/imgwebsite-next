@@ -228,7 +228,11 @@ export default function EditAdminForm({
             )}
           />
         )}
-        <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          className="w-full cursor-pointer"
+        >
           {form.formState.isSubmitting ? "Updating..." : "Update"}
         </Button>
       </form>

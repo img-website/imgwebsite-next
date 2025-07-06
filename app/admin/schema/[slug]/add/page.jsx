@@ -947,7 +947,11 @@ export default function Page() {
             </div>
           )}
           <div className="flex justify-end pt-4">
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button
+              type="submit"
+              className="cursor-pointer"
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? "Saving..." : "Save"}
             </Button>
           </div>

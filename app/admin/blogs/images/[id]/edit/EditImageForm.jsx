@@ -95,7 +95,11 @@ export default function EditImageForm({ image }) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full cursor-pointer"
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? 'Updating...' : 'Update Image'}
             </Button>
           </form>

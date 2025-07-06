@@ -1130,7 +1130,11 @@ function BlogAdd() {
                       </div>
                     )}
                     <div className="w-full flex justify-end gap-4">
-                      <Button type="submit" disabled={form.formState.isSubmitting}>
+                      <Button
+                        type="submit"
+                        className="cursor-pointer"
+                        disabled={form.formState.isSubmitting}
+                      >
                         {status === "1"
                           ? (form.formState.isSubmitting ? "Saving..." : "Save Draft")
                           : (form.formState.isSubmitting ? "Publishing..." : "Publish Now")}

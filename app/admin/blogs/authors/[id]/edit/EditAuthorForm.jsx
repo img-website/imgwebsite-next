@@ -244,7 +244,11 @@ export default function EditAuthorForm({ author }) {
                 )}
               />
               <div className="flex justify-end gap-4">
-                <Button type="submit" disabled={form.formState.isSubmitting}>
+                <Button
+                  type="submit"
+                  className="cursor-pointer"
+                  disabled={form.formState.isSubmitting}
+                >
                   {form.formState.isSubmitting ? "Updating..." : "Update Author"}
                 </Button>
               </div>

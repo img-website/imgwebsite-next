@@ -200,7 +200,11 @@ export default function DepartmentForm({ department, onSuccess }) {
             </Table>
           </div>
         </div>
-        <Button type="submit" disabled={form.formState.isSubmitting}>
+        <Button
+          type="submit"
+          className="cursor-pointer"
+          disabled={form.formState.isSubmitting}
+        >
           {form.formState.isSubmitting
             ? department
               ? "Updating..."

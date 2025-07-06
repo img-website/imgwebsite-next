@@ -978,7 +978,11 @@ export default function Page({ params }) {
                         >
                         Cancel
                       </Button>
-                      <Button type="submit" disabled={form.formState.isSubmitting}>
+                      <Button
+                        type="submit"
+                        className="cursor-pointer"
+                        disabled={form.formState.isSubmitting}
+                      >
                         {form.formState.isSubmitting ? "Updating..." : "Update"}
                       </Button>
                     </div>

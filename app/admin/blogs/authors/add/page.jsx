@@ -221,7 +221,11 @@ export default function Page() {
                   </div>
 
                   <div className="flex justify-end gap-4">
-                    <Button type="submit" disabled={form.formState.isSubmitting}>
+                    <Button
+                      type="submit"
+                      className="cursor-pointer"
+                      disabled={form.formState.isSubmitting}
+                    >
                       {form.formState.isSubmitting ? "Creating..." : "Create Author"}
                     </Button>
                   </div>

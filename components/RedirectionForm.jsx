@@ -114,7 +114,7 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="w-full"
+          className="w-full cursor-pointer"
         >
           {form.formState.isSubmitting ? "Adding..." : "Add Redirection"}
         </Button>
