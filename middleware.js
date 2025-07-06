@@ -85,7 +85,8 @@ export async function middleware(request) {
     const isEmail = decodedToken?.email;
 
     const permStamp = request.cookies.get('permissionsStamp')?.value;
-    if (decodedToken && permStamp) {
+    const shouldCheckPermissions = pathname.startsWith('/admin') || pathname.startsWith('/blog');
+    if (shouldCheckPermissions && decodedToken && permStamp) {
         try {
             const res = await fetch(`${origin}/api/v1/admin/admins/me`, {
                 headers: { Authorization: `Bearer ${token}` },
