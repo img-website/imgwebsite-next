@@ -26,6 +26,7 @@ import ImageCropperInput from '@/components/image-cropper-input';
 import { useParams, useRouter } from 'next/navigation';
 import apiFetch from '@/helpers/apiFetch';
 import { toast } from 'sonner';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function Page() {
   const { slug } = useParams();
@@ -195,7 +196,8 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          <div className="space-y-2">
+          <Card>
+            <CardContent className="space-y-4">
             <FormField
               control={control}
               name="openGraph.images.0.url"
@@ -216,9 +218,9 @@ export default function Page() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-3 gap-2">
+            <div className="flex flex-wrap gap-2">
               <FormField control={control} name="openGraph.images.0.width" render={({ field }) => (
-                <FormItem>
+                <FormItem className="grow-0">
                   <FormLabel>Width</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} />
@@ -227,7 +229,7 @@ export default function Page() {
                 </FormItem>
               )} />
               <FormField control={control} name="openGraph.images.0.height" render={({ field }) => (
-                <FormItem>
+                <FormItem className="grow-0">
                   <FormLabel>Height</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} />
@@ -246,7 +248,7 @@ export default function Page() {
                         value={field.value}
                         onValueChange={(val) => field.onChange(val)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger className="grow-0">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -260,17 +262,18 @@ export default function Page() {
                   </FormItem>
                 )}
               />
+              <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
+                <FormItem className="grow">
+                  <FormLabel>Alt</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
             </div>
-            <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Alt</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-          </div>
+            </CardContent>
+          </Card>
           <div className="grid md:grid-cols-2 gap-6">
             <FormField control={control} name="twitter.title" render={({ field }) => (
               <FormItem>
@@ -291,27 +294,31 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          <FormField
-            control={control}
-            name="twitter.images.0"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Twitter Image</FormLabel>
-                <FormControl>
-                  <ImageCropperInput
-                    format={format}
-                    aspectRatio={aspectRatio}
-                    size={size}
-                    value={field.value}
-                    onChange={(v) => handleImageChange(field.name, v)}
-                    originalName={true}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="grid md:grid-cols-3 gap-6">
+          <Card>
+            <CardContent>
+              <FormField
+                control={control}
+                name="twitter.images.0"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Twitter Image</FormLabel>
+                    <FormControl>
+                      <ImageCropperInput
+                        format={format}
+                        aspectRatio={aspectRatio}
+                        size={size}
+                        value={field.value}
+                        onChange={(v) => handleImageChange(field.name, v)}
+                        originalName={true}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FormField control={control} name="robots.index" render={({ field }) => (
               <FormItem>
                 <FormLabel>Robots Index</FormLabel>
@@ -321,7 +328,7 @@ export default function Page() {
                     field.onChange(val);
                     setValue('robots.googleBot.index', val);
                   }}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -342,7 +349,7 @@ export default function Page() {
                     field.onChange(val);
                     setValue('robots.googleBot.follow', val);
                   }}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -359,7 +366,24 @@ export default function Page() {
                 <FormLabel>Robots Nocache</FormLabel>
                 <FormControl>
                   <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">true</SelectItem>
+                      <SelectItem value="false">false</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={control} name="robots.googleBot.noimageindex" render={({ field }) => (
+              <FormItem>
+                <FormLabel>GoogleBot Noimageindex</FormLabel>
+                <FormControl>
+                  <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -372,23 +396,6 @@ export default function Page() {
               </FormItem>
             )} />
           </div>
-          <FormField control={control} name="robots.googleBot.noimageindex" render={({ field }) => (
-            <FormItem>
-              <FormLabel>GoogleBot Noimageindex</FormLabel>
-              <FormControl>
-                <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">true</SelectItem>
-                    <SelectItem value="false">false</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
           <FormField control={control} name="other.classification" render={({ field }) => (
             <FormItem>
               <FormLabel>Classification</FormLabel>
