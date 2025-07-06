@@ -3,6 +3,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -53,6 +54,13 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
+  const pathname = usePathname()
+
+  React.useEffect(() => {
+    if (openMobile) {
+      setOpenMobile(false)
+    }
+  }, [pathname])
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
