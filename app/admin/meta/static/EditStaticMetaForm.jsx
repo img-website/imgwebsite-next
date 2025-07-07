@@ -16,6 +16,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import ImageCropperInput from "@/components/image-cropper-input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -47,6 +54,33 @@ const defaultMeta = {
   description: "",
   title: { default: "" },
 };
+
+const ogTypes = [
+  "article",
+  "book",
+  "music.song",
+  "music.album",
+  "music.playlist",
+  "music.radio_station",
+  "profile",
+  "website",
+  "video.tv_show",
+  "video.other",
+  "video.movie",
+  "video.episode",
+];
+
+const ogImageTypes = [
+  { value: "image/jpeg", label: "jpg" },
+  { value: "image/png", label: "png" },
+  { value: "image/webp", label: "webp" },
+];
+
+const statusBarStyles = [
+  "default",
+  "black",
+  "black-translucent",
+];
 
 function mergeDeep(target, source) {
   for (const key in source) {
@@ -385,7 +419,21 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>Type</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Select
+                          value={field.value}
+                          onValueChange={(val) => field.onChange(val)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ogTypes.map((opt) => (
+                              <SelectItem key={opt} value={opt}>
+                                {opt}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -473,7 +521,21 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormItem className="grow">
                           <FormLabel>Type</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Select
+                              value={field.value}
+                              onValueChange={(val) => field.onChange(val)}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {ogImageTypes.map((t) => (
+                                  <SelectItem key={t.value} value={t.value}>
+                                    {t.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -819,7 +881,21 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Status Bar Style</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {statusBarStyles.map((s) => (
+                            <SelectItem key={s} value={s}>
+                              {s}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
