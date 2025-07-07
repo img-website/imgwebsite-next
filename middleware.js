@@ -57,7 +57,7 @@ export async function middleware(request) {
       "img-src 'self' https://cdn.tiny.cloud blob: data: https:",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://www.googletagmanager.com https://embed.tawk.to",
       "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud https://embed.tawk.to",
-      "font-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud",
+      "font-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud https://embed.tawk.to",
     ].join('; ')
   );
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
