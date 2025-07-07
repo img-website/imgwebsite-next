@@ -66,8 +66,8 @@ export function LoginForm() {
             if (data?.success) {
                 const expiry = new Date(Date.now() + 2592000 * 1000).toUTCString();
                 document.cookie = `token=${data?.token}; path=/; priority=high; max-age=2592000; expires=${expiry}`;
-                document.cookie = `userEmail=${data?.data?.email}; path=/; expires=${expiry}`;
-                document.cookie = `userRole=${data?.data?.role}; path=/; expires=${expiry}`;
+                document.cookie = `userEmail=${data?.data?.email}; path=/; max-age=2592000; expires=${expiry}`;
+                document.cookie = `userRole=${data?.data?.role}; path=/; max-age=2592000; expires=${expiry}`;
                 const permStr = btoa(JSON.stringify(data?.data?.permissions || {}));
                 document.cookie = `userPermissions=${permStr}; path=/; max-age=2592000; expires=${expiry}`;
                 if (data?.data?.permissionsUpdatedAt) {

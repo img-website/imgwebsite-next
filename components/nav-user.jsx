@@ -59,7 +59,7 @@ export function NavUser({ avatarOnly = false } = {}) {
   const handleLogout = async () => {
     try {
       await fetch("/api/v1/admin/logout")
-      document.cookie = "userPermissions=; max-age=0; path=/;"
+      document.cookie = "userPermissions=; max-age=0; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
       toast.success("Logged out")
       router.push("/login")
     } catch (error) {
