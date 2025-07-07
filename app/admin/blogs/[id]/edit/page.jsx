@@ -61,6 +61,7 @@ const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
   loading: () => <p>Loading editor...</p>,
 });
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BLOG_BG_COLORS } from "@/lib/blogColors";
 
 const faqEditorInit = {
   menubar: false,
@@ -961,9 +962,62 @@ export default function Page({ params }) {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Background Color</FormLabel>
-                              <FormControl>
-                                <Input type="color" {...field} />
-                              </FormControl>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <FormControl className="w-full">
+                                    <Button
+                                      variant="outline"
+                                      role="combobox"
+                                      className={cn(
+                                        "w-full justify-between",
+                                        !field.value && "text-muted-foreground"
+                                      )}
+                                    >
+                                      {field.value ? (
+                                        <span className="flex items-center gap-2">
+                                          <Avatar className="w-7 h-7 border" style={{ backgroundColor: field.value }}>
+                                            <AvatarFallback />
+                                          </Avatar>
+                                          {BLOG_BG_COLORS.find((c) => c.value === field.value)?.label}
+                                        </span>
+                                      ) : (
+                                        "Select color..."
+                                      )}
+                                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                  <Command>
+                                    <CommandInput placeholder="Search color..." className="h-9" />
+                                    <CommandList>
+                                      <CommandEmpty>No color found.</CommandEmpty>
+                                      <CommandGroup>
+                                        {BLOG_BG_COLORS.map((color) => (
+                                          <CommandItem
+                                            key={color.value}
+                                            value={color.label}
+                                            onSelect={() => {
+                                              form.setValue("bgColor", color.value);
+                                            }}
+                                          >
+                                            <Avatar className="w-7 h-7 mr-2 border" style={{ backgroundColor: color.value }}>
+                                              <AvatarFallback />
+                                            </Avatar>
+                                            {color.label}
+                                            <Check
+                                              className={cn(
+                                                "ml-auto h-4 w-4",
+                                                field.value === color.value ? "opacity-100" : "opacity-0"
+                                              )}
+                                            />
+                                          </CommandItem>
+                                        ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
                               <FormMessage />
                             </FormItem>
                           )}
