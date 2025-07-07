@@ -424,7 +424,7 @@ export default function EditStaticMetaForm({ meta }) {
                           onValueChange={(val) => field.onChange(val)}
                         >
                           <SelectTrigger className="w-full">
-                            <SelectValue />
+                            <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent>
                             {ogTypes.map((opt) => (
@@ -526,7 +526,7 @@ export default function EditStaticMetaForm({ meta }) {
                               onValueChange={(val) => field.onChange(val)}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue />
+                                <SelectValue placeholder="Select type" />
                               </SelectTrigger>
                               <SelectContent>
                                 {ogImageTypes.map((t) => (
@@ -886,7 +886,7 @@ export default function EditStaticMetaForm({ meta }) {
                         onValueChange={(val) => field.onChange(val)}
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue />
+                          <SelectValue placeholder="Select style" />
                         </SelectTrigger>
                         <SelectContent>
                           {statusBarStyles.map((s) => (
