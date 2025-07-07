@@ -102,7 +102,7 @@ export const metadata = {
   },
   verification: {
     google: process.env.NODE_ENV === 'production'
-      ? 'bGEWH2c3JpZuiXFhSZGexm_7YdIzsPNhH2w7k6Buk-Q'
+      ? 'BBLrFK7anf4GPwYJU5gnYITc6dEOjYAaDzRldFFpw0A'
       : 'b3JyKKuxkNseCK4ci5FbXB7AQnSW5jFjBkdW22XWmsc',
     microsoft: process.env.NODE_ENV === 'production'
       ? '1CF4AABD4C8EFCCFAFF1458BE10E8FC8'
