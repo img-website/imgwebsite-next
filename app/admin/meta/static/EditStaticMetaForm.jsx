@@ -420,8 +420,8 @@ export default function EditStaticMetaForm({ meta }) {
                       <FormLabel>Type</FormLabel>
                       <FormControl>
                         <Select
-                          defaultValue={field.value}
-                          onValueChange={(val) => field.onChange(val)}
+                          value={field.value}
+                          onValueChange={field.onChange}
                         >
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select type" />
@@ -522,8 +522,8 @@ export default function EditStaticMetaForm({ meta }) {
                           <FormLabel>Type</FormLabel>
                           <FormControl>
                             <Select
-                              defaultValue={field.value}
-                              onValueChange={(val) => field.onChange(val)}
+                              value={field.value}
+                              onValueChange={field.onChange}
                             >
                               <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select type" />
@@ -882,8 +882,8 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormLabel>Status Bar Style</FormLabel>
                     <FormControl>
                       <Select
-                        defaultValue={field.value}
-                        onValueChange={(val) => field.onChange(val)}
+                        value={field.value}
+                        onValueChange={field.onChange}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select style" />
