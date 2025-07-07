@@ -35,15 +35,16 @@ import Link from "next/link"
 import { toast } from "sonner"
 import { useProfile } from "@/hooks/use-profile"
 import { NavUserSkeleton } from "@/components/skeleton/nav-user-skeleton"
+import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 
-export function NavUser() {
+export function NavUser({ avatarOnly = false } = {}) {
   const { isMobile } = useSidebar()
   const router = useRouter()
   const { profile } = useProfile()
 
   if (profile === undefined) {
-    return <NavUserSkeleton />
+    return <NavUserSkeleton avatarOnly={avatarOnly} />
   }
 
   const name = profile && (profile.firstName || profile.lastName)
@@ -73,16 +74,23 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+              className={cn(
+                "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground",
+                avatarOnly && "w-8 justify-center p-0"
+              )}>
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={avatar || undefined} alt={name} />
                 <AvatarFallback className="rounded-lg">{initials || (name?.[0] || 'U')}</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name || 'User'}</span>
-                <span className="truncate text-xs">{email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              {!avatarOnly && (
+                <>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">{name || 'User'}</span>
+                    <span className="truncate text-xs">{email}</span>
+                  </div>
+                  <ChevronsUpDown className="ml-auto size-4" />
+                </>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

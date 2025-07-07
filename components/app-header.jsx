@@ -9,7 +9,7 @@ import { NavUserSkeleton } from '@/components/skeleton/nav-user-skeleton'
 const NavUser = dynamic(
   () => import('@/components/nav-user').then(mod => mod.NavUser),
   {
-    loading: () => <NavUserSkeleton />,
+    loading: () => <NavUserSkeleton avatarOnly />,
     ssr: false,
   }
 )
@@ -26,7 +26,7 @@ export function AppHeader() {
       </div>
       {isMobile && (
         <div className="ml-auto px-4">
-          <NavUser />
+          <NavUser avatarOnly />
         </div>
       )}
     </header>
