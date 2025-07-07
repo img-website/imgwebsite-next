@@ -1,6 +1,3 @@
-// export const dynamic = 'force-static';
-
-
 import dynamic from 'next/dynamic';
 const HomeHero = dynamic(() => import('@/components/HomeHero'), {
   loading: () => <HomeHeroSkeleton />
