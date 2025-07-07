@@ -53,7 +53,7 @@ export async function middleware(request) {
     'Content-Security-Policy',
     [
       "default-src 'self' https: blob:",
-      "connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud https://embed.tawk.to https://www.googletagmanager.com https://www.google-analytics.com",
+      "connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud https://embed.tawk.to https://va.tawk.to https://www.googletagmanager.com https://www.google-analytics.com",
       "img-src 'self' https://cdn.tiny.cloud blob: data: https:",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://www.googletagmanager.com https://embed.tawk.to",
       "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud",
