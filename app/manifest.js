@@ -2,8 +2,6 @@ export default function manifest() {
   return {
     name: 'IMG Global Infotech',
     short_name: 'IMG',
-    description:
-      'IMG Global Infotech is a leading mobile app and web development company in India, USA, UK & UAE, offering innovative IT consulting services.',
     start_url: '/',
     display: 'standalone',
     background_color: '#000019',
@@ -11,49 +9,6 @@ export default function manifest() {
     lang: 'en-US',
     orientation: 'portrait',
     prefer_related_applications: false,
-    screenshots: [
-      {
-        src: "https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp",
-        sizes: "1080x1920",
-        type: "image/webp"
-      },
-      {
-        src: "https://d1y41eupgbwbb2.cloudfront.net/images/FuturisticAIPoweredMobileApps.webp",
-        sizes: "1080x1920",
-        type: "image/webp"
-      },
-      {
-        src: "https://d1y41eupgbwbb2.cloudfront.net/images/cta1Image.webp",
-        sizes: "1080x1920",
-        type: "image/webp"
-      }
-    ],
-    shortcuts: [
-      {
-        name: 'Home',
-        url: '/',
-        icons: [
-          {
-            src: '/favicon-32x32.png',
-            sizes: '32x32',
-            type: 'image/png',
-            purpose: 'any',
-          },
-        ],
-      },
-      {
-        name: 'Contact Us',
-        url: '/contact-us',
-        icons: [
-          {
-            src: '/favicon-32x32.png',
-            sizes: '32x32',
-            type: 'image/png',
-            purpose: 'any',
-          },
-        ],
-      },
-    ],
     icons: [
       {
         src: '/android-chrome-192x192.png',
@@ -73,5 +28,50 @@ export default function manifest() {
         purpose: 'any',
       },
     ],
+    description:
+      'IMG Global Infotech is a leading mobile app and web development company in India, USA, UK & UAE, offering innovative IT consulting services.',
+    categories: [
+      'business',
+      'technology',
+      'software',
+      'web development',
+      'mobile app development',
+      'IT consulting'
+    ],
+    screenshots: [
+      {
+        src: "https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp",
+        sizes: "1080x1920",
+        type: "image/webp",
+        form_factor: "wide"
+      },
+      {
+        src: "https://d1y41eupgbwbb2.cloudfront.net/images/FuturisticAIPoweredMobileApps.webp",
+        sizes: "1080x1920",
+        type: "image/webp",
+        form_factor: "wide"
+      },
+      {
+        src: "https://d1y41eupgbwbb2.cloudfront.net/images/cta1Image.webp",
+        sizes: "1080x1920",
+        type: "image/webp",
+        form_factor: "wide"
+      }
+    ],
+    share_target: {
+      action: "/?utm_medium=PWA&utm_source=share-target&share-target",
+      method: "POST",
+      enctype: "multipart/form-data",
+      params: {
+        files: [
+          {
+            name: "file",
+            accept: [
+              "image/*"
+            ]
+          }
+        ]
+      }
+    }
   };
 }
