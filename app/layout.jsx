@@ -2,7 +2,6 @@ import { Poppins } from "next/font/google";
 import "@/app/globals.css";
 import { Toaster } from "sonner";
 import PushInit from "@/components/PushInit";
-import getStaticMeta from "@/helpers/getStaticMeta";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // choose weights you want
@@ -10,13 +9,6 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-export async function generateMetadata() {
-  const meta = await getStaticMeta();
-  return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
-    ...meta,
-  };
-}
 
 export const viewport = {
   themeColor: '#000019',

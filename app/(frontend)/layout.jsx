@@ -6,7 +6,19 @@ import PageSchema from "@/components/page-schema";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import schemaToLd from "@/helpers/schemaToLd";
+import getStaticMeta from "@/helpers/getStaticMeta";
+
+
+export async function generateMetadata() {
+  const meta = await getStaticMeta();
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL),
+    ...meta,
+  };
+}
+
 export default async function RootLayout({ children }) {
+
   async function getSchema(type) {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/schema?global=true&type=${type}`, { cache: "no-store" });
