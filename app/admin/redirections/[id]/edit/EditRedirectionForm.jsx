@@ -156,15 +156,17 @@ export default function EditRedirectionForm({ redirection }) {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                disabled={form.formState.isSubmitting}
-                className="w-full"
-              >
-                {form.formState.isSubmitting
-                  ? "Updating..."
-                  : "Update Redirection"}
-              </Button>
+              <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+                <Button
+                  type="submit"
+                  disabled={form.formState.isSubmitting}
+                  className="cursor-pointer"
+                >
+                  {form.formState.isSubmitting
+                    ? "Updating..."
+                    : "Update Redirection"}
+                </Button>
+              </div>
             </form>
           </Form>
         </CardContent>

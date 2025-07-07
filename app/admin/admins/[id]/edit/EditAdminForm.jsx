@@ -228,13 +228,15 @@ export default function EditAdminForm({
             )}
           />
         )}
-        <Button
-          type="submit"
-          disabled={form.formState.isSubmitting}
-          className="w-full cursor-pointer"
-        >
-          {form.formState.isSubmitting ? "Updating..." : "Update"}
-        </Button>
+        <div className="flex justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className="cursor-pointer"
+          >
+            {form.formState.isSubmitting ? "Updating..." : "Update"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

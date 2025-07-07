@@ -95,13 +95,15 @@ export default function EditImageForm({ image }) {
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className="w-full cursor-pointer"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? 'Updating...' : 'Update Image'}
-            </Button>
+            <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? 'Updating...' : 'Update Image'}
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>
