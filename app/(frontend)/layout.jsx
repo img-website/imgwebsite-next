@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import LeadPopup from "@/components/leadPopup";
 import TawkToWidget from "@/components/TawkToWidget";
 import PageSchema from "@/components/page-schema";
+import { headers } from 'next/headers'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import schemaToLd from "@/helpers/schemaToLd";
@@ -18,6 +19,7 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
+  const nonce = (await headers()).get('x-nonce')
 
   async function getSchema(type) {
     try {
@@ -45,6 +47,7 @@ export default async function RootLayout({ children }) {
       {LocalBusiness && (
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(LocalBusiness).replace(/</g, '\\u003c'),
           }}
@@ -53,6 +56,7 @@ export default async function RootLayout({ children }) {
       {LocalBusiness2 && (
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(LocalBusiness2).replace(/</g, '\\u003c'),
           }}
@@ -61,12 +65,13 @@ export default async function RootLayout({ children }) {
         {Organization && (
           <script
             type="application/ld+json"
+            nonce={nonce}
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(Organization).replace(/</g, '\\u003c'),
             }}
           />
         )}
-        <PageSchema />
+        <PageSchema nonce={nonce} />
         <Navbar/>
         <main>
         {children}
@@ -75,9 +80,9 @@ export default async function RootLayout({ children }) {
         <Footer/>
         {isProd && (
           <>
-            <TawkToWidget />
-            <GoogleAnalytics gaId="G-N2Q0NVDS4P" />
-            <SpeedInsights/>
+            <TawkToWidget nonce={nonce} />
+            <GoogleAnalytics gaId="G-N2Q0NVDS4P" nonce={nonce} />
+            <SpeedInsights />
           </>
         )}
     </>

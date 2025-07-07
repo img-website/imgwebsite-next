@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
-import { getRedirections } from './app/lib/redirections';
+import { NextResponse } from 'next/server'
+import { jwtVerify } from 'jose'
+import { getRedirections } from './app/lib/redirections'
+import crypto from 'node:crypto'
 
 function getModuleAction(pathname) {
   if (!pathname.startsWith('/admin')) return null;
@@ -35,32 +36,42 @@ export const config = {
 };
 
 export async function middleware(request) {
-  // Add security headers
-  const response = NextResponse.next();
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+  const cspHeader = `
+    default-src 'self';
+    connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud https://embed.tawk.to https://va.tawk.to wss://*.tawk.to https://www.googletagmanager.com https://www.google-analytics.com;
+    img-src 'self' https://cdn.tiny.cloud blob: data: https:;
+    script-src 'self' 'nonce-${nonce}' 'unsafe-inline' 'strict-dynamic' https://cdn.tiny.cloud https://www.googletagmanager.com https://embed.tawk.to;
+    style-src 'self' 'nonce-${nonce}' 'unsafe-inline' https://cdn.tiny.cloud https://embed.tawk.to;
+    font-src 'self' data: https://cdn.tiny.cloud;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+  `
+  const cspValue = cspHeader.replace(/\s{2,}/g, ' ').trim()
+
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-nonce', nonce)
+
+  let response = NextResponse.next({
+    request: { headers: requestHeaders },
+  })
 
   // CORS headers
-  response.headers.set('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  response.headers.set('Access-Control-Max-Age', '86400');
+  response.headers.set('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.set('Access-Control-Max-Age', '86400')
 
   // Security headers
-  response.headers.set('X-Frame-Options', 'DENY');
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  response.headers.set(
-    'Content-Security-Policy',
-    [
-      "default-src 'self' https: blob:",
-      "connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud https://embed.tawk.to https://va.tawk.to wss://*.tawk.to https://www.googletagmanager.com https://www.google-analytics.com",
-      "img-src 'self' https://cdn.tiny.cloud blob: data: https:",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tiny.cloud https://www.googletagmanager.com https://embed.tawk.to",
-      "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud https://embed.tawk.to",
-      "font-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud",
-    ].join('; ')
-  );
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  response.headers.set('Content-Security-Policy', cspValue)
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
 
   const { pathname, search, origin } = request.nextUrl;
 

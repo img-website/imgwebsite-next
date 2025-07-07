@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import schemaToLd from "@/helpers/schemaToLd";
 
-export default function PageSchema() {
+export default function PageSchema({ nonce }) {
   const pathname = usePathname();
   const [lds, setLds] = useState([]);
 
@@ -38,6 +38,7 @@ export default function PageSchema() {
     <script
       key={idx}
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }}
     />
   ));
