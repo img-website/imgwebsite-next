@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { getRedirections } from './app/lib/redirections'
-import crypto from 'node:crypto'
+import { randomUUID } from 'crypto'
 
 function getModuleAction(pathname) {
   if (!pathname.startsWith('/admin')) return null;
@@ -36,7 +36,7 @@ export const config = {
 };
 
 export async function middleware(request) {
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+  const nonce = Buffer.from(randomUUID()).toString('base64')
   const cspHeader = `
     default-src 'self';
     connect-src 'self' https://ipinfo.io https://cdn.tiny.cloud https://embed.tawk.to https://va.tawk.to wss://*.tawk.to https://www.googletagmanager.com https://www.google-analytics.com;
