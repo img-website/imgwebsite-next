@@ -975,7 +975,7 @@ export default function Page({ params }) {
                                     {field.value ? (
                                       <span className="flex items-center gap-2">
                                         <Avatar className="w-7 h-7 border" style={{ backgroundColor: field.value }}>
-                                          <AvatarFallback />
+                                          <AvatarFallback style={{ backgroundColor: field.value }} />
                                         </Avatar>
                                         {BLOG_BG_COLORS.find((c) => c.value === field.value)?.label}
                                       </span>
@@ -1001,7 +1001,7 @@ export default function Page({ params }) {
                                           }}
                                         >
                                           <Avatar className="w-7 h-7 mr-2 border" style={{ backgroundColor: color.value }}>
-                                            <AvatarFallback />
+                                            <AvatarFallback style={{ backgroundColor: color.value }} />
                                           </Avatar>
                                           {color.label}
                                           <Check
