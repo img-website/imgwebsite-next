@@ -42,14 +42,14 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
+import { useLeadStore } from "@/app/store/use-lead-store";
 import { getPublicUrl } from "@/lib/s3";
 
 function LeadActions({ lead }) {
-  const router = useRouter();
   const [openAttachments, setOpenAttachments] = React.useState(false);
+  const moveLead = useLeadStore((state) => state.moveLead);
 
   const handleStatusChange = async (status) => {
     try {
@@ -62,7 +62,7 @@ function LeadActions({ lead }) {
       const data = await res.json();
       if (data.success) {
         toast.success("Status updated");
-        router.refresh();
+        moveLead(lead.id, status);
       } else {
         toast.error(data.error || "Failed to update status");
       }
