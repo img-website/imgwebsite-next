@@ -161,7 +161,7 @@ export default function Page({ params }) {
             </div>
           </div>
           {/* Blog Content */}
-          <div className="prose max-w-none text-base leading-relaxed mce-content-body [&_*]:[all:revert] bg-background/60 rounded-lg p-4 border">
+          <div className="prose max-w-none text-base leading-relaxed mce-content-body [&_*]:[all:revert] bg-background/60 rounded-lg p-4 border [&_img]:max-w-full">
             <div dangerouslySetInnerHTML={{ __html: blog.description }} />
           </div>
           {/* Show any extra blog fields in a details section using shadcn Accordion */}
