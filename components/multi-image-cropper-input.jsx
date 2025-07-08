@@ -282,7 +282,7 @@ export default function MultiImageCropperInput({
         {previews.length === 0 ? (
           <>
             <Images className="size-10 text-muted-foreground/50" />
-            <p className="text-sm text-muted-foreground text-center">
+            <p className="text-sm text-muted-foreground text-center text-balance">
               Drag and drop images, or click to select
             </p>
             <div className="flex flex-col items-center gap-1">

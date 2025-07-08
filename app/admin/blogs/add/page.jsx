@@ -489,20 +489,20 @@ function BlogAdd() {
   return (
     <>
       <div className="w-full p-4">
-        <Card>
+        <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
           <div style={{position:'relative'}}>
             {isSaving && (
               <div style={{position:'absolute',top:12,right:16,zIndex:10}}>
                 <Loader />
               </div>
             )}
-            <CardHeader>
+            <CardHeader className="max-sm:px-0">
               <CardTitle>Add New Blog</CardTitle>
               <CardDescription>
                 Create a new blog post. Fill in the required information below.
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 max-sm:px-0">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8 -mx-3">                  
                   <div className="md:w-1/3 w-full px-3">
@@ -797,7 +797,7 @@ function BlogAdd() {
                       )}
                     />
                   </div>
-                  <Separator className="my-6" />
+                  <Separator className="sm:my-6 my-3" />
                   <div className="w-full px-3">
                     <FormField
                       control={form.control}
@@ -849,7 +849,7 @@ function BlogAdd() {
                       )}
                     />
                   </div>
-                  <Separator className="my-6" />
+                  <Separator className="sm:my-6 my-3" />
                   <div className="md:w-1/2 w-full px-3">
                     <Card className="w-full">
                       <CardContent className="flex flex-col gap-y-8">
@@ -1020,7 +1020,7 @@ function BlogAdd() {
                       <Plus className="h-4 w-4 mr-2" /> Add FAQ
                     </Button>
                   </div>
-                  <Separator className="my-6" />
+                  <Separator className="sm:my-6 my-3" />
                   <div className="md:w-1/3 w-full px-3">
                     <FormField
                       control={form.control}

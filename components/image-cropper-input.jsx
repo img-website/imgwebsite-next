@@ -300,7 +300,7 @@ function ImageCropperInput({ aspectRatio = 1, value, onChange, className, format
         {!preview ? (
           <>
             <Images className="size-10 text-muted-foreground/50" />
-            <p className="text-sm text-muted-foreground text-center">
+            <p className="text-sm text-muted-foreground text-center text-balance">
               Drag and drop an image, or click to select
             </p>
             <div className="flex flex-col items-center gap-1">
