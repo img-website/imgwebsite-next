@@ -214,8 +214,8 @@ export default function Page({ params }) {
     async function fetchOptions() {
       try {
         const [catRes, authRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/categories?limit=100`),
-          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/blogs/authors?limit=100`),
+          fetch('/api/v1/admin/blogs/categories?limit=100'),
+          fetch('/api/v1/admin/blogs/authors?limit=100'),
         ]);
         const catJson = await catRes.json();
         const authJson = await authRes.json();
