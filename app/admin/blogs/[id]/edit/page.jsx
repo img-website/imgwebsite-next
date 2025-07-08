@@ -51,7 +51,6 @@ import apiFetch from "@/helpers/apiFetch";
 import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useRouter } from "next/navigation";
-import { useBlog } from "@/hooks/use-blogs";
 import BlogEditSkeleton from "@/components/skeleton/blog-edit-skeleton";
 import { useBlogStore } from "@/app/store/use-blog-store";
 import dynamic from "next/dynamic";
@@ -158,7 +157,7 @@ export default function Page({ params }) {
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
   const { id: blogId } = usePromise(params);
-  const { blog } = useBlog(blogId);
+  const [blog, setBlog] = useState();
   const router = useRouter();
   const updateBlog = useBlogStore((state) => state.updateBlog);
 
@@ -227,6 +226,28 @@ export default function Page({ params }) {
     }
     fetchOptions();
   }, []);
+
+  useEffect(() => {
+    if (!blogId) return;
+    let cancelled = false;
+    async function fetchBlog() {
+      try {
+        const res = await fetch(`/api/v1/admin/blogs/${blogId}`);
+        const result = await res.json();
+        if (!result.success || !result.data) {
+          if (!cancelled) router.replace("/admin/blogs");
+          return;
+        }
+        if (!cancelled) setBlog(result.data);
+      } catch {
+        if (!cancelled) router.replace("/admin/blogs");
+      }
+    }
+    fetchBlog();
+    return () => {
+      cancelled = true;
+    };
+  }, [blogId, router]);
 
   useEffect(() => {
     if (blog === undefined) return;
