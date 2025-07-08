@@ -37,9 +37,9 @@ export default function DeleteCategoryButtons({ id }) {
       });
       const data = await res.json();
       if (data.success) {
+        router.push("/admin/blogs/categories");
         removeCategory(id);
         toast.success(data.message || "Category deleted");
-        router.push("/admin/blogs/categories");
       } else {
         toast.error(data.error || "Failed to delete category");
       }
