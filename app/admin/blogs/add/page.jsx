@@ -315,6 +315,10 @@ function BlogAdd() {
           bgColorStatus: blog.bg_color_status ?? false,
           bgColor: blog.bg_color || "",
         });
+        // ensure watchers update with new values
+        form.setValue("bgColorStatus", blog.bg_color_status ?? false);
+        form.setValue("bgColor", blog.bg_color || "");
+        setStatus(String(blog.status ?? 1));
         setBgColorStatusValue(blog.bg_color_status ?? false);
       } catch (err) {
         router.replace("/admin/blogs");
