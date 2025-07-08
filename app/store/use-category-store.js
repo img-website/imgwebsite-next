@@ -27,6 +27,9 @@ export const useCategoryStore = create((set) => ({
   removeCategory: (id) =>
     set((state) => {
       const { [id]: removed, ...rest } = state.categoryDetails
-      return { categoryDetails: rest }
+      const categories = state.categories
+        ? state.categories.filter((c) => (c._id || c.id) !== id)
+        : null
+      return { categoryDetails: rest, categories }
     }),
 }))
