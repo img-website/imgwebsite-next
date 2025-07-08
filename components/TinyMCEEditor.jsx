@@ -7,7 +7,7 @@ export default function TinyMCEEditor({ value, onChange, ...props }) {
       apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY || ''}
       value={value}
       init={{
-        min_height: 400,
+        min_height: 200,
         menu: {
           file: { title: 'File', items: 'print' },
           edit: { title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
