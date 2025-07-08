@@ -44,7 +44,7 @@ export default function DeleteBlogButtons({ id }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" className="mt-4 cursor-pointer">
+        <Button variant="destructive" className="cursor-pointer">
           Delete
         </Button>
       </DialogTrigger>

@@ -62,9 +62,16 @@ export default function Page({ params }) {
 
             </div>
             <div className="mt-4 flex gap-2">
-              <Link href={`/admin/blogs/${blog._id}/edit`}>
-                <Button type="button">Edit</Button>
-              </Link>
+              {blog && blog.status === 1 ? (
+                <Link href={`/admin/blogs/add?id=${blog._id}`}>
+                  <Button type="button" className="cursor-pointer">Edit</Button>
+                </Link>
+              ) : (
+                <Link href={`/admin/blogs/${blog._id}/edit`}>
+                  <Button type="button" className="cursor-pointer">Edit</Button>
+                </Link>
+              )
+              }
               {blog.status === 1 && <DeleteBlogButtons id={blog._id} />}
             </div>
           </CardContent>
