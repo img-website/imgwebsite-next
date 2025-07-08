@@ -52,6 +52,8 @@ import ImageCropperInput from "@/components/image-cropper-input";
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import { useRouter } from "next/navigation";
 import { useBlog } from "@/hooks/use-blogs";
+import { useCategories } from "@/hooks/use-categories";
+import { useAuthors } from "@/hooks/use-authors";
 import BlogEditSkeleton from "@/components/skeleton/blog-edit-skeleton";
 import { useBlogStore } from "@/app/store/use-blog-store";
 import dynamic from "next/dynamic";
@@ -153,8 +155,8 @@ function getBlogFormSchema(status, bgColorStatus) {
 
 
 export default function Page({ params }) {
-  const [categories, setCategories] = useState([]);
-  const [authors, setAuthors] = useState([]);
+  const { categories } = useCategories();
+  const { authors } = useAuthors();
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
   const { id: blogId } = usePromise(params);
@@ -210,23 +212,6 @@ export default function Page({ params }) {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  useEffect(() => {
-    async function fetchOptions() {
-      try {
-        const [catRes, authRes] = await Promise.all([
-          fetch('/api/v1/admin/blogs/categories?limit=100'),
-          fetch('/api/v1/admin/blogs/authors?limit=100'),
-        ]);
-        const catJson = await catRes.json();
-        const authJson = await authRes.json();
-        setCategories(Array.isArray(catJson?.data) ? catJson.data : []);
-        setAuthors(Array.isArray(authJson?.data) ? authJson.data : []);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchOptions();
-  }, []);
 
   useEffect(() => {
     if (blog === undefined) return;

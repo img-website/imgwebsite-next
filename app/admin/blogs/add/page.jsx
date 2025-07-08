@@ -54,6 +54,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BLOG_BG_COLORS } from "@/lib/blogColors";
+import { useCategories } from "@/hooks/use-categories";
+import { useAuthors } from "@/hooks/use-authors";
 import dynamic from "next/dynamic";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
@@ -179,8 +181,8 @@ function getBlogFormSchema(status, bgColorStatus) {
 }
 
 function BlogAdd() {
-  const [categories, setCategories] = useState([]);
-  const [authors, setAuthors] = useState([]);
+  const { categories } = useCategories();
+  const { authors } = useAuthors();
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
@@ -240,23 +242,6 @@ function BlogAdd() {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  useEffect(() => {
-    async function fetchOptions() {
-      try {
-        const [catRes, authRes] = await Promise.all([
-          fetch('/api/v1/admin/blogs/categories?limit=100'),
-          fetch('/api/v1/admin/blogs/authors?limit=100'),
-        ]);
-        const catJson = await catRes.json();
-        const authJson = await authRes.json();
-        setCategories(Array.isArray(catJson?.data) ? catJson.data : []);
-        setAuthors(Array.isArray(authJson?.data) ? authJson.data : []);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchOptions();
-  }, []);
 
   // Fetch blog data if id is present in URL
   useEffect(() => {
