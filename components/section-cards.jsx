@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 export function SectionCards({ stats }) {
   const items = [
@@ -17,24 +18,28 @@ export function SectionCards({ stats }) {
       data: stats?.blogs,
       message: "Trending vs last month",
       description: "Published blog posts",
+      url: "/admin/blogs",
     },
     {
       label: "Leads",
       data: stats?.leads,
       message: "Lead generation change",
       description: "New leads captured",
+      url: "/admin/leads",
     },
     {
       label: "Subscribers",
       data: stats?.newsletters,
       message: "User retention",
       description: "Newsletter signups",
+      url: "/admin/newsletters",
     },
     {
       label: "Admins",
       data: stats?.admins,
       message: "Team growth",
       description: "Team members",
+      url: "/admin/admins",
     },
   ];
 
@@ -45,27 +50,30 @@ export function SectionCards({ stats }) {
         const percent = item.data?.percent ?? '0%';
         const positive = item.data?.positive ?? true;
         const Icon = positive ? IconTrendingUp : IconTrendingDown;
+        const href = item.url;
         return (
-          <Card key={item.label}>
-            <CardHeader>
-              <CardDescription>{item.label}</CardDescription>
-              <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                {value}
-              </CardTitle>
-              <CardAction>
-                <Badge variant="outline">
-                  <Icon />
-                  {percent}
-                </Badge>
-              </CardAction>
-            </CardHeader>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
-              <div className="line-clamp-1 flex gap-2 font-medium">
-                {item.message} <Icon className="size-4" />
-              </div>
-              <div className="text-muted-foreground">{item.description}</div>
-            </CardFooter>
-          </Card>
+          <Link key={item.label} href={href} className="no-underline">
+            <Card className="max-sm:gap-2 max-sm:py-4">
+              <CardHeader className="max-sm:px-4">
+                <CardDescription>{item.label}</CardDescription>
+                <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                  {value}
+                </CardTitle>
+                <CardAction>
+                  <Badge variant="outline">
+                    <Icon />
+                    {percent}
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardFooter className="flex-col items-start gap-1.5 text-sm max-sm:px-4">
+                <div className="line-clamp-1 flex gap-2 font-medium">
+                  {item.message} <Icon className="size-4" />
+                </div>
+                <div className="text-muted-foreground max-sm:hidden">{item.description}</div>
+              </CardFooter>
+            </Card>
+          </Link>
         );
       })}
     </div>

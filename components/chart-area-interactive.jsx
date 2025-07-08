@@ -37,7 +37,7 @@ const chartConfig = {
 
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState("30d")
   const [chartData, setChartData] = React.useState([])
 
   React.useEffect(() => {
@@ -89,17 +89,17 @@ export function ChartAreaInteractive() {
               size="sm"
               aria-label="Select a value"
             >
-              <SelectValue placeholder="Last 3 months" />
+              <SelectValue placeholder="30 days" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
               <SelectItem value="90d" className="rounded-lg">
-                Last 3 months
+                <span className="max-sm:hidden">Last </span>3 months
               </SelectItem>
               <SelectItem value="30d" className="rounded-lg">
-                Last 30 days
+                <span className="max-sm:hidden">Last </span>30 days
               </SelectItem>
               <SelectItem value="7d" className="rounded-lg">
-                Last 7 days
+                <span className="max-sm:hidden">Last </span>7 days
               </SelectItem>
             </SelectContent>
           </Select>
