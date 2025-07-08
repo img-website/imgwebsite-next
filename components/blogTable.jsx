@@ -439,7 +439,7 @@ export function BlogTable({ data, canAdd = false }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto max-sm:px-3">
-              <span className="max-sm:hidden">Columns <ChevronDown className="ml-2 h-4 w-4" /></span>
+              <span className="max-sm:hidden">Columns</span> <ChevronDown className="ml-2 h-4 w-4 max-sm:hidden" />
               <span className="sm:hidden"><ArrowUpDown className="h-4 w-4" /></span>
             </Button>
           </DropdownMenuTrigger>
