@@ -350,7 +350,7 @@ export default function Page({ params }) {
               Update the blog post details below.
             </CardDescription>
           </CardHeader>
-            <CardContent className="p-6">
+            <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8 -mx-3">                  
                   <div className="md:w-1/3 w-full px-3">
