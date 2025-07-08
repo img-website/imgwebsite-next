@@ -279,8 +279,6 @@ export default function Page({ params }) {
       bgColorStatus: blog.bg_color_status ?? false,
       bgColor: blog.bg_color || "",
     });
-    setStatus(String(blog.status ?? 1));
-    setBgColorStatusValue(blog.bg_color_status ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blog, categories.length, authors.length]);
 
