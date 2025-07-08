@@ -279,14 +279,10 @@ export default function Page({ params }) {
       bgColorStatus: blog.bg_color_status ?? false,
       bgColor: blog.bg_color || "",
     });
-    form.setValue("category", blog.category?._id || "");
-    form.setValue("authorId", blog.author?._id || "");
-    form.setValue("status", String(blog.status ?? 1));
-    form.setValue("bgColorStatus", blog.bg_color_status ?? false);
     setStatus(String(blog.status ?? 1));
     setBgColorStatusValue(blog.bg_color_status ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blog]);
+  }, [blog, categories.length, authors.length]);
 
   if (blog === undefined) {
     return <BlogEditSkeleton />;
