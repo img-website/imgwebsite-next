@@ -56,6 +56,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BLOG_BG_COLORS } from "@/lib/blogColors";
 import { useCategories } from "@/hooks/use-categories";
 import { useAuthors } from "@/hooks/use-authors";
+import BlogAddSkeleton from "@/components/skeleton/blog-add-skeleton";
 import dynamic from "next/dynamic";
 
 const TinyMCEEditor = dynamic(() => import("@/components/TinyMCEEditor"), {
@@ -183,6 +184,11 @@ function getBlogFormSchema(status, bgColorStatus) {
 function BlogAdd() {
   const { categories } = useCategories();
   const { authors } = useAuthors();
+  if (!categories || !authors) {
+    return <BlogAddSkeleton />;
+  }
+  const categoryList = categories || [];
+  const authorList = authors || [];
   const [imageResetKey, setImageResetKey] = useState(0); // Add reset key state
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
@@ -509,7 +515,7 @@ function BlogAdd() {
                                   )}
                                 >
                                   {field.value
-                                    ? categories.find((cat) => cat._id === field.value)?.category_name
+                                    ? categoryList.find((cat) => cat._id === field.value)?.category_name
                                     : "Select category..."}
                                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
@@ -524,7 +530,7 @@ function BlogAdd() {
                                 <CommandList>
                                   <CommandEmpty>No category found.</CommandEmpty>
                                   <CommandGroup>
-                                    {categories.map((cat) => (
+                                    {categoryList.map((cat) => (
                                       <CommandItem
                                         key={cat._id}
                                         value={cat.category_name}
@@ -572,7 +578,7 @@ function BlogAdd() {
                                   {field.value ? (
                                     <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                       {(() => {
-                                        const selected = authors.find((aut) => aut._id === field.value);
+                                        const selected = authorList.find((aut) => aut._id === field.value);
                                         if (selected) {
                                           return (
                                             <Avatar className="w-7 h-7 mr-2">
@@ -583,7 +589,7 @@ function BlogAdd() {
                                         }
                                         return null;
                                       })()}
-                                      {authors.find((aut) => aut._id === field.value)?.author_name}
+                                      {authorList.find((aut) => aut._id === field.value)?.author_name}
                                     </span>
                                   ) : (
                                     "Select author..."
@@ -601,7 +607,7 @@ function BlogAdd() {
                                 <CommandList>
                                   <CommandEmpty>No author found.</CommandEmpty>
                                   <CommandGroup>
-                                    {authors.map((aut) => (
+                                    {authorList.map((aut) => (
                                       <CommandItem
                                         key={aut._id}
                                         value={aut.author_name}

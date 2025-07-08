@@ -157,6 +157,11 @@ function getBlogFormSchema(status, bgColorStatus) {
 export default function Page({ params }) {
   const { categories } = useCategories();
   const { authors } = useAuthors();
+  if (!categories || !authors) {
+    return <BlogEditSkeleton />;
+  }
+  const categoryList = categories || [];
+  const authorList = authors || [];
   const [status, setStatus] = useState("1");
   const [bgColorStatusValue, setBgColorStatusValue] = useState(false);
   const { id: blogId } = usePromise(params);
@@ -357,7 +362,7 @@ export default function Page({ params }) {
                                   )}
                                 >
                                   {field.value
-                                    ? categories.find((cat) => cat._id === field.value)?.category_name
+                                    ? categoryList.find((cat) => cat._id === field.value)?.category_name
                                     : "Select category..."}
                                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
@@ -372,7 +377,7 @@ export default function Page({ params }) {
                                 <CommandList>
                                   <CommandEmpty>No category found.</CommandEmpty>
                                   <CommandGroup>
-                                    {categories.map((cat) => (
+                                    {categoryList.map((cat) => (
                                       <CommandItem
                                         key={cat._id}
                                         value={cat.category_name}
@@ -420,7 +425,7 @@ export default function Page({ params }) {
                                   {field.value ? (
                                     <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                       {(() => {
-                                        const selected = authors.find((aut) => aut._id === field.value);
+                                        const selected = authorList.find((aut) => aut._id === field.value);
                                         if (selected) {
                                           return (
                                             <Avatar className="w-7 h-7 mr-2">
@@ -431,7 +436,7 @@ export default function Page({ params }) {
                                         }
                                         return null;
                                       })()}
-                                      {authors.find((aut) => aut._id === field.value)?.author_name}
+                                      {authorList.find((aut) => aut._id === field.value)?.author_name}
                                     </span>
                                   ) : (
                                     "Select author..."
@@ -449,7 +454,7 @@ export default function Page({ params }) {
                                 <CommandList>
                                   <CommandEmpty>No author found.</CommandEmpty>
                                   <CommandGroup>
-                                    {authors.map((aut) => (
+                                    {authorList.map((aut) => (
                                       <CommandItem
                                         key={aut._id}
                                         value={aut.author_name}
