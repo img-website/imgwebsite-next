@@ -349,14 +349,14 @@ export default function Page({ params }) {
   return (
     <>
       <div className="w-full p-4">
-        <Card>
-          <CardHeader>
+        <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+          <CardHeader className="max-sm:px-0">
             <CardTitle>Edit Blog</CardTitle>
             <CardDescription>
               Update the blog post details below.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 max-sm:px-0">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-y-8 -mx-3">                  
                 <div className="md:w-1/3 w-full px-3">
@@ -647,7 +647,7 @@ export default function Page({ params }) {
                     )}
                   />
                 </div>
-                <Separator className="my-6" />
+                <Separator className="sm:my-6 my-3" />
                 <div className="w-full px-3">
                   <FormField
                     control={form.control}
@@ -699,130 +699,134 @@ export default function Page({ params }) {
                     )}
                   />
                 </div>
-                <Separator className="my-6" />
-                <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
-                  <FormField
-                    control={form.control}
-                    name="ogImage"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>OG Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.90} // 1200x630
-                            value={value}
-                            size="1200x630"
-                            onChange={onChange}
-                            format="jpg"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ogImageAlt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>OG Image Alt</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Alt text for OG image" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <Separator className="sm:my-6 my-3" />
+                <div className="md:w-1/2 w-full px-3">
+                  <Card className="w-full">
+                    <CardContent className="flex flex-col gap-y-8">
+                      <FormField
+                        control={form.control}
+                        name="ogImage"
+                        render={({ field: { onChange, value } }) => (
+                          <FormItem>
+                            <FormLabel>OG Image</FormLabel>
+                            <FormControl>
+                              <ImageCropperInput
+                                aspectRatio={1.90} // 1200x630
+                                value={value}
+                                size="1200x630"
+                                onChange={onChange}
+                                format="jpg"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="ogImageAlt"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>OG Image Alt</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Alt text for OG image" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="metaOgTitle"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Meta OG Title</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Open Graph title" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="metaOgDescription"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Meta OG Description</FormLabel>
+                            <FormControl>
+                              <Textarea className="min-h-[80px]" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
-                  <FormField
-                    control={form.control}
-                    name="xImage"
-                    render={({ field: { onChange, value } }) => (
-                      <FormItem>
-                        <FormLabel>X Image</FormLabel>
-                        <FormControl>
-                          <ImageCropperInput
-                            aspectRatio={1.90} // 1200x630
-                            value={value}
-                            size="1200x630"
-                            onChange={onChange}
-                            format="jpg"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="xImageAlt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>X Image Alt</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Alt text for X image" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
-                  <FormField
-                    control={form.control}
-                    name="metaOgTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta OG Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Open Graph title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaOgDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta OG Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="md:w-1/2 w-full px-3 flex flex-col gap-y-8">
-                  <FormField
-                    control={form.control}
-                    name="metaXTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta X Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="X title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metaXDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta X Description</FormLabel>
-                        <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div className="md:w-1/2 w-full px-3">
+                  <Card className="w-full">
+                    <CardContent className="flex flex-col gap-y-8">
+                      <FormField
+                        control={form.control}
+                        name="xImage"
+                        render={({ field: { onChange, value } }) => (
+                          <FormItem>
+                            <FormLabel>X Image</FormLabel>
+                            <FormControl>
+                              <ImageCropperInput
+                                aspectRatio={1.90} // 1200x630
+                                value={value}
+                                size="1200x630"
+                                onChange={onChange}
+                                format="jpg"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="xImageAlt"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>X Image Alt</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Alt text for X image" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="metaXTitle"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Meta X Title</FormLabel>
+                            <FormControl>
+                              <Input placeholder="X title" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="metaXDescription"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Meta X Description</FormLabel>
+                            <FormControl>
+                              <Textarea className="min-h-[80px]" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
                 </div>
                 <div className="w-full px-3 space-y-4">
                   {faqFields.fields.map((field, index) => (
@@ -864,7 +868,7 @@ export default function Page({ params }) {
                     <Plus className="h-4 w-4 mr-2" /> Add FAQ
                   </Button>
                 </div>
-                <Separator className="my-6" />
+                <Separator className="sm:my-6 my-3" />
                 <div className="md:w-1/3 w-full px-3">
                   <FormField
                     control={form.control}

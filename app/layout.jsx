@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-US" className="scroll-smooth [scrollbar-width:thin] has-[.peer\/leadPopup:checked]:overflow-hidden [&_*]:tracking-[.5px]">
       <body
-        className={`${poppins.variable} antialiased scroll font-poppins group overflow-x-hidden overflow-y-auto has-[.leadPopup:checked]:overflow-hidden`}
+        className={`${poppins.variable} antialiased scroll font-poppins group overflow-x-hidden overflow-y-auto has-[.leadPopup:checked]:overflow-hidden m-0`}
       >
         <Toaster position="bottom-center" richColors />
         <PushInit />
