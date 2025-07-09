@@ -220,7 +220,7 @@ export default function Page({ params }) {
             </div>
           )}
         </CardContent>
-        <CardFooter className="max-sm:grid max-sm:grid-cols-2 flex justify-end gap-4 bg-white sticky bottom-0 border-t !py-3 max-sm:px-2 max-sm:-mx-2">
+        <CardFooter className={`max-sm:grid ${blog.status === 1 ? 'max-sm:grid-cols-2':'max-sm:grid-cols-1'} flex justify-end gap-4 bg-white sticky bottom-0 border-t !py-3 max-sm:px-2 max-sm:-mx-2`}>
           {blog && blog.status === 1 ? (
             <Link href={`/admin/blogs/add?id=${blog._id}`}>
               <Button type="button" variant="default" className="w-full">
