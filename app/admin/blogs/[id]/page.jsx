@@ -12,7 +12,7 @@ import BlogDetailSkeleton from "@/components/skeleton/blog-detail-skeleton";
 import 'tinymce/skins/ui/oxide/content.min.css';
 import 'tinymce/skins/content/default/content.min.css';
 import { Badge } from "@/components/ui/badge";
-import { BadgeCheckIcon, CheckCircle2Icon, CircleIcon, XCircleIcon, CalendarClockIcon, TagIcon, User2Icon } from "lucide-react";
+import { BadgeCheckIcon, CheckCircle2Icon, CircleIcon, XCircleIcon, CalendarClockIcon, TagIcon, User2Icon, PencilIcon } from "lucide-react";
 
 export default function Page({ params }) {
   const { id } = usePromise(params);
@@ -220,14 +220,20 @@ export default function Page({ params }) {
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-end gap-4 bg-white sticky bottom-0 border-t !py-3 max-sm:px-2 max-sm:-mx-2">
+        <CardFooter className="max-sm:grid max-sm:grid-cols-2 flex justify-end gap-4 bg-white sticky bottom-0 border-t !py-3 max-sm:px-2 max-sm:-mx-2">
           {blog && blog.status === 1 ? (
             <Link href={`/admin/blogs/add?id=${blog._id}`}>
-              <Button type="button" variant="outline">Edit</Button>
+              <Button type="button" variant="default" className="w-full">
+                <PencilIcon className="w-4 h-4 mr-1 -ml-1" />
+                Edit
+              </Button>
             </Link>
           ) : (
             <Link href={`/admin/blogs/${blog._id}/edit`}>
-              <Button type="button" variant="outline">Edit</Button>
+              <Button type="button" variant="default" className="w-full">
+                <PencilIcon className="w-4 h-4 mr-1 -ml-1" />
+                Edit
+              </Button>
             </Link>
           )}
           {blog.status === 1 && <DeleteBlogButtons id={blog._id} />}
