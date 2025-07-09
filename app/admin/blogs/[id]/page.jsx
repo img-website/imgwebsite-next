@@ -42,7 +42,7 @@ export default function Page({ params }) {
           {/* Edit/Delete Buttons - absolute top right */}
           <CardTitle className="font-bold pb-4">{blog.title}</CardTitle>
           <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-            {!blog.is_featured && (
+            {blog.is_featured && (
               <Badge variant="destructive" className="bg-amber-100 text-amber-800"><BadgeCheckIcon /> Featured</Badge>
             )}
             <Badge className={`${blog.status === 2 ? 'bg-green-100 text-green-800' : blog.status === 1 ? 'bg-gray-200 text-gray-700' : blog.status === 3 ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
