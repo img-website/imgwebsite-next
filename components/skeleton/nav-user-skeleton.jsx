@@ -2,7 +2,7 @@
 
 export function NavUserSkeleton({ avatarOnly = false } = {}) {
   return (
-    <div className="flex items-center gap-2 p-4">
+    <div className={`flex items-center gap-2 ${!avatarOnly && 'p-4'}`}>
       <div className="h-8 w-8 animate-pulse rounded-full bg-black/10" />
       {!avatarOnly && (
         <div className="space-y-1">
