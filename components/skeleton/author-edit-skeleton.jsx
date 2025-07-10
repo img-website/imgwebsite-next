@@ -5,16 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function AuthorEditSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>
             <Skeleton className="h-6 w-40" />
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="max-sm:text-xs">
             <Skeleton className="h-4 w-64" />
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <div className="space-y-8">
             <div className="space-y-2">
               <Skeleton className="h-4 w-32" />

@@ -5,12 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function AdminAddSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
+      <Card className="mx-auto w-full max-w-sm border-0 shadow-none">
         <CardHeader>
-          <CardTitle>
+          <CardTitle className="text-center">
             <Skeleton className="h-6 w-40" />
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-center">
             <Skeleton className="h-4 w-64" />
           </CardDescription>
         </CardHeader>
