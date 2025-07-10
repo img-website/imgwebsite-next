@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function AuthorDetailSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>
             <Skeleton className="h-6 w-40" />
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <div className="flex flex-col md:flex-row gap-6">
             <Skeleton className="h-[120px] w-[120px] rounded-lg" />
             <div className="flex-1 space-y-2 text-sm">
