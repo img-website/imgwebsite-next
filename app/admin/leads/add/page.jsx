@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, UserPlus2Icon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -56,59 +57,59 @@ export default function Page() {
 
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Add Lead</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField name="contact_name" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="mobile_number" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mobile</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="email" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="organization" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Organization</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="requirements" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Requirements</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="description" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Textarea className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="attachments" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Attachments</FormLabel>
-                  <FormControl><Input type="file" multiple onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                  <FormControl><Input className="max-sm:text-sm" type="file" multiple onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                 </FormItem>
               )} />
               <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
@@ -117,7 +118,17 @@ export default function Page() {
                   className="cursor-pointer"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? 'Creating...' : 'Create'}
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus2Icon className="w-4 h-4 mr-1 inline-block align-middle" />
+                      Create
+                    </>
+                  )}
                 </Button>
               </div>
             </form>

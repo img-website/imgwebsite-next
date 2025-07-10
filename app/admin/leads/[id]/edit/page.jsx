@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
 import { getPublicUrl } from "@/lib/s3";
-import { Download } from "lucide-react";
+import { CheckCircle2Icon, Download, Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import { useLead } from "@/hooks/use-leads";
 import LeadEditSkeleton from "@/components/skeleton/lead-edit-skeleton";
@@ -93,60 +93,60 @@ export default function Page({ params }) {
 
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Edit Lead</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField name="contact_name" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="mobile_number" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mobile</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="email" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="organization" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Organization</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="requirements" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Requirements</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="description" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
+                  <FormControl><Textarea className="max-sm:text-sm" {...field} /></FormControl>
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
               <FormField name="attachments" control={form.control} render={({ field }) => (
                 <FormItem>
                   <FormLabel>Attachments</FormLabel>
                   <FormControl>
-                    <Input type="file" multiple onChange={(e) => field.onChange(e.target.files)} />
+                    <Input className="max-sm:text-sm" type="file" multiple onChange={(e) => field.onChange(e.target.files)} />
                   </FormControl>
                 </FormItem>
               )} />
@@ -182,7 +182,17 @@ export default function Page({ params }) {
                   className="cursor-pointer"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2Icon className="w-4 h-4 mr-1 inline-block align-middle" />
+                      Save
+                    </>
+                  )}
                 </Button>
               </div>
             </form>
