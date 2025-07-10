@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState, Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, SaveIcon, SendIcon, CalendarClockIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -498,7 +499,7 @@ function BlogAdd() {
             )}
             <CardHeader className="max-sm:px-0">
               <CardTitle>Add New Blog</CardTitle>
-              <CardDescription>
+              <CardDescription className="max-sm:text-xs">
                 Create a new blog post. Fill in the required information below.
               </CardDescription>
             </CardHeader>
@@ -561,7 +562,7 @@ function BlogAdd() {
                               </Command>
                             </PopoverContent>
                           </Popover>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -642,7 +643,7 @@ function BlogAdd() {
                               </Command>
                             </PopoverContent>
                           </Popover>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -659,9 +660,10 @@ function BlogAdd() {
                               value={field.value}
                               onChange={field.onChange}
                               placeholder="Select date"
+                              className="max-sm:text-sm"
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -674,9 +676,9 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="Blog title" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="Blog title" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -689,10 +691,15 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Slug</FormLabel>
                           <FormControl>
-                            <Input placeholder="blog-title" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="blog-title" {...field} />
                           </FormControl>
-                          <FormDescription>Unique URL-friendly identifier.</FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.category_name ? (
+                            <FormMessage className="max-sm:text-xs" />
+                          ) : (
+                            <FormDescription className="max-sm:text-xs">
+                              Unique URL-friendly identifier.
+                            </FormDescription>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -705,9 +712,9 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Short Description</FormLabel>
                           <FormControl>
-                            <Textarea className="min-h-[80px]" {...field} />
+                            <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -725,7 +732,7 @@ function BlogAdd() {
                               onChange={field.onChange}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -755,7 +762,7 @@ function BlogAdd() {
                               resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -777,7 +784,7 @@ function BlogAdd() {
                               resetKey={imageResetKey} // Pass resetKey
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -790,9 +797,9 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Image Alt Text</FormLabel>
                           <FormControl>
-                            <Input placeholder="Describe banner image" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="Describe banner image" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -806,9 +813,9 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Meta Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="Meta title" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="Meta title" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -829,7 +836,7 @@ function BlogAdd() {
                               label={null}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -842,9 +849,9 @@ function BlogAdd() {
                         <FormItem>
                           <FormLabel>Meta Description</FormLabel>
                           <FormControl>
-                            <Textarea className="min-h-[80px]" {...field} />
+                            <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -869,7 +876,7 @@ function BlogAdd() {
                                   resetKey={imageResetKey} // Pass resetKey
                                 />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -880,9 +887,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>OG Image Alt</FormLabel>
                               <FormControl>
-                                <Input placeholder="Alt text for OG image" {...field} />
+                                <Input className="max-sm:text-sm" placeholder="Alt text for OG image" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -893,9 +900,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>Meta OG Title</FormLabel>
                               <FormControl>
-                                <Input placeholder="Open Graph title" {...field} />
+                                <Input className="max-sm:text-sm" placeholder="Open Graph title" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -906,9 +913,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>Meta OG Description</FormLabel>
                               <FormControl>
-                                <Textarea className="min-h-[80px]" {...field} />
+                                <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -934,7 +941,7 @@ function BlogAdd() {
                                   resetKey={imageResetKey} // Pass resetKey
                                 />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -945,9 +952,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>X Image Alt</FormLabel>
                               <FormControl>
-                                <Input placeholder="Alt text for X image" {...field} />
+                                <Input className="max-sm:text-sm" placeholder="Alt text for X image" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -958,9 +965,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>Meta X Title</FormLabel>
                               <FormControl>
-                                <Input placeholder="X title" {...field} />
+                                <Input className="max-sm:text-sm" placeholder="X title" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -971,9 +978,9 @@ function BlogAdd() {
                             <FormItem>
                               <FormLabel>Meta X Description</FormLabel>
                               <FormControl>
-                                <Textarea className="min-h-[80px]" {...field} />
+                                <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -991,9 +998,9 @@ function BlogAdd() {
                               <FormItem className="grow mr-4">
                                 <FormLabel>Question</FormLabel>
                                 <FormControl>
-                                  <Input {...field} />
+                                  <Input className="max-sm:text-sm" {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="max-sm:text-xs" />
                               </FormItem>
                             )}
                           />
@@ -1010,7 +1017,7 @@ function BlogAdd() {
                               <FormControl>
                                 <TinyMCEEditor value={field.value} onChange={field.onChange} init={faqEditorInit} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -1041,7 +1048,7 @@ function BlogAdd() {
                               {/* <SelectItem value="3">Archived</SelectItem> */}
                             </SelectContent>
                           </Select>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -1083,7 +1090,7 @@ function BlogAdd() {
                                   />
                                 </div>
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           );
                         }}
@@ -1111,7 +1118,7 @@ function BlogAdd() {
                               <SelectItem value="true">Enable BG</SelectItem>
                             </SelectContent>
                           </Select>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -1180,7 +1187,7 @@ function BlogAdd() {
                                 </Command>
                               </PopoverContent>
                             </Popover>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -1192,9 +1199,43 @@ function BlogAdd() {
                       className="cursor-pointer"
                       disabled={form.formState.isSubmitting}
                     >
-                      {status === "1"
-                        ? (form.formState.isSubmitting ? "Saving..." : "Save Draft")
-                        : (form.formState.isSubmitting ? "Publishing..." : "Publish Now")}
+                      {status === "1" ? (
+                        form.formState.isSubmitting ? (
+                          <>
+                            <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                            Saving...
+                          </>
+                        ) : (
+                          <>
+                            <SaveIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                            Save Draft
+                          </>
+                        )
+                      ) : status === "2" ? (
+                        form.formState.isSubmitting ? (
+                          <>
+                            <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                            Publishing...
+                          </>
+                        ) : (
+                          <>
+                            <SendIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                            Publish Now
+                          </>
+                        )
+                      ) : status === "4" ? (
+                        form.formState.isSubmitting ? (
+                          <>
+                            <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                            Scheduling...
+                          </>
+                        ) : (
+                          <>
+                            <CalendarClockIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                            Schedule
+                          </>
+                        )
+                      ) : null}
                     </Button>
                   </div>
                 </form>
@@ -1209,7 +1250,7 @@ function BlogAdd() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={""}>
       <BlogAdd />
     </Suspense>
   );

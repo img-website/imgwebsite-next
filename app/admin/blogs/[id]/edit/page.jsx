@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown, Plus, Trash2 } from "lucide-react";
+import { Check, ChevronsUpDown, Plus, Trash2, XIcon, Loader2Icon, SaveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
@@ -352,7 +352,7 @@ export default function Page({ params }) {
         <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
           <CardHeader className="max-sm:px-0">
             <CardTitle>Edit Blog</CardTitle>
-            <CardDescription>
+            <CardDescription className="max-sm:text-xs">
               Update the blog post details below.
             </CardDescription>
           </CardHeader>
@@ -415,7 +415,7 @@ export default function Page({ params }) {
                             </Command>
                           </PopoverContent>
                         </Popover>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -496,7 +496,7 @@ export default function Page({ params }) {
                             </Command>
                           </PopoverContent>
                         </Popover>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -515,7 +515,7 @@ export default function Page({ params }) {
                             placeholder="Select date"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -528,9 +528,9 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="Blog title" {...field} />
+                          <Input className="max-sm:text-sm" placeholder="Blog title" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -543,10 +543,15 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Slug</FormLabel>
                         <FormControl>
-                          <Input placeholder="blog-title" {...field} />
+                          <Input className="max-sm:text-sm" placeholder="blog-title" {...field} />
                         </FormControl>
-                        <FormDescription>Unique URL-friendly identifier.</FormDescription>
-                        <FormMessage />
+                        {form.formState.errors.category_name ? (
+                          <FormMessage className="max-sm:text-xs" />
+                        ) : (
+                          <FormDescription className="max-sm:text-xs">
+                            Unique URL-friendly identifier.
+                          </FormDescription>
+                        )}
                       </FormItem>
                     )}
                   />
@@ -559,9 +564,9 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Short Description</FormLabel>
                         <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
+                          <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -579,7 +584,7 @@ export default function Page({ params }) {
                             onChange={field.onChange}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -606,7 +611,7 @@ export default function Page({ params }) {
                             format="webp"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -627,7 +632,7 @@ export default function Page({ params }) {
                             format="webp"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -640,9 +645,9 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Image Alt Text</FormLabel>
                         <FormControl>
-                          <Input placeholder="Describe banner image" {...field} />
+                          <Input className="max-sm:text-sm" placeholder="Describe banner image" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -656,9 +661,9 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Meta Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="Meta title" {...field} />
+                          <Input className="max-sm:text-sm" placeholder="Meta title" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -679,7 +684,7 @@ export default function Page({ params }) {
                             label={null}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -692,9 +697,9 @@ export default function Page({ params }) {
                       <FormItem>
                         <FormLabel>Meta Description</FormLabel>
                         <FormControl>
-                          <Textarea className="min-h-[80px]" {...field} />
+                          <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -718,7 +723,7 @@ export default function Page({ params }) {
                                 format="jpg"
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -729,9 +734,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>OG Image Alt</FormLabel>
                             <FormControl>
-                              <Input placeholder="Alt text for OG image" {...field} />
+                              <Input className="max-sm:text-sm" placeholder="Alt text for OG image" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -742,9 +747,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>Meta OG Title</FormLabel>
                             <FormControl>
-                              <Input placeholder="Open Graph title" {...field} />
+                              <Input className="max-sm:text-sm" placeholder="Open Graph title" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -755,9 +760,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>Meta OG Description</FormLabel>
                             <FormControl>
-                              <Textarea className="min-h-[80px]" {...field} />
+                              <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -782,7 +787,7 @@ export default function Page({ params }) {
                                 format="jpg"
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -793,9 +798,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>X Image Alt</FormLabel>
                             <FormControl>
-                              <Input placeholder="Alt text for X image" {...field} />
+                              <Input className="max-sm:text-sm" placeholder="Alt text for X image" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -806,9 +811,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>Meta X Title</FormLabel>
                             <FormControl>
-                              <Input placeholder="X title" {...field} />
+                              <Input className="max-sm:text-sm" placeholder="X title" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -819,9 +824,9 @@ export default function Page({ params }) {
                           <FormItem>
                             <FormLabel>Meta X Description</FormLabel>
                             <FormControl>
-                              <Textarea className="min-h-[80px]" {...field} />
+                              <Textarea className="max-sm:text-sm min-h-[80px]" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -841,7 +846,7 @@ export default function Page({ params }) {
                               <FormControl>
                                 <Input {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -858,7 +863,7 @@ export default function Page({ params }) {
                             <FormControl>
                               <TinyMCEEditor value={field.value} onChange={field.onChange} init={faqEditorInit} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -888,7 +893,7 @@ export default function Page({ params }) {
                             <SelectItem value="4">Schedule</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -930,7 +935,7 @@ export default function Page({ params }) {
                                 />
                               </div>
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         );
                       }}
@@ -958,7 +963,7 @@ export default function Page({ params }) {
                             <SelectItem value="true">Enable BG</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -1027,7 +1032,7 @@ export default function Page({ params }) {
                               </Command>
                             </PopoverContent>
                           </Popover>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -1037,8 +1042,10 @@ export default function Page({ params }) {
                   <Button
                     type="button"
                     variant="outline"
+                    className="cursor-pointer"
                     onClick={() => router.push(`/admin/blogs/${blogId}`)}
-                    >
+                  >
+                    <XIcon className="w-4 h-4 mr-1 -ml-1" />
                     Cancel
                   </Button>
                   <Button
@@ -1046,7 +1053,17 @@ export default function Page({ params }) {
                     className="cursor-pointer"
                     disabled={form.formState.isSubmitting}
                   >
-                    {form.formState.isSubmitting ? "Updating..." : "Update"}
+                    {form.formState.isSubmitting ? (
+                      <>
+                        <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <SaveIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                        Update
+                      </>
+                    )}
                   </Button>
                 </div>
               </form>
