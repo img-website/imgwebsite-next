@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
 import { useImageStore } from "@/app/store/use-image-store";
 import React from "react";
+import { ImagePlusIcon, Loader2Icon } from "lucide-react";
 
 const imageFormSchema = z.object({
   image: z.any().refine((file) => !file || file.length === 1, "Only one image allowed"),
@@ -62,12 +63,12 @@ export default function EditImageForm({ image }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+      <CardHeader className="max-sm:px-0">
         <CardTitle>Edit Image</CardTitle>
-        <CardDescription>Replace the image. The name will remain the same.</CardDescription>
+        <CardDescription className="max-sm:text-xs">Replace the image. The name will remain the same.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="max-sm:px-0">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -91,7 +92,7 @@ export default function EditImageForm({ image }) {
                       originalName={true}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )}
             />
@@ -101,7 +102,17 @@ export default function EditImageForm({ image }) {
                 className="cursor-pointer"
                 disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? 'Updating...' : 'Update Image'}
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <ImagePlusIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                    Update Image
+                  </>
+                )}
               </Button>
             </div>
           </form>

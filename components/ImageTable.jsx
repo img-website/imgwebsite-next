@@ -192,12 +192,13 @@ export function ImageTable({ data, canAdd = false, canEdit = false }) {
           onChange={(event) =>
             table.getColumn("storedName")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm max-sm:text-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              <span className="max-sm:hidden">Columns</span> <ChevronDown className="ml-2 h-4 w-4 max-sm:hidden" />
+              <span className="sm:hidden"><ArrowUpDown className="h-4 w-4" /></span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -222,7 +223,7 @@ export function ImageTable({ data, canAdd = false, canEdit = false }) {
         </DropdownMenu>
         {canAdd && (
           <Button asChild>
-            <Link href="/admin/blogs/images/add"><Plus /> Add Image</Link>
+            <Link href="/admin/blogs/images/add"><Plus /> <span className="max-sm:hidden">Add Image</span></Link>
           </Button>
         )}
       </div>
@@ -277,7 +278,7 @@ export function ImageTable({ data, canAdd = false, canEdit = false }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
+        <div className="text-muted-foreground flex-1 sm:text-sm text-xs">
           {table.getFilteredSelectedRowModel().rows.length} of {" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
@@ -288,7 +289,8 @@ export function ImageTable({ data, canAdd = false, canEdit = false }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            <span className="max-sm:hidden">Previous</span>
+            <span className="sm:hidden"><ChevronDown className="h-4 w-4 rotate-90" /></span>
           </Button>
           <Button
             variant="outline"
@@ -296,7 +298,8 @@ export function ImageTable({ data, canAdd = false, canEdit = false }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            <span className="max-sm:hidden">Next</span>
+            <span className="sm:hidden"><ChevronDown className="h-4 w-4 -rotate-90" /></span>
           </Button>
         </div>
       </div>

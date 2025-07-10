@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, ImagePlusIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -76,14 +77,14 @@ export default function AddImagePage() {
   return (
     <>
       <div className="w-full p-4">
-        <Card>
-          <CardHeader>
+        <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+          <CardHeader className="max-sm:px-0">
             <CardTitle>Add Images</CardTitle>
-            <CardDescription>
+            <CardDescription className="max-sm:text-xs">
               Upload multiple images at once. Aspect ratio is free for each.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-sm:px-0">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -104,7 +105,7 @@ export default function AddImagePage() {
                           originalName={true}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -114,9 +115,17 @@ export default function AddImagePage() {
                     className="cursor-pointer"
                     disabled={form.formState.isSubmitting}
                   >
-                    {form.formState.isSubmitting
-                      ? "Uploading..."
-                      : "Upload Images"}
+                    {form.formState.isSubmitting ? (
+                      <>
+                        <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <ImagePlusIcon className="w-4 h-4 mr-1 inline-block align-middle" />
+                        Upload Images
+                      </>
+                    )}
                   </Button>
                 </div>
               </form>

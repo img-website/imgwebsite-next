@@ -289,7 +289,7 @@ export function NewsletterTable({ data }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
+        <div className="text-muted-foreground flex-1 sm:text-sm text-xs">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
