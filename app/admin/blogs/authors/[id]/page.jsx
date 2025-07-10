@@ -27,16 +27,16 @@ export default function Page({ params }) {
 
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Author Details</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <div className="flex flex-col md:flex-row gap-6">
-            <Image src={imageSrc} alt={author.author_name} width={120} height={120} className="rounded-lg object-cover" />
+            <Image src={imageSrc} alt={author.author_name} width={120} height={120} className="rounded-lg object-cover max-sm:w-full max-sm:aspect-square" />
             <div className="space-y-2 text-sm">
-              <p><strong>Name:</strong> {author.author_name}</p>
-              <p><strong>Description:</strong> {author.description}</p>
+              <p className="sm:text-xl text-lg"><strong>{author.author_name}</strong></p>
+              <p className="sm:text-sm text-xs">{author.description}</p>
               {author.linkedin_link && (
                 <p><strong>LinkedIn:</strong> <a href={author.linkedin_link} target="_blank" className="text-blue-600 underline">{author.linkedin_link}</a></p>
               )}

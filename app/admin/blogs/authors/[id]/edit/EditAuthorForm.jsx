@@ -5,6 +5,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, UserCheck2Icon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -124,12 +125,12 @@ export default function EditAuthorForm({ author }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Edit Author</CardTitle>
-          <CardDescription>Update author details below.</CardDescription>
+          <CardDescription className="max-sm:text-xs">Update author details below.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
@@ -139,9 +140,15 @@ export default function EditAuthorForm({ author }) {
                     <FormItem>
                       <FormLabel>Author Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input className="max-sm:text-sm" placeholder="John Doe" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      {form.formState.errors.author_name ? (
+                        <FormMessage className="max-sm:text-xs" />
+                      ) : (
+                        <FormDescription className="max-sm:text-xs">
+                          This is the public name of the author.
+                        </FormDescription>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -158,8 +165,13 @@ export default function EditAuthorForm({ author }) {
                           onChange={onChange}
                         />
                       </FormControl>
-                      <FormDescription>Leave blank to keep existing image</FormDescription>
-                      <FormMessage />
+                      {form.formState.errors.image ? (
+                        <FormMessage className="max-sm:text-xs" />
+                      ) : (
+                        <FormDescription className="max-sm:text-xs">
+                          Leave blank to keep existing image
+                        </FormDescription>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -172,11 +184,17 @@ export default function EditAuthorForm({ author }) {
                     <FormControl>
                       <Textarea
                         placeholder="Brief description about the author"
-                        className="min-h-[120px]"
+                        className="max-sm:text-sm"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    {form.formState.errors.description ? (
+                      <FormMessage className="max-sm:text-xs" />
+                    ) : (
+                      <FormDescription className="max-sm:text-xs">
+                        Write a brief bio about the author (max 500 characters)
+                      </FormDescription>
+                    )}
                   </FormItem>
                 )}
               />
@@ -188,9 +206,9 @@ export default function EditAuthorForm({ author }) {
                     <FormItem>
                       <FormLabel>LinkedIn Profile</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://linkedin.com/in/username" {...field} />
+                        <Input className="max-sm:text-sm" placeholder="https://linkedin.com/in/username" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -201,9 +219,9 @@ export default function EditAuthorForm({ author }) {
                     <FormItem>
                       <FormLabel>Facebook Profile</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://facebook.com/username" {...field} />
+                        <Input className="max-sm:text-sm" placeholder="https://facebook.com/username" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -214,9 +232,9 @@ export default function EditAuthorForm({ author }) {
                     <FormItem>
                       <FormLabel>Twitter Profile</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://twitter.com/username" {...field} />
+                        <Input className="max-sm:text-sm" placeholder="https://twitter.com/username" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -228,7 +246,7 @@ export default function EditAuthorForm({ author }) {
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <Select onValueChange={(value) => field.onChange(Number(value))} value={String(field.value)}>
-                      <FormControl>
+                      <FormControl className="w-full">
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -239,7 +257,7 @@ export default function EditAuthorForm({ author }) {
                         <SelectItem value="3">Suspended</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -249,7 +267,17 @@ export default function EditAuthorForm({ author }) {
                   className="cursor-pointer"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? "Updating..." : "Update Author"}
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <UserCheck2Icon className="w-4 h-4 mr-1 inline-block align-middle" />
+                      Update Author
+                    </>
+                  )}
                 </Button>
               </div>
             </form>

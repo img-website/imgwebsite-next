@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, UserPlus2Icon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -25,6 +26,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { createAuthor } from "@/app/actions/authors";
 import { useAuthorStore } from "@/app/store/use-author-store";
+import { useRouter } from "next/navigation";
 
 const authorFormSchema = z.object({
   author_name: z.string()
@@ -53,6 +55,7 @@ const authorFormSchema = z.object({
 });
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(authorFormSchema),
     defaultValues: {
@@ -95,6 +98,7 @@ export default function Page() {
         }
         toast.success("Author created successfully!");
         form.reset();
+        router.push("/admin/blogs/authors");
       } else {
         toast.error(result.error || "Failed to create author");
       }
@@ -107,14 +111,14 @@ export default function Page() {
     <>
       <div className="w-full p-4">
         <div className="flex flex-col gap-6">
-          <Card>
-            <CardHeader>
+          <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+            <CardHeader className="max-sm:px-0">
               <CardTitle>Add New Author</CardTitle>
-              <CardDescription>
+              <CardDescription className="max-sm:text-xs">
                 Create a new author profile for your blog. Fill in the required information below.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-sm:px-0">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -124,12 +128,15 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Author Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="John Doe" {...field} />
                           </FormControl>
-                          <FormDescription>
-                            This is the public name of the author.
-                          </FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.author_name ? (
+                            <FormMessage className="max-sm:text-xs" />
+                          ) : (
+                            <FormDescription className="max-sm:text-xs">
+                              This is the public name of the author.
+                            </FormDescription>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -147,10 +154,13 @@ export default function Page() {
                               onChange={onChange}
                             />
                           </FormControl>
-                          <FormDescription>
-                            Upload a square image (400x400px recommended)
-                          </FormDescription>
-                          <FormMessage />
+                          {form.formState.errors.image ? (
+                            <FormMessage className="max-sm:text-xs" />
+                          ) : (
+                            <FormDescription className="max-sm:text-xs">
+                              Upload a square image (400x400px recommended)
+                            </FormDescription>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -164,14 +174,17 @@ export default function Page() {
                         <FormControl>
                           <Textarea 
                             placeholder="Brief description about the author"
-                            className="min-h-[120px]"
+                            className="max-sm:text-sm"
                             {...field}
                           />
                         </FormControl>
-                        <FormDescription>
-                          Write a brief bio about the author (max 500 characters)
-                        </FormDescription>
-                        <FormMessage />
+                        {form.formState.errors.description ? (
+                          <FormMessage className="max-sm:text-xs" />
+                        ) : (
+                          <FormDescription className="max-sm:text-xs">
+                            Write a brief bio about the author (max 500 characters)
+                          </FormDescription>
+                        )}
                       </FormItem>
                     )}
                   />
@@ -184,9 +197,9 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>LinkedIn Profile</FormLabel>
                           <FormControl>
-                            <Input placeholder="https://linkedin.com/in/username" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="https://linkedin.com/in/username" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -198,9 +211,9 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Facebook Profile</FormLabel>
                           <FormControl>
-                            <Input placeholder="https://facebook.com/username" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="https://facebook.com/username" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -212,9 +225,9 @@ export default function Page() {
                         <FormItem>
                           <FormLabel>Twitter Profile</FormLabel>
                           <FormControl>
-                            <Input placeholder="https://twitter.com/username" {...field} />
+                            <Input className="max-sm:text-sm" placeholder="https://twitter.com/username" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -226,7 +239,17 @@ export default function Page() {
                       className="cursor-pointer"
                       disabled={form.formState.isSubmitting}
                     >
-                      {form.formState.isSubmitting ? "Creating..." : "Create Author"}
+                      {form.formState.isSubmitting ? (
+                        <>
+                          <Loader2Icon className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                          Creating...
+                        </>
+                      ) : (
+                        <>
+                          <UserPlus2Icon className="w-4 h-4 mr-1 inline-block align-middle" />
+                          Create Author
+                        </>
+                      )}
                     </Button>
                   </div>
                 </form>
