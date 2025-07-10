@@ -25,6 +25,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { createCategory } from "@/app/actions/categories";
 import { useCategoryStore } from "@/app/store/use-category-store";
+import { useRouter } from "next/navigation";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -36,6 +37,7 @@ const categoryFormSchema = z.object({
 });
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -60,6 +62,7 @@ export default function Page() {
         }
         toast.success("Category created successfully!");
         form.reset();
+        router.push(`/admin/blogs/categories`);
       } else {
         toast.error(result.error || "Failed to create category");
       }

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +27,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { updateCategory } from "@/app/actions/categories";
 import { useCategory } from "@/hooks/use-categories";
 import { useCategoryStore } from "@/app/store/use-category-store";
+import { Loader2Icon, PlusCircleIcon } from "lucide-react";
 
 const categoryFormSchema = z.object({
   category_name: z.string()
@@ -73,12 +75,12 @@ export default function EditCategoryForm({ category }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Edit Category</CardTitle>
-          <CardDescription>Update category details below.</CardDescription>
+          <CardDescription className="max-sm:text-xs">Update category details below.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
@@ -88,9 +90,15 @@ export default function EditCategoryForm({ category }) {
                   <FormItem>
                     <FormLabel>Category Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Technology" {...field} />
+                      <Input className="max-sm:text-sm" placeholder="Technology" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    {form.formState.errors.category_name ? (
+                      <FormMessage className="max-sm:text-xs" />
+                    ) : (
+                      <FormDescription className="max-sm:text-xs">
+                        This is the public name of the category.
+                      </FormDescription>
+                    )}
                   </FormItem>
                 )}
               />
@@ -103,11 +111,17 @@ export default function EditCategoryForm({ category }) {
                     <FormControl>
                       <Textarea
                         placeholder="Brief description about the category"
-                        className="min-h-[120px]"
+                        className="min-h-[120px] max-sm:text-sm"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+                    {form.formState.errors.description ? (
+                      <FormMessage className="max-sm:text-xs" />
+                    ) : (
+                      <FormDescription className="max-sm:text-xs">
+                        Write a brief description about the category (max 500 characters)
+                      </FormDescription>
+                    )}
                   </FormItem>
                 )}
               />
@@ -118,7 +132,7 @@ export default function EditCategoryForm({ category }) {
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <Select onValueChange={(value) => field.onChange(Number(value))} value={String(field.value)}>
-                      <FormControl>
+                      <FormControl className="w-full">
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -139,7 +153,17 @@ export default function EditCategoryForm({ category }) {
                   className="cursor-pointer"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? "Updating..." : "Update Category"}
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2Icon className="w-4 h-4 animate-spin inline-block align-middle" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <PlusCircleIcon className="w-4 h-4 inline-block align-middle" />
+                    Update Category
+                  </>
+                )}
                 </Button>
               </div>
             </form>

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { useCategory } from "@/hooks/use-categories";
 import { useCategoryStore } from "@/app/store/use-category-store";
-import { Copy } from "lucide-react";
+import { Copy, Trash2Icon, XIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
@@ -55,7 +55,7 @@ export default function DeleteCategoryButtons({ id }) {
       <DialogTrigger asChild>
         <Button variant="destructive" className="cursor-pointer" onClick={handleOpen}>Delete</Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col">
+      <DialogContent className="max-sm:w-[calc(100%-24px)] max-sm:rounded-lg">
         <DialogHeader>
           <DialogTitle>Delete Category</DialogTitle>
           {blogs && blogs.length > 0 ? (
@@ -107,11 +107,13 @@ export default function DeleteCategoryButtons({ id }) {
           </>
         ) : (
           <>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>
+            <DialogFooter className="max-sm:grid max-sm:grid-cols-2 max-sm:gap-3 flex justify-end gap-4">
+              <Button variant="outline" onClick={() => setOpen(false)} className="cursor-pointer">
+                <XIcon className="w-4 h-4" />
                 Cancel
               </Button>
-              <Button variant="destructive" onClick={handleDelete}>
+              <Button variant="destructive" onClick={handleDelete} className="cursor-pointer">
+                <Trash2Icon className="w-4 h-4" />
                 Delete
               </Button>
             </DialogFooter>
