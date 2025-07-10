@@ -41,6 +41,8 @@ const faqEditorInit = {
 };
 import { useRouter, useParams } from "next/navigation";
 import apiFetch from "@/helpers/apiFetch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const schemaOptions = [
   "Organization",
@@ -378,585 +380,593 @@ export default function Page() {
   }
 
   return (
-    <div className="w-full p-4 space-y-6">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Schema Type</FormLabel>
-                <Select
-                  value={selected}
-                  onValueChange={(val) => {
-                    setSelected(val);
-                    form.reset(getDefaults(val));
-                    field.onChange(val);
-                  }}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {schemaOptions.map((op) => (
-                      <SelectItem key={op} value={op}>{op}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div className="w-full p-4">
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
+          <CardTitle>{pageUrl}</CardTitle>
+        </CardHeader>
+        <CardContent className="max-sm:px-0">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Schema Type</FormLabel>
+                    <Select
+                      value={selected}
+                      onValueChange={(val) => {
+                        setSelected(val);
+                        form.reset(getDefaults(val));
+                        field.onChange(val);
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="max-sm:w-full">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {schemaOptions.map((op) => (
+                          <SelectItem key={op} value={op}>{op}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )}
+              />
+              <Separator className="my-4" />
 
-          {/* Render dynamic fields */}
-          {selected === "Organization" && (
-            <>
-              <FormField name="name" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="legalName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Legal Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="logo"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Logo</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        value={field.value}
-                        onChange={(val) => handleImageChange(field.name, val)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField name="contactEmail" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contact Email</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="contactPhone"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact Phone</FormLabel>
-                    <FormControl>
-                      <PhoneInput value={field.value} onChange={field.onChange} autoFocus />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="foundingDate"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Founding Date</FormLabel>
-                    <FormControl>
-                      <DatePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField name="streetAddress" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField name="postalCode" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postal Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField name="addressCountry" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-              <FormField name="founders" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Founders</FormLabel>
-                  <FormControl>
-                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add founder" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="areaServed" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Area Served</FormLabel>
-                  <FormControl>
-                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add code" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="sameAs"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>SameAs Links</FormLabel>
-                    <FormControl>
-                      <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add links..." />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
-          )}
-          {selected === "WebPage" && (
-            <>
-              <FormField name="pageTitle" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Page Title</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="pageDescription" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Page Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField
-                name="datePublished"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date Published</FormLabel>
-                    <FormControl>
-                      <DatePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="dateModified"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date Modified</FormLabel>
-                    <FormControl>
-                      <DatePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField name="authorName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Author Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            </>
-          )}
-          {selected === "LocalBusiness" && (
-            <>
-              <FormField name="businessName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Business Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="image" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="phoneNumber" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput value={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="priceRange" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price Range</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="streetAddress" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField name="postalCode" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postal Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField name="addressCountry" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-              
-            </>
-          )}
-          {selected === "LocalBusiness2" && (
-            <>
-              <FormField name="businessName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Business Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="image" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="phoneNumber" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput value={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="priceRange" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price Range</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="streetAddress" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField name="postalCode" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postal Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField name="addressCountry" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country Code</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-
-            </>
-          )}
-          {selected === "BreadcrumbList" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <FormLabel>Breadcrumb Items</FormLabel>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => breadcrumbFields.append({ name: "", item: "" })}
-                >
-                  <Plus className="h-4 w-4 mr-2" /> Add Item
-                </Button>
-              </div>
-              {breadcrumbFields.fields.map((field, index) => (
-                <div key={field.id} className="flex flex-wrap items-start gap-4">
+              {/* Render dynamic fields */}
+              {selected === "Organization" && (
+                <>
+                  <FormField name="name" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="legalName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Legal Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
                   <FormField
+                    name="logo"
                     control={form.control}
-                    name={`items.${index}.name`}
                     render={({ field }) => (
-                      <FormItem className="grow">
-                        <FormLabel>Name</FormLabel>
+                      <FormItem>
+                        <FormLabel>Logo</FormLabel>
                         <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`items.${index}.item`}
-                    render={({ field }) => (
-                      <FormItem className="grow">
-                        <FormLabel>URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="mt-[22px] cursor-pointer"
-                    onClick={() => breadcrumbFields.remove(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-          {selected === "Product" && (
-            <>
-              <FormField name="name" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="image" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="description" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="brandName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField name="ratingValue" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rating Value</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField name="ratingCount" control={form.control} render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rating Count</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-            </>
-          )}
-          {selected === "Service" && (
-            <>
-              <FormField name="name" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="providerName" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Provider Name</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="description" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl><Textarea {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="areaServed" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Area Served</FormLabel>
-                  <FormControl><Input {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="serviceType" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Service Type</FormLabel>
-                  <FormControl>
-                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add type" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField name="sameAs" control={form.control} render={({ field }) => (
-                <FormItem>
-                  <FormLabel>SameAs Links</FormLabel>
-                  <FormControl>
-                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add link" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            </>
-          )}
-          {selected === "FAQPage" && (
-            <div className="space-y-4">
-              {faqFields.fields.map((field, index) => (
-                <div key={field.id} className="border p-4 rounded-md space-y-4">
-                  <div className="flex flex-wrap">
-                    <FormField
-                      control={form.control}
-                      name={`faqs.${index}.question`}
-                      render={({ field }) => (
-                        <FormItem className="grow mr-4">
-                          <FormLabel>Question</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button type="button" variant="outline" size="icon" className="mt-[22px] cursor-pointer" onClick={() => faqFields.remove(index)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name={`faqs.${index}.answer`}
-                    render={({ field }) => (
-                      <FormItem className="[&_.tox-statusbar]:!hidden">
-                        <FormLabel>Answer</FormLabel>
-                        <FormControl>
-                          <TinyMCEEditor
+                          <ImageCropperInput
                             value={field.value}
-                            onChange={field.onChange}
-                            init={faqEditorInit}
+                            onChange={(val) => handleImageChange(field.name, val)}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
+                  <FormField name="contactEmail" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Contact Email</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField
+                    name="contactPhone"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contact Phone</FormLabel>
+                        <FormControl>
+                          <PhoneInput value={field.value} onChange={field.onChange} autoFocus />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="foundingDate"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Founding Date</FormLabel>
+                        <FormControl>
+                          <DatePicker value={field.value} onChange={field.onChange} />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField name="streetAddress" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Street Address</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Region</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="postalCode" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postal Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
+                  <FormField name="founders" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Founders</FormLabel>
+                      <FormControl>
+                        <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add founder" />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="areaServed" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Area Served</FormLabel>
+                      <FormControl>
+                        <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add code" />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField
+                    name="sameAs"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>SameAs Links</FormLabel>
+                        <FormControl>
+                          <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add links..." />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+              {selected === "WebPage" && (
+                <>
+                  <FormField name="pageTitle" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Page Title</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="pageDescription" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Page Description</FormLabel>
+                      <FormControl><Textarea className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField
+                    name="datePublished"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date Published</FormLabel>
+                        <FormControl>
+                          <DatePicker value={field.value} onChange={field.onChange} />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="dateModified"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date Modified</FormLabel>
+                        <FormControl>
+                          <DatePicker value={field.value} onChange={field.onChange} />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField name="authorName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Author Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                </>
+              )}
+              {selected === "LocalBusiness" && (
+                <>
+                  <FormField name="businessName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Business Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="image" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <PhoneInput value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="priceRange" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price Range</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="streetAddress" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Street Address</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Region</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="postalCode" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postal Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
+                  
+                </>
+              )}
+              {selected === "LocalBusiness2" && (
+                <>
+                  <FormField name="businessName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Business Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="image" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <PhoneInput value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="priceRange" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price Range</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="streetAddress" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Street Address</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Region</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="postalCode" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postal Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressCountry" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country Code</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
+
+                </>
+              )}
+              {selected === "BreadcrumbList" && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Breadcrumb Items</FormLabel>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => breadcrumbFields.append({ name: "", item: "" })}
+                    >
+                      <Plus className="h-4 w-4 mr-2" /> Add Item
+                    </Button>
+                  </div>
+                  {breadcrumbFields.fields.map((field, index) => (
+                    <div key={field.id} className="flex flex-wrap items-start gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`items.${index}.name`}
+                        render={({ field }) => (
+                          <FormItem className="grow">
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input className="max-sm:text-sm" {...field} />
+                            </FormControl>
+                            <FormMessage className="max-sm:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`items.${index}.item`}
+                        render={({ field }) => (
+                          <FormItem className="grow">
+                            <FormLabel>URL</FormLabel>
+                            <FormControl>
+                              <Input className="max-sm:text-sm" {...field} />
+                            </FormControl>
+                            <FormMessage className="max-sm:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="mt-[22px] cursor-pointer"
+                        onClick={() => breadcrumbFields.remove(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-              <Button type="button" variant="secondary" size="sm" onClick={() => faqFields.append({ question: '', answer: '' })}>
-                <Plus className="h-4 w-4 mr-2" /> Add FAQ
-              </Button>
-            </div>
-          )}
-          <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
-            <Button
-              type="submit"
-              className="cursor-pointer"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Saving..." : "Save"}
-            </Button>
-          </div>
-        </form>
-      </Form>
+              )}
+              {selected === "Product" && (
+                <>
+                  <FormField name="name" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="image" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <ImageCropperInput value={field.value} onChange={(val) => handleImageChange(field.name, val)} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="description" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl><Textarea className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="brandName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Brand Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="ratingValue" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rating Value</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="ratingCount" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rating Count</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
+                </>
+              )}
+              {selected === "Service" && (
+                <>
+                  <FormField name="name" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="providerName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Provider Name</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="description" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl><Textarea className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="areaServed" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Area Served</FormLabel>
+                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="serviceType" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Service Type</FormLabel>
+                      <FormControl>
+                        <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add type" />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField name="sameAs" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>SameAs Links</FormLabel>
+                      <FormControl>
+                        <MultiKeywordCombobox value={field.value} onChange={field.onChange} label={null} placeholder="Add link" />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                </>
+              )}
+              {selected === "FAQPage" && (
+                <div className="space-y-4">
+                  {faqFields.fields.map((field, index) => (
+                    <div key={field.id} className="border p-4 rounded-md space-y-4">
+                      <div className="flex flex-wrap">
+                        <FormField
+                          control={form.control}
+                          name={`faqs.${index}.question`}
+                          render={({ field }) => (
+                            <FormItem className="grow mr-4">
+                              <FormLabel>Question</FormLabel>
+                              <FormControl>
+                                <Input className="max-sm:text-sm" {...field} />
+                              </FormControl>
+                              <FormMessage className="max-sm:text-xs" />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="button" variant="outline" size="icon" className="mt-[22px] cursor-pointer" onClick={() => faqFields.remove(index)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name={`faqs.${index}.answer`}
+                        render={({ field }) => (
+                          <FormItem className="[&_.tox-statusbar]:!hidden">
+                            <FormLabel>Answer</FormLabel>
+                            <FormControl>
+                              <TinyMCEEditor
+                                value={field.value}
+                                onChange={field.onChange}
+                                init={faqEditorInit}
+                              />
+                            </FormControl>
+                            <FormMessage className="max-sm:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ))}
+                  <Button type="button" variant="secondary" size="sm" onClick={() => faqFields.append({ question: '', answer: '' })}>
+                    <Plus className="h-4 w-4 mr-2" /> Add FAQ
+                  </Button>
+                </div>
+              )}
+              <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+                <Button
+                  type="submit"
+                  className="cursor-pointer"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? "Saving..." : "Save"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

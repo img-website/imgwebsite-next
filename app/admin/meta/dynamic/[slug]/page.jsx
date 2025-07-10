@@ -26,7 +26,7 @@ import ImageCropperInput from '@/components/image-cropper-input';
 import { useParams, useRouter } from 'next/navigation';
 import apiFetch from '@/helpers/apiFetch';
 import { toast } from 'sonner';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Page() {
   const { slug } = useParams();
@@ -149,273 +149,280 @@ export default function Page() {
 
   return (
     <div className="w-full p-4">
-      <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <FormField control={control} name="title" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <FormField control={control} name="description" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <FormField control={control} name="keywords" render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <MultiKeywordCombobox value={field.value} onChange={field.onChange} />
-              </FormControl>
-            </FormItem>
-          )} />
-          <div className="grid md:grid-cols-2 gap-6">
-            <FormField control={control} name="openGraph.title" render={({ field }) => (
-              <FormItem>
-                <FormLabel>OG Title</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={control} name="openGraph.description" render={({ field }) => (
-              <FormItem>
-                <FormLabel>OG Description</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-          </div>
-          <Card>
-            <CardContent className="space-y-4">
-            <FormField
-              control={control}
-              name="openGraph.images.0.url"
-              render={({ field }) => (
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
+          <CardTitle>{pageUrl}</CardTitle>
+        </CardHeader>
+        <CardContent className="max-sm:px-0">
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <FormField control={control} name="title" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>OG Image</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <ImageCropperInput
-                      format={format}
-                      aspectRatio={aspectRatio}
-                      size={size}
-                      value={field.value}
-                      onChange={(v) => handleImageChange(field.name, v)}
-                      originalName={true}
-                    />
+                    <Input className="max-sm:text-sm" {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-wrap gap-2">
-              <FormField control={control} name="openGraph.images.0.width" render={({ field }) => (
-                <FormItem className="grow-0">
-                  <FormLabel>Width</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
-              <FormField control={control} name="openGraph.images.0.height" render={({ field }) => (
-                <FormItem className="grow-0">
-                  <FormLabel>Height</FormLabel>
+              <FormField control={control} name="description" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Textarea className="max-sm:text-sm" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
-              <FormField
-                control={control}
-                name="openGraph.images.0.type"
-                render={({ field }) => (
+              <FormField control={control} name="keywords" render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <MultiKeywordCombobox value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                </FormItem>
+              )} />
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={control} name="openGraph.title" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type</FormLabel>
+                    <FormLabel>OG Title</FormLabel>
                     <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(val) => field.onChange(val)}
-                      >
-                        <SelectTrigger className="grow-0">
+                      <Input className="max-sm:text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+                <FormField control={control} name="openGraph.description" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>OG Description</FormLabel>
+                    <FormControl>
+                      <Input className="max-sm:text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+              </div>
+              <Card>
+                <CardContent className="space-y-4">
+                <FormField
+                  control={control}
+                  name="openGraph.images.0.url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>OG Image</FormLabel>
+                      <FormControl>
+                        <ImageCropperInput
+                          format={format}
+                          aspectRatio={aspectRatio}
+                          size={size}
+                          value={field.value}
+                          onChange={(v) => handleImageChange(field.name, v)}
+                          originalName={true}
+                        />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-wrap gap-2 max-sm:grid max-sm:grid-cols-3">
+                  <FormField control={control} name="openGraph.images.0.width" render={({ field }) => (
+                    <FormItem className="sm:grow-0">
+                      <FormLabel>Width</FormLabel>
+                      <FormControl>
+                        <Input className="max-sm:text-sm" type="number" {...field} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField control={control} name="openGraph.images.0.height" render={({ field }) => (
+                    <FormItem className="sm:grow-0">
+                      <FormLabel>Height</FormLabel>
+                      <FormControl>
+                        <Input className="max-sm:text-sm" type="number" {...field} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                  <FormField
+                    control={control}
+                    name="openGraph.images.0.type"
+                    render={({ field }) => (
+                      <FormItem className="sm:grow-0 grow">
+                        <FormLabel>Type</FormLabel>
+                        <FormControl>
+                          <Select
+                            value={field.value}
+                            onValueChange={(val) => field.onChange(val)}
+                          >
+                            <SelectTrigger className="sm:grow-0 w-full">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="image/jpeg">jpg</SelectItem>
+                              <SelectItem value="image/png">png</SelectItem>
+                              <SelectItem value="image/webp">webp</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
+                    <FormItem className="sm:grow max-sm:col-span-3">
+                      <FormLabel>Alt</FormLabel>
+                      <FormControl>
+                        <Input className="max-sm:text-sm" {...field} />
+                      </FormControl>
+                      <FormMessage className="max-sm:text-xs" />
+                    </FormItem>
+                  )} />
+                </div>
+                </CardContent>
+              </Card>
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField control={control} name="twitter.title" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Twitter Title</FormLabel>
+                    <FormControl>
+                      <Input className="max-sm:text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+                <FormField control={control} name="twitter.description" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Twitter Description</FormLabel>
+                    <FormControl>
+                      <Input className="max-sm:text-sm" {...field} />
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+              </div>
+              <Card>
+                <CardContent>
+                  <FormField
+                    control={control}
+                    name="twitter.images.0"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Twitter Image</FormLabel>
+                        <FormControl>
+                          <ImageCropperInput
+                            format={format}
+                            aspectRatio={aspectRatio}
+                            size={size}
+                            value={field.value}
+                            onChange={(v) => handleImageChange(field.name, v)}
+                            originalName={true}
+                          />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <FormField control={control} name="robots.index" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Robots Index</FormLabel>
+                    <FormControl>
+                      <Select value={String(field.value)} onValueChange={(v) => {
+                        const val = v === 'true';
+                        field.onChange(val);
+                        setValue('robots.googleBot.index', val);
+                      }}>
+                        <SelectTrigger className="w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="image/jpeg">jpg</SelectItem>
-                          <SelectItem value="image/png">png</SelectItem>
-                          <SelectItem value="image/webp">webp</SelectItem>
+                          <SelectItem value="true">true</SelectItem>
+                          <SelectItem value="false">false</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
-                )}
-              />
-              <FormField control={control} name="openGraph.images.0.alt" render={({ field }) => (
-                <FormItem className="grow">
-                  <FormLabel>Alt</FormLabel>
+                )} />
+                <FormField control={control} name="robots.follow" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Robots Follow</FormLabel>
+                    <FormControl>
+                      <Select value={String(field.value)} onValueChange={(v) => {
+                        const val = v === 'true';
+                        field.onChange(val);
+                        setValue('robots.googleBot.follow', val);
+                      }}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="true">true</SelectItem>
+                          <SelectItem value="false">false</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+                <FormField control={control} name="robots.nocache" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Robots Nocache</FormLabel>
+                    <FormControl>
+                      <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="true">true</SelectItem>
+                          <SelectItem value="false">false</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+                <FormField control={control} name="robots.googleBot.noimageindex" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GoogleBot Noimageindex</FormLabel>
+                    <FormControl>
+                      <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="true">true</SelectItem>
+                          <SelectItem value="false">false</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="max-sm:text-xs" />
+                  </FormItem>
+                )} />
+              </div>
+              <FormField control={control} name="other.classification" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Classification</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input className="max-sm:text-sm" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )} />
-            </div>
-            </CardContent>
-          </Card>
-          <div className="grid md:grid-cols-2 gap-6">
-            <FormField control={control} name="twitter.title" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Twitter Title</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={control} name="twitter.description" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Twitter Description</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-          </div>
-          <Card>
-            <CardContent>
-              <FormField
-                control={control}
-                name="twitter.images.0"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Twitter Image</FormLabel>
-                    <FormControl>
-                      <ImageCropperInput
-                        format={format}
-                        aspectRatio={aspectRatio}
-                        size={size}
-                        value={field.value}
-                        onChange={(v) => handleImageChange(field.name, v)}
-                        originalName={true}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FormField control={control} name="robots.index" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Robots Index</FormLabel>
-                <FormControl>
-                  <Select value={String(field.value)} onValueChange={(v) => {
-                    const val = v === 'true';
-                    field.onChange(val);
-                    setValue('robots.googleBot.index', val);
-                  }}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="true">true</SelectItem>
-                      <SelectItem value="false">false</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={control} name="robots.follow" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Robots Follow</FormLabel>
-                <FormControl>
-                  <Select value={String(field.value)} onValueChange={(v) => {
-                    const val = v === 'true';
-                    field.onChange(val);
-                    setValue('robots.googleBot.follow', val);
-                  }}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="true">true</SelectItem>
-                      <SelectItem value="false">false</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={control} name="robots.nocache" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Robots Nocache</FormLabel>
-                <FormControl>
-                  <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="true">true</SelectItem>
-                      <SelectItem value="false">false</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={control} name="robots.googleBot.noimageindex" render={({ field }) => (
-              <FormItem>
-                <FormLabel>GoogleBot Noimageindex</FormLabel>
-                <FormControl>
-                  <Select value={String(field.value)} onValueChange={(v) => field.onChange(v === 'true')}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="true">true</SelectItem>
-                      <SelectItem value="false">false</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-          </div>
-          <FormField control={control} name="other.classification" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Classification</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
-            <Button
-              type="submit"
-              className="cursor-pointer"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? 'Saving...' : 'Save'}
-            </Button>
-          </div>
-        </form>
-      </Form>
+              <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
+                <Button
+                  type="submit"
+                  className="cursor-pointer"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

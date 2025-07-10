@@ -26,7 +26,7 @@ import {
 import MultiKeywordCombobox from "@/components/ui/multi-keyword-combobox";
 import ImageCropperInput from "@/components/image-cropper-input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Save, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import apiFetch from "@/helpers/apiFetch";
 import { Separator } from "@/components/ui/separator";
@@ -183,11 +183,11 @@ export default function EditStaticMetaForm({ meta }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+      <CardHeader className="max-sm:px-0">
         <CardTitle>Edit Static Meta</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="max-sm:px-0">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -197,9 +197,9 @@ export default function EditStaticMetaForm({ meta }) {
                 <FormItem>
                   <FormLabel>Default Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input className="max-sm:text-sm" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )}
             />
@@ -210,9 +210,9 @@ export default function EditStaticMetaForm({ meta }) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea className="min-h-[120px]" {...field} />
+                    <Textarea className="min-h-[120px] max-sm:text-sm" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="max-sm:text-xs" />
                 </FormItem>
               )}
             />
@@ -243,9 +243,9 @@ export default function EditStaticMetaForm({ meta }) {
                       <FormItem className="grow">
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input className="max-sm:text-sm" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -256,9 +256,9 @@ export default function EditStaticMetaForm({ meta }) {
                       <FormItem className="grow">
                         <FormLabel>URL</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input className="max-sm:text-sm" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -283,9 +283,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Creator</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -296,9 +296,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Publisher</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -309,7 +309,7 @@ export default function EditStaticMetaForm({ meta }) {
                 name="formatDetection.email"
                 render={({ field }) => (
                   <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
-                    <FormLabel>Email Detection</FormLabel>
+                    <FormLabel className="max-sm:text-sm">Email Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
@@ -321,7 +321,7 @@ export default function EditStaticMetaForm({ meta }) {
                 name="formatDetection.address"
                 render={({ field }) => (
                   <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
-                    <FormLabel>Address Detection</FormLabel>
+                    <FormLabel className="max-sm:text-sm">Address Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
@@ -333,7 +333,7 @@ export default function EditStaticMetaForm({ meta }) {
                 name="formatDetection.telephone"
                 render={({ field }) => (
                   <FormItem className="flex flex-row-reverse justify-end items-center mt-[22px] border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 shadow-xs transition-[color,box-shadow] outline-none">
-                    <FormLabel>Telephone Detection</FormLabel>
+                    <FormLabel className="max-sm:text-sm">Telephone Detection</FormLabel>
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
@@ -350,9 +350,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Generator</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -363,9 +363,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Application Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -380,9 +380,9 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>OpenGraph URL</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input className="max-sm:text-sm" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -393,9 +393,9 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>Site Name</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input className="max-sm:text-sm" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -406,9 +406,9 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>Locale</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input className="max-sm:text-sm" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -436,7 +436,7 @@ export default function EditStaticMetaForm({ meta }) {
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -472,7 +472,7 @@ export default function EditStaticMetaForm({ meta }) {
                               originalName={true}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -483,9 +483,9 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormItem className="grow">
                           <FormLabel>Width</FormLabel>
                           <FormControl>
-                            <Input type="number" {...field} />
+                            <Input className="max-sm:text-sm" type="number" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -496,9 +496,9 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormItem className="grow">
                           <FormLabel>Height</FormLabel>
                           <FormControl>
-                            <Input type="number" {...field} />
+                            <Input className="max-sm:text-sm" type="number" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -509,9 +509,9 @@ export default function EditStaticMetaForm({ meta }) {
                         <FormItem className="grow">
                           <FormLabel>Alt</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="max-sm:text-sm" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -539,7 +539,7 @@ export default function EditStaticMetaForm({ meta }) {
                               </SelectContent>
                             </Select>
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="max-sm:text-xs" />
                         </FormItem>
                       )}
                     />
@@ -566,9 +566,9 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>Twitter Site</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input className="max-sm:text-sm" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -579,9 +579,9 @@ export default function EditStaticMetaForm({ meta }) {
                     <FormItem>
                       <FormLabel>Twitter Creator</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input className="max-sm:text-sm" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )}
                 />
@@ -659,7 +659,7 @@ export default function EditStaticMetaForm({ meta }) {
                                 originalName={true}
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -671,9 +671,9 @@ export default function EditStaticMetaForm({ meta }) {
                             <FormItem className="grow">
                               <FormLabel>Sizes</FormLabel>
                               <FormControl>
-                                <Input {...field} />
+                                <Input className="max-sm:text-sm" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -712,7 +712,7 @@ export default function EditStaticMetaForm({ meta }) {
                             format="ico"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -735,7 +735,7 @@ export default function EditStaticMetaForm({ meta }) {
                             originalName={true}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -765,9 +765,9 @@ export default function EditStaticMetaForm({ meta }) {
                           <FormItem>
                             <FormLabel>Rel</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input className="max-sm:text-sm" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -786,7 +786,7 @@ export default function EditStaticMetaForm({ meta }) {
                                 originalName={true}
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="max-sm:text-xs" />
                           </FormItem>
                         )}
                       />
@@ -798,9 +798,9 @@ export default function EditStaticMetaForm({ meta }) {
                             <FormItem className="grow">
                               <FormLabel>Color</FormLabel>
                               <FormControl>
-                                <Input {...field} />
+                                <Input className="max-sm:text-sm" {...field} />
                               </FormControl>
-                              <FormMessage />
+                              <FormMessage className="max-sm:text-xs" />
                             </FormItem>
                           )}
                         />
@@ -828,9 +828,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Google Verification</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -841,9 +841,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Microsoft Verification</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -854,9 +854,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Facebook App ID</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -870,9 +870,9 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Apple WebApp Title</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -900,7 +900,7 @@ export default function EditStaticMetaForm({ meta }) {
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -936,7 +936,7 @@ export default function EditStaticMetaForm({ meta }) {
                             originalName={true}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -960,7 +960,7 @@ export default function EditStaticMetaForm({ meta }) {
                             originalName={true}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="max-sm:text-xs" />
                       </FormItem>
                     )}
                   />
@@ -987,16 +987,26 @@ export default function EditStaticMetaForm({ meta }) {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="max-sm:text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
             </div>
             <div className="flex justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
               <Button type="submit" className="cursor-pointer" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Updating..." : "Update Meta"}
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-1 animate-spin inline-block align-middle" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-1 inline-block align-middle" />
+                    Update Meta
+                  </>
+                )}
               </Button>
             </div>
           </form>

@@ -29,7 +29,7 @@ export default function MultiKeywordCombobox({ value = [], onChange, placeholder
             variant="outline"
             role="combobox"
             className={cn(
-              "w-full justify-between flex-wrap min-h-[40px] h-auto !bg-transparent cursor-pointer",
+              "w-full justify-between flex-wrap min-h-[40px] h-auto !bg-transparent cursor-pointer max-sm:text-sm",
               !value?.length && "text-muted-foreground"
             )}
           >
@@ -40,7 +40,7 @@ export default function MultiKeywordCombobox({ value = [], onChange, placeholder
                   <Badge
                     variant="secondary"
                     key={keyword}
-                    className="flex items-center cursor-auto"
+                    className="flex items-center cursor-auto max-sm:text-sm"
                   >
                     {keyword}
                     <span
