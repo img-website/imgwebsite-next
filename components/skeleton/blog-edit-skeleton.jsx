@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function BlogEditSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>
             <Skeleton className="h-6 w-40" />
           </CardTitle>
@@ -14,7 +14,7 @@ export default function BlogEditSkeleton() {
             <Skeleton className="h-4 w-64" />
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6 max-sm:px-0">
           <div className="space-y-8">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="space-y-2">

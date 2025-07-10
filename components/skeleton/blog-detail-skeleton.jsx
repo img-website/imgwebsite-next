@@ -4,9 +4,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 export default function BlogDetailSkeleton() {
   return (
-    <div className="w-full p-4">
-      <Card>
-        <CardHeader className="border-b pb-4 space-y-2">
+    <div className="w-full p-4 max-sm:pb-0">
+      <Card className="max-sm:py-0 gap-y-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="border-b pb-4 space-y-2 max-sm:px-0">
           <CardTitle>
             <Skeleton className="h-6 w-40" />
           </CardTitle>
@@ -20,7 +20,7 @@ export default function BlogDetailSkeleton() {
             <Skeleton className="h-8 w-full" />
           </div>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6 py-6">
+        <CardContent className="flex flex-col gap-6 py-6 max-sm:px-0">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[...Array(4)].map((_, idx) => (
               <div className="flex flex-col gap-1" key={idx}>
@@ -59,7 +59,7 @@ export default function BlogDetailSkeleton() {
             </Card>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end gap-4 border-t py-3">
+        <CardFooter className="flex justify-end gap-4 border-t py-3 max-sm:px-2 max-sm:-mx-2">
           <Skeleton className="h-10 w-20" />
           <Skeleton className="h-10 w-24" />
         </CardFooter>
