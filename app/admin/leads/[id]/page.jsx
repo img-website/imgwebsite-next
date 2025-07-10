@@ -1,11 +1,13 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PencilIcon } from "lucide-react";
 import { getPublicUrl } from "@/lib/s3";
 import Link from "next/link";
 import { use as usePromise } from "react";
 import { useLead } from "@/hooks/use-leads";
 import LeadDetailSkeleton from "@/components/skeleton/lead-detail-skeleton";
+import { Separator } from "@/components/ui/separator";
 
 export default function Page({ params }) {
   const { id } = usePromise(params);
@@ -22,18 +24,19 @@ export default function Page({ params }) {
 
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Lead Details</CardTitle>
         </CardHeader>
-        <CardContent>
+        <Separator />
+        <CardContent className="max-sm:px-0">
           <div className="space-y-2 text-sm">
-            <p><strong>Name:</strong> {lead.contact_name}</p>
+            <p className="sm:text-xl text-lg"><strong>{lead.contact_name}</strong></p>
+            <p className="sm:text-sm text-xs">{lead.description}</p>
             <p><strong>Email:</strong> {lead.email}</p>
             <p><strong>Mobile:</strong> {lead.mobile_number}</p>
             <p><strong>Organization:</strong> {lead.organization}</p>
             <p><strong>Requirements:</strong> {lead.requirements}</p>
-            <p><strong>Description:</strong> {lead.description}</p>
             <p><strong>Status:</strong> {statusMap[lead.status]}</p>
             {lead.assign_to && <p><strong>Assigned To:</strong> {lead.assign_to}</p>}
             {lead.assigned_date && (
@@ -60,12 +63,16 @@ export default function Page({ params }) {
               </div>
             )}
           </div>
-          <div className="mt-4">
-            <Link href={`/admin/leads/${lead._id}/edit`}>
-              <Button type="button">Edit</Button>
-            </Link>
-          </div>
         </CardContent>
+        <Separator />
+        <CardFooter className="flex justify-end max-sm:px-0">
+            <Button asChild>
+              <Link href={`/admin/leads/${lead._id}/edit`} className="flex items-center gap-2">
+                <PencilIcon className="w-4 h-4" />
+                Edit
+              </Link>
+            </Button>
+        </CardFooter>
       </Card>
     </div>
   );

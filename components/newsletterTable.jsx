@@ -8,7 +8,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { hasClientPermission } from "@/helpers/permissions";
@@ -213,12 +213,13 @@ export function NewsletterTable({ data }) {
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm max-sm:text-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              <span className="max-sm:hidden">Columns</span> <ChevronDown className="ml-2 h-4 w-4 max-sm:hidden" />
+              <span className="sm:hidden"><ArrowUpDown className="h-4 w-4" /></span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -239,7 +240,7 @@ export function NewsletterTable({ data }) {
         </DropdownMenu>
         {hasClientPermission('newsletter', 'write') && (
           <Button asChild>
-            <Link href="/admin/newsletter/add">Add</Link>
+            <Link href="/admin/newsletter/add"><Plus /> <span className="max-sm:hidden">Add Newsletter</span></Link>
           </Button>
         )}
       </div>
@@ -300,7 +301,8 @@ export function NewsletterTable({ data }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            <span className="max-sm:hidden">Previous</span>
+            <span className="sm:hidden"><ChevronDown className="h-4 w-4 rotate-90" /></span>
           </Button>
           <Button
             variant="outline"
@@ -308,7 +310,8 @@ export function NewsletterTable({ data }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            <span className="max-sm:hidden">Next</span>
+            <span className="sm:hidden"><ChevronDown className="h-4 w-4 -rotate-90" /></span>
           </Button>
         </div>
       </div>
