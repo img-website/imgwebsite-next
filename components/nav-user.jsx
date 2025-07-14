@@ -75,11 +75,11 @@ export function NavUser({ avatarOnly = false } = {}) {
               size="lg"
               className={cn(
                 "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground",
-                avatarOnly && "w-8 justify-center p-0"
+                avatarOnly && "w-8 h-8 justify-center p-0"
               )}>
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={avatar || undefined} alt={name} />
-                <AvatarFallback className="rounded-lg">{initials || (name?.[0] || 'U')}</AvatarFallback>
+                <AvatarFallback className="rounded-lg font-bold uppercase">{initials || (name?.[0] || 'U')}</AvatarFallback>
               </Avatar>
               {!avatarOnly && (
                 <>
@@ -101,7 +101,7 @@ export function NavUser({ avatarOnly = false } = {}) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={avatar || undefined} alt={name} />
-                  <AvatarFallback className="rounded-lg">{initials || (name?.[0] || 'U')}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg font-bold uppercase">{initials || (name?.[0] || 'I')}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{name || 'User'}</span>
