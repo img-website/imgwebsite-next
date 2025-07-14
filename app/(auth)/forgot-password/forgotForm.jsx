@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { SendIcon, Loader2Icon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import useErrorHandler from "@/helpers/errors";
@@ -71,6 +72,7 @@ export function ForgotForm() {
                             <FormControl>
                                 <Input
                                     placeholder="Email Address"
+                                    className="max-sm:text-sm"
                                     autoComplete="off"
                                     type="email"
                                     {...field}
@@ -81,8 +83,18 @@ export function ForgotForm() {
                     )}
                 />
 
-                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Send Reset Link' : 'Send Reset Link'}
+                <Button type="submit" className="w-full cursor-pointer flex items-center justify-center gap-2" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? (
+                        <>
+                            <Loader2Icon className="w-4 h-4 animate-spin" />
+                            Send Reset Link
+                        </>
+                    ) : (
+                        <>
+                            <SendIcon className="w-4 h-4" />
+                            Send Reset Link
+                        </>
+                    )}
                 </Button>
             </form>
         </Form>

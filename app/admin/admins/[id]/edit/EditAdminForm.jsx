@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { SaveIcon, Loader2Icon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import PhoneInput from "@/components/ui/phone-input";
 import ImageCropperInput from "@/components/image-cropper-input";
@@ -107,32 +108,34 @@ export default function EditAdminForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="First name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Last name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input className="max-sm:text-sm" placeholder="First name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input className="max-sm:text-sm" placeholder="Last name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="username"
@@ -140,7 +143,7 @@ export default function EditAdminForm({
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Username" {...field} />
+                <Input className="max-sm:text-sm" placeholder="Username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -232,9 +235,19 @@ export default function EditAdminForm({
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="cursor-pointer"
+            className="cursor-pointer flex items-center gap-2"
           >
-            {form.formState.isSubmitting ? "Updating..." : "Update"}
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2Icon className="w-4 h-4 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              <>
+                <SaveIcon className="w-4 h-4" />
+                Update
+              </>
+            )}
           </Button>
         </div>
       </form>

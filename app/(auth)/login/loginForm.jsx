@@ -5,6 +5,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
+import { LogInIcon, Loader2Icon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import useErrorHandler from "@/helpers/errors"
 import Link from "next/link"
@@ -164,8 +165,18 @@ export function LoginForm() {
                 />
 
                 {/* Submit Button */}
-                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
+                <Button type="submit" className="w-full cursor-pointer flex items-center justify-center gap-2" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? (
+                        <>
+                            <Loader2Icon className="w-4 h-4 animate-spin" />
+                            Logging in...
+                        </>
+                    ) : (
+                        <>
+                            <LogInIcon className="w-4 h-4" />
+                            Login
+                        </>
+                    )}
                 </Button>
             </form>
         </Form>

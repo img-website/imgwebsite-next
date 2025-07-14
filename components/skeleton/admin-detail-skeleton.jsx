@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function AdminDetailSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>
             <Skeleton className="h-6 w-40" />
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <div className="space-y-2 text-sm">
             {[...Array(5)].map((_, i) => (
               <Skeleton key={i} className="h-4 w-full" />

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { PencilIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admins";
@@ -20,11 +21,11 @@ export default function Page({ params }) {
 
   return (
     <div className="w-full p-4">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Admin Details</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <div className="space-y-2 text-sm">
             <p>
               <strong>Email:</strong> {admin.email}
@@ -43,9 +44,12 @@ export default function Page({ params }) {
             </p>
           </div>
           <div className="mt-4 flex gap-2 justify-end">
-            <Link href={`/admin/admins/${admin.id}/edit`}>
-              <Button type="button">Edit</Button>
-            </Link>
+            <Button asChild>
+              <Link href={`/admin/admins/${admin.id}/edit`} className="flex items-center gap-2">
+                <PencilIcon className="w-4 h-4" />
+                Edit
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>

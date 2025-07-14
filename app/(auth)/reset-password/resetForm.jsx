@@ -5,6 +5,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
+import { KeyRoundIcon, Loader2Icon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -82,6 +83,7 @@ export function ResetForm() {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="New Password"
+                                        className="max-sm:text-sm"
                                         autoComplete="new-password"
                                         {...field}
                                     />
@@ -117,6 +119,7 @@ export function ResetForm() {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Confirm Password"
+                                        className="max-sm:text-sm"
                                         autoComplete="new-password"
                                         {...field}
                                     />
@@ -141,8 +144,18 @@ export function ResetForm() {
                     )}
                 />
 
-                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Resetting...' : 'Reset Password'}
+                <Button type="submit" className="w-full cursor-pointer flex items-center justify-center gap-2" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? (
+                        <>
+                            <Loader2Icon className="w-4 h-4 animate-spin" />
+                            Resetting...
+                        </>
+                    ) : (
+                        <>
+                            <KeyRoundIcon className="w-4 h-4" />
+                            Reset Password
+                        </>
+                    )}
                 </Button>
             </form>
         </Form>

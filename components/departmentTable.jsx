@@ -184,7 +184,7 @@ export function DepartmentTable({ data, canAdd = false }) {
         {canAdd && (
           <Button asChild>
             <Link href="/admin/departments/add">
-              <Plus className="mr-2 h-4 w-4" /> Add
+              <Plus className="h-4 w-4" /> <span className="max-sm:hidden">Add</span>
             </Link>
           </Button>
         )}
