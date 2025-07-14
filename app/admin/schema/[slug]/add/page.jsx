@@ -422,20 +422,22 @@ export default function Page() {
               {/* Render dynamic fields */}
               {selected === "Organization" && (
                 <>
-                  <FormField name="name" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="legalName" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Legal Name</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="name" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="legalName" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Legal Name</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <FormField
                     name="logo"
                     control={form.control}
@@ -452,39 +454,41 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-                  <FormField name="contactEmail" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Contact Email</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField
-                    name="contactPhone"
-                    control={form.control}
-                    render={({ field }) => (
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <FormField name="contactEmail" control={form.control} render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Contact Phone</FormLabel>
-                        <FormControl>
-                          <PhoneInput value={field.value} onChange={field.onChange} autoFocus />
-                        </FormControl>
+                        <FormLabel>Contact Email</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
                         <FormMessage className="max-sm:text-xs" />
                       </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="foundingDate"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Founding Date</FormLabel>
-                        <FormControl>
-                          <DatePicker value={field.value} onChange={field.onChange} />
-                        </FormControl>
-                        <FormMessage className="max-sm:text-xs" />
-                      </FormItem>
-                    )}
-                  />
+                    )} />
+                    <FormField
+                      name="contactPhone"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Contact Phone</FormLabel>
+                          <FormControl>
+                            <PhoneInput value={field.value} onChange={field.onChange} autoFocus />
+                          </FormControl>
+                          <FormMessage className="max-sm:text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      name="foundingDate"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Founding Date</FormLabel>
+                          <FormControl>
+                            <DatePicker value={field.value} onChange={field.onChange} />
+                          </FormControl>
+                          <FormMessage className="max-sm:text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField name="streetAddress" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Street Address</FormLabel>
@@ -492,20 +496,22 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>City</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Region</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Region</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormField name="postalCode" control={form.control} render={({ field }) => (
                       <FormItem>
@@ -571,32 +577,34 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField
-                    name="datePublished"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Date Published</FormLabel>
-                        <FormControl>
-                          <DatePicker value={field.value} onChange={field.onChange} />
-                        </FormControl>
-                        <FormMessage className="max-sm:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="dateModified"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Date Modified</FormLabel>
-                        <FormControl>
-                          <DatePicker value={field.value} onChange={field.onChange} />
-                        </FormControl>
-                        <FormMessage className="max-sm:text-xs" />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField
+                      name="datePublished"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date Published</FormLabel>
+                          <FormControl>
+                            <DatePicker value={field.value} onChange={field.onChange} />
+                          </FormControl>
+                          <FormMessage className="max-sm:text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      name="dateModified"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date Modified</FormLabel>
+                          <FormControl>
+                            <DatePicker value={field.value} onChange={field.onChange} />
+                          </FormControl>
+                          <FormMessage className="max-sm:text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField name="authorName" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Author Name</FormLabel>
@@ -624,22 +632,24 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField name="phoneNumber" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <PhoneInput value={field.value} onChange={field.onChange} />
-                      </FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="priceRange" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price Range</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <PhoneInput value={field.value} onChange={field.onChange} />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="priceRange" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Price Range</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <FormField name="streetAddress" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Street Address</FormLabel>
@@ -647,20 +657,22 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>City</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Region</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Region</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormField name="postalCode" control={form.control} render={({ field }) => (
                       <FormItem>
@@ -698,22 +710,24 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField name="phoneNumber" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <PhoneInput value={field.value} onChange={field.onChange} />
-                      </FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="priceRange" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price Range</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <PhoneInput value={field.value} onChange={field.onChange} />
+                        </FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="priceRange" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Price Range</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <FormField name="streetAddress" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Street Address</FormLabel>
@@ -721,20 +735,22 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <FormField name="addressLocality" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>City</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="addressRegion" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Region</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="addressLocality" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="addressRegion" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Region</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormField name="postalCode" control={form.control} render={({ field }) => (
                       <FormItem>
@@ -804,6 +820,7 @@ export default function Page() {
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
+                      <Separator className="w-full my-3" />
                     </div>
                   ))}
                 </div>
@@ -833,6 +850,7 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
+                  <div className="grid md:grid-cols-3 gap-4">
                   <FormField name="brandName" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Brand Name</FormLabel>
@@ -840,7 +858,6 @@ export default function Page() {
                       <FormMessage className="max-sm:text-xs" />
                     </FormItem>
                   )} />
-                  <div className="grid md:grid-cols-2 gap-4">
                     <FormField name="ratingValue" control={form.control} render={({ field }) => (
                       <FormItem>
                         <FormLabel>Rating Value</FormLabel>
@@ -860,20 +877,22 @@ export default function Page() {
               )}
               {selected === "Service" && (
                 <>
-                  <FormField name="name" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
-                  <FormField name="providerName" control={form.control} render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Provider Name</FormLabel>
-                      <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
-                      <FormMessage className="max-sm:text-xs" />
-                    </FormItem>
-                  )} />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField name="name" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                    <FormField name="providerName" control={form.control} render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Provider Name</FormLabel>
+                        <FormControl><Input className="max-sm:text-sm" {...field} /></FormControl>
+                        <FormMessage className="max-sm:text-xs" />
+                      </FormItem>
+                    )} />
+                  </div>
                   <FormField name="description" control={form.control} render={({ field }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
