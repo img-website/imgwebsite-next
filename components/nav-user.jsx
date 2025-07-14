@@ -6,7 +6,6 @@ import {
   ChevronsUpDown,
   CircleUser,
   LogOut,
-  Settings2,
   Users,
 } from "lucide-react"
 
@@ -116,10 +115,6 @@ export function NavUser({ avatarOnly = false } = {}) {
                 <Link href="/admin/profile" className="flex items-center gap-2">
                   <CircleUser className="h-4 w-4" /> Profile
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings2 />
-                Setting
               </DropdownMenuItem>
               {getCookie('userRole') === 'superadmin' && (
                 <>
