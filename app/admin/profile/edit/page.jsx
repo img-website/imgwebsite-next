@@ -27,7 +27,7 @@ export default function Page() {
         <CardContent className="max-sm:px-0">
           <EditAdminForm
             admin={profile}
-            hideDepartment={profile.role === 'superadmin'}
+            hideDepartment={profile.role !== 'superadmin'}
             redirectTo="/admin/profile"
           />
         </CardContent>
