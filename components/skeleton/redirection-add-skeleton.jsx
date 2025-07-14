@@ -11,7 +11,7 @@ import {
 export default function RedirectionAddSkeleton() {
   return (
     <div className="w-full p-4">
-      <Card>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
         <CardHeader>
           <CardTitle>
             <Skeleton className="h-6 w-40" />

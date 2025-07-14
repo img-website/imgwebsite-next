@@ -113,6 +113,7 @@ export function LoginForm() {
                                 <Input
                                     placeholder="Email"
                                     autoComplete="email"
+                                    className="max-sm:text-sm"
                                     type={"email"}
                                     {...field}
                                 />
@@ -138,6 +139,7 @@ export function LoginForm() {
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Password"
                                         autoComplete="current-password"
+                                        className="max-sm:text-sm"
                                         {...field}
                                     />
                                     <Button

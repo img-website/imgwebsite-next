@@ -21,12 +21,12 @@ export default function AddDepartmentPage() {
   return (
     <div className="w-full p-4">
       <div className="flex flex-col gap-6">
-        <Card>
-          <CardHeader>
+        <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+          <CardHeader className="max-sm:px-0">
             <CardTitle>Add Department</CardTitle>
-            <CardDescription>Create a new department and assign permissions.</CardDescription>
+            <CardDescription className="max-sm:text-xs">Create a new department and assign permissions.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-sm:px-0">
             <DepartmentForm onSuccess={handleSuccess} />
           </CardContent>
         </Card>

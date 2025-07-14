@@ -29,15 +29,15 @@ export default function AddRedirectionPage() {
   return (
     <div className="w-full p-4">
       <div className="flex flex-col gap-6">
-        <Card>
-          <CardHeader>
+        <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+          <CardHeader className="max-sm:px-0">
             <CardTitle>Add Redirection</CardTitle>
-            <CardDescription>
+            <CardDescription className="max-sm:text-xs">
               Create a new URL redirection. Fill in the required information
               below.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-sm:px-0">
             <RedirectionForm onSuccess={handleSuccess} />
           </CardContent>
         </Card>

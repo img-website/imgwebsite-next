@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { PlusCircleIcon, Loader2Icon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -69,9 +70,9 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
             <FormItem>
               <FormLabel>From URL</FormLabel>
               <FormControl>
-                <Input placeholder="/old-url" {...field} readOnly={!!fromDefault} />
+                <Input className="max-sm:text-sm" placeholder="/old-url" {...field} readOnly={!!fromDefault} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="max-sm:text-xs" />
             </FormItem>
           )}
         />
@@ -82,9 +83,9 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
             <FormItem>
               <FormLabel>To URL</FormLabel>
               <FormControl>
-                <Input placeholder="/new-url" {...field} />
+                <Input className="max-sm:text-sm" placeholder="/new-url" {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="max-sm:text-xs" />
             </FormItem>
           )}
         />
@@ -96,7 +97,7 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
               <FormLabel>Redirect Type</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="max-sm:w-full">
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
@@ -107,7 +108,7 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
                   <SelectItem value="308">308 (Permanent, method preserved)</SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage />
+              <FormMessage className="max-sm:text-xs" />
             </FormItem>
           )}
         />
@@ -115,9 +116,19 @@ export default function RedirectionForm({ fromDefault = "", onSuccess }) {
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="cursor-pointer"
+            className="cursor-pointer flex items-center gap-2"
           >
-            {form.formState.isSubmitting ? "Adding..." : "Add Redirection"}
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2Icon className="w-4 h-4 animate-spin" />
+                Adding...
+              </>
+            ) : (
+              <>
+                <PlusCircleIcon className="w-4 h-4" />
+                Add Redirection
+              </>
+            )}
           </Button>
         </div>
       </form>

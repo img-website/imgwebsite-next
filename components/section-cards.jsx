@@ -55,7 +55,7 @@ export function SectionCards({ stats }) {
           <Link key={item.label} href={href} className="no-underline">
             <Card className="max-sm:gap-2 max-sm:py-4">
               <CardHeader className="max-sm:px-4">
-                <CardDescription>{item.label}</CardDescription>
+                <CardDescription className="max-sm:text-xs">{item.label}</CardDescription>
                 <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                   {value}
                 </CardTitle>

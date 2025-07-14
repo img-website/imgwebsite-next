@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { SaveIcon, Loader2Icon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -93,14 +94,14 @@ export default function EditRedirectionForm({ redirection }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
+      <Card className="max-sm:py-0 max-sm:border-0 max-sm:shadow-none">
+        <CardHeader className="max-sm:px-0">
           <CardTitle>Edit Redirection</CardTitle>
-          <CardDescription>
+          <CardDescription className="max-sm:text-xs">
             Update the redirection details below.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-sm:px-0">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -110,9 +111,9 @@ export default function EditRedirectionForm({ redirection }) {
                   <FormItem>
                     <FormLabel>From URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="/old-url" {...field} />
+                      <Input className="max-sm:text-sm" placeholder="/old-url" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -123,9 +124,9 @@ export default function EditRedirectionForm({ redirection }) {
                   <FormItem>
                     <FormLabel>To URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="/new-url" {...field} />
+                      <Input className="max-sm:text-sm" placeholder="/new-url" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -137,7 +138,7 @@ export default function EditRedirectionForm({ redirection }) {
                     <FormLabel>Redirect Type</FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="max-sm:w-full">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
@@ -152,7 +153,7 @@ export default function EditRedirectionForm({ redirection }) {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
+                    <FormMessage className="max-sm:text-xs" />
                   </FormItem>
                 )}
               />
@@ -160,11 +161,19 @@ export default function EditRedirectionForm({ redirection }) {
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="cursor-pointer"
+                  className="cursor-pointer flex items-center gap-2"
                 >
-                  {form.formState.isSubmitting
-                    ? "Updating..."
-                    : "Update Redirection"}
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Loader2Icon className="w-4 h-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <SaveIcon className="w-4 h-4" />
+                      Update Redirection
+                    </>
+                  )}
                 </Button>
               </div>
             </form>

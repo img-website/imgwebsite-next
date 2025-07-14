@@ -65,7 +65,7 @@ export function ChartAreaInteractive() {
     <Card className="@container/card">
       <CardHeader>
         <CardTitle>Blogs Created</CardTitle>
-        <CardDescription>
+        <CardDescription className="max-sm:text-xs">
           <span className="hidden @[540px]/card:block">
             Total for the selected range
           </span>

@@ -14,7 +14,7 @@ export default function Page() {
           <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader>
               <CardTitle>Static Meta</CardTitle>
-              <CardDescription>Manage static metadata</CardDescription>
+              <CardDescription className="max-sm:text-xs">Manage static metadata</CardDescription>
             </CardHeader>
           </Card>
         </Link>
@@ -22,7 +22,7 @@ export default function Page() {
           <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader>
               <CardTitle>Dynamic Meta</CardTitle>
-              <CardDescription>Manage dynamic metadata</CardDescription>
+              <CardDescription className="max-sm:text-xs">Manage dynamic metadata</CardDescription>
             </CardHeader>
           </Card>
         </Link>

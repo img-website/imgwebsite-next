@@ -6,6 +6,7 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Loader2Icon, SaveIcon, PlusCircleIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -142,7 +143,7 @@ export default function DepartmentForm({ department, onSuccess }) {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Department name" {...field} />
+                <Input className="max-sm:text-sm" placeholder="Department name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -203,16 +204,24 @@ export default function DepartmentForm({ department, onSuccess }) {
         <div className="flex w-full gap-2 justify-end bg-white z-50 sticky bottom-4 pt-4 border-t shadow-[0px_10px_0px_10px_rgba(255,255,255,1)]">
           <Button
             type="submit"
-            className="cursor-pointer"
+            className="cursor-pointer flex items-center gap-2"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting
-              ? department
-                ? "Updating..."
-                : "Creating..."
-              : department
-              ? "Update Department"
-              : "Create Department"}
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2Icon className="w-4 h-4 animate-spin" />
+                {department ? "Updating..." : "Creating..."}
+              </>
+            ) : (
+              <>
+                {department ? (
+                  <SaveIcon className="w-4 h-4" />
+                ) : (
+                  <PlusCircleIcon className="w-4 h-4" />
+                )}
+                {department ? "Update Department" : "Create Department"}
+              </>
+            )}
           </Button>
         </div>
       </form>
