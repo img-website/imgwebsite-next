@@ -52,10 +52,10 @@ export default function Blog() {
                   disableOnInteraction: false,
                 }}
                 keyboard={{ enabled: true }}
-                navigation={{
-                  nextEl: '.next',
-                  prevEl: '.prev',
-                }}
+                // navigation={{
+                //   nextEl: '.next',
+                //   prevEl: '.prev',
+                // }}
                 breakpoints={{
                   320: { slidesPerView: 1.2, spaceBetween: 16 },
                   480: { slidesPerView: 1.4, spaceBetween: 16 },
@@ -65,7 +65,7 @@ export default function Blog() {
                 }}
                 modules={[Autoplay, Navigation, Keyboard]}
               >
-                <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
+                {/* <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
                     <div className="inline-flex items-center justify-center md:gap-8 gap-6 relative bg-[#2D86FF] md:rounded-t-3xl rounded-tl-3xl p-2">
                         <Svg name="clipLeftBottom" className="size-6 absolute bottom-0 left-0 -translate-x-full z-10 text-[#2D86FF]" />
                         <Svg name="clipRightBottom" className="size-6 absolute md:bottom-0 max-md:top-0 right-0 md:translate-x-full max-md:-translate-y-full z-10 max-md:-rotate-90 text-[#2D86FF]" />
@@ -76,7 +76,7 @@ export default function Blog() {
                             <Svg name="arrowNext" className="size-6 relative z-10 text-white" />
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {blogs.map((blog) => {
                   const thumb = blog.thumbnail?.startsWith("http")
                     ? blog.thumbnail
@@ -173,7 +173,7 @@ export default function Blog() {
                       </div>
                     </SwiperSlide>
                   );
-                ))
+                })}
               </Swiper>
             </div>
           </div>
