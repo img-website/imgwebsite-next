@@ -314,7 +314,7 @@ export default function Page() {
   async function uploadFile(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const res = await apiFetch("/api/v1/admin/images", {
+    const res = await apiFetch("/api/v1/admin/images?noRecord=1", {
       method: "POST",
       body: formData,
     });
