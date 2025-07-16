@@ -25,6 +25,9 @@ import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
 import ContactUs from '@/components/ContactUs';
+const Blog = dynamic(() => import('@/components/blog'), {
+  loading: () =>  <div className="flex justify-center items-center w-full h-[565.39px] bg-gray-300 animate-pulse"></div>
+})
 
 export async function generateMetadata() {
   return await getDynamicMeta('/');
@@ -48,6 +51,7 @@ export default function Home() {
       <Usp/>
       <Testimonial/>
       <Faq/>
+      <Blog/>
       <ContactUs defaultType="Mobile App Development" />
     </>
   );
