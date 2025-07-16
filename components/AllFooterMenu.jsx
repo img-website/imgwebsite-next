@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import NewsLetter from "@/components/Newsletter"
 
 const AllFooterMenu = () => {
     return (
@@ -554,7 +555,7 @@ const AllFooterMenu = () => {
         </div>
     </div>
     <div className="w-full md:w-1/2 lg:w-1/4">
-        {/* @include('tailwind.components.footer.newsletter.newsletter1') */}
+        <NewsLetter />
         <Image className="h-6 mt-6 mx-auto object-contain aspect-[121/24]" loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/dmca_protected_sml_120l.webp" width={121} height={24} alt="bussinesapp" title="bussinesapp" />
     </div>
 </div>
