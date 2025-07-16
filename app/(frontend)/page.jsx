@@ -25,8 +25,9 @@ import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
 import ContactUs from '@/components/ContactUs';
+import BlogSectionSkeleton from '@/components/skeleton/blog-section-skeleton';
 const Blog = dynamic(() => import('@/components/blog'), {
-  loading: () =>  <div className="flex justify-center items-center w-full h-[565.39px] bg-gray-300 animate-pulse"></div>
+  loading: () => <BlogSectionSkeleton />
 })
 
 export async function generateMetadata() {

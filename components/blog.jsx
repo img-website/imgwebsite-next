@@ -6,10 +6,9 @@ import Svg from "@/components/svg";
 import {
   Swiper,
   Autoplay,
-  SwiperSlide,
-  Navigation,
-  Keyboard,
+  SwiperSlide
 } from "@/components/CustomSwiper";
+import BlogSectionSkeleton from "@/components/skeleton/blog-section-skeleton";
 
 export default function Blog() {
   const [blogs, setBlogs] = useState(null);
@@ -18,7 +17,8 @@ export default function Blog() {
     async function loadBlogs() {
       try {
         const res = await fetch(
-          "/api/v1/admin/blogs?status=2&limit=6&sortBy=created_date&sortOrder=-1"
+          "/api/v1/admin/blogs?status=2&limit=6&sortBy=created_date&sortOrder=-1",
+          { next: { revalidate: 360000 } }
         );
         const json = await res.json();
         if (json.success && Array.isArray(json.data)) {
@@ -32,7 +32,7 @@ export default function Blog() {
   }, []);
 
   if (!blogs) {
-    return null;
+    return <BlogSectionSkeleton />;
   }
 
   return (
@@ -51,7 +51,7 @@ export default function Blog() {
                   delay: 5000,
                   disableOnInteraction: false,
                 }}
-                keyboard={{ enabled: true }}
+                // keyboard={{ enabled: true }}
                 // navigation={{
                 //   nextEl: '.next',
                 //   prevEl: '.prev',
@@ -63,7 +63,7 @@ export default function Blog() {
                   1024: { slidesPerView: 3, spaceBetween: 16 },
                   1350: { slidesPerView: 4, spaceBetween: 16 },
                 }}
-                modules={[Autoplay, Navigation, Keyboard]}
+                modules={[Autoplay]}
               >
                 {/* <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
                     <div className="inline-flex items-center justify-center md:gap-8 gap-6 relative bg-[#2D86FF] md:rounded-t-3xl rounded-tl-3xl p-2">
@@ -86,7 +86,7 @@ export default function Blog() {
                   const authorImg = blog.author?.image?.startsWith("http")
                     ? blog.author.image
                     : blog.author?.image
-                    ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/blogs/${blog.author.image}`
+                    ? `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/authors/${blog.author.image}`
                     : null;
                   const blogUrl = blog.slug ? `/blogs/${blog.slug}` : "#";
                   const categoryUrl = blog.category?.slug
