@@ -329,7 +329,11 @@ export default function Page() {
     if (files?.[0] instanceof File) {
       try {
         const nameOnly = await uploadFile(files[0]);
-        form.setValue(name, nameOnly, { shouldValidate: true });
+        form.setValue(
+          name,
+          `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/images/${nameOnly}`,
+          { shouldValidate: true }
+        );
       } catch (err) {
         toast.error(err.message || "Image upload failed");
       }
