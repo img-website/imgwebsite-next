@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import PhoneInput from "@/components/ui/phone-input";
 import { toast } from "sonner";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const schema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
@@ -36,17 +36,14 @@ const schema = z.object({
 export default function LeadForm({ defaultType = "Mobile App Development" }) {
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
     const [pageUrl, setPageUrl] = useState("");
     const [country, setCountry] = useState("in");
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const search = searchParams.toString();
-            const url = `${window.location.origin}${pathname}${search ? `?${search}` : ""}`;
-            setPageUrl(url);
+            setPageUrl(window.location.href);
         }
-    }, [pathname, searchParams]);
+    }, [pathname]);
 
     useEffect(() => {
         async function detectCountry() {
