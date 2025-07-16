@@ -4,6 +4,7 @@ import Svg from "@/components/svg";
 import Image from "next/image";
 import { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide, Navigation, Autoplay } from '@/components/CustomSwiper';
+import ContactUs from "@/components/ContactUs";
 
 
 export default function InstantDeliveryAppDevelopmentCompany() {
@@ -1306,7 +1307,8 @@ export default function InstantDeliveryAppDevelopmentCompany() {
                         </Swiper>
                     </div>
                 </div>
-            </section>
+        </section>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }

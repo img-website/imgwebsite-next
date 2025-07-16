@@ -3,6 +3,7 @@
 import Testimonial from "@/components/testimonials/Testimonial1";
 import Image from "next/image";
 import { Swiper, SwiperSlide, Autoplay } from '@/components/CustomSwiper';
+import ContactUs from "@/components/ContactUs";
 
 
 export default function Testimonials() {
@@ -578,7 +579,8 @@ export default function Testimonials() {
                         </div>
                     </div>
                 </div>
-            </section>
+        </section>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }

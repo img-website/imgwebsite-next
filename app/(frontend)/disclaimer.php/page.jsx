@@ -1,3 +1,5 @@
+import ContactUs from "@/components/ContactUs";
+
 export default function Disclaimer() {
     return (
         <>
@@ -25,6 +27,7 @@ export default function Disclaimer() {
                     </div>
                 </div>
             </div>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }

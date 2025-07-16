@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import getDynamicMeta from "@/helpers/getDynamicMeta";
+import ContactUs from "@/components/ContactUs";
 
 export async function generateMetadata() {
   return await getDynamicMeta("/about-us.php");
@@ -523,6 +524,7 @@ export default function AboutUs() {
               </div>
           </div>
       </section>
+      <ContactUs defaultType="Fantasy Cricket App Development" />
     </>
   );
 }
