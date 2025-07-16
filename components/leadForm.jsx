@@ -99,101 +99,102 @@ export default function LeadForm({ defaultType = "Mobile App Development" }) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 leadForm">
-                <div className="grid grid-cols-2 gap-2">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                        <Input placeholder="Full Name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <FormField
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 leadForm items-start">
+                <div className="grid grid-cols-2 gap-2 items-start">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                            <Input className="!text-sm" placeholder="Full Name" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                        </FormItem>
+                        )}
+                    />
+                    <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Email ID</FormLabel>
                         <FormControl>
-                        <Input type="email" placeholder="Email" {...field} />
+                        <Input className="!text-sm" type="email" placeholder="Email" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                     </FormItem>
                     )}
                 />
                 </div>
                 <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Mobile Number</FormLabel>
-                    <FormControl>
-                        <PhoneInput
-                        value={field.value}
-                        onChange={field.onChange}
-                        defaultCountry={country}
-                        forceDialCode
-                        />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Looking For</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
-                        <SelectTrigger className="w-full">
-                            <SelectValue />
-                        </SelectTrigger>
+                            <PhoneInput
+                            className="!text-sm"
+                            value={field.value}
+                            onChange={field.onChange}
+                            defaultCountry={country}
+                            forceDialCode
+                            />
                         </FormControl>
-                        <SelectContent>
-                        <SelectItem value="Mobile App Development">Mobile App Development</SelectItem>
-                        <SelectItem value="Fantasy Cricket App Development">Fantasy Cricket App Development</SelectItem>
-                        <SelectItem value="Fantasy Sports App Development">Fantasy Sports App Development</SelectItem>
-                        <SelectItem value="Fantasy Football App Development">Fantasy Football App Development</SelectItem>
-                        <SelectItem value="E-commerce Development">E-commerce Development</SelectItem>
-                        <SelectItem value="MLM Software Development">MLM Software Development</SelectItem>
-                        <SelectItem value="Website Design">Website Design</SelectItem>
-                        <SelectItem value="Web Portal Development">Web Portal Development</SelectItem>
-                        <SelectItem value="Custom ERP Development">Custom ERP Development</SelectItem>
-                        <SelectItem value="Hire Dedicated Developer">Hire Dedicated Developer</SelectItem>
-                        <SelectItem value="SEO/Social Media Marketing">SEO/Social Media Marketing</SelectItem>
-                        <SelectItem value="Casino Game App Development">Casino Game App Development</SelectItem>
-                        <SelectItem value="Fantasy Kabaddi App Development">Fantasy Kabaddi App Development</SelectItem>
-                        <SelectItem value="Fantasy Stock Market App Development">Fantasy Stock Market App Development</SelectItem>
-                        <SelectItem value="Sports Betting App Development">Sports Betting App Development</SelectItem>
-                        <SelectItem value="Launch Your Online Ecommerce Store">Launch Your Online Ecommerce Store</SelectItem>
-                        <SelectItem value="Other Services">Other Services</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                        <FormMessage className="text-xs" />
+                        </FormItem>
+                    )}
                 />
                 <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Write a Message</FormLabel>
-                    <FormControl>
-                        <Textarea placeholder="Message" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Looking For</FormLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                            <FormControl>
+                            <SelectTrigger className="w-full">
+                                <SelectValue className="!text-sm" />
+                            </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value="Mobile App Development">Mobile App Development</SelectItem>
+                                <SelectItem value="Fantasy Cricket App Development">Fantasy Cricket App Development</SelectItem>
+                                <SelectItem value="Fantasy Sports App Development">Fantasy Sports App Development</SelectItem>
+                                <SelectItem value="Fantasy Football App Development">Fantasy Football App Development</SelectItem>
+                                <SelectItem value="E-commerce Development">E-commerce Development</SelectItem>
+                                <SelectItem value="MLM Software Development">MLM Software Development</SelectItem>
+                                <SelectItem value="Website Design">Website Design</SelectItem>
+                                <SelectItem value="Web Portal Development">Web Portal Development</SelectItem>
+                                <SelectItem value="Custom ERP Development">Custom ERP Development</SelectItem>
+                                <SelectItem value="Hire Dedicated Developer">Hire Dedicated Developer</SelectItem>
+                                <SelectItem value="SEO/Social Media Marketing">SEO/Social Media Marketing</SelectItem>
+                                <SelectItem value="Casino Game App Development">Casino Game App Development</SelectItem>
+                                <SelectItem value="Fantasy Kabaddi App Development">Fantasy Kabaddi App Development</SelectItem>
+                                <SelectItem value="Fantasy Stock Market App Development">Fantasy Stock Market App Development</SelectItem>
+                                <SelectItem value="Sports Betting App Development">Sports Betting App Development</SelectItem>
+                                <SelectItem value="Launch Your Online Ecommerce Store">Launch Your Online Ecommerce Store</SelectItem>
+                                <SelectItem value="Other Services">Other Services</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Write a Message</FormLabel>
+                        <FormControl>
+                            <Textarea className="h-16 !text-sm" placeholder="Message" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                        </FormItem>
+                    )}
                 />
                 <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? "Submitting..." : "Let's Connect"}
