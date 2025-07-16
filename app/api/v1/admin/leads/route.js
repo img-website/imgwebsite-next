@@ -43,6 +43,7 @@ export async function POST(request) {
       requirements: formData.get('requirements') || null,
       description: formData.get('description') || null,
       path: formData.get('path') || null,
+      page_url: formData.get('page_url') || null,
       assign_to: formData.get('assign_to') || null,
       assigned_date: formData.get('assigned_date') ? new Date(formData.get('assigned_date')) : null,
       attachments,

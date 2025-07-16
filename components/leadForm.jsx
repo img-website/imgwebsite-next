@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import PhoneInput from "@/components/ui/phone-input";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const schema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
@@ -35,7 +35,18 @@ const schema = z.object({
 
 export default function LeadForm({ defaultType = "Mobile App Development" }) {
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [pageUrl, setPageUrl] = useState("");
     const [country, setCountry] = useState("in");
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const search = searchParams.toString();
+            const url = `${window.location.origin}${pathname}${search ? `?${search}` : ""}`;
+            setPageUrl(url);
+        }
+    }, [pathname, searchParams]);
 
     useEffect(() => {
         async function detectCountry() {
@@ -71,9 +82,8 @@ export default function LeadForm({ defaultType = "Mobile App Development" }) {
         fd.append("mobile_number", values.phone);
         fd.append("requirements", values.type);
         fd.append("description", values.message);
-        if (typeof window !== "undefined") {
-            fd.append("path", window.location.pathname);
-        }
+        fd.append("path", pathname);
+        fd.append("page_url", pageUrl);
         const res = await fetch("/api/v1/admin/leads", {
             method: "POST",
             body: fd,

@@ -15,6 +15,7 @@ const leadSchema = new mongoose.Schema(
     description: { type: String, default: null },
     attachments: { type: [String], default: [] },
     path: { type: String, default: null },
+    page_url: { type: String, default: null },
     assign_to: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
     assigned_date: { type: Date, default: null },
     status: { type: Number, enum: [1, 2], default: LEAD_STATUS.UPCOMING },

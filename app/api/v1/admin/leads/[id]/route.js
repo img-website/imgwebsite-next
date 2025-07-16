@@ -68,6 +68,7 @@ export async function PUT(request, { params }) {
     lead.requirements = formData.get('requirements') || lead.requirements;
     lead.description = formData.get('description') || lead.description;
     lead.path = formData.get('path') || lead.path;
+    lead.page_url = formData.get('page_url') || lead.page_url;
     lead.assign_to = formData.get('assign_to') || lead.assign_to;
     lead.assigned_date = formData.get('assigned_date') ? new Date(formData.get('assigned_date')) : lead.assigned_date;
 
