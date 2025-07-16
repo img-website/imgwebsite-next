@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import schemaToLd from "@/helpers/schemaToLd";
 import getStaticMeta from "@/helpers/getStaticMeta";
+import ContactUs from "@/components/ContactUs";
 
 
 export async function generateMetadata() {
@@ -72,6 +73,7 @@ export default async function RootLayout({ children }) {
         {children}
         </main>
         <LeadPopup/>
+        <ContactUs/>
         <Footer/>
         {isProd && (
           <>
