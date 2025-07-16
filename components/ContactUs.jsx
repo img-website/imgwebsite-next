@@ -2,15 +2,9 @@
 import Svg from "@/components/svg";
 import Image from "next/image";
 import LeadForm from "@/components/leadForm";
-import { usePathname } from "next/navigation";
 
-const defaultMap = {
-  "/": "Mobile App Development",
-  "/about-us.php": "Fantasy Cricket App Development",
-};
-const ContactUs = ({ defaultType }) => {
-    const pathname = usePathname();
-    const computedType = defaultType || defaultMap[pathname] || "Mobile App Development";
+const ContactUs = ({ defaultType="Mobile App Development" }) => {
+    const computedType = defaultType || "Mobile App Development";
     return (
         <section className="contactSection w-full group/cs relative overflow-hidden bg-white">
             <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
