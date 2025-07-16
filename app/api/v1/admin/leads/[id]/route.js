@@ -67,6 +67,7 @@ export async function PUT(request, { params }) {
     lead.organization = formData.get('organization') || lead.organization;
     lead.requirements = formData.get('requirements') || lead.requirements;
     lead.description = formData.get('description') || lead.description;
+    lead.budget = formData.get('budget') || lead.budget;
     lead.path = formData.get('path') || lead.path;
     lead.page_url = formData.get('page_url') || lead.page_url;
     lead.assign_to = formData.get('assign_to') || lead.assign_to;

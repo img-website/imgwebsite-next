@@ -42,6 +42,7 @@ export async function POST(request) {
       organization: formData.get('organization') || null,
       requirements: formData.get('requirements') || null,
       description: formData.get('description') || null,
+      budget: formData.get('budget') || null,
       path: formData.get('path') || null,
       page_url: formData.get('page_url') || null,
       assign_to: formData.get('assign_to') || null,

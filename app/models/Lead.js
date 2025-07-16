@@ -13,6 +13,7 @@ const leadSchema = new mongoose.Schema(
     organization: { type: String, default: null },
     requirements: { type: String, default: null },
     description: { type: String, default: null },
+    budget: { type: String, default: null },
     attachments: { type: [String], default: [] },
     path: { type: String, default: null },
     page_url: { type: String, default: null },
