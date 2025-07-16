@@ -32,7 +32,7 @@ const schema = z.object({
   type: z.string().min(1, { message: "Service is required" }),
   budget: z.string().min(1, { message: "Budget is required" }),
   message: z.string().min(1, { message: "Message is required" }),
-  file: z.any().optional(),
+  attachments: z.any().optional(),
 });
 
 export default function RequestQuoteForm({ defaultType = "Mobile App Development" }) {
@@ -71,7 +71,7 @@ export default function RequestQuoteForm({ defaultType = "Mobile App Development
       type: defaultType,
       budget: "",
       message: "",
-      file: null,
+      attachments: null,
     },
   });
 
@@ -84,8 +84,8 @@ export default function RequestQuoteForm({ defaultType = "Mobile App Development
       fd.append("requirements", values.type);
       fd.append("budget", values.budget);
       fd.append("description", values.message);
-      if (values.file) {
-        fd.append("file", values.file);
+      if (values.attachments) {
+        fd.append("attachments", values.attachments);
       }
       fd.append("path", pathname);
       fd.append("page_url", pageUrl);
@@ -221,7 +221,7 @@ export default function RequestQuoteForm({ defaultType = "Mobile App Development
         />
         <FormField
           control={form.control}
-          name="file"
+          name="attachments"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Upload project brief</FormLabel>

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import getDynamicMeta from "@/helpers/getDynamicMeta";
 import RequestQuoteForm from "@/components/RequestQuoteForm";
 
@@ -125,76 +124,14 @@ export default function AboutUs() {
                                 <div className="w-8 md:w-12 max-lg:mx-auto">
                                     <svg width="48" height="52" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M17.3102 11.8541V11.0518C17.309 11.0429 17.3072 11.0341 17.305 11.0254C17.6674 10.8161 17.9578 10.5017 18.1378 10.1239L18.1419 10.1161C18.2734 9.84318 18.3427 9.54445 18.3447 9.24148C18.3465 8.77179 18.188 8.31553 17.8955 7.94804C17.603 7.58055 17.1939 7.3238 16.7358 7.22018C16.2777 7.11656 15.7979 7.17227 15.3757 7.3781C14.9535 7.58394 14.6142 7.9276 14.4137 8.35234C14.4095 8.35855 14.4069 8.36527 14.4033 8.37148C14.181 8.83811 14.1442 9.37179 14.3004 9.86452C14.4566 10.3572 14.7942 10.7722 15.2449 11.0254C15.2432 11.0342 15.242 11.043 15.2412 11.0518V11.9875C15.1757 12.0232 15.1134 12.0646 15.055 12.1111L13.4687 13.3794H12.1378C11.8634 13.3794 11.6003 13.4884 11.4063 13.6824C11.2123 13.8764 11.1033 14.1395 11.1033 14.4139C11.1043 14.596 11.1539 14.7746 11.2471 14.9311H8.89055C8.98372 14.7746 9.03336 14.596 9.03435 14.4139C9.03435 14.1395 8.92536 13.8764 8.73135 13.6824C8.53735 13.4884 8.27423 13.3794 7.99987 13.3794H6.669L5.08262 12.1117C5.02432 12.0649 4.96201 12.0233 4.89642 11.9875V11.0518C4.89518 11.0429 4.89346 11.0341 4.89124 11.0254C5.342 10.7722 5.67968 10.3571 5.83593 9.8643C5.99218 9.37145 5.95531 8.83765 5.7328 8.37096C5.72918 8.36476 5.72659 8.35803 5.72297 8.35234C5.48914 7.85781 5.06844 7.47641 4.55341 7.29206C4.03838 7.10771 3.47121 7.1355 2.97668 7.36933C2.48214 7.60315 2.10074 8.02385 1.91639 8.53888C1.82511 8.7939 1.78495 9.0644 1.79821 9.33494C1.81147 9.60547 1.87788 9.87075 1.99366 10.1156L1.9978 10.1234C2.17827 10.5017 2.4694 10.8163 2.83262 11.0254C2.83041 11.0341 2.82869 11.0429 2.82745 11.0518V11.8541C2.53546 11.9137 2.27302 12.0723 2.08452 12.3031C1.89602 12.5339 1.79303 12.8228 1.79297 13.1208V16.7415C1.79297 16.8101 1.82022 16.8759 1.86872 16.9244C1.91722 16.9729 1.983 17.0001 2.05159 17.0001H18.0861C18.1547 17.0001 18.2204 16.9729 18.2689 16.9244C18.3174 16.8759 18.3447 16.8101 18.3447 16.7415V13.1208C18.3446 12.8228 18.2416 12.5339 18.0531 12.3031C17.8646 12.0723 17.6022 11.9137 17.3102 11.8541ZM16.2757 7.68976C16.6873 7.68976 17.082 7.85324 17.373 8.14425C17.664 8.43525 17.8275 8.82994 17.8275 9.24148C17.8257 9.41809 17.7935 9.59307 17.7323 9.75872H17.3102V8.98286C17.3102 8.92324 17.2896 8.86545 17.2519 8.81926C17.2142 8.77308 17.1617 8.74134 17.1033 8.72941L15.0343 8.31976C15.1776 8.125 15.3645 7.96654 15.5801 7.85713C15.7957 7.74772 16.034 7.69039 16.2757 7.68976ZM14.724 9.24148C14.7261 9.09134 14.7504 8.94233 14.7959 8.79924L16.793 9.19493V10.0173C16.793 10.0859 16.8202 10.1517 16.8687 10.2002C16.9172 10.2487 16.983 10.276 17.0516 10.276H17.424C17.2152 10.5102 16.94 10.6753 16.6351 10.7494C16.3302 10.8235 16.0099 10.8031 15.7169 10.6908C15.4239 10.5785 15.1719 10.3797 14.9946 10.1209C14.8172 9.86199 14.7229 9.55528 14.724 9.24148ZM16.793 11.237V11.8277H15.8619C15.8268 11.8277 15.7926 11.8339 15.7585 11.8365V11.237C16.0964 11.3349 16.4551 11.3349 16.793 11.237ZM12.1378 13.8967H12.655V14.9311H12.1378C12.0006 14.9311 11.8691 14.8766 11.7721 14.7796C11.675 14.6826 11.6206 14.5511 11.6206 14.4139C11.6206 14.2767 11.675 14.1452 11.7721 14.0481C11.8691 13.9511 12.0006 13.8967 12.1378 13.8967ZM7.48262 13.8967H7.99987C8.13705 13.8967 8.26861 13.9511 8.36561 14.0481C8.46261 14.1452 8.51711 14.2767 8.51711 14.4139C8.51711 14.5511 8.46261 14.6826 8.36561 14.7796C8.26861 14.8766 8.13705 14.9311 7.99987 14.9311H7.48262V13.8967ZM2.31021 9.24148C2.3092 8.91517 2.4114 8.5969 2.60219 8.33217C2.79297 8.06745 3.06258 7.86983 3.37246 7.76757C3.68233 7.66531 4.0166 7.66365 4.32748 7.76283C4.63835 7.862 4.90991 8.05694 5.10331 8.31976L3.03435 8.72941C2.97593 8.74134 2.92343 8.77308 2.88573 8.81926C2.84803 8.86545 2.82744 8.92324 2.82745 8.98286V9.75872H2.40538C2.34411 9.59307 2.31191 9.41809 2.31021 9.24148ZM2.71366 10.276H3.08607C3.15466 10.276 3.22044 10.2487 3.26894 10.2002C3.31745 10.1517 3.34469 10.0859 3.34469 10.0173V9.19493L5.34176 8.79924C5.38729 8.94233 5.41152 9.09134 5.41366 9.24148C5.4148 9.55528 5.32042 9.86199 5.14308 10.1209C4.96573 10.3797 4.7138 10.5785 4.42077 10.6908C4.12775 10.8031 3.80749 10.8235 3.50257 10.7494C3.19765 10.6753 2.92249 10.5102 2.71366 10.276ZM4.37918 11.237V11.8365C4.34452 11.8339 4.31038 11.8277 4.27573 11.8277H3.34469V11.237C3.51326 11.2835 3.68709 11.3082 3.86193 11.3104C4.03678 11.3082 4.21061 11.2835 4.37918 11.237ZM4.37918 15.1898V16.4829H2.31021V13.1208C2.31021 12.915 2.39195 12.7177 2.53745 12.5722C2.68296 12.4267 2.8803 12.3449 3.08607 12.3449H4.27573C4.45191 12.345 4.62284 12.405 4.76038 12.5151L6.41555 13.8408C6.46175 13.8774 6.51905 13.8971 6.57797 13.8967H6.96538V14.9311H6.2759L4.27573 13.4311C4.24856 13.4108 4.21764 13.3959 4.18474 13.3875C4.15184 13.3791 4.1176 13.3772 4.08398 13.382C4.05036 13.3868 4.01801 13.3982 3.98879 13.4155C3.95957 13.4328 3.93404 13.4557 3.91366 13.4829C3.89328 13.51 3.87845 13.5409 3.87003 13.5738C3.8616 13.6067 3.85973 13.641 3.86453 13.6746C3.86934 13.7082 3.88071 13.7406 3.89802 13.7698C3.91532 13.799 3.93821 13.8246 3.96538 13.8449L5.41366 14.9311H4.6378C4.56921 14.9311 4.50342 14.9584 4.45492 15.0069C4.40642 15.0554 4.37918 15.1212 4.37918 15.1898ZM15.2412 16.4829H4.89642V15.4484H15.2412V16.4829ZM17.8275 16.4829H15.7585V15.1898C15.7585 15.1212 15.7312 15.0554 15.6827 15.0069C15.6342 14.9584 15.5685 14.9311 15.4999 14.9311H14.724L16.1723 13.8449C16.1994 13.8246 16.2223 13.799 16.2396 13.7698C16.2569 13.7406 16.2683 13.7082 16.2731 13.6746C16.2779 13.641 16.2761 13.6067 16.2676 13.5738C16.2592 13.5409 16.2444 13.51 16.224 13.4829C16.2036 13.4557 16.1781 13.4328 16.1489 13.4155C16.1196 13.3982 16.0873 13.3868 16.0537 13.382C16.0201 13.3772 15.9858 13.3791 15.9529 13.3875C15.92 13.3959 15.8891 13.4108 15.8619 13.4311L13.8618 14.9311H13.1723V13.8967H13.5597C13.6185 13.8968 13.6756 13.8769 13.7216 13.8403L15.3768 12.5146C15.5147 12.4048 15.6857 12.345 15.8619 12.3449H17.0516C17.2574 12.3449 17.4547 12.4267 17.6002 12.5722C17.7457 12.7177 17.8275 12.915 17.8275 13.1208V16.4829Z" fill="white"/>
-                                        <path d="M6.39042 6.84321L6.65104 5.10573L5.41309 3.84607L7.15056 3.58544L7.95414 2L8.75772 3.58544L9.3224 3.67232" stroke="#36E079" strokeWidth="0.434368" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M11.4287 3.71578L12.0585 3.60718L12.8621 2.04346L13.6657 3.60718L15.4032 3.88952L14.1652 5.12747L14.4259 6.88667" stroke="#36E079" strokeWidth="0.434368" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M10.365 4.02002L11.3206 5.90952L13.4273 6.25702L11.9288 7.75559L12.2545 9.86227L10.365 8.88495L8.47553 9.86227L8.80131 7.75559L7.30273 6.25702L9.3877 5.90952L10.365 4.02002Z" stroke="#36E079" strokeWidth="0.434368" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M6.39042 6.84321L6.65104 5.10573L5.41309 3.84607L7.15056 3.58544L7.95414 2L8.75772 3.58544L9.3224 3.67232" stroke="#36E079" strokeWidth="0.434368" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.4287 3.71578L12.0585 3.60718L12.8621 2.04346L13.6657 3.60718L15.4032 3.88952L14.1652 5.12747L14.4259 6.88667" stroke="#36E079" strokeWidth="0.434368" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M10.365 4.02002L11.3206 5.90952L13.4273 6.25702L11.9288 7.75559L12.2545 9.86227L10.365 8.88495L8.47553 9.86227L8.80131 7.75559L7.30273 6.25702L9.3877 5.90952L10.365 4.02002Z" stroke="#36E079" strokeWidth="0.434368" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </div>
                                 <div className="grow sm:pl-3">
                                     <div className="w-full text-base md:text-lg font-bold">150 +</div>
                                     <div className="w-full text-sm md:text-base font-semibold">Startups We Worked With</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="w-full grow flex items-end mt-10">
-                            <div className="w-full swiper rounded-2xl overflow-hidden" 
-                                data-swiper='{
-                                    "slidesPerView": 1,
-                                    "spaceBetween": 10,
-                                    "speed": 1000,
-                                    "autoplay": {"enabled": true, "delay": 2500},
-                                    "loop": true,
-                                    "effect": "coverflow",
-                                    "centeredSlides": true
-                                }'
-                                >
-                                <div className="swiper-wrapper flex items-stretch rounded-2xl">
-                                    <figure className="swiper-slide h-auto max-w-screen-md mx-auto text-center rounded-2xl overflow-hidden bg-white/10 p-6">
-                                        <svg className="size-10 mx-auto mb-3 text-gray-100/20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
-                                            <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z"/>
-                                        </svg>
-                                        <blockquote>
-                                            <p className="text-lg italic font-medium text-gray-100">"After searching a lot, we found them via my relative and it is really a good thing for me. They are really professional and co-operative. my account manager Mr. Lokesh is keen to help me in every possible manner. I strongly recommend other people for the same era of services."</p>
-                                        </blockquote>
-                                        <figcaption className="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-                                            <Image className="size-6 rounded-full" src="https://d1y41eupgbwbb2.cloudfront.net/images/testimonial-sanjay-sharma.webp" alt="Mr. Sanjay Sharma" width="100" height="100" />
-                                            <div className="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
-                                                <cite className="pe-3 font-medium text-gray-100">Mr. Sanjay Sharma</cite>
-                                                <cite className="ps-3 text-sm text-gray-300">JPRC Hospital</cite>
-                                            </div>
-                                        </figcaption>
-                                    </figure>
-                                    <figure className="swiper-slide h-auto max-w-screen-md mx-auto text-center rounded-2xl overflow-hidden bg-white/10 p-6">
-                                        <svg className="size-10 mx-auto mb-3 text-gray-100/20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
-                                            <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z"/>
-                                        </svg>
-                                        <blockquote>
-                                            <p className="text-lg italic font-medium text-gray-100">"They developed my company's Website and helped in driving Website Traffic which in turn reached customers faster. Neeraj Sir & their team has always listened to all the issues and queries."</p>
-                                        </blockquote>
-                                        <figcaption className="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-                                            <Image className="size-6 rounded-full" src="https://d1y41eupgbwbb2.cloudfront.net/images/testimonial-arpit-jain.webp" alt="Mr. Arpit Jain" width="100" height="100" />
-                                            <div className="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
-                                                <cite className="pe-3 font-medium text-gray-100">Mr. Arpit Jain</cite>
-                                                <cite className="ps-3 text-sm text-gray-300">Samarpan International</cite>
-                                            </div>
-                                        </figcaption>
-                                    </figure>
-                                    <figure className="swiper-slide h-auto max-w-screen-md mx-auto text-center rounded-2xl overflow-hidden bg-white/10 p-6">
-                                        <svg className="size-10 mx-auto mb-3 text-gray-100/20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
-                                            <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z"/>
-                                        </svg>
-                                        <blockquote>
-                                            <p className="text-lg italic font-medium text-gray-100">"As a part of mount litera zee school, I would like to thanks IMG Global Infotech to build such an impressive website that would help to gain visibility in front of parents as well as students."</p>
-                                        </blockquote>
-                                        <figcaption className="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-                                            <Image className="size-6 rounded-full" src="https://d1y41eupgbwbb2.cloudfront.net/images/testimonial-avatar.webp" alt="Dr. Subhash Chandra" width="100" height="100" />
-                                            <div className="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
-                                                <cite className="pe-3 font-medium text-gray-100">Dr. Subhash Chandra</cite>
-                                                <cite className="ps-3 text-sm text-gray-300">Mount Litera Zee School</cite>
-                                            </div>
-                                        </figcaption>
-                                    </figure>
                                 </div>
                             </div>
                         </div>
