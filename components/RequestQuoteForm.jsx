@@ -88,7 +88,6 @@ export default function RequestQuoteForm({ defaultType = "Mobile App Development
         fd.append("attachments", values.attachments);
       }
       fd.append("path", pathname);
-      fd.append("page_url", pageUrl);
       const res = await fetch("/api/v1/admin/leads", {
         method: "POST",
         body: fd,

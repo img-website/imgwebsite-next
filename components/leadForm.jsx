@@ -80,7 +80,6 @@ export default function LeadForm({ defaultType = "Mobile App Development" }) {
         fd.append("requirements", values.type);
         fd.append("description", values.message);
         fd.append("path", pathname);
-        fd.append("page_url", pageUrl);
         const res = await fetch("/api/v1/admin/leads", {
             method: "POST",
             body: fd,
