@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import Svg from '@/components/svg';
-// import LeadForm from '@/components/leadForm';
+import LeadForm from '@/components/leadForm';
 
-export default function LeadPopup() {
+export default function LeadPopup({ defaultType="Mobile App Development" }) {
+    const computedType = defaultType || "Mobile App Development";
     return (
         <div className="size-full group/leadPopup fixed inset-0 z-[100000] px-4 has-[.leadPopup:checked]:opacity-100 has-[.leadPopup:checked]:pointer-events-auto opacity-0 pointer-events-none duration-500 flex flex-col items-center overflow-y-auto overflow-x-hidden">
             <input type="checkbox" name="leadPopup" id="leadPopup" className="hidden leadPopup" />
@@ -32,7 +33,7 @@ export default function LeadPopup() {
                         <label htmlFor="leadPopup" className="size-6 ml-auto relative shrink-0 cursor-pointer p-0.5 ring-1 ring-inset ring-[#78777D] rounded-full mb-7 hover:lg:ring-2 duration-300">
                             <Svg name="close" className="size-full" />
                         </label>
-                        {/* <LeadForm/> */}
+                        <LeadForm defaultType={computedType} />
                         <div className="md:text-xs text-[10px] font-medium text-[#5D6571] pt-4 text-center select-none pointer-events-none">
                             <Svg name="shield" className="w-5 aspect-square inline -mt-1 text-[#467CDB]" />
                             <span>Your Information will be safe with us</span>
