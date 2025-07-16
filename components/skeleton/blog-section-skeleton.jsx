@@ -1,6 +1,5 @@
 "use client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Swiper, SwiperSlide } from "@/components/CustomSwiper";
 
 export default function BlogSectionSkeleton() {
   return (
@@ -11,24 +10,12 @@ export default function BlogSectionSkeleton() {
             <Skeleton className="h-8 w-1/2" />
           </h2>
           <div className="flex w-full flex-wrap md:pt-9 pt-4 group/blog">
-            <div className="w-full sm:pt-9 pt-4 flex flex-wrap lg:gap-0 gap-4 -mx-2 items-stretch overflow-hidden pb-1">
-              <Swiper
-                className="w-full !px-2 flex swiper swiperBlog !py-2 !-my-2"
-                slidesPerView={1.2}
-                spaceBetween={16}
-                loop={false}
-                breakpoints={{
-                  320: { slidesPerView: 1.2, spaceBetween: 16 },
-                  480: { slidesPerView: 1.4, spaceBetween: 16 },
-                  640: { slidesPerView: 2, spaceBetween: 16 },
-                  1024: { slidesPerView: 3, spaceBetween: 16 },
-                  1350: { slidesPerView: 4, spaceBetween: 16 },
-                }}
-              >
+            <div className="w-full sm:pt-9 pt-4 flex flex-nowrap lg:gap-0 gap-4 -mx-2 items-stretch overflow-hidden pb-1">
+              <div className="w-full flex gap-4 px-2 py-2 -my-2 overflow-hidden">
                 {[...Array(4)].map((_, idx) => (
-                  <SwiperSlide
+                  <div
                     key={idx}
-                    className="swiper-slide w-1/2 flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
+                    className="flex-shrink-0 w-[83%] min-[480px]:w-[71%] min-[640px]:w-1/2 min-[1024px]:w-1/3 min-[1350px]:w-1/4 flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
                   >
                     <Skeleton className="w-full aspect-[66/37]" />
                     <div className="w-full grow flex flex-col">
@@ -53,9 +40,9 @@ export default function BlogSectionSkeleton() {
                         </div>
                       </div>
                     </div>
-                  </SwiperSlide>
+                  </div>
                 ))}
-              </Swiper>
+              </div>
             </div>
           </div>
         </div>
