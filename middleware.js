@@ -154,10 +154,10 @@ export async function middleware(request) {
         return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
     }
 
-    // If the user is not logged in and trying to access blog pages, redirect to /login
-    if (!isLoggedIn && pathname.startsWith("/blog")) {
-        return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
-    }
+    // // If the user is not logged in and trying to access blog pages, redirect to /login
+    // if (!isLoggedIn && pathname.startsWith("/blog")) {
+    //     return NextResponse.redirect(new URL(`/login?redirectTo=${pathname}`, request.url));
+    // }
 
     // Logic when the user is logged in
     if (isLoggedIn) {
