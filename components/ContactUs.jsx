@@ -1,8 +1,17 @@
-import Svg from "@/components/svg"
-import Image from "next/image"
-import LeadForm from "@/components/leadForm"
+"use client";
+import Svg from "@/components/svg";
+import Image from "next/image";
+import LeadForm from "@/components/leadForm";
+import { usePathname } from "next/navigation";
+
+const defaultMap = {
+  "/": "Mobile App Development",
+  "/about-us.php": "Fantasy Cricket App Development",
+};
 
 const ContactUs = () => {
+    const pathname = usePathname();
+    const defaultType = defaultMap[pathname] || "Mobile App Development";
     return (
         <section className="contactSection w-full group/cs relative overflow-hidden bg-white">
             <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
@@ -21,7 +30,7 @@ const ContactUs = () => {
                         </div>
                         <div className="xl:w-5/12 md:w-1/2 w-full flex flex-col md:px-4 px-2 relative">
                             <div className="w-full flex flex-col bg-white md:shadow-[0px_4px_14px_0px_#0000001F] shadow-[0px_2.61px_9.15px_0px_#0000001F] md:rounded-4xl rounded-2xl lg:p-8 py-5 px-4 [&_form]:pe-0">
-                                <LeadForm/>
+                                <LeadForm defaultType={defaultType}/>
                                 <ul className="grid grid-cols-6 gap-3 lg:pt-8 pt-5">
                                     <li className="relative">
                                         <Image src="https://d1y41eupgbwbb2.cloudfront.net/images/cocacolaLogo2.webp" className="w-full h-8 object-contain object-center aspect-[71/32]" width="71" height="32" alt="Coca-Cola" title="Coca-Cola" />

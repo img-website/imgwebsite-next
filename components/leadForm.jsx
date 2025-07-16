@@ -1,12 +1,26 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import PhoneInput from "@/components/ui/phone-input";
 import { toast } from "sonner";
 
@@ -18,14 +32,31 @@ const schema = z.object({
   message: z.string().min(1, { message: "Message is required" }),
 });
 
-export default function LeadForm() {
+export default function LeadForm({ defaultType = "Mobile App Development" }) {
+  const [country, setCountry] = useState("in");
+
+  useEffect(() => {
+    async function detectCountry() {
+      try {
+        const res = await fetch("https://ipinfo.io/json");
+        const data = await res.json();
+        if (data && data.country) {
+          setCountry(data.country.toLowerCase());
+        }
+      } catch {
+        // ignore errors
+      }
+    }
+    detectCountry();
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       email: "",
       phone: "",
-      type: "Mobile App Development",
+      type: defaultType,
       message: "",
     },
   });
@@ -95,7 +126,12 @@ export default function LeadForm() {
             <FormItem>
               <FormLabel>Mobile Number</FormLabel>
               <FormControl>
-                <PhoneInput value={field.value} onChange={field.onChange} />
+                <PhoneInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  defaultCountry={country}
+                  forceDialCode
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
