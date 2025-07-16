@@ -4,6 +4,7 @@ import Svg from "@/components/svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide, Navigation, Autoplay } from '@/components/CustomSwiper';
+import ContactUs from "@/components/ContactUs";
 
 
 export default function GroceryAppDevelopment() {
@@ -1383,7 +1384,8 @@ export default function GroceryAppDevelopment() {
                         </div>
                     </div>
                 </div>
-            </section>
+        </section>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }

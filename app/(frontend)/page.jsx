@@ -24,6 +24,7 @@ const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1
 import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
+import ContactUs from '@/components/ContactUs';
 
 export async function generateMetadata() {
   return await getDynamicMeta('/');
@@ -47,6 +48,7 @@ export default function Home() {
       <Usp/>
       <Testimonial/>
       <Faq/>
+      <ContactUs defaultType="Mobile App Development" />
     </>
   );
 }

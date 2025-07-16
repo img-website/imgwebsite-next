@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ContactUs from "@/components/ContactUs";
 
 export default function CaseStudy() {
     return (
@@ -583,6 +584,7 @@ export default function CaseStudy() {
                 </div>
             </div>
         </div>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }

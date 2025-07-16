@@ -1,5 +1,6 @@
 import Image from "next/image";
 import getDynamicMeta from "@/helpers/getDynamicMeta";
+import ContactUs from "@/components/ContactUs";
 
 export async function generateMetadata() {
   return await getDynamicMeta("/career.php");
@@ -553,7 +554,8 @@ export default function Career() {
                   <div className="text-sky-500 font-semibold text-base text-center ">Share your resume at</div>
                   <div className="text-black font-semibold text-base text-center select-all">hr@imgglobalinfotech.com</div>
               </div>
-          </div>
+        </div>
+        <ContactUs defaultType="Mobile App Development" />
         </>
     );
 }
