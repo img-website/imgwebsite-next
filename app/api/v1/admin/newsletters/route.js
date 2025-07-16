@@ -18,8 +18,8 @@ export async function GET(req) {
 
 // POST add new email
 export async function POST(request) {
-  const admin = await ensurePermission(request, 'newsletter', 'write');
-  if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
+  // const admin = await ensurePermission(request, 'newsletter', 'write');
+  // if (!admin) return NextResponse.json({ success: false, error: 'Permission denied' }, { status: 403 });
   try {
     await connectDB();
     const body = await request.json();

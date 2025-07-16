@@ -27,19 +27,19 @@ export default function NewsLetterForm() {
       });
       const data = await res.json();
       if (data.success) {
-        toast.success("Subscribed");
+        toast.success("Subscribed successfully");
         form.reset();
       } else {
-        toast.error(data.error || "Failed");
+        toast.error(data.error || "Failed to subscribe");
       }
     } catch (err) {
-      toast.error("Failed");
+      toast.error("Something went wrong");
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full items-center space-x-2 leadForm">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full items-start space-x-2 leadForm">
         <FormField
           control={form.control}
           name="email"
@@ -57,7 +57,7 @@ export default function NewsLetterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="size-10 bg-white text-theme4 hover:bg-white/90" disabled={form.formState.isSubmitting}>
+        <Button type="submit" className="size-10 bg-white text-theme4 hover:bg-white/90 cursor-pointer" disabled={form.formState.isSubmitting}>
           <Svg name="send" />
           <span className="sr-only">Send</span>
         </Button>
