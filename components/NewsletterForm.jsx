@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Svg from "@/components/svg";
 import apiFetch from "@/helpers/apiFetch";
 import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
 const schema = z.object({
   email: z.string().email()
@@ -58,7 +59,11 @@ export default function NewsLetterForm() {
           )}
         />
         <Button type="submit" className="size-10 bg-white text-theme4 hover:bg-white/90 cursor-pointer" disabled={form.formState.isSubmitting}>
-          <Svg name="send" />
+          {form.formState.isSubmitting ? (
+            <Loader2Icon className="animate-spin size-4" />
+          ) : (
+            <Svg name="send" />
+          )}
           <span className="sr-only">Send</span>
         </Button>
       </form>
