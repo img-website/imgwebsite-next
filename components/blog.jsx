@@ -10,7 +10,17 @@ export default async function Blog() {
     );
     const json = await res.json();
     if (json.success && Array.isArray(json.data)) {
-      return <BlogClient blogs={json.data} />;
+      const formatDate = (iso) =>
+        new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).format(new Date(iso));
+      const blogs = json.data.map((b) => ({
+        ...b,
+        formatted_date: formatDate(b.published_date_time || b.created_date),
+      }));
+      return <BlogClient blogs={blogs} />;
     }
   } catch {
     // ignore errors and fallback to skeleton

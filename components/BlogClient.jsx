@@ -58,13 +58,15 @@ export default function BlogClient({ blogs }) {
                   const categoryUrl = blog.category?.slug
                     ? `/blogs/category/${blog.category.slug}`
                     : "#";
-                  const dateStr = new Date(
-                    blog.published_date_time || blog.created_date
-                  ).toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  });
+                  const dateStr =
+                    blog.formatted_date ||
+                    new Intl.DateTimeFormat('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    }).format(
+                      new Date(blog.published_date_time || blog.created_date)
+                    );
                   return (
                     <SwiperSlide
                       key={blog._id || blog.id}
