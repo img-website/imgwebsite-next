@@ -65,7 +65,7 @@ export default async function Blog() {
                           }).format(new Date(blog.published_date_time || blog.created_date));
 
                         return (
-                          <CarouselItem index={i} key={blog._id || blog.id} className="pl-4 basis-10/12 md:basis-1/2 lg:basis-1/3 2xl:basis-1/4">
+                          <CarouselItem key={blog._id || blog.id} className="pl-4 basis-10/12 md:basis-1/2 lg:basis-1/3 2xl:basis-1/4">
                             <div className="flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full">
                               {thumb && (
                                 <div className="w-full relative overflow-hidden">

@@ -52,29 +52,45 @@ const CarouselContent = React.forwardRef(function CarouselContent(
 CarouselContent.displayName = "CarouselContent";
 
 const CarouselItem = React.forwardRef(function CarouselItem(
-  { className, index, ...props },
+  { className, ...props },
   ref
 ) {
   const { selectedIndex, embla } = useCarousel();
-  const [prevIndex, setPrevIndex] = React.useState(-1);
-  const [nextIndex, setNextIndex] = React.useState(-1);
+  const localRef = React.useRef(null);
+  const setRefs = React.useCallback(
+    (node) => {
+      localRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref]
+  );
+
+  const [index, setIndex] = React.useState(-1);
 
   React.useEffect(() => {
-    if (!embla) return;
-    const total = embla.slideNodes().length;
-    const loop = embla.internalEngine().options.loop;
-    const prev = selectedIndex > 0 ? selectedIndex - 1 : loop ? total - 1 : -1;
-    const next = selectedIndex < total - 1 ? selectedIndex + 1 : loop ? 0 : -1;
-    setPrevIndex(prev);
-    setNextIndex(next);
-  }, [embla, selectedIndex]);
+    if (!embla || !localRef.current) return;
+    const updateIndex = () => {
+      setIndex(embla.slideNodes().indexOf(localRef.current));
+    };
+    updateIndex();
+    embla.on("reInit", updateIndex);
+    return () => embla.off("reInit", updateIndex);
+  }, [embla]);
+
+  const total = embla ? embla.slideNodes().length : 0;
+  const loop = embla ? embla.internalEngine().options.loop : false;
+  const prevIndex =
+    selectedIndex > 0 ? selectedIndex - 1 : loop ? total - 1 : -1;
+  const nextIndex =
+    selectedIndex < total - 1 ? selectedIndex + 1 : loop ? 0 : -1;
 
   const active = index === selectedIndex;
   const prev = index === prevIndex;
   const next = index === nextIndex;
   return (
     <div
-      ref={ref}
+      ref={setRefs}
       className={cn(
         "min-w-0 shrink-0 grow-0",
         className,
