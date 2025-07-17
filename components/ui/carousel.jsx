@@ -21,21 +21,43 @@ const Carousel = React.forwardRef(function Carousel(
   const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
     if (!emblaApi) return;
     if (setApi) setApi(emblaApi);
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-    emblaApi.on("select", onSelect);
-    onSelect();
-    return () => emblaApi.off("select", onSelect);
   }, [emblaApi, setApi]);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    const count = emblaApi.scrollSnapList().length;
+    const loop = emblaApi.options.loop;
+
+    const applyClasses = () => {
+      const current = emblaApi.selectedScrollSnap();
+      const prev = current > 0 ? current - 1 : loop ? count - 1 : -1;
+      const next = current < count - 1 ? current + 1 : loop ? 0 : -1;
+
+      emblaApi.slideNodes().forEach((node) => {
+        const index = Number(node.dataset.slideIndex);
+        node.classList.toggle("embla-slide-active", index === current);
+        node.classList.toggle("embla-slide-prev", index === prev);
+        node.classList.toggle("embla-slide-next", index === next);
+      });
+    };
+
+    applyClasses();
+    emblaApi.on("select", applyClasses);
+    emblaApi.on("reInit", applyClasses);
+    return () => {
+      emblaApi.off("select", applyClasses);
+      emblaApi.off("reInit", applyClasses);
+    };
+  }, [emblaApi]);
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={{ embla: emblaApi, selectedIndex }}>
+      <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
       </CarouselContext.Provider>
     </div>
@@ -43,35 +65,15 @@ const Carousel = React.forwardRef(function Carousel(
 });
 Carousel.displayName = "Carousel";
 
-const SlideContext = React.createContext({ count: 0 });
-
 const CarouselItem = React.forwardRef(function CarouselItem(
   { className, index = -1, ...props },
   ref
 ) {
-  const { selectedIndex, embla } = useCarousel();
-  const { count } = React.useContext(SlideContext);
-  const loop = embla ? embla.internalEngine().options.loop : false;
-
-  const prevIndex =
-    selectedIndex > 0 ? selectedIndex - 1 : loop ? count - 1 : -1;
-  const nextIndex =
-    selectedIndex < count - 1 ? selectedIndex + 1 : loop ? 0 : -1;
-
-  const active = index === selectedIndex;
-  const prev = index === prevIndex;
-  const next = index === nextIndex;
-
   return (
     <div
       ref={ref}
-      className={cn(
-        "min-w-0 shrink-0 grow-0",
-        className,
-        active && "embla-slide-active",
-        prev && "embla-slide-prev",
-        next && "embla-slide-next"
-      )}
+      data-slide-index={index}
+      className={cn("min-w-0 shrink-0 grow-0", className)}
       {...props}
     />
   );
@@ -87,16 +89,11 @@ const CarouselContent = React.forwardRef(function CarouselContent(
       ? React.cloneElement(child, { index })
       : child
   );
-  const count = items.filter(
-    (child) => React.isValidElement(child) && child.type === CarouselItem
-  ).length;
 
   return (
-    <SlideContext.Provider value={{ count }}>
-      <div ref={ref} className={cn("flex", className)} {...props}>
-        {items}
-      </div>
-    </SlideContext.Provider>
+    <div ref={ref} className={cn("flex", className)} {...props}>
+      {items}
+    </div>
   );
 });
 CarouselContent.displayName = "CarouselContent";
