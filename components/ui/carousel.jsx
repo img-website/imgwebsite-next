@@ -2,6 +2,7 @@
 import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import ClassNames from "embla-carousel-class-names";
 import { cn } from "@/lib/utils";
 
 const CarouselContext = React.createContext(null);
@@ -20,6 +21,7 @@ const Carousel = React.forwardRef(function Carousel(
 ) {
   const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
+    ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
   ]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -32,6 +34,24 @@ const Carousel = React.forwardRef(function Carousel(
     onSelect();
     return () => emblaApi.off("select", onSelect);
   }, [emblaApi, setApi]);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    const slides = emblaApi.slideNodes();
+    const updatePrevNext = () => {
+      const selected = emblaApi.selectedScrollSnap();
+      const total = slides.length;
+      const prevIndex = (selected - 1 + total) % total;
+      const nextIndex = (selected + 1) % total;
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("is-in-prev", index === prevIndex);
+        slide.classList.toggle("is-in-next", index === nextIndex);
+      });
+    };
+    updatePrevNext();
+    emblaApi.on("select", updatePrevNext);
+    return () => emblaApi.off("select", updatePrevNext);
+  }, [emblaApi]);
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
