@@ -55,12 +55,33 @@ const CarouselItem = React.forwardRef(function CarouselItem(
   { className, index, ...props },
   ref
 ) {
-  const { selectedIndex } = useCarousel();
+  const { selectedIndex, embla } = useCarousel();
+  const [prevIndex, setPrevIndex] = React.useState(-1);
+  const [nextIndex, setNextIndex] = React.useState(-1);
+
+  React.useEffect(() => {
+    if (!embla) return;
+    const total = embla.slideNodes().length;
+    const loop = embla.internalEngine().options.loop;
+    const prev = selectedIndex > 0 ? selectedIndex - 1 : loop ? total - 1 : -1;
+    const next = selectedIndex < total - 1 ? selectedIndex + 1 : loop ? 0 : -1;
+    setPrevIndex(prev);
+    setNextIndex(next);
+  }, [embla, selectedIndex]);
+
   const active = index === selectedIndex;
+  const prev = index === prevIndex;
+  const next = index === nextIndex;
   return (
     <div
       ref={ref}
-      className={cn("min-w-0 shrink-0 grow-0", className, active && "embla-slide-active")}
+      className={cn(
+        "min-w-0 shrink-0 grow-0",
+        className,
+        active && "embla-slide-active",
+        prev && "embla-slide-prev",
+        next && "embla-slide-next"
+      )}
       {...props}
     />
   );
