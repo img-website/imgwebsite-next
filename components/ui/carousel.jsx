@@ -37,15 +37,21 @@ const Carousel = React.forwardRef(function Carousel(
 
   React.useEffect(() => {
     if (!emblaApi) return;
+    const { slideRegistry } = emblaApi.internalEngine();
     const slides = emblaApi.slideNodes();
+    const total = slideRegistry.length;
     const updatePrevNext = () => {
       const selected = emblaApi.selectedScrollSnap();
-      const total = slides.length;
-      const prevIndex = (selected - 1 + total) % total;
-      const nextIndex = (selected + 1) % total;
-      slides.forEach((slide, index) => {
-        slide.classList.toggle("is-in-prev", index === prevIndex);
-        slide.classList.toggle("is-in-next", index === nextIndex);
+      const prevSnap = (selected - 1 + total) % total;
+      const nextSnap = (selected + 1) % total;
+      slides.forEach((slide) => {
+        slide.classList.remove("is-in-prev", "is-in-next");
+      });
+      slideRegistry[prevSnap].forEach((idx) => {
+        slides[idx].classList.add("is-in-prev");
+      });
+      slideRegistry[nextSnap].forEach((idx) => {
+        slides[idx].classList.add("is-in-next");
       });
     };
     updatePrevNext();
