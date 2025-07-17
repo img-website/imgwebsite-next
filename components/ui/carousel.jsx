@@ -43,54 +43,28 @@ const Carousel = React.forwardRef(function Carousel(
 });
 Carousel.displayName = "Carousel";
 
-const CarouselContent = React.forwardRef(function CarouselContent(
-  { className, ...props },
-  ref
-) {
-  return <div ref={ref} className={cn("flex", className)} {...props} />;
-});
-CarouselContent.displayName = "CarouselContent";
+const SlideContext = React.createContext({ count: 0 });
 
 const CarouselItem = React.forwardRef(function CarouselItem(
-  { className, ...props },
+  { className, index = -1, ...props },
   ref
 ) {
   const { selectedIndex, embla } = useCarousel();
-  const localRef = React.useRef(null);
-  const setRefs = React.useCallback(
-    (node) => {
-      localRef.current = node;
-      if (typeof ref === "function") ref(node);
-      else if (ref) ref.current = node;
-    },
-    [ref]
-  );
-
-  const [index, setIndex] = React.useState(-1);
-
-  React.useEffect(() => {
-    if (!embla || !localRef.current) return;
-    const updateIndex = () => {
-      setIndex(embla.slideNodes().indexOf(localRef.current));
-    };
-    updateIndex();
-    embla.on("reInit", updateIndex);
-    return () => embla.off("reInit", updateIndex);
-  }, [embla]);
-
-  const total = embla ? embla.slideNodes().length : 0;
+  const { count } = React.useContext(SlideContext);
   const loop = embla ? embla.internalEngine().options.loop : false;
+
   const prevIndex =
-    selectedIndex > 0 ? selectedIndex - 1 : loop ? total - 1 : -1;
+    selectedIndex > 0 ? selectedIndex - 1 : loop ? count - 1 : -1;
   const nextIndex =
-    selectedIndex < total - 1 ? selectedIndex + 1 : loop ? 0 : -1;
+    selectedIndex < count - 1 ? selectedIndex + 1 : loop ? 0 : -1;
 
   const active = index === selectedIndex;
   const prev = index === prevIndex;
   const next = index === nextIndex;
+
   return (
     <div
-      ref={setRefs}
+      ref={ref}
       className={cn(
         "min-w-0 shrink-0 grow-0",
         className,
@@ -103,6 +77,29 @@ const CarouselItem = React.forwardRef(function CarouselItem(
   );
 });
 CarouselItem.displayName = "CarouselItem";
+
+const CarouselContent = React.forwardRef(function CarouselContent(
+  { className, children, ...props },
+  ref
+) {
+  const items = React.Children.map(children, (child, index) =>
+    React.isValidElement(child) && child.type === CarouselItem
+      ? React.cloneElement(child, { index })
+      : child
+  );
+  const count = items.filter(
+    (child) => React.isValidElement(child) && child.type === CarouselItem
+  ).length;
+
+  return (
+    <SlideContext.Provider value={{ count }}>
+      <div ref={ref} className={cn("flex", className)} {...props}>
+        {items}
+      </div>
+    </SlideContext.Provider>
+  );
+});
+CarouselContent.displayName = "CarouselContent";
 
 const CarouselPrevious = React.forwardRef(function CarouselPrevious(
   { className, ...props },
