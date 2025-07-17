@@ -25,10 +25,7 @@ import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
 import ContactUs from '@/components/ContactUs';
-import BlogSectionSkeleton from '@/components/skeleton/blog-section-skeleton';
-const Blog = dynamic(() => import('@/components/blog'), {
-  loading: () => <BlogSectionSkeleton />
-})
+import Blog from '@/components/blog';
 
 export async function generateMetadata() {
   return await getDynamicMeta('/');
