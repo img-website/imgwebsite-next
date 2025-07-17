@@ -65,18 +65,6 @@ export default function Blog() {
                 }}
                 modules={[Autoplay]}
               >
-                {/* <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
-                    <div className="inline-flex items-center justify-center md:gap-8 gap-6 relative bg-[#2D86FF] md:rounded-t-3xl rounded-tl-3xl p-2">
-                        <Svg name="clipLeftBottom" className="size-6 absolute bottom-0 left-0 -translate-x-full z-10 text-[#2D86FF]" />
-                        <Svg name="clipRightBottom" className="size-6 absolute md:bottom-0 max-md:top-0 right-0 md:translate-x-full max-md:-translate-y-full z-10 max-md:-rotate-90 text-[#2D86FF]" />
-                        <div className="prev rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
-                            <Svg name="arrowPrev" className="size-6 relative z-10 text-white" />
-                        </div>
-                        <div className="next rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
-                            <Svg name="arrowNext" className="size-6 relative z-10 text-white" />
-                        </div>
-                    </div>
-                </div> */}
                 {blogs.map((blog) => {
                   const thumb = blog.thumbnail?.startsWith("http")
                     ? blog.thumbnail
@@ -102,7 +90,7 @@ export default function Blog() {
                   return (
                     <SwiperSlide
                       key={blog._id || blog.id}
-                      className="swiper-slide w-1/2 flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
+                      className="swiper-slide w-1/2 !flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
                     >
                       {thumb && (
                         <div className="w-full relative overflow-hidden">
