@@ -137,9 +137,9 @@ const Testimonial = () => {
                   <div className="flex flex-wrap justify-center h-[565.39px]">
                     <Carousel opts={{ loop: true }} className="xl:w-8/12 lg:w-10/12 flex flex-wrap gap-y-8 items-start -mx-4">
                       <CarouselContent className="lg:-ml-4 md:-ml-1 -ml-1 items-stretch">
-                        <CarouselItem className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video [&.swiper-slide-active]:md:!translate-y-10 [&.swiper-slide-active]:!-translate-y-10 !transition-all !duration-500">
-                          <div className="w-full relative p-4">
-                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.swiper-slide-active]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.swiper-slide-prev]/testimonial:before:-translate-x-4 group-[.swiper-slide-prev]/testimonial:before:translate-y-4 group-[.swiper-slide-next]/testimonial:before:translate-x-4 group-[.swiper-slide-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.swiper-slide-prev]/testimonial:before:rounded-tl-none group-[.swiper-slide-prev]/testimonial:before:rounded-br-none group-[.swiper-slide-next]/testimonial:before:rounded-tr-none group-[.swiper-slide-next]/testimonial:before:rounded-bl-none before:z-0">
+                        <CarouselItem index={0} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
                                 <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
                                     <Svg name="playCircle" className="size-full text-white" />
                                 </div>
@@ -147,7 +147,7 @@ const Testimonial = () => {
                                     <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
                                     <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
                                 </div>
-                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
                                     <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.mp4" type="video/mp4" />
                                     <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                     Your browser does not support the video tag.
@@ -157,9 +157,9 @@ const Testimonial = () => {
                             <div className="w-full text-center text-xs font-normal text-white">CEO</div>
                           </div>
                         </CarouselItem>
-                        <CarouselItem className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video [&.swiper-slide-active]:md:!translate-y-10 [&.swiper-slide-active]:!-translate-y-10 !transition-all !duration-500">
-                          <div className="w-full relative p-4">
-                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.swiper-slide-active]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.swiper-slide-prev]/testimonial:before:-translate-x-4 group-[.swiper-slide-prev]/testimonial:before:translate-y-4 group-[.swiper-slide-next]/testimonial:before:translate-x-4 group-[.swiper-slide-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.swiper-slide-prev]/testimonial:before:rounded-tl-none group-[.swiper-slide-prev]/testimonial:before:rounded-br-none group-[.swiper-slide-next]/testimonial:before:rounded-tr-none group-[.swiper-slide-next]/testimonial:before:rounded-bl-none before:z-0">
+                        <CarouselItem index={1} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
                                 <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
                                     <Svg name="playCircle" className="size-full text-white" />
                                 </div>
@@ -167,7 +167,7 @@ const Testimonial = () => {
                                     <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
                                     <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
                                 </div>
-                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
                                     <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.mp4" type="video/mp4" />
                                     <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                     Your browser does not support the video tag.
@@ -177,9 +177,9 @@ const Testimonial = () => {
                             <div className="w-full text-center text-xs font-normal text-white">Founder</div>
                           </div>
                         </CarouselItem>
-                        <CarouselItem className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video [&.swiper-slide-active]:md:!translate-y-10 [&.swiper-slide-active]:!-translate-y-10 !transition-all !duration-500">
-                          <div className="w-full relative p-4">
-                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.swiper-slide-active]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.swiper-slide-prev]/testimonial:before:-translate-x-4 group-[.swiper-slide-prev]/testimonial:before:translate-y-4 group-[.swiper-slide-next]/testimonial:before:translate-x-4 group-[.swiper-slide-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.swiper-slide-prev]/testimonial:before:rounded-tl-none group-[.swiper-slide-prev]/testimonial:before:rounded-br-none group-[.swiper-slide-next]/testimonial:before:rounded-tr-none group-[.swiper-slide-next]/testimonial:before:rounded-bl-none before:z-0">
+                        <CarouselItem index={2} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
                                 <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
                                     <Svg name="playCircle" className="size-full text-white" />
                                 </div>
@@ -187,7 +187,67 @@ const Testimonial = () => {
                                     <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
                                     <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
                                 </div>
-                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.swiper-slide-prev]/testimonial:rounded-tl-none group-[.swiper-slide-prev]/testimonial:rounded-br-none group-[.swiper-slide-next]/testimonial:rounded-tr-none group-[.swiper-slide-next]/testimonial:rounded-bl-none">
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
+                                    <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.mp4" type="video/mp4" />
+                                    <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <h3 className="w-full text-center md:text-base text-sm font-semibold text-white pt-7">Lachlan James</h3>
+                            <div className="w-full text-center text-xs font-normal text-white">Chief Operating Officer</div>
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem index={0} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
+                                <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
+                                    <Svg name="playCircle" className="size-full text-white" />
+                                </div>
+                                <div className="soundBtn group/sound size-8 absolute top-3 right-3 duration-300 delay-200 opacity-0 group-hover/video:md:opacity-100 *:size-full *:text-white rounded-full z-50 muted before:absolute before:inset-0 before:blur-lg before:rounded-full before:-z-10 before:bg-black cursor-pointer">
+                                    <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
+                                    <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
+                                </div>
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
+                                    <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/ach-brl.mp4" type="video/mp4" />
+                                    <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <h3 className="w-full text-center md:text-base text-sm font-semibold text-white pt-7">Ach Brl (Saint Denis, Reunion)</h3>
+                            <div className="w-full text-center text-xs font-normal text-white">CEO</div>
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem index={1} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
+                                <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
+                                    <Svg name="playCircle" className="size-full text-white" />
+                                </div>
+                                <div className="soundBtn group/sound size-8 absolute top-3 right-3 duration-300 delay-200 opacity-0 group-hover/video:md:opacity-100 *:size-full *:text-white rounded-full z-50 muted before:absolute before:inset-0 before:blur-lg before:rounded-full before:-z-10 before:bg-black cursor-pointer">
+                                    <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
+                                    <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
+                                </div>
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
+                                    <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/dilip-kumar.mp4" type="video/mp4" />
+                                    <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <h3 className="w-full text-center md:text-base text-sm font-semibold text-white pt-7">Dilip Kumar</h3>
+                            <div className="w-full text-center text-xs font-normal text-white">Founder</div>
+                          </div>
+                        </CarouselItem>
+                        <CarouselItem index={2} className="lg:basis-1/3 md:basis-1/2 basis-full lg:pl-4 md:pl-1 pl-1 group/testimonial group/video">
+                          <div className="w-full relative p-4 group-[.is-snapped]/testimonial:md:!translate-y-10 group-[.is-snapped]/testimonial:!-translate-y-10 !transition-all !duration-500">
+                            <div className="videoContainer w-full block cursor-pointer aspect-[264/469.33] group-[.is-snapped]/testimonial:aspect-[264/469.33] relative duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none before:absolute before:inset-0 group-[.is-in-prev]/testimonial:before:-translate-x-4 group-[.is-in-prev]/testimonial:before:translate-y-4 group-[.is-in-next]/testimonial:before:translate-x-4 group-[.is-in-next]/testimonial:before:translate-y-4 before:bg-[#1F2145] before:duration-300 before:md:rounded-[48px] before:rounded-3xl group-[.is-in-prev]/testimonial:before:rounded-tl-none group-[.is-in-prev]/testimonial:before:rounded-br-none group-[.is-in-next]/testimonial:before:rounded-tr-none group-[.is-in-next]/testimonial:before:rounded-bl-none before:z-0">
+                                <div className="playBtn absolute inset-0 md:size-16 size-14 rounded-full m-auto z-20 flex items-center justify-center group-hover/testimonial:lg:scale-125 duration-300">
+                                    <Svg name="playCircle" className="size-full text-white" />
+                                </div>
+                                <div className="soundBtn group/sound size-8 absolute top-3 right-3 duration-300 delay-200 opacity-0 group-hover/video:md:opacity-100 *:size-full *:text-white rounded-full z-50 muted before:absolute before:inset-0 before:blur-lg before:rounded-full before:-z-10 before:bg-black cursor-pointer">
+                                    <Svg name="muted" className="group-[.unmuted]/sound:hidden" />
+                                    <Svg name="unmuted" className="group-[.muted]/sound:hidden" />
+                                </div>
+                                <video loop muted preload="none" poster="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.webp" className="review-video size-full object-cover object-center relative z-10 duration-300 md:rounded-[48px] rounded-3xl group-[.is-in-prev]/testimonial:rounded-tl-none group-[.is-in-prev]/testimonial:rounded-br-none group-[.is-in-next]/testimonial:rounded-tr-none group-[.is-in-next]/testimonial:rounded-bl-none">
                                     <source src="https://d1y41eupgbwbb2.cloudfront.net/images/video/review/lachlan-james.mp4" type="video/mp4" />
                                     <track src="/captions/empty.vtt" kind="captions" srcLang="en" label="English" default />
                                     Your browser does not support the video tag.

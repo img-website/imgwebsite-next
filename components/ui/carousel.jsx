@@ -2,6 +2,7 @@
 import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import ClassNames from "embla-carousel-class-names";
 import { cn } from "@/lib/utils";
 
 const CarouselContext = React.createContext(null);
@@ -20,22 +21,45 @@ const Carousel = React.forwardRef(function Carousel(
 ) {
   const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
+    ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
   ]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
     if (!emblaApi) return;
     if (setApi) setApi(emblaApi);
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-    emblaApi.on("select", onSelect);
-    onSelect();
-    return () => emblaApi.off("select", onSelect);
   }, [emblaApi, setApi]);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    const { slideRegistry } = emblaApi.internalEngine();
+    const slides = emblaApi.slideNodes();
+    const total = slideRegistry.length;
+    const updatePrevNext = () => {
+      const selected = emblaApi.selectedScrollSnap();
+      const prevSnap = (selected - 1 + total) % total;
+      const nextSnap = (selected + 1) % total;
+      slides.forEach((slide) => {
+        slide.classList.remove("is-in-prev", "is-in-next");
+      });
+      slideRegistry[prevSnap].forEach((idx) => {
+        slides[idx].classList.add("is-in-prev");
+      });
+      slideRegistry[nextSnap].forEach((idx) => {
+        slides[idx].classList.add("is-in-next");
+      });
+    };
+    updatePrevNext();
+    emblaApi.on("select", updatePrevNext);
+    emblaApi.on("reInit", updatePrevNext);
+    return () => {
+      emblaApi.off("select", updatePrevNext);
+      emblaApi.off("reInit", updatePrevNext);
+    };
+  }, [emblaApi]);
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={{ embla: emblaApi, selectedIndex }}>
+      <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
       </CarouselContext.Provider>
     </div>
@@ -55,15 +79,8 @@ const CarouselItem = React.forwardRef(function CarouselItem(
   { className, index, ...props },
   ref
 ) {
-  const { selectedIndex } = useCarousel();
-  const active = index === selectedIndex;
-  return (
-    <div
-      ref={ref}
-      className={cn("min-w-0 shrink-0 grow-0", className, active && "embla-slide-active")}
-      {...props}
-    />
-  );
+  // "index" is accepted for backward compatibility but ignored
+  return <div ref={ref} className={cn("min-w-0 shrink-0 grow-0", className)} {...props} />;
 });
 CarouselItem.displayName = "CarouselItem";
 
