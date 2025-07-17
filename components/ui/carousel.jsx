@@ -1,0 +1,87 @@
+"use client";
+import * as React from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { cn } from "@/lib/utils";
+
+const CarouselContext = React.createContext(null);
+
+function useCarousel() {
+  const context = React.useContext(CarouselContext);
+  if (!context) {
+    throw new Error("useCarousel must be used within <Carousel>");
+  }
+  return context;
+}
+
+const Carousel = React.forwardRef(function Carousel(
+  { className, opts, setApi, children, ...props },
+  ref
+) {
+  const [emblaRef, emblaApi] = useEmblaCarousel(opts, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+
+  React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
+  React.useEffect(() => {
+    if (emblaApi && setApi) setApi(emblaApi);
+  }, [emblaApi, setApi]);
+
+  return (
+    <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
+      <CarouselContext.Provider value={emblaApi}>{children}</CarouselContext.Provider>
+    </div>
+  );
+});
+Carousel.displayName = "Carousel";
+
+const CarouselContent = React.forwardRef(function CarouselContent(
+  { className, ...props },
+  ref
+) {
+  return <div ref={ref} className={cn("flex", className)} {...props} />;
+});
+CarouselContent.displayName = "CarouselContent";
+
+const CarouselItem = React.forwardRef(function CarouselItem({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={cn("min-w-0 shrink-0 grow-0", className)}
+      {...props}
+    />
+  );
+});
+CarouselItem.displayName = "CarouselItem";
+
+const CarouselPrevious = React.forwardRef(function CarouselPrevious({ className, ...props }, ref) {
+  const api = useCarousel();
+  return (
+    <button
+      ref={ref}
+      className={cn(
+        "absolute left-2 top-1/2 -translate-y-1/2 rounded-md bg-white/80 p-2 shadow",
+        className
+      )}
+      onClick={() => api && api.scrollPrev()}
+      {...props}
+    />
+  );
+});
+CarouselPrevious.displayName = "CarouselPrevious";
+
+const CarouselNext = React.forwardRef(function CarouselNext({ className, ...props }, ref) {
+  const api = useCarousel();
+  return (
+    <button
+      ref={ref}
+      className={cn(
+        "absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-white/80 p-2 shadow",
+        className
+      )}
+      onClick={() => api && api.scrollNext()}
+      {...props}
+    />
+  );
+});
+CarouselNext.displayName = "CarouselNext";
+
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };

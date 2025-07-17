@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Svg from "@/components/svg";
 import {
-  Swiper,
-  Autoplay,
-  SwiperSlide
-} from "@/components/CustomSwiper";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 export default function BlogClient({ blogs }) {
   if (!Array.isArray(blogs) || blogs.length === 0) {
     return null;
@@ -20,30 +20,9 @@ export default function BlogClient({ blogs }) {
           <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-[#454444] text-balance relative z-10">Exploring the intersection of everything that sells</h2>
           <div className="flex w-full flex-wrap md:pt-9 pt-4 group/blog">
             <div className="w-full sm:pt-9 pt-4 flex flex-wrap lg:gap-0 gap-4 -mx-2 items-stretch overflow-hidden pb-1">
-              <Swiper className="w-full !px-2 flex swiper swiperBlog !py-2 !-my-2"
-                slidesPerView={1.2}
-                spaceBetween={16}
-                loop={true}
-                speed={1000}
-                autoplay={{
-                  delay: 5000,
-                  disableOnInteraction: false,
-                }}
-                // keyboard={{ enabled: true }}
-                // navigation={{
-                //   nextEl: '.next',
-                //   prevEl: '.prev',
-                // }}
-                breakpoints={{
-                  320: { slidesPerView: 1.2, spaceBetween: 16 },
-                  480: { slidesPerView: 1.4, spaceBetween: 16 },
-                  640: { slidesPerView: 2, spaceBetween: 16 },
-                  1024: { slidesPerView: 3, spaceBetween: 16 },
-                  1350: { slidesPerView: 4, spaceBetween: 16 },
-                }}
-                modules={[Autoplay]}
-              >
-                {blogs.map((blog) => {
+              <Carousel opts={{ loop: true }} className="w-full px-2 py-2 -my-2">
+                <CarouselContent className="gap-4">
+                  {blogs.map((blog) => {
                   const thumb = blog.thumbnail?.startsWith("http")
                     ? blog.thumbnail
                     : blog.thumbnail
@@ -68,9 +47,9 @@ export default function BlogClient({ blogs }) {
                       new Date(blog.published_date_time || blog.created_date)
                     );
                   return (
-                    <SwiperSlide
+                    <CarouselItem
                       key={blog._id || blog.id}
-                      className="swiper-slide w-1/2 !flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
+                      className="w-[83%] min-[480px]:w-[71%] min-[640px]:w-1/2 min-[1024px]:w-1/3 min-[1350px]:w-1/4 flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full"
                     >
                       {thumb && (
                         <div className="w-full relative overflow-hidden">
@@ -139,10 +118,11 @@ export default function BlogClient({ blogs }) {
                           </div>
                         </div>
                       </div>
-                    </SwiperSlide>
+                    </CarouselItem>
                   );
                 })}
-              </Swiper>
+                </CarouselContent>
+              </Carousel>
             </div>
           </div>
         </div>
