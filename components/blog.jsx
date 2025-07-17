@@ -41,7 +41,7 @@ export default async function Blog() {
                 <div className="sm:pt-9 pt-4 flex flex-wrap lg:gap-0 gap-4 -mx-2 items-stretch overflow-hidden pb-1">
                   <Carousel opts={{ loop: true, align: "start" }} className="w-full px-2 py-2 -my-2">
                     <CarouselContent className="-ml-4 items-stretch">
-                      {blogs.map((blog) => {
+                      {blogs.map((blog, i) => {
                         const thumb = blog.thumbnail?.startsWith("http")
                           ? blog.thumbnail
                           : blog.thumbnail
@@ -65,7 +65,7 @@ export default async function Blog() {
                           }).format(new Date(blog.published_date_time || blog.created_date));
 
                         return (
-                          <CarouselItem key={blog._id || blog.id} className="pl-4 basis-10/12 md:basis-1/2 lg:basis-1/3 2xl:basis-1/4">
+                          <CarouselItem index={i} key={blog._id || blog.id} className="pl-4 basis-10/12 md:basis-1/2 lg:basis-1/3 2xl:basis-1/4">
                             <div className="flex flex-col items-stretch bg-white relative shadow-[0px_4px_4px_0px_#0000001F] rounded-xl overflow-hidden h-full">
                               {thumb && (
                                 <div className="w-full relative overflow-hidden">

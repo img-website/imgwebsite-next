@@ -18,16 +18,26 @@ const Carousel = React.forwardRef(function Carousel(
   { className, opts, setApi, children, ...props },
   ref
 ) {
-  const [emblaRef, emblaApi] = useEmblaCarousel(opts, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
+    Autoplay({ delay: 5000, stopOnInteraction: false }),
+  ]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
-    if (emblaApi && setApi) setApi(emblaApi);
+    if (!emblaApi) return;
+    if (setApi) setApi(emblaApi);
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => emblaApi.off("select", onSelect);
   }, [emblaApi, setApi]);
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={emblaApi}>{children}</CarouselContext.Provider>
+      <CarouselContext.Provider value={{ embla: emblaApi, selectedIndex }}>
+        {children}
+      </CarouselContext.Provider>
     </div>
   );
 });
@@ -41,19 +51,27 @@ const CarouselContent = React.forwardRef(function CarouselContent(
 });
 CarouselContent.displayName = "CarouselContent";
 
-const CarouselItem = React.forwardRef(function CarouselItem({ className, ...props }, ref) {
+const CarouselItem = React.forwardRef(function CarouselItem(
+  { className, index, ...props },
+  ref
+) {
+  const { selectedIndex } = useCarousel();
+  const active = index === selectedIndex;
   return (
     <div
       ref={ref}
-      className={cn("min-w-0 shrink-0 grow-0", className)}
+      className={cn("min-w-0 shrink-0 grow-0", className, active && "embla-slide-active")}
       {...props}
     />
   );
 });
 CarouselItem.displayName = "CarouselItem";
 
-const CarouselPrevious = React.forwardRef(function CarouselPrevious({ className, ...props }, ref) {
-  const api = useCarousel();
+const CarouselPrevious = React.forwardRef(function CarouselPrevious(
+  { className, ...props },
+  ref
+) {
+  const { embla } = useCarousel();
   return (
     <button
       ref={ref}
@@ -61,15 +79,18 @@ const CarouselPrevious = React.forwardRef(function CarouselPrevious({ className,
         "absolute left-2 top-1/2 -translate-y-1/2 rounded-md bg-white/80 p-2 shadow",
         className
       )}
-      onClick={() => api && api.scrollPrev()}
+      onClick={() => embla && embla.scrollPrev()}
       {...props}
     />
   );
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
-const CarouselNext = React.forwardRef(function CarouselNext({ className, ...props }, ref) {
-  const api = useCarousel();
+const CarouselNext = React.forwardRef(function CarouselNext(
+  { className, ...props },
+  ref
+) {
+  const { embla } = useCarousel();
   return (
     <button
       ref={ref}
@@ -77,11 +98,17 @@ const CarouselNext = React.forwardRef(function CarouselNext({ className, ...prop
         "absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-white/80 p-2 shadow",
         className
       )}
-      onClick={() => api && api.scrollNext()}
+      onClick={() => embla && embla.scrollNext()}
       {...props}
     />
   );
 });
 CarouselNext.displayName = "CarouselNext";
 
-export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+};
