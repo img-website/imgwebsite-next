@@ -23,16 +23,10 @@ const Carousel = React.forwardRef(function Carousel(
     Autoplay({ delay: 5000, stopOnInteraction: false }),
     ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
   ]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
     if (!emblaApi) return;
     if (setApi) setApi(emblaApi);
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-    emblaApi.on("select", onSelect);
-    onSelect();
-    return () => emblaApi.off("select", onSelect);
   }, [emblaApi, setApi]);
 
   React.useEffect(() => {
@@ -56,12 +50,16 @@ const Carousel = React.forwardRef(function Carousel(
     };
     updatePrevNext();
     emblaApi.on("select", updatePrevNext);
-    return () => emblaApi.off("select", updatePrevNext);
+    emblaApi.on("reInit", updatePrevNext);
+    return () => {
+      emblaApi.off("select", updatePrevNext);
+      emblaApi.off("reInit", updatePrevNext);
+    };
   }, [emblaApi]);
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={{ embla: emblaApi, selectedIndex }}>
+      <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
       </CarouselContext.Provider>
     </div>
@@ -81,15 +79,8 @@ const CarouselItem = React.forwardRef(function CarouselItem(
   { className, index, ...props },
   ref
 ) {
-  const { selectedIndex } = useCarousel();
-  const active = index === selectedIndex;
-  return (
-    <div
-      ref={ref}
-      className={cn("min-w-0 shrink-0 grow-0", className, active && "embla-slide-active")}
-      {...props}
-    />
-  );
+  // "index" is accepted for backward compatibility but ignored
+  return <div ref={ref} className={cn("min-w-0 shrink-0 grow-0", className)} {...props} />;
 });
 CarouselItem.displayName = "CarouselItem";
 
