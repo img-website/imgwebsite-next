@@ -6,7 +6,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import BlogSectionSkeleton from "@/components/skeleton/blog-section-skeleton";
 
 export default async function Blog() {
   try {
@@ -27,9 +26,6 @@ export default async function Blog() {
         ...b,
         formatted_date: formatDate(b.published_date_time || b.created_date),
       }));
-      if (blogs.length === 0) {
-        return <BlogSectionSkeleton />;
-      }
       return (
         <section className="blogSection w-full relative overflow-hidden bg-white">
           <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
@@ -148,7 +144,7 @@ export default async function Blog() {
       );
     }
   } catch {
-    // ignore errors and fallback to skeleton
+    // ignore errors
   }
-  return <BlogSectionSkeleton />;
+  return null;
 }
