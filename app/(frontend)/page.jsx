@@ -1,11 +1,6 @@
-import dynamic from 'next/dynamic';
-const HomeHero = dynamic(() => import('@/components/HomeHero'), {
-  loading: () => <HomeHeroSkeleton />
-})
+import HomeHero from '@/components/HomeHero';
 import CoreServices from '@/components/HomePage/CoreServices';
-const CaseStudy = dynamic(() => import('@/components/HomePage/CaseStudy'), {
-  loading: () =>  <div className="flex justify-center items-center w-full min-h-[519.33px] bg-gray-300 animate-pulse"></div>
-})
+import CaseStudy from '@/components/HomePage/CaseStudy';
 
 import Brands from '@/components/HomePage/Brands';
 import Cta1 from '@/components/cta/Cta1';
@@ -18,7 +13,6 @@ import Cta2 from '@/components/cta/Cta2';
 import Usp from '@/components/Usp';
 import Testimonial from '@/components/testimonials/Testimonial1';
 import Faq from '@/components/Faq';
-import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
 import ContactUs from '@/components/ContactUs';
 import Blog from '@/components/blog';
