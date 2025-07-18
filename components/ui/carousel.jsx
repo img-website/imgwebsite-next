@@ -21,7 +21,7 @@ const Carousel = React.forwardRef(function Carousel(
   { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const { fade, autoScroll, autoplay, ...carouselOpts } = opts || {};
+  const { fade, autoScroll, autoplay=true, ...carouselOpts } = opts || {};
   const plugins = React.useMemo(() => {
     const list = [ClassNames({ snapped: "is-snapped", inView: "is-in-view" })];
     if (autoplay) {

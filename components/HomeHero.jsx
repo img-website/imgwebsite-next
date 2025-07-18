@@ -128,7 +128,7 @@ export default function HomeHero() {
                         </div>
                     </CarouselItem>
                 </CarouselContent>
-                <CarouselPagination className="!container relative justify-start md:flex md:inset-x-0 md:text-left md:!bottom-6 !bottom-2.5 *:[&.bg-primary]:bg-[#4B92FF] *:[&.bg-primary]:w-20 *:duration-500" />
+                <CarouselPagination className="!container relative md:justify-start md:flex md:inset-x-0 md:text-left md:!bottom-6 !bottom-2.5 *:[&.bg-primary]:bg-[#4B92FF] *:[&.bg-primary]:w-20 *:duration-500" />
             </Carousel>
         </div>
     );

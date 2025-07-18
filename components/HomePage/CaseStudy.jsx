@@ -16,7 +16,7 @@ export default function CaseStudy() {
                     <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 md:text-center md:pb-4 pb-2">We Build Apps That Make a Difference</h2>
                     <div className="w-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs md:font-medium font-normal text-white text-balance relative z-10 md:text-center md:pb-12 pb-5">Here is how we have created a success story for brands dreaming big and something exceptional.</div>
                     <div className="min-h-[519.33px]">
-                        <Carousel opts={{ loop: true, autoplay: false }} className="w-full rounded-3xl">
+                        <Carousel opts={{ loop: true, fade: true, autoplay: {delay: 5000, stopOnMouseEnter: true} }} className="w-full rounded-3xl">
                             <CarouselContent className="-ml-8 items-stretch">
                                 <CarouselItem className="pl-8 basis-full">
                                     <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
