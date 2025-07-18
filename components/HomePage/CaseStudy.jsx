@@ -16,16 +16,16 @@ export default function CaseStudy() {
                     <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 md:text-center md:pb-4 pb-2">We Build Apps That Make a Difference</h2>
                     <div className="w-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs md:font-medium font-normal text-white text-balance relative z-10 md:text-center md:pb-12 pb-5">Here is how we have created a success story for brands dreaming big and something exceptional.</div>
                     <div className="min-h-[519.33px]">
-                        <Carousel opts={{ loop: true }} className="w-full rounded-3xl">
+                        <Carousel opts={{ loop: true, autoplay: false }} className="w-full rounded-3xl">
                             <CarouselContent className="-ml-8 items-stretch">
                                 <CarouselItem className="pl-8 basis-full">
-                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                        <div className="md:w-7/12 w-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full flex flex-col">
                                             <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/blinkitLogo.webp" width="56" height="56" className="w-auto md:h-14 h-12" alt="Blinkit Logo" title="Blinkit Logo" />
                                                 <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#FFAE00]">Blinkit</h3>
                                             </div>
-                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4">Blinkit (formerly Grofers) is redefining grocery delivery with superfast doorstep service across India. Whether it's fresh fruits and vegetables, dairy products, personal care, or munchies, everything arrives within minutes. Perfect for your last-minute needs, Blinkit ensures you never have to step out. Convenience, speed, and variety—all in the blink of an eye!</div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4 grow">Blinkit (formerly Grofers) is redefining grocery delivery with superfast doorstep service across India. Whether it's fresh fruits and vegetables, dairy products, personal care, or munchies, everything arrives within minutes. Perfect for your last-minute needs, Blinkit ensures you never have to step out. Convenience, speed, and variety—all in the blink of an eye!</div>
                                             <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
                                                 <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
                                                     <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-[#454444]">5Cr+</div>
@@ -64,13 +64,13 @@ export default function CaseStudy() {
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem className="pl-8 basis-full">
-                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                        <div className="md:w-7/12 w-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full flex flex-col">
                                             <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/astroLogo.webp" width="56" height="56" className="w-auto md:h-14 h-12" alt="Astrotalk Logo" title="Astrotalk Logo"/>
                                                 <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#F07000]">Astrotalk</h3>
                                             </div>
-                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4">Astrotalk is a dominant online astrology platform that connects users to verified astrologers worldwide. This case study will delve into Astrotalk’s business model, growth models, and the competitive online astrology industry context.</div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4 grow">Astrotalk is a dominant online astrology platform that connects users to verified astrologers worldwide. This case study will delve into Astrotalk’s business model, growth models, and the competitive online astrology industry context.</div>
                                             <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
                                                 <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
                                                     <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-[#454444]">5Cr+</div>
@@ -109,13 +109,13 @@ export default function CaseStudy() {
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem className="pl-8 basis-full">
-                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                        <div className="md:w-7/12 w-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full flex flex-col">
                                             <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/zillowLogo.webp" width="56" height="56" className="w-auto md:h-14 h-12" alt="Zillow Logo" title="Zillow Logo"/>
                                                 <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#063CDE]">Zillow</h3>
                                             </div>
-                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4">Zillow is the best online real estate marketplace. It makes buying, selling, renting, or financing a house easy. This investigation assesses the disruptive innovations that Zillow has leveraged to attain great success and their effects on the real estate marketplace's business environment.</div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4 grow">Zillow is the best online real estate marketplace. It makes buying, selling, renting, or financing a house easy. This investigation assesses the disruptive innovations that Zillow has leveraged to attain great success and their effects on the real estate marketplace's business environment.</div>
                                             <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
                                                 <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
                                                     <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-[#454444]">5Cr+</div>
@@ -154,13 +154,13 @@ export default function CaseStudy() {
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem className="pl-8 basis-full">
-                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                        <div className="md:w-7/12 w-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full flex flex-col">
                                             <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/uberLogo.webp" width="56" height="56" className="w-auto md:h-14 h-12" alt="Uber Logo" title="Uber Logo"/>
                                                 <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#040404]">Uber</h3>
                                             </div>
-                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4">Uber is one of the world’s leading on-demand taxi booking platforms that allows users to book rides in real-time through their smartphones. If you want to build a similar app like Uber, IMG Global Infotech is your ideal development partner. We help startups and taxi businesses build scalable, feature-rich Uber-like apps tailored to local markets and customer needs.</div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4 grow">Uber is one of the world’s leading on-demand taxi booking platforms that allows users to book rides in real-time through their smartphones. If you want to build a similar app like Uber, IMG Global Infotech is your ideal development partner. We help startups and taxi businesses build scalable, feature-rich Uber-like apps tailored to local markets and customer needs.</div>
                                             <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
                                                 <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
                                                     <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-[#454444]">50Cr+</div>
@@ -199,13 +199,13 @@ export default function CaseStudy() {
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem className="pl-8 basis-full">
-                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                        <div className="md:w-7/12 w-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-white rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full flex flex-col">
                                             <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
                                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/tinderLogo.webp" width="56" height="56" className="w-auto md:h-14 h-12" alt="Tinder Logo" title="Tinder Logo"/>
                                                 <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#FD3A73]">Tinder</h3>
                                             </div>
-                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4">A dating app like Tinder, is known as the top popular dating platform and mobile app that is accessible on Android and iOS platforms. With GPS capability, the app offers the best matches to the users based on their locality. Check out how IMG Global Infotech, a dating app development company, helped its client.</div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-[#454444] xl:pt-4 pt-2 xl:pb-6 pb-4 grow">A dating app like Tinder, is known as the top popular dating platform and mobile app that is accessible on Android and iOS platforms. With GPS capability, the app offers the best matches to the users based on their locality. Check out how IMG Global Infotech, a dating app development company, helped its client.</div>
                                             <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
                                                 <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
                                                     <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-[#454444]">10Cr+</div>
