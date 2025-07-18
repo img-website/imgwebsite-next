@@ -17,7 +17,7 @@ const images = [
   'https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?w=1080',
 ]
 
-export default function CarouselThumbTest() {
+export default function Client() {
   const [mainApi, setMainApi] = useState(null)
   const [thumbApi, setThumbApi] = useState(null)
   useCarouselThumbs(mainApi, thumbApi)

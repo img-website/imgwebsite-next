@@ -158,7 +158,7 @@ export default function LeadForm({ defaultType = "Mobile App Development" }) {
                                 <SelectValue className="!text-sm" />
                             </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-[100000]">
                                 <SelectItem value="Mobile App Development">Mobile App Development</SelectItem>
                                 <SelectItem value="Fantasy Cricket App Development">Fantasy Cricket App Development</SelectItem>
                                 <SelectItem value="Fantasy Sports App Development">Fantasy Sports App Development</SelectItem>
