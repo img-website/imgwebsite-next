@@ -46,6 +46,7 @@
     "embla-carousel-class-names": "^8.6.0",
     "embla-carousel-fade": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "embla-carousel-auto-scroll": "^8.6.0",
     "file-type": "^21.0.0",
     "fuse.js": "^7.1.0",
     "jose": "^6.0.11",

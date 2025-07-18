@@ -3,7 +3,8 @@ import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import ClassNames from "embla-carousel-class-names";
-import Fade from 'embla-carousel-fade'
+import Fade from "embla-carousel-fade";
+import AutoScroll from "embla-carousel-auto-scroll";
 import { cn } from "@/lib/utils";
 
 const CarouselContext = React.createContext(null);
@@ -17,14 +18,21 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef(function Carousel(
-  { className, opts, setApi, children, ...props },
+  { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
-    Autoplay({ delay: 5000, stopOnInteraction: false }),
-    ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
-    Fade()
-  ]);
+  const { fade, autoScroll, ...carouselOpts } = opts || {};
+  const plugins = React.useMemo(() => {
+    const list = [
+      Autoplay({ delay: 5000, stopOnInteraction: false }),
+      ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
+    ];
+    if (fade) list.push(Fade());
+    if (autoScroll) list.push(AutoScroll());
+    return list;
+  }, [fade, autoScroll]);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(carouselOpts, plugins);
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
     if (!emblaApi) return;
