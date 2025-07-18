@@ -9,18 +9,14 @@ const CaseStudy = dynamic(() => import('@/components/HomePage/CaseStudy'), {
 
 import Brands from '@/components/HomePage/Brands';
 import Cta1 from '@/components/cta/Cta1';
-const Portfolio1 = dynamic(() => import('@/components/portfolios/Portfolio1'), {
-  loading: () =>  <div className="flex justify-center items-center w-full min-h-[436px] bg-gray-300 animate-pulse"></div>
-})
+import Portfolio1 from '@/components/portfolios/Portfolio1';
 import AdvanceTech from '@/components/HomePage/AdvanceTech';
 import Industries from '@/components/HomePage/Industries';
 import QuickInsight from '@/components/HomePage/QuickInsight';
 import WhyChooseUs from '@/components/HomePage/WhyChooseUs';
 import Cta2 from '@/components/cta/Cta2';
 import Usp from '@/components/Usp';
-const Testimonial = dynamic(() => import('@/components/testimonials/Testimonial1'), {
-  loading: () =>  <div className="flex justify-center items-center w-full h-[565.39px] bg-gray-300 animate-pulse"></div>
-})
+import Testimonial from '@/components/testimonials/Testimonial1';
 import Faq from '@/components/Faq';
 import HomeHeroSkeleton from '@/components/skeleton/HomeHeroSkeleton';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
