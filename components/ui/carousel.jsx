@@ -21,7 +21,7 @@ const Carousel = React.forwardRef(function Carousel(
   { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const { fade, autoScroll, ...carouselOpts } = opts || {};
+  const { fade, autoScroll, pagination, ...carouselOpts } = opts || {};
   const plugins = React.useMemo(() => {
     const list = [
       Autoplay({ delay: 5000, stopOnInteraction: false }),
@@ -76,6 +76,9 @@ const Carousel = React.forwardRef(function Carousel(
       <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
       </CarouselContext.Provider>
+      {pagination ? (
+        <CarouselPagination className="absolute left-1/2 -translate-x-1/2 bottom-2" />
+      ) : null}
     </div>
   );
 });
@@ -136,10 +139,55 @@ const CarouselNext = React.forwardRef(function CarouselNext(
 });
 CarouselNext.displayName = "CarouselNext";
 
+const CarouselPagination = React.forwardRef(function CarouselPagination(
+  { className, ...props },
+  ref
+) {
+  const { embla } = useCarousel();
+  const [scrollSnaps, setScrollSnaps] = React.useState([]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!embla) return;
+    setScrollSnaps(embla.scrollSnapList());
+    const onSelect = () => setSelectedIndex(embla.selectedScrollSnap());
+    embla.on("select", onSelect);
+    embla.on("reInit", onSelect);
+    onSelect();
+    return () => {
+      embla.off("select", onSelect);
+      embla.off("reInit", onSelect);
+    };
+  }, [embla]);
+
+  if (!scrollSnaps.length) return null;
+
+  return (
+    <div
+      ref={ref}
+      className={cn("flex items-center justify-center gap-2", className)}
+      {...props}
+    >
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={index}
+          className={cn(
+            "size-2.5 rounded-full bg-gray-300 transition-all",
+            index === selectedIndex && "w-5 bg-primary"
+          )}
+          onClick={() => embla && embla.scrollTo(index)}
+        />
+      ))}
+    </div>
+  );
+});
+CarouselPagination.displayName = "CarouselPagination";
+
 export {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselPagination,
 };
