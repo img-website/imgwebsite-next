@@ -16,10 +16,11 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef(function Carousel(
-  { className, opts, setApi, children, ...props },
+  { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
+  const { fade, ...carouselOpts } = opts;
+  const [emblaRef, emblaApi] = useEmblaCarousel(carouselOpts, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
     ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
   ]);
@@ -59,7 +60,7 @@ const Carousel = React.forwardRef(function Carousel(
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={{ embla: emblaApi }}>
+      <CarouselContext.Provider value={{ embla: emblaApi, fade }}>
         {children}
       </CarouselContext.Provider>
     </div>
@@ -71,7 +72,8 @@ const CarouselContent = React.forwardRef(function CarouselContent(
   { className, ...props },
   ref
 ) {
-  return <div ref={ref} className={cn("flex", className)} {...props} />;
+  const { fade } = useCarousel();
+  return <div ref={ref} className={cn("flex", fade && "relative", className)} {...props} />;
 });
 CarouselContent.displayName = "CarouselContent";
 
@@ -79,8 +81,20 @@ const CarouselItem = React.forwardRef(function CarouselItem(
   { className, index, ...props },
   ref
 ) {
+  const { fade } = useCarousel();
   // "index" is accepted for backward compatibility but ignored
-  return <div ref={ref} className={cn("min-w-0 shrink-0 grow-0", className)} {...props} />;
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "min-w-0 shrink-0 grow-0",
+        fade &&
+          "absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 [&.is-snapped]:opacity-100 [&.is-snapped]:pointer-events-auto",
+        className
+      )}
+      {...props}
+    />
+  );
 });
 CarouselItem.displayName = "CarouselItem";
 
