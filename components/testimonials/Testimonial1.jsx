@@ -1,135 +1,15 @@
-'use client'
-import Svg from "@/components/svg"
-import { useEffect } from 'react';
+import Svg from "@/components/svg";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import TestimonialVideoEffects from "./TestimonialVideoEffects";
 
 const Testimonial = () => {
-  useEffect(() => {
-    const videos = document.querySelectorAll('.review-video');
-    const videoContainers = document.querySelectorAll('.videoContainer');
-    const playButtons = document.querySelectorAll('.playBtn');
-    const soundButtons = document.querySelectorAll('.soundBtn');
-
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    let lastPlayingVideo = null;
-    let isSoundEnabled = false;
-    const enableDesktopHover = () => {
-      videoContainers.forEach((container, index) => {
-        const video = videos[index];
-        const playButton = playButtons[index];
-
-        container.addEventListener('mouseenter', async () => {
-          // Pause all other videos
-          videos.forEach((v, i) => {
-            if (v !== video) {
-              v.pause();
-              playButtons[i].style.display = 'block';
-            }
-          });
-
-          try {
-            // Ensure autoplay compliance
-            video.muted = true;
-            video.playsInline = true;
-
-            await video.play();
-            playButton.style.display = 'none';
-            lastPlayingVideo = video;
-          } catch (err) {
-            console.warn('Video play failed:', err.message);
-          }
-        });
-
-        container.addEventListener('mouseleave', () => {
-          video.pause();
-          playButton.style.display = 'block';
-        });
-      });
-    };
-
-
-    const handleDesktopSoundButton = () => {
-      soundButtons.forEach((soundButton) => {
-        soundButton.addEventListener('click', () => {
-          isSoundEnabled = !isSoundEnabled;
-          videos.forEach((video) => {
-            video.muted = !isSoundEnabled;
-          });
-
-          soundButtons.forEach((btn) => {
-            btn.classList.toggle('unmuted', isSoundEnabled);
-            btn.classList.toggle('muted', !isSoundEnabled);
-          });
-        });
-      });
-    };
-
-    const enableMobileClick = () => {
-      playButtons.forEach((playButton, index) => {
-        const video = videos[index];
-
-        playButton.addEventListener('click', () => {
-          videos.forEach((v, i) => {
-            if (v !== video) {
-              v.pause();
-              playButtons[i].style.display = 'block';
-            }
-          });
-
-          if (video.paused) {
-            video.play();
-            playButton.style.display = 'none';
-            video.muted = false;
-            lastPlayingVideo = video;
-          }
-        });
-
-        video.addEventListener('click', () => {
-          if (!video.paused) {
-            video.pause();
-            playButton.style.display = 'block';
-            lastPlayingVideo = null;
-          }
-        });
-
-        video.addEventListener('ended', () => {
-          playButton.style.display = 'block';
-          lastPlayingVideo = null;
-        });
-      });
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          videos.forEach((video, index) => {
-            if (!video.paused) {
-              video.pause();
-              playButtons[index].style.display = 'block';
-              lastPlayingVideo = video;
-            }
-          });
-        } else if (lastPlayingVideo) {
-          lastPlayingVideo.play();
-          const index = Array.from(videos).indexOf(lastPlayingVideo);
-          if (index !== -1) {
-            playButtons[index].style.display = 'none';
-          }
-        }
-      });
-    };
-
-    if (isMobile) {
-      enableMobileClick();
-    } else {
-      enableDesktopHover();
-      handleDesktopSoundButton();
-    }
-  }, []);
-    return (
-      <section className="testimonialsSection w-full relative overflow-hidden bg-[#14152C]">
+  return (
+    <section className="testimonialsSection w-full relative overflow-hidden bg-[#14152C]">
+      <TestimonialVideoEffects />
           <div className="!container flex xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
               <div className="flex flex-col w-full">
                   <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 text-center md:pb-4 pb-2">The Reviews are in</h2>
