@@ -75,10 +75,10 @@ const Carousel = React.forwardRef(function Carousel(
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
       <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
+        {pagination ? (
+          <CarouselPagination className="absolute left-1/2 -translate-x-1/2 bottom-2" />
+        ) : null}
       </CarouselContext.Provider>
-      {pagination ? (
-        <CarouselPagination className="absolute left-1/2 -translate-x-1/2 bottom-2" />
-      ) : null}
     </div>
   );
 });
