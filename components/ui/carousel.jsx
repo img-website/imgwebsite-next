@@ -28,7 +28,11 @@ const Carousel = React.forwardRef(function Carousel(
       ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
     ];
     if (fade) list.push(Fade());
-    if (autoScroll) list.push(AutoScroll());
+    if (autoScroll) {
+      const autoScrollOpts =
+        autoScroll === true ? { stopOnInteraction: false } : autoScroll;
+      list.push(AutoScroll(autoScrollOpts));
+    }
     return list;
   }, [fade, autoScroll]);
 
