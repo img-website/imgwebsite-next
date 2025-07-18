@@ -21,12 +21,21 @@ const Carousel = React.forwardRef(function Carousel(
   { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const { fade, autoScroll, pagination, ...carouselOpts } = opts || {};
+  const { fade, autoScroll, pagination, autoplay, ...carouselOpts } = opts || {};
   const plugins = React.useMemo(() => {
-    const list = [
-      Autoplay({ delay: 5000, stopOnInteraction: false }),
-      ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
-    ];
+    const list = [ClassNames({ snapped: "is-snapped", inView: "is-in-view" })];
+    if (autoplay) {
+      const { pauseOnHover, delay = 5000, ...rest } =
+        autoplay === true ? {} : autoplay;
+      list.push(
+        Autoplay({
+          delay,
+          stopOnInteraction: false,
+          ...(pauseOnHover ? { stopOnMouseEnter: true } : {}),
+          ...rest,
+        })
+      );
+    }
     if (fade) list.push(Fade());
     if (autoScroll) {
       const autoScrollOpts =
@@ -34,7 +43,7 @@ const Carousel = React.forwardRef(function Carousel(
       list.push(AutoScroll(autoScrollOpts));
     }
     return list;
-  }, [fade, autoScroll]);
+  }, [autoplay, fade, autoScroll]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(carouselOpts, plugins);
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
