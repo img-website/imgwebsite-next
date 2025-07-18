@@ -3,6 +3,7 @@ import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import ClassNames from "embla-carousel-class-names";
+import Fade from 'embla-carousel-fade'
 import { cn } from "@/lib/utils";
 
 const CarouselContext = React.createContext(null);
@@ -22,6 +23,7 @@ const Carousel = React.forwardRef(function Carousel(
   const [emblaRef, emblaApi] = useEmblaCarousel(opts, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
     ClassNames({ snapped: "is-snapped", inView: "is-in-view" }),
+    Fade()
   ]);
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {

@@ -30,15 +30,15 @@ const Portfolio1= () => {
                           </div>
                       </div>
                       <div className="md:!w-6/12 !w-full !mx-0 min-h-[436px]">
-                        <Carousel opts={{ loop: true }} className="w-full">
-          <CarouselContent className="-ml-8">
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Freshee</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Online Grocery Delivery App</div>
+                        <Carousel opts={{ loop: true, fade: true }} className="w-full">
+                            <CarouselContent className="-ml-8">
+                                <CarouselItem index={1} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Freshee</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Online Grocery Delivery App</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#EC6C6C]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFreshee.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#EC6C6C]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFreshee.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -50,13 +50,13 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Fabindia</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Fashion Ecommerce App</div>
+                                <CarouselItem index={2} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Fabindia</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Fashion Ecommerce App</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#E5CC76]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFebIndia.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#E5CC76]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFebIndia.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -68,13 +68,13 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Edoovi</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">School Listing Portal</div>
+                                <CarouselItem index={3} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Edoovi</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">School Listing Portal</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#7AD7F4]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioEdoovi.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#7AD7F4]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioEdoovi.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -86,13 +86,13 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Taximo</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Taxi Booking App</div>
+                                <CarouselItem index={4} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Taximo</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Taxi Booking App</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#FAC216]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioTaximo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#FAC216]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioTaximo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -104,13 +104,13 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Flexo</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Property Listing/Rental Website</div>
+                                <CarouselItem index={5} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Flexo</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Property Listing/Rental Website</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#F76900]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFlexo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#F76900]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioFlexo.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -122,13 +122,13 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                                <CarouselItem className="pl-8 basis-full [&.embla-slide-active]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
-                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.embla-slide-active]/p:translate-y-0 -translate-y-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Propira</h3>
-                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.embla-slide-active]/p:translate-x-0 -translate-x-10 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500">Property Listing/Rental Website</div>
+                                <CarouselItem index={6} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
+                                    <h3 className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-semibold text-[#454444] text-balance relative z-10 max-md:text-center group-[.is-snapped]/p:translate-y-0 -translate-y-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Propira</h3>
+                                    <div className="w-auto xl:text-xl lg:text-lg md:text-base text-sm uppercase font-normal text-[#615454] text-balance z-10 text-center tracking-wider md:absolute md:[writing-mode:sideways-lr] md:bottom-0 max-md:pt-2 group-[.is-snapped]/p:translate-x-0 -translate-x-10 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500">Property Listing/Rental Website</div>
                                     <div className="w-full flex justify-center lg:pt-8 md:pt-4 pt-9">
                                         <div className="lg:max-w-[350px] md:max-w-[250px] w-full aspect-square relative">
-                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.embla-slide-active]/p:rotate-0 rotate-45 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500 text-[#DA0C0C]" />
-                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioPropira.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.embla-slide-active]/p:scale-110 scale-0 group-[.embla-slide-active]/p:opacity-100 opacity-0 duration-500"/>
+                                            <Svg name="polygon1" className="size-full object-contain max-md:m-auto absolute inset-0 z-0 max-md:scale-90 group-[.is-snapped]/p:rotate-0 rotate-45 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500 text-[#DA0C0C]" />
+                                            <Image loading="lazy" width={385} height={385} sizes="(max-width: 768px) 100vw, 350px" src="https://d1y41eupgbwbb2.cloudfront.net/images/portfolioPropira.webp" alt="Moda Market" className="size-full object-contain object-center relative z-10 -mt-[8%] -ml-[8%] group-[.is-snapped]/p:scale-110 scale-0 group-[.is-snapped]/p:opacity-100 opacity-0 duration-500"/>
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
@@ -140,7 +140,7 @@ const Portfolio1= () => {
                                         </label>
                                     </div>
                                 </CarouselItem>
-                        </CarouselContent>
+                            </CarouselContent>
                       </Carousel>
                       </div>
                   </div>
