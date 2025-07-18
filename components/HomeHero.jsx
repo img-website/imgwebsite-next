@@ -34,7 +34,7 @@ export default function HomeHero() {
                     fade: true,
                     autoplay: { delay: 5000, pauseOnHover: true },
                 }}
-                className="heroSection w-full bg-white"
+                className="heroSection w-full"
             >
                 <CarouselContent className="-ml-8">
                     <CarouselItem className="basis-full pl-8 xl:pt-[116px] lg:pt-[90px] md:pt-[88px] pt-16 relative overflow-hidden md:min-h-dvh max-md:!h-auto !flex !flex-col max-md:pb-6 group/slide">
