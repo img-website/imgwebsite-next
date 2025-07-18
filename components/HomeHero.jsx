@@ -46,7 +46,7 @@ export default function HomeHero() {
                                 <div className="grow lg:py-12 md:py-6 py-3 max-md:hidden"></div>
                             </div>
                             <div className="md:w-7/12 w-full flex flex-col relative overflow-hidden">
-                                <Image 
+                                {/* <Image 
                                     priority={true}
                                     src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot-768.webp"
                                     srcSet="
@@ -60,7 +60,7 @@ export default function HomeHero() {
                                     height="579" 
                                     alt="AI-Driven Digital Transformation Company" 
                                     title="AI-Driven Digital Transformation Company" 
-                                    className="md:absolute md:top-8 md:inset-x-0 md:bottom-0 size-full object-contain max-md:mx-auto max-md:max-w-96 max-md:aspect-[384/496]" />
+                                    className="md:absolute md:top-8 md:inset-x-0 md:bottom-0 size-full object-contain max-md:mx-auto max-md:max-w-96 max-md:aspect-[384/496]" /> */}
                                 <picture>
                                     <source
                                         srcSet="https://d1y41eupgbwbb2.cloudfront.net/images/heroBotMobile.webp"
