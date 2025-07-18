@@ -21,7 +21,7 @@ const Carousel = React.forwardRef(function Carousel(
   { className, opts = {}, setApi, children, ...props },
   ref
 ) {
-  const { fade, autoScroll, pagination, autoplay, ...carouselOpts } = opts || {};
+  const { fade, autoScroll, autoplay, ...carouselOpts } = opts || {};
   const plugins = React.useMemo(() => {
     const list = [ClassNames({ snapped: "is-snapped", inView: "is-in-view" })];
     if (autoplay) {
@@ -84,9 +84,6 @@ const Carousel = React.forwardRef(function Carousel(
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
       <CarouselContext.Provider value={{ embla: emblaApi }}>
         {children}
-        {pagination ? (
-          <CarouselPagination className="absolute left-1/2 -translate-x-1/2 bottom-2" />
-        ) : null}
       </CarouselContext.Provider>
     </div>
   );
@@ -192,6 +189,33 @@ const CarouselPagination = React.forwardRef(function CarouselPagination(
 });
 CarouselPagination.displayName = "CarouselPagination";
 
+function useCarouselThumbs(main, thumbs) {
+  React.useEffect(() => {
+    if (!main || !thumbs) return;
+    const slides = thumbs.slideNodes();
+    const onSelect = () => {
+      const index = main.selectedScrollSnap();
+      thumbs.scrollTo(index);
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("is-selected", i === index);
+      });
+    };
+    const handlers = slides.map((slide, i) => {
+      const click = () => main.scrollTo(i);
+      slide.addEventListener("click", click);
+      return () => slide.removeEventListener("click", click);
+    });
+    onSelect();
+    main.on("select", onSelect);
+    main.on("reInit", onSelect);
+    return () => {
+      main.off("select", onSelect);
+      main.off("reInit", onSelect);
+      handlers.forEach((unbind) => unbind());
+    };
+  }, [main, thumbs]);
+}
+
 export {
   Carousel,
   CarouselContent,
@@ -199,4 +223,5 @@ export {
   CarouselPrevious,
   CarouselNext,
   CarouselPagination,
+  useCarouselThumbs,
 };

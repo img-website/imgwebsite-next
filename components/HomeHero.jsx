@@ -2,6 +2,7 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
+    CarouselPagination,
 } from "@/components/ui/carousel";
 import Image from 'next/image';
 import Svg from '@/components/svg';
@@ -31,7 +32,6 @@ export default function HomeHero() {
                 opts={{
                     loop: true,
                     fade: true,
-                    pagination: true,
                     autoplay: { delay: 5000, pauseOnHover: true },
                 }}
                 className="heroSection w-full bg-white"
@@ -128,7 +128,7 @@ export default function HomeHero() {
                         </div>
                     </CarouselItem>
                 </CarouselContent>
-                {/* <div className="swiper-pagination !container md:!flex md:!gap-2 md:!inset-x-0 md:!text-left md:!bottom-6 !bottom-2.5 *:!rounded-full *:!size-2.5 *:!bg-[#4B92FF] [&_.swiper-pagination-bullet-active]:!w-20 *:!duration-300"></div> */}
+                <CarouselPagination className="!container md:!flex md:!gap-2 md:!inset-x-0 md:!text-left md:!bottom-6 !bottom-2.5 absolute left-1/2 -translate-x-1/2" />
             </Carousel>
         </div>
     );
