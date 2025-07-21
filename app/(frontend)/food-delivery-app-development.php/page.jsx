@@ -1,11 +1,20 @@
-"use client"
-
 import Svg from "@/components/svg";
 import Image from "next/image";
 import Link from "next/link";
-import { Swiper, SwiperSlide, Navigation, Autoplay } from '@/components/CustomSwiper';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
 import ContactUs from "@/components/ContactUs";
+import getDynamicMeta from '@/helpers/getDynamicMeta';
 
+
+export async function generateMetadata() {
+    return await getDynamicMeta('/food-delivery-app-development.php');
+}
 
 export default function FoodDeliveryAppDevelopment() {
     return (
@@ -202,12 +211,9 @@ export default function FoodDeliveryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel1:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel1" className="hidden" defaultChecked />
-                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
-                                slidesPerView={1}
-                                spaceBetween={8}
-                                speed={1000}
-                                >
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel1" className="hidden" defaultChecked />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -223,8 +229,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Providing live updates on order status, delivery driver location, and estimated arrival time keeps customers informed.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel2" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -240,8 +246,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Offering personalized options such as dietary preferences and sorting choices enables customers to find and order their preferred meals.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel3" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPayment.webp" alt="Secure Payment Options" title="Secure Payment Options" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -257,8 +263,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrating multiple secure payment gateways assures customers of the safety of their financial transactions, promoting trust and confidence.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel4" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserReview.webp" alt="Rating and Review System" title="Rating and Review System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -274,8 +280,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Allowing customers to rate and review their orders helps build a community-driven feedback loop, aiding in making informed decisions.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel5" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserSupport.webp" alt="In-app Customer Support" title="In-app Customer Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -291,8 +297,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">A seamless in-app customer support system, such as live chat or a helpline, ensures prompt assistance and issue resolution.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="userPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="userPanel" id="userPanel6" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPromotion.webp" alt="Social Media Integration" title="Social Media Integration" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -308,8 +314,9 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Enabling social media sharing features allows customers to easily share their favorite dishes or promotions, contributing to organic marketing.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                            </Swiper>
+                                    </CarouselItem>
+                                </CarouselContent>
+                            </Carousel>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel1:checked]/key:md:block" />
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel2:checked]/key:md:block" />
@@ -321,12 +328,9 @@ export default function FoodDeliveryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel2:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel2" className="hidden" />
-                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
-                                slidesPerView={1}
-                                spaceBetween={8}
-                                speed={1000}
-                                >
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" defaultChecked />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -342,8 +346,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Here, drivers can handle multiple orders simultaneously, optimizing their delivery routes and minimizing delays.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel2" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -359,8 +363,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrated navigation tools empower drivers to find the quickest routes, reducing delivery times and ensuring reliable customer service.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel3" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverEarnings.webp" alt="Earnings Dashboard" title="Earnings Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -376,8 +380,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">An intuitive earnings dashboard allows drivers to track their income, view performance metrics, and access detailed breakdowns.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel4" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverOrderaccept.webp" alt="Order Acceptance/Rejection" title="Order Acceptance/Rejection" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -393,8 +397,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can make informed decisions by previewing essential order details before acceptance to manage their workload efficiently.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel5" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverRealtimeorder.webp" alt="Real-Time Order Tracking" title="Real-Time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -410,8 +414,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can efficiently navigate their routes and manage delivery times with live order tracking, ensuring timely deliveries.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="servicePanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="servicePanel" id="servicePanel6" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverAnalyses.webp" alt="Performance Analytics" title="Performance Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -427,8 +431,9 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Access to performance analytics allows drivers to review their delivery history, identify patterns, and enhance their strategies.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                            </Swiper>
+                                    </CarouselItem>
+                                </CarouselContent>
+                            </Carousel>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel1:checked]/key:md:block" />
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel2:checked]/key:md:block" />
@@ -440,12 +445,9 @@ export default function FoodDeliveryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel3:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel3" className="hidden" />
-                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
-                                slidesPerView={1}
-                                spaceBetween={8}
-                                speed={1000}
-                                >
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant1" className="hidden" defaultChecked />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -461,8 +463,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently processes and organizes incoming orders, providing restaurant staff with a user-friendly interface to accept, manage, and track orders.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant2" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -478,8 +480,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Empower restaurants to easily update and customize their digital menus while managing inventory and adjusting prices.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant3" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelRealtimeanalysis.webp" alt="Real-time Analytics Dashboard" title="Real-time Analytics Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -495,8 +497,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Equip restaurant owners with comprehensive analytics, offering insights into sales trends, popular dishes, and customer preferences.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant4" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelPaymentgateway.webp" alt="Integrated Payment Gateways" title="Integrated Payment Gateways" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -512,8 +514,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Seamlessly integrate secure payment gateways, allowing restaurants to accept multi-payment methods, enhancing customer convenience.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant5" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelFeedback.webp" alt="Customer Feedback System" title="Customer Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -529,8 +531,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a feedback mechanism for customers to share their experiences, enabling restaurants to gather valuable insights.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="restaurant6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="restaurant" id="restaurant6" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMultilocation.webp" alt="Multi-location Support" title="Multi-location Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
@@ -546,8 +548,9 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Cater to restaurant chains or businesses with multiple locations by offering a centralized management system.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                            </Swiper>
+                                    </CarouselItem>
+                                </CarouselContent>
+                            </Carousel>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant1:checked]/key:md:block" />
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant2:checked]/key:md:block" />
@@ -559,12 +562,9 @@ export default function FoodDeliveryAppDevelopment() {
                         </div>
                         <div className="w-full items-start has-[#panel4:checked]:flex hidden">
                             <input type="radio" name="panel" id="panel4" className="hidden" />
-                            <Swiper className="swiper xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible *:max-md:!items-stretch *:md:!grid *:xl:!grid-cols-2 *:md:!grid-cols-1 *:md:!gap-x-8 *:md:!gap-y-6 *:md:!transform-none"
-                                slidesPerView={1}
-                                spaceBetween={8}
-                                speed={1000}
-                                >
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" defaultChecked />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="User Management" title="User Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -580,8 +580,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently manage user accounts and permissions to ensure a secure and seamless experience for both customers and delivery partners.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel2" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Order Tracking and Analytics" title="Order Tracking and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -597,8 +597,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement robust order-tracking tools and analytics dashboards to monitor real-time order statuses and track delivery routes.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel3" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Payment and Commission Tracking" title="Payment and Commission Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -614,8 +614,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a transparent payment system and commission tracking feature to monitor financial transactions and process payments securely.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel4" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Geofencing and Location Management" title="Geofencing and Location Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -631,8 +631,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Utilize geofencing technology to define delivery zones, optimize routes, and enhance location-based services.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel5" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Customer Support and Communication" title="Customer Support and Communication" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -648,8 +648,8 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a robust customer support module, including in-app chat or messaging features, to promptly address customer queries.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                                    <SwiperSlide className="swiper-slide group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col">
+                                    </CarouselItem>
+                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
                                         <label htmlFor="adminPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
                                             <input type="radio" name="adminPanel" id="adminPanel6" className="hidden" />
                                             <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Rating and Feedback System" title="Rating and Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
@@ -665,8 +665,9 @@ export default function FoodDeliveryAppDevelopment() {
                                                 <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a user-friendly rating and feedback system, allowing customers to provide reviews and ratings.</div>
                                             </div>
                                         </label>
-                                    </SwiperSlide>
-                            </Swiper>
+                                    </CarouselItem>
+                                </CarouselContent>
+                            </Carousel>
                             <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
                                 <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="admin" title="admin" width="375" height="262" className="w-full mx-auto xl:max-w-96 max-w-64 max-md:hidden aspect-[375/262]" />
                             </div>
@@ -680,115 +681,112 @@ export default function FoodDeliveryAppDevelopment() {
                     <div className="flex flex-col w-full">
                         <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-[#454444] text-balance relative z-10 md:text-center md:pb-4 pb-2">Our Innovative Food Delivery App Development Projects</h2>
                         <div className="w-full 2xl:text-lg xl:text-base md:text-sm text-xs md:font-medium font-normal text-[#454444] text-balance relative z-10 md:text-center md:pb-12 pb-5">We craft high-performance food delivery apps that redefine convenience for restaurants, delivery partners, and customers. Our expertise in developing user-friendly, scalable, and secure restaurant apps has helped various food businesses thrive in the competitive online marketplace.</div>
-                        <Swiper className="w-full swiper rounded-3xl"
-                            modules={[Navigation]}
-                            slidesPerView={1}
-                            spaceBetween={32}
-                            speed={1000}
-                            navigation={{
-                                nextEl: '.next',
-                                prevEl: '.prev',
-                            }}
-                            >    
-                                <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                    <div className="md:w-7/12 w-full">
-                                        <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/eatoutLogo.webp" className="w-auto md:h-14 h-12 aspect-square" width="56" height="56" alt="Eatout Logo" title="Eatout Logo" />
-                                            <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#F7C6B4]">Eatout</h3>
-                                        </div>
-                                        <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-white xl:pt-4 pt-2 xl:pb-6 pb-4">EatOut is a modern food delivery platform designed to connect hungry users with their favorite local restaurants. Our team at IMG Global Infotech collaborated with the client from ideation to execution, crafting a high-performance app that delivers convenience, speed, and satisfaction.</div>
-                                        <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
-                                                <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">50L+</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Downloads</div>
+                        <Carousel opts={{ loop: true, fade: true, autoplay: {delay: 5000, stopOnMouseEnter: true} }} className="w-full rounded-3xl">    
+                            <CarouselContent className="-ml-8 items-stretch">
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full">
+                                            <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
+                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/eatoutLogo.webp" className="w-auto md:h-14 h-12 aspect-square" width="56" height="56" alt="Eatout Logo" title="Eatout Logo" />
+                                                <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#F7C6B4]">Eatout</h3>
                                             </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
-                                                <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">4.1/5</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Rating</div>
-                                            </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 max-md:ml-auto">
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white/70">Industry</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-bold text-white">Food & Beverage</div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center lg:gap-3 gap-2 md:pt-6 pt-3">
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center xl:text-sm lg:text-xs md:text-sm text-xs md:font-medium font-semibold text-white">Available on</div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
-                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/playStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="PlayStore" title="PlayStore" />
-                                            </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
-                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/appStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="AppStore" title="AppStore" />
-                                            </div>
-                                        </div>
-                                        <div className="w-full md:pt-8 pt-6">
-                                            <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#CD7650] to-[#FED4C5] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#FED4C5] group/btn">
-                                                <span>View Case Study</span>
-                                                <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#CD7650] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                    <Svg name="arrowCall" className="size-3 relative z-10 text-[#FED4C5]" />
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-white xl:pt-4 pt-2 xl:pb-6 pb-4">EatOut is a modern food delivery platform designed to connect hungry users with their favorite local restaurants. Our team at IMG Global Infotech collaborated with the client from ideation to execution, crafting a high-performance app that delivers convenience, speed, and satisfaction.</div>
+                                            <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
+                                                    <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">50L+</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Downloads</div>
                                                 </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#CD7650] to-[#FED4C5] p-6">
-                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/eatout.webp" alt="Eatout" title="Eatout" className="size-full object-contain object-center aspect-square" width={284} height={370} />
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide !flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6">
-                                    <div className="md:w-7/12 w-full">
-                                        <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/beyondMenuLogo.webp" className="w-auto md:h-14 h-12 aspect-square" width="56" height="56" alt="BeyondMenu Logo" title="BeyondMenu Logo" />
-                                            <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#FFD71A]">BeyondMenu</h3>
-                                        </div>
-                                        <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-white xl:pt-4 pt-2 xl:pb-6 pb-4">BeyondMenu is an all-in-one food ordering and restaurant management platform, from browsing menus to placing orders and scheduling reservations, BeyondMenu streamlines the entire food ordering process with style and ease.</div>
-                                        <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
-                                                <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">10L+</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Downloads</div>
-                                            </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
-                                                <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">3.9/5</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Rating</div>
-                                            </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 max-md:ml-auto">
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white/70">Industry</div>
-                                                <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-bold text-white">Food & Beverage</div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center lg:gap-3 gap-2 md:pt-6 pt-3">
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center xl:text-sm lg:text-xs md:text-sm text-xs md:font-medium font-semibold text-white">Available on</div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
-                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/playStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="PlayStore" title="PlayStore" />
-                                            </div>
-                                            <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
-                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/appStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="AppStore" title="AppStore" />
-                                            </div>
-                                        </div>
-                                        <div className="w-full md:pt-8 pt-6">
-                                            <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FFD71A] to-[#E7CD55] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#E7CD55] group/btn">
-                                                <span>View Case Study</span>
-                                                <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FFD71A] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                    <Svg name="arrowCall" className="size-3 relative z-10 text-[#E7CD55]" />
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
+                                                    <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">4.1/5</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Rating</div>
                                                 </div>
-                                            </label>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 max-md:ml-auto">
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white/70">Industry</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-bold text-white">Food & Beverage</div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center lg:gap-3 gap-2 md:pt-6 pt-3">
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center xl:text-sm lg:text-xs md:text-sm text-xs md:font-medium font-semibold text-white">Available on</div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
+                                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/playStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="PlayStore" title="PlayStore" />
+                                                </div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
+                                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/appStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="AppStore" title="AppStore" />
+                                                </div>
+                                            </div>
+                                            <div className="w-full md:pt-8 pt-6">
+                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#CD7650] to-[#FED4C5] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#FED4C5] group/btn">
+                                                    <span>View Case Study</span>
+                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#CD7650] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
+                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#FED4C5]" />
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#CD7650] to-[#FED4C5] p-6">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/eatout.webp" alt="Eatout" title="Eatout" className="size-full object-contain object-center aspect-square" width={284} height={370} />
                                         </div>
                                     </div>
-                                    <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FFD71A] to-[#E7CD55] p-6">
-                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/beyondMenu.webp" alt="BeyondMenu" title="BeyondMenu" className="size-full object-contain object-center aspect-square" width={284} height={370} />
+                                </CarouselItem>
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="!flex flex-wrap justify-between items-stretch bg-[#1D1D1D] rounded-3xl xl:p-12 md:p-8 py-6 px-4 gap-y-6 h-full">
+                                        <div className="md:w-7/12 w-full">
+                                            <div className="w-full flex items-center xl:gap-8 md:gap-4 gap-2">
+                                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/beyondMenuLogo.webp" className="w-auto md:h-14 h-12 aspect-square" width="56" height="56" alt="BeyondMenu Logo" title="BeyondMenu Logo" />
+                                                <h3 className="2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg text-base font-bold text-[#FFD71A]">BeyondMenu</h3>
+                                            </div>
+                                            <div className="w-full xl:text-sm lg:text-xs md:text-sm text-xs font-normal text-white xl:pt-4 pt-2 xl:pb-6 pb-4">BeyondMenu is an all-in-one food ordering and restaurant management platform, from browsing menus to placing orders and scheduling reservations, BeyondMenu streamlines the entire food ordering process with style and ease.</div>
+                                            <div className="flex items-center lg:gap-14 md:gap-10 gap-2">
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
+                                                    <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">10L+</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Downloads</div>
+                                                </div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center">
+                                                    <div className="xl:text-3xl lg:text-2xl md:text-xl text-lg font-semibold text-white">3.9/5</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white">Rating</div>
+                                                </div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 max-md:ml-auto">
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-semibold text-white/70">Industry</div>
+                                                    <div className="xl:text-sm lg:text-xs md:text-sm text-xs font-bold text-white">Food & Beverage</div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center lg:gap-3 gap-2 md:pt-6 pt-3">
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center xl:text-sm lg:text-xs md:text-sm text-xs md:font-medium font-semibold text-white">Available on</div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
+                                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/playStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="PlayStore" title="PlayStore" />
+                                                </div>
+                                                <div className="w-auto inlne-flex flex-col gap-0.5 text-center cursor-pointer">
+                                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/appStoreBtnBlack.webp" className="w-auto xl:h-10 h-8 aspect-[120/40]" width="120" height="40" alt="AppStore" title="AppStore" />
+                                                </div>
+                                            </div>
+                                            <div className="w-full md:pt-8 pt-6">
+                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FFD71A] to-[#E7CD55] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#E7CD55] group/btn">
+                                                    <span>View Case Study</span>
+                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FFD71A] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
+                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#E7CD55]" />
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FFD71A] to-[#E7CD55] p-6">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/beyondMenu.webp" alt="BeyondMenu" title="BeyondMenu" className="size-full object-contain object-center aspect-square" width={284} height={370} />
+                                        </div>
                                     </div>
-                                </SwiperSlide>
+                                </CarouselItem>
+                            </CarouselContent>
                             <div className="flex md:justify-center justify-end absolute inset-x-0 bottom-0 z-10">
                                 <div className="inline-flex items-center justify-center md:gap-8 gap-6 relative bg-white md:rounded-t-3xl rounded-tl-3xl p-2">
                                     <Svg name="clipLeftBottom" className="size-6 absolute bottom-0 left-0 -translate-x-full z-10 text-white" />
                                     <Svg name="clipRightBottom" className="size-6 absolute md:bottom-0 max-md:top-0 right-0 md:translate-x-full max-md:-translate-y-full z-10 max-md:-rotate-90 text-white" />
-                                    <div className="prev rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
+                                    <CarouselPrevious className="prev rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
                                         <Svg name="arrowPrev" className="size-6 relative z-10 text-white" />
-                                    </div>
-                                    <div className="next rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
+                                    </CarouselPrevious>
+                                    <CarouselNext className="next rounded-full size-10 bg-gradient-to-b from-white to-[#666666] p-px inline-flex items-center justify-center relative hover:lg:before:inset-1 before:duration-300 shadow-[0px_4px_4px_0px_#0000001F] before:absolute before:inset-0.5 before:m-auto before:bg-[#1D1D1D] before:rounded-full before:z-0">
                                         <Svg name="arrowNext" className="size-6 relative z-10 text-white" />
-                                    </div>
+                                    </CarouselNext>
                                 </div>
                             </div>
-                        </Swiper>
+                        </Carousel>
                     </div>
                 </div>
             </section>
@@ -916,50 +914,46 @@ export default function FoodDeliveryAppDevelopment() {
                 <div className="!container flex xl:pt-16 lg:pt-14 md:pt-12 sm:pt-10 pt-8 max-sm:!px-0">
                     <div className="flex flex-col w-full">
                         <h2 className="w-full 2xl:text-3xl xl:text-2xl lg:text-xl text-xl font-semibold text-white text-balance relative z-10 text-center max-sm:px-4">Your Next Food Delivery Mobile App Could Look Like This</h2>
-                        <Swiper className="swiper flex xl:w-7/12 lg:w-3/4 w-full -mt-6 xl:!py-16 lg:!py-14 !py-12 before:absolute before:left-0 before:h-full before:w-1/4 before:bg-gradient-to-r before:from-[#131514]/60 before:to-transparent before:z-10 before:pointer-events-none after:absolute after:right-0 after:h-full after:w-1/4 after:bg-gradient-to-l after:from-[#131514]/60 after:to-transparent after:z-10 after:pointer-events-none"
-                            modules={[Autoplay]}
-                            slidesPerView={1.6}
-                            spaceBetween={8}
-                            speed={1000}
-                            loop={true}
-                            centeredSlides={true}
-                            autoplay={{
-                                delay: 3000,
-                                disableOnInteraction: false,
-                            }}
-                            breakpoints={{
-                                320: { slidesPerView: 1.6, spaceBetween: 8 },
-                                480: { slidesPerView: 1.6, spaceBetween: 16 },
-                                640: { slidesPerView: 2, spaceBetween: 16 },
-                                1024: { slidesPerView: 3, spaceBetween: 32 },
-                                1350: { slidesPerView: 3, spaceBetween: 32 },
-                            }}
-                            >
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike1.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike2.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike3.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike4.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike5.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                                <SwiperSlide className="swiper-slide relative lg:p-[1.2%] md:p-[2.2%] p-[2.7%] group [&.swiper-slide-active]:!scale-100 md:!scale-95 !scale-90 duration-300">
-                                    <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[&.swiper-slide-active]:opacity-100 scale-125 group-[&.swiper-slide-active]:scale-100 duration-300" />
-                                    <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike6.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
-                                </SwiperSlide>
-                        </Swiper>
+                        <Carousel opts={{ loop: true, autoplay: {delay: 3000, stopOnMouseEnter: true} }} className="flex mx-auto xl:w-7/12 lg:w-3/4 w-full -mt-6 xl:!py-16 lg:!py-14 !py-12 before:absolute before:left-0 before:h-full before:w-1/4 before:bg-gradient-to-r before:from-[#131514]/60 before:to-transparent before:z-10 before:pointer-events-none after:absolute after:right-0 after:h-full after:w-1/4 after:bg-gradient-to-l after:from-[#131514]/60 after:to-transparent after:z-10 after:pointer-events-none">
+                                <CarouselContent className="lg:-ml-8 md:-ml-4 -ml-2 items-stretch">
+                                    <CarouselItem index={1} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike1.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                    <CarouselItem index={2} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike2.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                    <CarouselItem index={3} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike3.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                    <CarouselItem index={4} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike4.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                    <CarouselItem index={5} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike5.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                    <CarouselItem index={6} className="sm:basis-1/3 basis-1/2 lg:pl-8 md:pl-4 pl-2 group/next">
+                                        <div className="relative p-[4%] group-[.is-snapped]/next:scale-100 md:scale-95 scale-90 duration-300">
+                                            <Svg name="blackMobileFrame" className="size-full object-contain object-center absolute inset-0 text-[#404040] opacity-0 group-[.is-snapped]/next:opacity-100 scale-125 group-[.is-snapped]/next:scale-100 duration-300" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodLookLike6.webp" alt="Food Delivery App Look like" title="Food Delivery App Look like" className="size-full object-contain object-center aspect-[225/506]" width="225" height="506" />
+                                        </div>
+                                    </CarouselItem>
+                                </CarouselContent>
+                        </Carousel>
                     </div>
                 </div>
             </section>
