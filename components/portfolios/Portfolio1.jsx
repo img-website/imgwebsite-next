@@ -1,12 +1,11 @@
-"use client"
-
 import Image from "next/image"
 import Svg from "@/components/svg"
+import Btn from "@/components/ui/button/button";
 
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
 } from "@/components/ui/carousel";
 
 const Portfolio1= () => {
@@ -21,12 +20,7 @@ const Portfolio1= () => {
                           <div className="md:w-10/12 w-full md:text-sm text-xs font-normal text-[#454444] line-clamp-3 md:pt-4 pt-3 text-pretty max-md:text-center">Explore some of the masterpieces delivered, depicting IMG Global Infotech's industry expertise.</div>
                           <div className="md:w-9/12 w-full lg:text-xl md:text-lg sm:text-base text-sm font-medium text-[#454444] md:py-6 pt-3 text-balance max-md:text-center max-md:pb-6">Our team has worked over <span className="text-[#FF6B39]">12k+</span> projects. Here are some samples</div>
                           <div className="w-full max-md:hidden">
-                              <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
-                                  <span>Have a Look on our Portfolio</span>
-                                  <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                      <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                  </div>
-                              </label>
+                              <Btn>Have a Look on our Portfolio</Btn>
                           </div>
                       </div>
                       <div className="md:!w-6/12 !w-full !mx-0 min-h-[436px]">
@@ -42,12 +36,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#EC6C6C] to-[#933333] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#933333] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#EC6C6C] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#EC6C6C" to="#933333">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem index={2} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
@@ -60,12 +49,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#E5CC76] to-[#78662a] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#78662a] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#E5CC76] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#E5CC76" to="#78662a">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem index={3} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
@@ -78,12 +62,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#7AD7F4] to-[#347082] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#347082] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#7AD7F4] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#7AD7F4" to="#347082">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem index={4} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
@@ -96,12 +75,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FAC216] to-[#ffb22d] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#ffb22d] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FAC216] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#FAC216" to="#ffb22d">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem index={5} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
@@ -114,12 +88,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#f79000] to-[#F76900] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#F76900] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#f79000] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#f79000" to="#F76900">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                                 <CarouselItem index={6} className="pl-8 basis-full [&.is-snapped]:!opacity-100 !opacity-0 group/p w-full rounded-3xl !flex flex-col relative">
@@ -132,12 +101,7 @@ const Portfolio1= () => {
                                         </div>
                                     </div>
                                     <div className="w-full md:hidden pt-8 text-center">
-                                        <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#da430c] to-[#DA0C0C] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#DA0C0C] group/btn">
-                                            <span>Have a Look on our Portfolio</span>
-                                            <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#da430c] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                            </div>
-                                        </label>
+                                        <Btn from="#da430c" to="#DA0C0C">Have a Look on our Portfolio</Btn>
                                     </div>
                                 </CarouselItem>
                             </CarouselContent>

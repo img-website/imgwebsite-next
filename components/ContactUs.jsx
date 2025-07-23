@@ -1,4 +1,3 @@
-"use client";
 import Svg from "@/components/svg";
 import Image from "next/image";
 import LeadForm from "@/components/leadForm";

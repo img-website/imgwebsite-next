@@ -7,6 +7,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
+import Btn from "@/components/ui/button/button";
 
 export default function CaseStudy() {
     return (
@@ -50,12 +51,7 @@ export default function CaseStudy() {
                                                 </div>
                                             </div>
                                             <div className="w-full md:pt-8 pt-6">
-                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FFAE00] to-[#b47b00] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#b47b00] group/btn">
-                                                    <span>View Case Study</span>
-                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FFAE00] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#b47b00]" />
-                                                    </div>
-                                                </label>
+                                                <Btn from="#FFAE00" to="#b47b00">View Case Study</Btn>
                                             </div>
                                         </div>
                                         <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#b47b00] to-[#FFAE00] p-6">
@@ -95,12 +91,7 @@ export default function CaseStudy() {
                                                 </div>
                                             </div>
                                             <div className="w-full md:pt-8 pt-6">
-                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FFC422] to-[#F07000] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#F07000] group/btn">
-                                                    <span>View Case Study</span>
-                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FFC422] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#F07000]" />
-                                                    </div>
-                                                </label>
+                                                <Btn from="#FFC422" to="#F07000">View Case Study</Btn>
                                             </div>
                                         </div>
                                         <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FFC422] to-[#F07000] p-6">
@@ -140,12 +131,7 @@ export default function CaseStudy() {
                                                 </div>
                                             </div>
                                             <div className="w-full md:pt-8 pt-6">
-                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4070FF] to-[#063CDE] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#063CDE] group/btn">
-                                                    <span>View Case Study</span>
-                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4070FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#063CDE]" />
-                                                    </div>
-                                                </label>
+                                                <Btn from="#4070FF" to="#063CDE">View Case Study</Btn>
                                             </div>
                                         </div>
                                         <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#4070FF] to-[#063CDE] p-6">
@@ -185,12 +171,7 @@ export default function CaseStudy() {
                                                 </div>
                                             </div>
                                             <div className="w-full md:pt-8 pt-6">
-                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#818181] to-[#040404] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#040404] group/btn">
-                                                    <span>View Case Study</span>
-                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#818181] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#040404]" />
-                                                    </div>
-                                                </label>
+                                                <Btn from="#818181" to="#040404">View Case Study</Btn>
                                             </div>
                                         </div>
                                         <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#818181] to-[#040404] p-6">
@@ -230,12 +211,7 @@ export default function CaseStudy() {
                                                 </div>
                                             </div>
                                             <div className="w-full md:pt-8 pt-6">
-                                                <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-white inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FD3A73] to-[#FF8258] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#FF8258] group/btn">
-                                                    <span>View Case Study</span>
-                                                    <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#FD3A73] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                                        <Svg name="arrowCall" className="size-3 relative z-10 text-[#FF8258]" />
-                                                    </div>
-                                                </label>
+                                                <Btn from="#FD3A73" to="#FF8258">View Case Study</Btn>
                                             </div>
                                         </div>
                                         <div className="md:w-4/12 w-full max-md:order-first rounded-3xl aspect-square flex items-center justify-center bg-gradient-to-br from-[#FD3A73] to-[#FF8258] p-6">

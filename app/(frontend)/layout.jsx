@@ -69,13 +69,13 @@ export default async function RootLayout({ children }) {
             }}
           />
         )}
-        <PageSchema />
-        <Navbar/>
+        {/* <PageSchema /> */}
+        {/* <Navbar/> */}
         <main>
         {children}
         </main>
         <LeadPopup/>
-        <Footer/>
+        {/* <Footer/> */}
         {isProd && (
           <>
             <TawkToWidget />

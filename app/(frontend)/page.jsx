@@ -1,7 +1,6 @@
 import HomeHero from '@/components/HomeHero';
 import CoreServices from '@/components/HomePage/CoreServices';
 import CaseStudy from '@/components/HomePage/CaseStudy';
-
 import Brands from '@/components/HomePage/Brands';
 import Cta1 from '@/components/cta/Cta1';
 import Portfolio1 from '@/components/portfolios/Portfolio1';
@@ -14,8 +13,8 @@ import Usp from '@/components/Usp';
 import Testimonial from '@/components/testimonials/Testimonial1';
 import Faq from '@/components/Faq';
 import getDynamicMeta from '@/helpers/getDynamicMeta';
-import ContactUs from '@/components/ContactUs';
 import Blog from '@/components/blog';
+import ContactUs from '@/components/ContactUs';
 
 export async function generateMetadata() {
   return await getDynamicMeta('/');

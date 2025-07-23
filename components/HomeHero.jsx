@@ -5,7 +5,7 @@ import {
     CarouselPagination,
 } from "@/components/ui/carousel";
 import Image from 'next/image';
-import Svg from '@/components/svg';
+import Btn from "@/components/ui/button/button";
 
 export default function HomeHero() {
     return (
@@ -44,12 +44,7 @@ export default function HomeHero() {
                                 <h1 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-bold text-[#454444] text-balance max-md:text-center translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-300 duration-300 ease-in-out">AI-Driven <span className="text-[#4E94FF]">Digital</span> Transformation Company</h1>
                                 <div className="w-full xl:text-xl lg:text-lg md:text-base text-sm font-normal text-[#454444] md:pt-4 pt-2 pb-8 max-md:text-center translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-500 duration-300 ease-in-out">Maximize ROI with curated <b className="font-bold">AI-Powered Solutions</b><br className="max-md:hidden" /> —fuel global <b>success with growth</b> and enhanced efficiency.</div>
                                 <div className="w-full max-md:text-center max-sm:text-left max-md:hidden translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-700 duration-300 ease-in-out inline-block">
-                                    <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-300 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
-                                        <span>Consult Our Experts</span>
-                                        <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                            <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                        </div>
-                                    </label>
+                                    <Btn />
                                 </div>
                                 <div className="grow lg:py-12 md:py-6 py-3 max-md:hidden"></div>
                             </div>
@@ -87,12 +82,7 @@ export default function HomeHero() {
                                     />
                                 </picture>
                                 <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
-                                    <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-300 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
-                                        <span>Consult Our Experts</span>
-                                        <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                            <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                        </div>
-                                    </label>
+                                    <Btn />
                                 </div>
                             </div>
                         </div>
@@ -104,12 +94,7 @@ export default function HomeHero() {
                                 <h2 className="w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl font-bold text-[#454444] text-balance max-md:text-center translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-300 duration-300 ease-in-out">AI-Powered Mobile Apps - <span className="text-[#4E94FF]">Built on AI</span>, Driven By Your Vision</h2>
                                 <div className="w-full xl:text-xl lg:text-lg md:text-base text-sm font-normal text-[#454444] md:pt-4 pt-2 pb-8 max-md:text-center translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-500 duration-300 ease-in-out"><b className="font-bold">Automate, Optimize, and Scale </b> - All in one AI-driven <br className="max-md:hidden" /> app that simplifies business <b className="font-bold">challenges and accelerates growth.</b></div>
                                 <div className="w-full max-md:text-center max-sm:text-left max-md:hidden translate-y-10 opacity-0 group-[.is-snapped]/slide:translate-y-0 group-[.is-snapped]/slide:opacity-100 delay-700 duration-300 ease-in-out inline-block">
-                                    <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-300 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
-                                        <span>Let's Build Your App</span>
-                                        <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                            <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                        </div>
-                                    </label>
+                                    <Btn>Let's Build Your App</Btn>
                                 </div>
                                 <div className="grow lg:py-12 md:py-6 py-3 max-md:hidden"></div>
                             </div>
@@ -117,12 +102,7 @@ export default function HomeHero() {
                                 <Image fetchPriority='high' loading='eager' sizes="(max-width: 768px) 100vw, 58vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2.webp" width="815" height="579" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="absolute top-8 inset-x-0 bottom-0 size-full object-contain max-md:opacity-0 max-md:pointer-events-none" />
                                 <Image fetchPriority='high' sizes="100vw" src="https://d1y41eupgbwbb2.cloudfront.net/images/heroBot2Mobile.webp" width="339" height="438" alt="Empowering Businesses AI-Driven Mobile Apps" title="Empowering Businesses AI-Driven Mobile Apps" className="size-full object-contain mx-auto max-w-96 max-md:aspect-[384/496] md:opacity-0 md:absolute md:pointer-events-none" />
                                 <div className="w-full max-md:text-center md:hidden sm:py-7 py-7">
-                                    <label htmlFor="leadPopup" className="cursor-pointer xl:text-base text-sm font-semibold text-white inline-flex items-center xl:py-3 py-2.5 xl:ps-6 ps-4 xl:pe-3 pe-2.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#4E94FF] to-[#216CFF] duration-300 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#216CFF] group/btn">
-                                        <span>Let's Build Your App</span>
-                                        <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                            <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                        </div>
-                                    </label>
+                                    <Btn>Let's Build Your App</Btn>
                                 </div>
                             </div>
                         </div>

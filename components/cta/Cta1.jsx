@@ -1,6 +1,6 @@
 
 import Image from "next/image"
-import Svg from "@/components/svg"
+import Btn from "@/components/ui/button/button";
 
 const Cta1 = () => {
     return (
@@ -11,12 +11,9 @@ const Cta1 = () => {
                       <div className="md:w-5/12 w-full xl:py-16 lg:py-14 md:py-12 sm:py-10 py-8">
                           <div className="md:w-10/12 w-full 2xl:text-4xl xl:text-3xl lg:text-2xl text-xl md:font-bold font-semibold text-white text-balance relative z-10 max-md:text-center">If you are a brand that wants to disrupt the trends and think beyond the box.</div>
                           <div className="w-full md:pt-6 pt-4 max-md:text-center">
-                              <label htmlFor="leadPopup" className="cursor-pointer xl:text-base sm:text-sm text-xs md:font-semibold font-medium text-[#454444] inline-flex items-center xl:py-3 sm:py-2.5 py-2 xl:ps-6 sm:ps-4 ps-3 xl:pe-3 sm:pe-2.5 pe-1.5 xl:gap-3 gap-2 rounded-full bg-gradient-to-b from-[#FFFFFF] to-[#D7E4FF] duration-500 hover:lg:ring-4 hover:lg:ring-inset hover:lg:ring-[#D7E4FF] group/btn">
-                                  <span>Let's Create Something <span className="max-md:hidden">Amazing</span><span className="md:hidden">Big</span> Together</span>
-                                  <div className="inline-flex items-center justify-center shrink-0 xl:size-7 size-6 rounded-full bg-white group-hover/btn:lg:scale-110 relative group-hover/btn:lg:bg-[#4B92FF] before:absolute before:inset-0 before:rounded-full before:bg-white before:duration-300 before:scale-0 group-hover/btn:lg:before:scale-100 duration-300">
-                                      <Svg name="arrowCall" className="size-3 relative z-10 text-[#4B92FF]" />
-                                  </div>
-                              </label>
+                              <Btn from="#D7E4FF" to="#FFFFFF" iconBg="#454444">
+                                Let's Create Something <span className="max-md:hidden">Amazing</span><span className="md:hidden">Big</span> Together
+                              </Btn>
                           </div>
                       </div>
                       <div className="md:w-5/12 w-full rounded-3xl flex items-center justify-center relative max-md:order-first max-md:pt-8">

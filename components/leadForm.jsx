@@ -195,7 +195,7 @@ export default function LeadForm({ defaultType = "Mobile App Development" }) {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full cursor-pointer" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="w-full cursor-pointer bg-black hover:lg:bg-black/80" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? "Submitting..." : "Let's Connect"}
                 </Button>
             </form>
