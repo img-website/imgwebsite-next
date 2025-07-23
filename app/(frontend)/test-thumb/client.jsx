@@ -24,7 +24,7 @@ export default function Client() {
 
   return (
     <div className="container mx-auto max-w-3xl py-10">
-      <Carousel setApi={setMainApi} opts={{ loop: true }} className="mb-4">
+      <Carousel setApi={setMainApi} opts={{ loop: true }} ssr={false} className="mb-4">
         <CarouselContent>
           {images.map((src, index) => (
             <CarouselItem key={index} className="relative h-64 w-full">
@@ -45,6 +45,7 @@ export default function Client() {
       <Carousel
         setApi={setThumbApi}
         opts={{ containScroll: 'keepSnaps', dragFree: true }}
+        ssr={false}
         className="w-full"
       >
         <CarouselContent>

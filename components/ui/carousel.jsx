@@ -18,10 +18,10 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef(function Carousel(
-  { className, opts = {}, setApi, children, ...props },
+  { className, opts = {}, setApi, children, ssr = true, ...props },
   ref
 ) {
-  const { fade, autoScroll, autoplay=true, ...carouselOpts } = opts || {};
+  const { fade, autoScroll, autoplay = true, ...carouselOpts } = opts || {};
   const plugins = React.useMemo(() => {
     const list = [ClassNames({ snapped: "is-snapped", inView: "is-in-view" })];
     if (autoplay) {
@@ -46,6 +46,10 @@ const Carousel = React.forwardRef(function Carousel(
   }, [autoplay, fade, autoScroll]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(carouselOpts, plugins);
+  const [mounted, setMounted] = React.useState(ssr);
+  React.useEffect(() => {
+    if (!ssr) setMounted(true);
+  }, [ssr]);
   React.useImperativeHandle(ref, () => emblaApi, [emblaApi]);
   React.useEffect(() => {
     if (!emblaApi) return;
@@ -82,9 +86,11 @@ const Carousel = React.forwardRef(function Carousel(
 
   return (
     <div ref={emblaRef} className={cn("relative overflow-hidden", className)} {...props}>
-      <CarouselContext.Provider value={{ embla: emblaApi }}>
-        {children}
-      </CarouselContext.Provider>
+      {mounted && (
+        <CarouselContext.Provider value={{ embla: emblaApi }}>
+          {children}
+        </CarouselContext.Provider>
+      )}
     </div>
   );
 });
