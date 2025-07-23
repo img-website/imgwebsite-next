@@ -2,7 +2,7 @@ export default async function getStaticMeta() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/meta/static`,
-      { cache: 'no-store' }
+      { next: { revalidate: 3600 } }
     );
     const json = await res.json();
     if (json.success && json.data) {
