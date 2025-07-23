@@ -21,7 +21,10 @@ export default async function RootLayout({ children }) {
 
   async function getSchema(type) {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/schema?global=true&type=${type}`, { cache: "no-store" });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/admin/schema?global=true&type=${type}`,
+        { next: { revalidate: 3600 } }
+      );
       const json = await res.json();
       return json.success && json.data ? json.data.data : null;
     } catch {
