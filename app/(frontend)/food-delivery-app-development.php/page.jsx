@@ -209,469 +209,481 @@ export default function FoodDeliveryAppDevelopment() {
                                 <label htmlFor="panel4" className="md:py-4 py-3 lg:px-12 md:px-10 sm:px-6 px-3 rounded-full xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs font-semibold text-[#454444] cursor-pointer group-has-[#panel4:checked]/key:bg-[#2D86FF] group-has-[#panel4:checked]/key:text-white"><h3>Admin <span className="max-sm:hidden">Panel</span></h3></label>
                             </div>
                         </div>
-                        <div className="w-full items-start has-[#panel1:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel1" className="hidden" defaultChecked />
-                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
-                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel1" className="hidden" defaultChecked />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-time Order Tracking</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Providing live updates on order status, delivery driver location, and estimated arrival time keeps customers informed.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel2" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customizable Menus and Filters</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Offering personalized options such as dietary preferences and sorting choices enables customers to find and order their preferred meals.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel3" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPayment.webp" alt="Secure Payment Options" title="Secure Payment Options" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Secure Payment Options</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrating multiple secure payment gateways assures customers of the safety of their financial transactions, promoting trust and confidence.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel4" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserReview.webp" alt="Rating and Review System" title="Rating and Review System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Rating and Review System</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Allowing customers to rate and review their orders helps build a community-driven feedback loop, aiding in making informed decisions.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel5" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserSupport.webp" alt="In-app Customer Support" title="In-app Customer Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">In-app Customer Support</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">A seamless in-app customer support system, such as live chat or a helpline, ensures prompt assistance and issue resolution.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="userPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="userPanel" id="userPanel6" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPromotion.webp" alt="Social Media Integration" title="Social Media Integration" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Social Media Integration</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Enabling social media sharing features allows customers to easily share their favorite dishes or promotions, contributing to organic marketing.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                </CarouselContent>
-                            </Carousel>
-                            <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel1:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel2:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPayment.webp" alt="Secure Payment Options" title="Secure Payment Options" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel3:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserReview.webp" alt="Rating and Review System" title="Rating and Review System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel4:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserSupport.webp" alt="In-app Customer Support" title="In-app Customer Support" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel5:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPromotion.webp" alt="Social Media Integration" title="Social Media Integration" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel6:checked]/key:md:block" />
-                            </div>
-                        </div>
-                        <div className="w-full items-start has-[#panel2:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel2" className="hidden" />
-                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
-                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" defaultChecked />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Multi-Order Management</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Here, drivers can handle multiple orders simultaneously, optimizing their delivery routes and minimizing delays.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel2" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">In-App Navigation</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrated navigation tools empower drivers to find the quickest routes, reducing delivery times and ensuring reliable customer service.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel3" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverEarnings.webp" alt="Earnings Dashboard" title="Earnings Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Earnings Dashboard</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">An intuitive earnings dashboard allows drivers to track their income, view performance metrics, and access detailed breakdowns.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel4" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverOrderaccept.webp" alt="Order Acceptance/Rejection" title="Order Acceptance/Rejection" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Acceptance/Rejection</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can make informed decisions by previewing essential order details before acceptance to manage their workload efficiently.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel5" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverRealtimeorder.webp" alt="Real-Time Order Tracking" title="Real-Time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-Time Order Tracking</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can efficiently navigate their routes and manage delivery times with live order tracking, ensuring timely deliveries.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="servicePanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="servicePanel" id="servicePanel6" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverAnalyses.webp" alt="Performance Analytics" title="Performance Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Performance Analytics</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Access to performance analytics allows drivers to review their delivery history, identify patterns, and enhance their strategies.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                </CarouselContent>
-                            </Carousel>
-                            <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel1:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel2:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverEarnings.webp" alt="Earnings Dashboard" title="Earnings Dashboard" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel3:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverOrderaccept.webp" alt="Order Acceptance/Rejection" title="Order Acceptance/Rejection" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel4:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverRealtimeorder.webp" alt="Real-Time Order Tracking" title="Real-Time Order Tracking" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel5:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverAnalyses.webp" alt="Performance Analytics" title="Performance Analytics" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel6:checked]/key:md:block" />
-                            </div>
-                        </div>
-                        <div className="w-full items-start has-[#panel3:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel3" className="hidden" />
-                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
-                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant1" className="hidden" defaultChecked />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Management System</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently processes and organizes incoming orders, providing restaurant staff with a user-friendly interface to accept, manage, and track orders.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant2" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Menu Customization Tools</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Empower restaurants to easily update and customize their digital menus while managing inventory and adjusting prices.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant3" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelRealtimeanalysis.webp" alt="Real-time Analytics Dashboard" title="Real-time Analytics Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-time Analytics Dashboard</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Equip restaurant owners with comprehensive analytics, offering insights into sales trends, popular dishes, and customer preferences.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant4" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelPaymentgateway.webp" alt="Integrated Payment Gateways" title="Integrated Payment Gateways" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrated Payment Gateways</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Seamlessly integrate secure payment gateways, allowing restaurants to accept multi-payment methods, enhancing customer convenience.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant5" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelFeedback.webp" alt="Customer Feedback System" title="Customer Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customer Feedback System</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a feedback mechanism for customers to share their experiences, enabling restaurants to gather valuable insights.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="restaurant6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="restaurant" id="restaurant6" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMultilocation.webp" alt="Multi-location Support" title="Multi-location Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Multi-location Support</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Cater to restaurant chains or businesses with multiple locations by offering a centralized management system.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                </CarouselContent>
-                            </Carousel>
-                            <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant1:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant2:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelRealtimeanalysis.webp" alt="Real-time Analytics Dashboard" title="Real-time Analytics Dashboard" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant3:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelPaymentgateway.webp" alt="Integrated Payment Gateways" title="Integrated Payment Gateways" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant4:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelFeedback.webp" alt="Customer Feedback System" title="Customer Feedback System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant5:checked]/key:md:block" />
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMultilocation.webp" alt="Multi-location Support" title="Multi-location Support" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant6:checked]/key:md:block" />
-                            </div>
-                        </div>
-                        <div className="w-full items-start has-[#panel4:checked]:flex hidden">
-                            <input type="radio" name="panel" id="panel4" className="hidden" />
-                            <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
-                                <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" defaultChecked />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="User Management" title="User Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">User Management</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently manage user accounts and permissions to ensure a secure and seamless experience for both customers and delivery partners.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel2" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Order Tracking and Analytics" title="Order Tracking and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Tracking and Analytics</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement robust order-tracking tools and analytics dashboards to monitor real-time order statuses and track delivery routes.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel3" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Payment and Commission Tracking" title="Payment and Commission Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Payment and Commission Tracking</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a transparent payment system and commission tracking feature to monitor financial transactions and process payments securely.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel4" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Geofencing and Location Management" title="Geofencing and Location Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Geofencing and Location Management</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Utilize geofencing technology to define delivery zones, optimize routes, and enhance location-based services.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel5" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Customer Support and Communication" title="Customer Support and Communication" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customer Support and Communication</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a robust customer support module, including in-app chat or messaging features, to promptly address customer queries.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                    <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
-                                        <label htmlFor="adminPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
-                                            <input type="radio" name="adminPanel" id="adminPanel6" className="hidden" />
-                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Rating and Feedback System" title="Rating and Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
-                                            <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
-                                                <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
-                                                <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
-                                            </div>
-                                            <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
-                                                <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
-                                                    <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
-                                                    <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Rating and Feedback System</div>
-                                                </div>
-                                                <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a user-friendly rating and feedback system, allowing customers to provide reviews and ratings.</div>
-                                            </div>
-                                        </label>
-                                    </CarouselItem>
-                                </CarouselContent>
-                            </Carousel>
-                            <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
-                                <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="admin" title="admin" width="375" height="262" className="w-full mx-auto xl:max-w-96 max-w-64 max-md:hidden aspect-[375/262]" />
-                            </div>
-                        </div>
+                        <Carousel opts={{ loop: true, autoplay: false }} className="w-full">
+                            <CarouselContent className="-ml-8 items-stretch">
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="w-full items-start flex">
+                                        <input type="radio" name="panel" id="panel1" className="hidden" defaultChecked />
+                                        <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                            <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel1" className="hidden" defaultChecked />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-time Order Tracking</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Providing live updates on order status, delivery driver location, and estimated arrival time keeps customers informed.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel2" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customizable Menus and Filters</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Offering personalized options such as dietary preferences and sorting choices enables customers to find and order their preferred meals.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel3" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPayment.webp" alt="Secure Payment Options" title="Secure Payment Options" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Secure Payment Options</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrating multiple secure payment gateways assures customers of the safety of their financial transactions, promoting trust and confidence.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel4" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserReview.webp" alt="Rating and Review System" title="Rating and Review System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Rating and Review System</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Allowing customers to rate and review their orders helps build a community-driven feedback loop, aiding in making informed decisions.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel5" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserSupport.webp" alt="In-app Customer Support" title="In-app Customer Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">In-app Customer Support</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">A seamless in-app customer support system, such as live chat or a helpline, ensures prompt assistance and issue resolution.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="userPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="userPanel" id="userPanel6" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPromotion.webp" alt="Social Media Integration" title="Social Media Integration" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Social Media Integration</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Enabling social media sharing features allows customers to easily share their favorite dishes or promotions, contributing to organic marketing.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                            </CarouselContent>
+                                        </Carousel>
+                                        <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserRealtimetracking.webp" alt="Real-time Order Tracking" title="Real-time Order Tracking" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel1:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserFilters.webp" alt="Customizable Menus and Filters" title="Customizable Menus and Filters" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel2:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPayment.webp" alt="Secure Payment Options" title="Secure Payment Options" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel3:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserReview.webp" alt="Rating and Review System" title="Rating and Review System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel4:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserSupport.webp" alt="In-app Customer Support" title="In-app Customer Support" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel5:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodUserPromotion.webp" alt="Social Media Integration" title="Social Media Integration" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#userPanel6:checked]/key:md:block" />
+                                        </div>
+                                    </div>
+                                </CarouselItem>
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="w-full items-start flex">
+                                        <input type="radio" name="panel" id="panel2" className="hidden" />
+                                        <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                            <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel1" className="hidden" defaultChecked />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Multi-Order Management</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Here, drivers can handle multiple orders simultaneously, optimizing their delivery routes and minimizing delays.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel2" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">In-App Navigation</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrated navigation tools empower drivers to find the quickest routes, reducing delivery times and ensuring reliable customer service.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel3" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverEarnings.webp" alt="Earnings Dashboard" title="Earnings Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Earnings Dashboard</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">An intuitive earnings dashboard allows drivers to track their income, view performance metrics, and access detailed breakdowns.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel4" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverOrderaccept.webp" alt="Order Acceptance/Rejection" title="Order Acceptance/Rejection" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Acceptance/Rejection</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can make informed decisions by previewing essential order details before acceptance to manage their workload efficiently.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel5" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverRealtimeorder.webp" alt="Real-Time Order Tracking" title="Real-Time Order Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-Time Order Tracking</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Drivers can efficiently navigate their routes and manage delivery times with live order tracking, ensuring timely deliveries.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="servicePanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="servicePanel" id="servicePanel6" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverAnalyses.webp" alt="Performance Analytics" title="Performance Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Performance Analytics</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Access to performance analytics allows drivers to review their delivery history, identify patterns, and enhance their strategies.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                            </CarouselContent>
+                                        </Carousel>
+                                        <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverMultiOrder.webp" alt="Multi-Order Management" title="Multi-Order Management" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel1:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverNavigation.webp" alt="In-App Navigation" title="In-App Navigation" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel2:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverEarnings.webp" alt="Earnings Dashboard" title="Earnings Dashboard" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel3:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverOrderaccept.webp" alt="Order Acceptance/Rejection" title="Order Acceptance/Rejection" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel4:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverRealtimeorder.webp" alt="Real-Time Order Tracking" title="Real-Time Order Tracking" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel5:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodDriverAnalyses.webp" alt="Performance Analytics" title="Performance Analytics" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#servicePanel6:checked]/key:md:block" />
+                                        </div>
+                                    </div>
+                                </CarouselItem>
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="w-full items-start flex">
+                                        <input type="radio" name="panel" id="panel3" className="hidden" />
+                                        <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                            <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant1" className="hidden" defaultChecked />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Management System</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently processes and organizes incoming orders, providing restaurant staff with a user-friendly interface to accept, manage, and track orders.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant2" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Menu Customization Tools</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Empower restaurants to easily update and customize their digital menus while managing inventory and adjusting prices.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant3" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelRealtimeanalysis.webp" alt="Real-time Analytics Dashboard" title="Real-time Analytics Dashboard" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Real-time Analytics Dashboard</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Equip restaurant owners with comprehensive analytics, offering insights into sales trends, popular dishes, and customer preferences.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant4" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelPaymentgateway.webp" alt="Integrated Payment Gateways" title="Integrated Payment Gateways" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrated Payment Gateways</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Seamlessly integrate secure payment gateways, allowing restaurants to accept multi-payment methods, enhancing customer convenience.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant5" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelFeedback.webp" alt="Customer Feedback System" title="Customer Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customer Feedback System</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a feedback mechanism for customers to share their experiences, enabling restaurants to gather valuable insights.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="restaurant6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="restaurant" id="restaurant6" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMultilocation.webp" alt="Multi-location Support" title="Multi-location Support" className="max-w-64 w-full mx-auto md:hidden aspect-[256/368]" width={256} height={368} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Multi-location Support</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Cater to restaurant chains or businesses with multiple locations by offering a centralized management system.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                            </CarouselContent>
+                                        </Carousel>
+                                        <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelOrdermanagement.webp" alt="Order Management System" title="Order Management System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant1:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMenu.webp" alt="Menu Customization Tools" title="Menu Customization Tools" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant2:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelRealtimeanalysis.webp" alt="Real-time Analytics Dashboard" title="Real-time Analytics Dashboard" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant3:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelPaymentgateway.webp" alt="Integrated Payment Gateways" title="Integrated Payment Gateways" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant4:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelFeedback.webp" alt="Customer Feedback System" title="Customer Feedback System" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant5:checked]/key:md:block" />
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/restaurantPanelMultilocation.webp" alt="Multi-location Support" title="Multi-location Support" width="375" height="527" className="w-full mx-auto xl:max-w-96 max-w-64 aspect-[375/527] hidden group-has-[#restaurant6:checked]/key:md:block" />
+                                        </div>
+                                    </div>
+                                </CarouselItem>
+                                <CarouselItem className="pl-8 basis-full">
+                                    <div className="w-full items-start flex">
+                                        <input type="radio" name="panel" id="panel4" className="hidden" />
+                                        <Carousel opts={{ loop: true, fade: true, autoplay: false }} className="xl:w-8/12 md:w-1/2 md:!pt-12 !pt-7 !pb-6 md:!overflow-visible">
+                                            <CarouselContent className="max-md:-ml-8 items-stretch max-md:!items-stretch md:!grid xl:!grid-cols-2 md:!grid-cols-1 md:!gap-x-8 md:!gap-y-6 md:!transform-none">
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel1" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel1" className="hidden" defaultChecked />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="User Management" title="User Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">User Management</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Efficiently manage user accounts and permissions to ensure a secure and seamless experience for both customers and delivery partners.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel2" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel2" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Order Tracking and Analytics" title="Order Tracking and Analytics" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Order Tracking and Analytics</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement robust order-tracking tools and analytics dashboards to monitor real-time order statuses and track delivery routes.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel3" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel3" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Payment and Commission Tracking" title="Payment and Commission Tracking" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Payment and Commission Tracking</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a transparent payment system and commission tracking feature to monitor financial transactions and process payments securely.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel4" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel4" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Geofencing and Location Management" title="Geofencing and Location Management" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Geofencing and Location Management</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Utilize geofencing technology to define delivery zones, optimize routes, and enhance location-based services.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel5" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel5" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Customer Support and Communication" title="Customer Support and Communication" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Customer Support and Communication</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Implement a robust customer support module, including in-app chat or messaging features, to promptly address customer queries.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                                <CarouselItem className="max-md:pl-8 basis-full group md:!w-full max-md:!h-auto max-md:!flex max-md:!flex-col md:!transform-none select-none md:!opacity-100 md:!pointer-events-auto">
+                                                    <label htmlFor="adminPanel6" className="md:!w-full cursor-pointer h-full max-md:!flex max-md:!flex-col">
+                                                        <input type="radio" name="adminPanel" id="adminPanel6" className="hidden" />
+                                                        <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="Rating and Feedback System" title="Rating and Feedback System" className="max-w-64 w-full mx-auto md:hidden aspect-[256/179]" width={256} height={179} />
+                                                        <div className="flex gap-2.5 items-center justify-center pt-4 md:hidden">
+                                                            <Svg name="swiper" className="size-6 shrink-0 text-[#5B5B5B]" />
+                                                            <div className="md:text-xs text-[10px] font-normal text-[#5B5B5B]">Swipe to show features</div>
+                                                        </div>
+                                                        <div className="flex flex-col bg-white max-md:bg-[#2D86FF] group-has-[:checked]:md:bg-[#2D86FF] rounded-3xl md:shadow-[0px_3px_34.5px_0px_#0000001F] p-6 mt-4 max-md:grow md:h-[calc(100%-1rem)]">
+                                                            <div className="flex gap-1 md:items-start items-center pb-1 max-sm:flex-col max-sm:gap-2">
+                                                                <Svg name="task" className="md:size-6 size-8 shrink-0 max-md:text-white group-has-[:checked]:md:text-white text-[#2D86FF]" />
+                                                                <div className="xl:text-xl lg:text-lg text-base font-semibold text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Rating and Feedback System</div>
+                                                            </div>
+                                                            <div className="w-full xl:text-base sm:text-sm text-xs font-normal text-[#5B5B5B] max-md:text-white group-has-[:checked]:md:text-white max-sm:text-center">Integrate a user-friendly rating and feedback system, allowing customers to provide reviews and ratings.</div>
+                                                        </div>
+                                                    </label>
+                                                </CarouselItem>
+                                            </CarouselContent>
+                                        </Carousel>
+                                        <div className="xl:w-4/12 md:w-1/2 pl-20 md:!pt-12 !pt-7 !pb-6 md:sticky md:top-16 md:bottom-0 md:h-dvh max-md:hidden flex flex-col justify-center">
+                                            <Image loading="lazy" src="https://d1y41eupgbwbb2.cloudfront.net/images/foodAdmin.webp" alt="admin" title="admin" width="375" height="262" className="w-full mx-auto xl:max-w-96 max-w-64 max-md:hidden aspect-[375/262]" />
+                                        </div>
+                                    </div>
+                                </CarouselItem>
+                            </CarouselContent>
+                        </Carousel>
                     </div>
                 </div>
             </section>
