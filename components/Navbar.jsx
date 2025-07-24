@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Svg from '@/components/svg';
 import Link from 'next/link';
@@ -16,6 +16,10 @@ import {
 
 const Navbar = () => {
   const headerRef = useRef(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const handleMouseEnter = (id) => setOpenDropdown(id);
+  const handleMouseLeave = () => setOpenDropdown(null);
 
   const handleHeaderClick = (event) => {
     if (event.target.closest('a')) {
@@ -93,11 +97,16 @@ const Navbar = () => {
               </div>
               <div className="flex gap-5 items-center">
                   <div className="hidden lg:flex lg:gap-x-6 ml-auto mr-0">
-                    <div className="relative group/dd">
+                    <div
+                      className="relative group/dd"
+                      onMouseEnter={() => handleMouseEnter('company')}
+                      onMouseLeave={handleMouseLeave}
+                    >
                       <button type="button" className="flex items-center gap-x-0.5 xl:text-sm lg:text-xs text-sm font-medium leading-6 text-[#454444] duration-200 capitalize hover:lg:text-black group-hover/dd:before:absolute group-hover/dd:before:-bottom-[34px] group-hover/dd:before:left-0 group-hover/dd:before:h-10 group-hover/dd:before:w-full group-hover/dd:before:z-[1]" aria-expanded="false">
                         Company
                         <Svg name="arrowDown" className="xl:size-5 lg:size-4 size-5 flex-none transition-transform duration-500 group-hover/dd:[transform:rotateX(180deg)]" />
                       </button>
+                      {openDropdown === 'company' && (
                       <div className="absolute left-1/2 right-0 max-w-md w-screen xl:top-[47px] group-hover/ns:xl:top-[49px] lg:top-[40px] group-hover/ns:lg:top-[45px] z-10 overflow-hidden bg-white/40 rounded-3xl backdrop-blur-lg transition ease-out duration-200 opacity-0 group-hover/dd:opacity-100 origin-top [transform:rotateX(90deg)_translateX(-50%)] group-hover/dd:[transform:rotateX(0deg)_translateX(-50%)]">
                         <div className="grid grid-cols-1 flex-wrap w-full gap-4 p-2 xl:p-4 items-stretch">
                           <div className="w-full flex flex-col p-2 xl:p-4 overflow-hidden xl:rounded-3xl lg:rounded-2xl rounded-3xl text-xs xl:text-sm leading-6 bg-white/70 backdrop-blur-lg shadow-lg ring-1 ring-gray-900/5">
@@ -174,12 +183,21 @@ const Navbar = () => {
                           </div>
                         </div>
                       </div>
+                      )}
                     </div>
-                    <div className="group/dd">
+                    <div
+                      className="group/dd"
+                      onMouseEnter={() => handleMouseEnter('services')}
+                      onMouseLeave={handleMouseLeave}
+                    >
                       <button type="button" className="flex items-center gap-x-0.5 xl:text-sm lg:text-xs text-sm font-medium leading-6 text-[#454444] duration-200 capitalize hover:lg:text-black group-hover/dd:before:absolute group-hover/dd:before:-bottom-4 group-hover/dd:before:left-0 group-hover/dd:before:h-10 group-hover/dd:before:w-full group-hover/dd:before:z-[1]" aria-expanded="false">
                         Services
                         <Svg name="arrowDown" className="xl:size-5 lg:size-4 size-5 flex-none transition-transform duration-500 group-hover/dd:[transform:rotateX(180deg)]" />
                       </button>
+                      {openDropdown === 'services' && (
+                      {openDropdown === 'hire' && (
+                      {openDropdown === 'solutions' && (
+                      {openDropdown === 'solutions' && (
                       <div className="absolute left-0 right-0 w-full xl:top-[120px] lg:top-[100px] top-[120px] group-hover/ns:xl:top-[5.5rem] group-hover/ns:lg:top-[4rem] z-10 overflow-hidden bg-white/40 rounded-3xl group-hover/ns:rounded-t-none  backdrop-blur-lg transition ease-out duration-200 opacity-0 group-hover/dd:opacity-100 origin-top [transform:rotateX(90deg)] group-hover/dd:[transform:rotateX(0deg)]">
                         <div className="grid grid-cols-5 flex-wrap w-full gap-4 p-2 xl:p-4 items-stretch text-xs xl:text-sm xl:leading-6">
                           <div className="w-full flex flex-col p-2 xl:p-4 overflow-hidden xl:rounded-3xl lg:rounded-2xl rounded-3xl bg-white/70 backdrop-blur-lg shadow-lg ring-1 ring-gray-900/5">
@@ -193,8 +211,9 @@ const Navbar = () => {
                                   Mobile App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -204,8 +223,9 @@ const Navbar = () => {
                                   Android App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -215,8 +235,9 @@ const Navbar = () => {
                                   iOS App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -226,8 +247,9 @@ const Navbar = () => {
                                   Cross-Platform App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -237,8 +259,9 @@ const Navbar = () => {
                                   Flutter App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -248,9 +271,11 @@ const Navbar = () => {
                                   React Native App
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
-                          </div>
+                      </div>
+                      )}
+                      </div>
+                      )}
+                    </div>
                           <div className="w-full flex flex-col p-2 xl:p-4 overflow-hidden xl:rounded-3xl lg:rounded-2xl rounded-3xl bg-white/70 backdrop-blur-lg shadow-lg ring-1 ring-gray-900/5">
                             <div className="xl:text-base text-sm font-semibold px-2 xl:px-4 py-1 xl:py-2">Web</div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
@@ -262,8 +287,9 @@ const Navbar = () => {
                                   Web Development
                                   <span className="absolute inset-0 z-[1]"></span>
                                 </Link>
-                              </div>
-                            </div>
+                      </div>
+                      )}
+                    </div>
                             <div className="group/db hover:md:bg-gray-100 text-[#454444] xl:gap-x-6 lg:gap-x-4 gap-x-5 relative flex items-center rounded-lg p-2 xl:p-2 lg:p-1.5">
                               <div className="flex xl:size-5 lg:size-4 size-5 flex-none items-center justify-center rounded-lg bg-gray-100">
                                 <Svg name="squire" className="xl:size-2 size-1.5 opacity-90 group-hover/db:opacity-80 group-hover/db:animate-spin" />
@@ -501,8 +527,13 @@ const Navbar = () => {
                           </div>
                         </div>
                       </div>
+                      )}
                     </div>
-                    <div className="group/dd">
+                    <div
+                      className="group/dd"
+                      onMouseEnter={() => handleMouseEnter('solutions')}
+                      onMouseLeave={handleMouseLeave}
+                    >
                       <button type="button" className="flex items-center gap-x-0.5 xl:text-sm lg:text-xs text-sm font-medium leading-6 text-[#454444] duration-200 capitalize hover:lg:text-black group-hover/dd:before:absolute group-hover/dd:before:-bottom-4 group-hover/dd:before:left-0 group-hover/dd:before:h-10 group-hover/dd:before:w-full group-hover/dd:before:z-[1]" aria-expanded="false">
                         Solutions
                         <Svg name="arrowDown" className="xl:size-5 lg:size-4 size-5 flex-none transition-transform duration-500 group-hover/dd:[transform:rotateX(180deg)]" />
@@ -941,9 +972,14 @@ const Navbar = () => {
                           </div>
                         </div>
                       </div>
+                      )}
                     </div>
                     
-                    <div className="group/dd">
+                    <div
+                      className="group/dd"
+                      onMouseEnter={() => handleMouseEnter('hire')}
+                      onMouseLeave={handleMouseLeave}
+                    >
                       <button type="button" className="flex items-center gap-x-0.5 xl:text-sm lg:text-xs text-sm font-medium leading-6 text-[#454444] duration-200 capitalize hover:lg:text-black group-hover/dd:before:absolute group-hover/dd:before:-bottom-4 group-hover/dd:before:left-0 group-hover/dd:before:h-10 group-hover/dd:before:w-full group-hover/dd:before:z-[1]" aria-expanded="false">
                         Hire <span className="max-xl:hidden">&nbsp;Developers</span>
                         <Svg name="arrowDown" className="xl:size-5 lg:size-4 size-5 flex-none transition-transform duration-500 group-hover/dd:[transform:rotateX(180deg)]" />
@@ -1189,6 +1225,7 @@ const Navbar = () => {
                           </div>
                         </div>
                       </div>
+                      )}
                     </div>
               
                     <Link href="portfolio.php" className="xl:text-sm lg:text-xs text-sm font-medium leading-6 text-[#454444] duration-200 capitalize hover:lg:text-black">Work</Link>
