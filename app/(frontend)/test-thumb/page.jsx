@@ -6,8 +6,5 @@ export async function generateMetadata() {
 }
 
 export default function CarouselThumbTest() {
-
-  return (
-    <Client/>
-  )
+  return <Client />;
 }
